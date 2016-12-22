@@ -120,7 +120,7 @@
 				</td>
 			</tr>
 		<!-- {foreachelse} -->
-    		<tr><td class="dataTables_empty" colspan="4">{lang key='wechat::wechat.unfind_any_recode'}</td></tr>
+    		<tr><td class="dataTables_empty" colspan="4">{lang key='system::system.no_records'}</td></tr>
   		<!-- {/foreach} -->
 		</tbody>
 	</table>
