@@ -440,7 +440,22 @@ return array(
 		'menu_url_required'		=> '请输入外链URL',
 		'menu_url_url'			=> '图片链接地址需要以http://开头',
 		
-		'oauth_redirecturi_required'	=> '请填写微信OAuth回调地址！'		
+		'oauth_redirecturi_required'	=> '请填写微信OAuth回调地址！',	
+	    
+	    //admin_material.js 
+	    'upload_images_area'    => '将图片拖动至此处上传',
+	    'upload_mp3_area'       => '将语音拖动至此处上传（格式：mp3）',
+	    'title_placeholder'     => '请输入标题',
+	    'title_placeholder_title' => '请输入视频标题',
+	    'graphic'               => '图文',
+	    'clone_no_parent'       => 'clone-obj方法未设置data-parent参数。',
+	    'title'                 => '标题',
+	    'thumbnail'             => '缩略图',
+	    'batch_less_parameter'  => '批量操作缺少参数！',
+	    'images_most8'          => '图文最多只能添加8条',
+	    'img_priview'           => '图片预览',
+	    'remove_material_cover' => '您确定要删除该封面素材吗？',
+	    'title_placeholder_graphic' => '请输入图文标题',
 	),
 	
 	/*functions*/
@@ -678,6 +693,20 @@ return array(
 	'oauth_redirecturi_help'  	=> '规则：“域名地址”+"/sites/platform/index.php?m=platform&c=plugin&a=show&handle=mp_userbind/bind_callback"+"&uuid=xxx"',
 	'label_oauth_count'			=> '微信OAuth推送量：',
 	'label_last_time'			=> '最后更新时间：',
+    
+    //wechat_material.dwt 模板
+    'notice_public_not_certified'   => '抱歉！您当前公众号属于“未认证的公众号”，该模块目前还不支持“未认证的公众号”。',
+    'forever_material'              => '永久素材',
+    'provisional_material'          => '临时素材',
+    'remove_imgtext_cover'  => '您确定要删除该图文素材吗？',
+    'delete'                => '删除',
+    'save'                  => '保存',
+    'edit'                  => '编辑',
+    'cancel'                => '取消',
+    'remove_images_material' => '您确定要删除该图片素材吗？',
+    'remove_voice_material' => '您确定要删除该语音素材吗？',
+    'remove_video_material' => '您确定要删除该视频素材吗？',
+    'unfind_any_recode'     => '没有找到任何记录',
 );		
 
 // end

@@ -8,14 +8,14 @@
 
 <!-- {if $errormsg} -->
 	<div class="alert alert-error">
-		<strong>温馨提示：</strong>{$errormsg}
+		<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 	</div>
 <!-- {/if} -->
 
 {if $warn}
 	{if $wechat_type eq 0}
 	 	<div class="alert alert-error">
-	        <strong>温馨提示：</strong>{t}抱歉！您当前公众号属于“未认证的公众号”，该模块目前还不支持“未认证的公众号”。{/t}
+	        <strong>{lang key='wechat::wechat.label_notice'}</strong>{lang key='wechat::wechat.notice_public_not_certified'}
 	    </div>
 	{/if}
 {/if}
@@ -29,18 +29,18 @@
 </div>
 
 <ul class="nav nav-tabs">
-	<li class="{if $smarty.get.material eq 1}active{/if}"><a class="data-pjax" href="{url path='wechat/admin_material/init' args='type=news&material=1'}">{t}永久素材{/t}</a></li>
-	<li class="{if !$smarty.get.material}active{/if}"><a class="data-pjax" href="{url path='wechat/admin_material/init' args='type=image'}">{t}临时素材{/t}</a></li>
+	<li class="{if $smarty.get.material eq 1}active{/if}"><a class="data-pjax" href="{url path='wechat/admin_material/init' args='type=news&material=1'}">{lang key='wechat::wechat.forever_material'}</a></li>
+	<li class="{if !$smarty.get.material}active{/if}"><a class="data-pjax" href="{url path='wechat/admin_material/init' args='type=image'}">{lang key='wechat::wechat.provisional_material'}</a></li>
 </ul>
 <div class="row-fluid batch">
 	<div class="f_l">
 		<ul class="nav nav-pills">
 			<!-- {if $smarty.get.material eq 1} -->
-			<li class="{if $smarty.get.type eq 'news'}active{/if}"><a class="data-pjax" href='{url path="wechat/admin_material/init" args="type=news{if $smarty.get.material}&material=1{/if}"}'>图文消息 <span class="badge badge-info">{if $lists.filter.count.news}{$lists.filter.count.news}{else}0{/if}</span></a></li>
+			<li class="{if $smarty.get.type eq 'news'}active{/if}"><a class="data-pjax" href='{url path="wechat/admin_material/init" args="type=news{if $smarty.get.material}&material=1{/if}"}'>{lang key='wechat::wechat.text_message'}<span class="badge badge-info">{if $lists.filter.count.news}{$lists.filter.count.news}{else}0{/if}</span></a></li>
 			<!-- {/if} -->
-			<li class="{if $smarty.get.type eq 'image'}active{/if}"><a class="data-pjax" href='{url path="wechat/admin_material/init" args="type=image{if $smarty.get.material}&material=1{/if}"}'>图片 <span class="badge badge-info">{if $lists.filter.count.image}{$lists.filter.count.image}{else}0{/if}</span></a></li>
-			<li class="{if $smarty.get.type eq 'voice'}active{/if}"><a class="data-pjax" href='{url path="wechat/admin_material/init" args="type=voice{if $smarty.get.material}&material=1{/if}"}'>语音 <span class="badge badge-info">{if $lists.filter.count.voice}{$lists.filter.count.voice}{else}0{/if}</span></a></li>
-			<li class="{if $smarty.get.type eq 'video'}active{/if}"><a class="data-pjax" href='{url path="wechat/admin_material/init" args="type=video{if $smarty.get.material}&material=1{/if}"}' >视频<span class="badge badge-info unuse-plugins-num">{if $lists.filter.count.video}{$lists.filter.count.video}{else}0{/if}</span></a></li>
+			<li class="{if $smarty.get.type eq 'image'}active{/if}"><a class="data-pjax" href='{url path="wechat/admin_material/init" args="type=image{if $smarty.get.material}&material=1{/if}"}'>{lang key='wechat::wechat.image'} <span class="badge badge-info">{if $lists.filter.count.image}{$lists.filter.count.image}{else}0{/if}</span></a></li>
+			<li class="{if $smarty.get.type eq 'voice'}active{/if}"><a class="data-pjax" href='{url path="wechat/admin_material/init" args="type=voice{if $smarty.get.material}&material=1{/if}"}'>{lang key='wechat::wechat.voice'} <span class="badge badge-info">{if $lists.filter.count.voice}{$lists.filter.count.voice}{else}0{/if}</span></a></li>
+			<li class="{if $smarty.get.type eq 'video'}active{/if}"><a class="data-pjax" href='{url path="wechat/admin_material/init" args="type=video{if $smarty.get.material}&material=1{/if}"}' >{lang key='wechat::wechat.video'}<span class="badge badge-info unuse-plugins-num">{if $lists.filter.count.video}{$lists.filter.count.video}{else}0{/if}</span></a></li>
 		</ul>
 	</div>
 	
@@ -70,14 +70,14 @@
 	            </div>
             <!-- {foreach from=$articles.articles key=key item=val} -->
                 <div class="article_list">
-                    <div class="f_l">{if $val.title}{$val.title}{else}无标题{/if}</div>
+                    <div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
                     <a target="__blank" href="{$val.file}">
                     	<img src="{$val.file}" class="pull-right" />
                     </a>
                 </div>
             <!-- {/foreach} -->
                 <p>
-                    <a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{t}您确定要删除该图文素材吗？{/t}" href='{url path="wechat/admin_material/remove" args="id={$articles.id}"}' title="{t}删除{/t}"><i class="icon-trash"></i></a>
+                    <a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_imgtext_cover'}" href='{url path="wechat/admin_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="icon-trash"></i></a>
                     <!-- {if $articles.article_id} -->
                     <a class="data-pjax" href='{url path="wechat/admin_material/articles_edit" args="id={$articles.id}&material=1"}'><i class="icon-pencil"></i></a>
                     <!-- {else} -->
@@ -88,7 +88,7 @@
             <!-- {else} -->
             <li class="thumbnail move-mod-group">
                 <div class="articles">
-                    <div class="articles_title">{if $articles.title}{$articles.title}{else}无标题{/if}</div>
+                    <div class="articles_title">{if $articles.title}{$articles.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
                     <p class="ecjiaf-pre">{$articles.add_time}</p>
                     <a target="__blank" href="{$articles.file}">
                         <img src="{$articles.file}"/>
@@ -96,7 +96,7 @@
                     <div class="articles_content">{$articles.content}</div>
                 </div>
                 <p>
-                    <a class="ajaxremove" data-imgid="{$articles.id}" data-toggle="ajaxremove" data-msg="{t}您确定要删除该图文素材吗？{/t}" href='{url path="wechat/admin_material/remove" args="id={$articles.id}"}' title="{t}删除{/t}"><i class="icon-trash"></i></a>
+                    <a class="ajaxremove" data-imgid="{$articles.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_images_material'}" href='{url path="wechat/admin_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="icon-trash"></i></a>
                     <!-- {if $articles.article_id} -->
                     <a class="data-pjax" href='{url path="wechat/admin_material/articles_edit" args="id={$articles.id}&material=1"}'><i class="icon-pencil"></i></a>
                     <!-- {else} -->
@@ -111,7 +111,7 @@
 	<!-- {else} -->
 	<table class="table table-striped">
 		<tr>
-			<td class="no-records" colspan="10" style="border-top:0px;line-height:100px;">{t}没有找到任何记录{/t}</td>
+			<td class="no-records" colspan="10" style="border-top:0px;line-height:100px;">{lang key='wechat::wechat.unfind_any_recode'}</td>
 		</tr>
 	</table>
 	<!-- {/if} -->
@@ -141,11 +141,11 @@
 						</div>
 					</div>
 					<p>
-						<a href="javascript:;" title="取消" data-toggle="sort-cancel" style="display:none;"><i class="fontello-icon-cancel"></i></a>
-						<a href="javascript:;" title="保存" data-toggle="sort-ok" data-imgid="{$val.id}" data-saveurl="{url path='wechat/admin_material/edit_file_name' args='type=picture'}" style="display:none;"><i class="fontello-icon-ok"></i></a>
-						<a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{t}您确定要删除该图片素材吗？{/t}" href='{url path="wechat/admin_material/picture_remove" args="id={$val.id}"}' title="{t}删除{/t}"><i class="icon-trash"></i></a>
-						<a href="javascript:;" title="编辑" data-toggle="edit"><i class="icon-pencil"></i></a>
-						<span class="edit_title">{if $val.file_name}{$val.file_name}{else}无标题{/if}</span>
+						<a href="javascript:;" title="{lang key='wechat::wechat.cancel'}" data-toggle="sort-cancel" style="display:none;"><i class="fontello-icon-cancel"></i></a>
+						<a href="javascript:;" title="{lang key='wechat::wechat.save'}" data-toggle="sort-ok" data-imgid="{$val.id}" data-saveurl="{url path='wechat/admin_material/edit_file_name' args='type=picture'}" style="display:none;"><i class="fontello-icon-ok"></i></a>
+						<a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_images_material'}" href='{url path="wechat/admin_material/picture_remove" args="id={$val.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="icon-trash"></i></a>
+						<a href="javascript:;" title="{lang key='wechat::wechat.edit'}" data-toggle="edit"><i class="icon-pencil"></i></a>
+						<span class="edit_title">{if $val.file_name}{$val.file_name}{else}{lang key='wechat::wechat.no_title'}{/if}</span>
 					</p>
 				</li>
 					<!-- {foreach from=$val.articles item=article} -->
@@ -160,11 +160,11 @@
 							</div>
 						</div>
 						<p>
-							<a href="javascript:;" title="取消" data-toggle="sort-cancel" style="display:none;"><i class="fontello-icon-cancel"></i></a>
-							<a href="javascript:;" title="保存" data-toggle="sort-ok" data-imgid="{$article.id}" data-saveurl="{url path='wechat/admin_material/edit_file_name' args='type=picture'}" style="display:none;"><i class="fontello-icon-ok"></i></a>
-							<a class="ajaxremove" data-imgid="{$article.id}" data-toggle="ajaxremove" data-msg="{t}您确定要删除该图片素材吗？{/t}" href='{url path="wechat/admin_material/picture_remove" args="id={$article.id}"}' title="{t}删除{/t}"><i class="icon-trash"></i></a>
-							<a href="javascript:;" title="编辑" data-toggle="edit"><i class="icon-pencil"></i></a>
-							<span class="edit_title">{if $article.file_name}{$article.file_name}{else}无标题{/if}</span>
+							<a href="javascript:;" title="{lang key='wechat::wechat.cancel'}" data-toggle="sort-cancel" style="display:none;"><i class="fontello-icon-cancel"></i></a>
+							<a href="javascript:;" title="{lang key='wechat::wechat.save'}" data-toggle="sort-ok" data-imgid="{$article.id}" data-saveurl="{url path='wechat/admin_material/edit_file_name' args='type=picture'}" style="display:none;"><i class="fontello-icon-ok"></i></a>
+							<a class="ajaxremove" data-imgid="{$article.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_images_material'}" href='{url path="wechat/admin_material/picture_remove" args="id={$article.id}"}' title="{lang key='wechat::wechat.cancel'}"><i class="icon-trash"></i></a>
+							<a href="javascript:;" title="{lang key='wechat::wechat.edit'}" data-toggle="edit"><i class="icon-pencil"></i></a>
+							<span class="edit_title">{if $article.file_name}{$article.file_name}{else}{lang key='wechat::wechat.no_title'}{/if}</span>
 						</p>
 					</li>
 					<!-- {/foreach} -->
@@ -198,11 +198,11 @@
 						</div>
 					</div>
 					<p>
-						<a href="javascript:;" title="取消" data-toggle="sort-cancel" style="display:none;"><i class="fontello-icon-cancel"></i></a>
-						<a href="javascript:;" title="保存" data-toggle="sort-ok" data-imgid="{$val.id}" data-saveurl="{url path='wechat/admin_material/edit_file_name' args='type=voice'}" style="display:none;"><i class="fontello-icon-ok"></i></a>
-						<a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{t}您确定要删除该语音素材吗？{/t}" href='{url path="wechat/admin_material/voice_remove" args="id={$val.id}"}' title="{t}删除{/t}"><i class="icon-trash"></i></a>
-						<a href="javascript:;" title="编辑" data-toggle="edit"><i class="icon-pencil"></i></a>
-						<span class="edit_title">{if $val.file_name}{$val.file_name}{else}无标题{/if}</span>
+						<a href="javascript:;" title="{lang key='wechat::wechat.cancel'}" data-toggle="sort-cancel" style="display:none;"><i class="fontello-icon-cancel"></i></a>
+						<a href="javascript:;" title="{lang key='wechat::wechat.save'}" data-toggle="sort-ok" data-imgid="{$val.id}" data-saveurl="{url path='wechat/admin_material/edit_file_name' args='type=voice'}" style="display:none;"><i class="fontello-icon-ok"></i></a>
+						<a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_voice_material'}" href='{url path="wechat/admin_material/voice_remove" args="id={$val.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="icon-trash"></i></a>
+						<a href="javascript:;" title="{lang key='wechat::wechat.edit'}" data-toggle="edit"><i class="icon-pencil"></i></a>
+						<span class="edit_title">{if $val.file_name}{$val.file_name}{else}{lang key='wechat::wechat.no_title'}{/if}</span>
 					</p>
 				</li>
 				<!-- {/foreach} -->
@@ -231,13 +231,13 @@
 						</div>
 					</div>
 					<p>
-						<a href="javascript:;" title="取消" data-toggle="sort-cancel" style="display:none;"><i class="fontello-icon-cancel"></i></a>
-						<a href="javascript:;" title="保存" data-toggle="sort-ok" data-imgid="{$val.id}" data-saveurl="{url path='wechat/admin_material/edit_title'}" style="display:none;"><i class="fontello-icon-ok"></i></a>
-						<a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{t}您确定要删除该视频素材吗？{/t}" href='{url path="wechat/admin_material/video_remove" args="id={$val.id}"}' title="{t}删除{/t}"><i class="icon-trash"></i></a>
+						<a href="javascript:;" title="{lang key='wechat::wechat.cancel'}" data-toggle="sort-cancel" style="display:none;"><i class="fontello-icon-cancel"></i></a>
+						<a href="javascript:;" title="{lang key='wechat::wechat.save'}" data-toggle="sort-ok" data-imgid="{$val.id}" data-saveurl="{url path='wechat/admin_material/edit_title'}" style="display:none;"><i class="fontello-icon-ok"></i></a>
+						<a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_video_material'}" href='{url path="wechat/admin_material/video_remove" args="id={$val.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="icon-trash"></i></a>
 						{if $smarty.get.material neq 1}
 						<a class="data-pjax" href='{url path="wechat/admin_material/video_edit" args="id={$val.id}{if $smarty.get.material}&material=1{/if}"}'><i class="icon-pencil"></i></a>
 						{/if}
-						<span class="edit_title f_l f_s15">{if $val.title}{$val.title}{else}无标题{/if}</span>
+						<span class="edit_title f_l f_s15">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</span>
 					</p>
 				</li>
 				<!-- {/foreach} -->
@@ -248,7 +248,7 @@
 	<!-- {else} -->
 	<table class="table table-striped m_b0">
 		<tr>
-			<td class="no-records" colspan="10" style="border-top:0px;line-height:100px;">{t}没有找到任何记录{/t}</td>
+			<td class="no-records" colspan="10" style="border-top:0px;line-height:100px;">{lang key='wechat::wechat.unfind_any_recode'}</td>
 		</tr>
 	</table>
 	<!-- {/if} -->

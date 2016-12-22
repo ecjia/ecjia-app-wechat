@@ -20,9 +20,9 @@
 			var action = $(".fileupload").attr('data-action');
 			var type = $(".fileupload").attr('data-type');
 			if (type == 'image') {
-				var label = '将图片拖动至此处上传';
+				var label = js_lang.upload_images_area;
 			} else if (type == 'voice') {
-				var label = '将语音拖动至此处上传（格式：mp3）';
+				var label = js_lang.upload_mp3_area;
 			}
 			$(".fileupload").dropper({
 				action 			: action,
@@ -114,8 +114,8 @@
 					video_title : {required : true},
 				},
 				messages : {
-					title	: {required : "请输入标题"},
-					video_title : {required : "请输入视频标题"},
+					title	: {required : js_lang.title_placeholder},
+					video_title : {required : js_lang.title_placeholder_title},
 				},
 				submitHandler:function(){
 					$form.bind('form-pre-serialize', function(event, form, options, veto) {
@@ -162,7 +162,7 @@
 		        });
 				if (id == undefined || id == '') {
 					$('#add_material').modal('hide');
-					smoke.alert('请先选择素材！');
+					smoke.alert(js_lang.select_material);
 					return false;
 				}
 				url = $('.material_choose').attr('data-url');
@@ -208,14 +208,14 @@
 				} else {
 					$('#add_material').css('height','200px');
 					$('.material_choose_list').css('height','auto');
-					$('.material_select_tbody').append('<tr><td class="no-records" colspan="5" style="line-height:100px;border-top:0px solid #eee;">没有素材可以选择</td></tr>');
+					$('.material_select_tbody').append('<tr><td class="no-records" colspan="5" style="line-height:100px;border-top:0px solid #eee;">'+js_lang.no_material_select+'</td></tr>');
 					$('.material_verify').parent().parent().addClass('hide');
 				}
 			} else {
 				$('#add_material').css('height','200px');
 				$('.material_choose_list').css('height','auto');
 				$('.material_select_tbody').html('');
-				$('.material_select_tbody').append('<tr><td class="no-records" colspan="5" style="line-height:100px;border-top:0px solid #eee;">没有素材可以选择</td></tr>');
+				$('.material_select_tbody').append('<tr><td class="no-records" colspan="5" style="line-height:100px;border-top:0px solid #eee;">'+js_lang.no_material_select+'</td></tr>');
 				$('.material_verify').parent().parent().addClass('hide');
 			}
 		},
@@ -231,7 +231,7 @@
 						opt += '<div class="article"><div class="cover"><img src="'+data.content[i].file+'"/><span>'+data.content[i].title+'</span></div></div>';
 					} else {
 						if (data.content[i].title == '') {
-							opt += '<div class="article_list"><div class="f_l">'+"无标题"+'</div><img src="'+data.content[i].file+'" width="78" height="78" class="pull-right" /></div>';
+							opt += '<div class="article_list"><div class="f_l">'+js_lang.no_title+'</div><img src="'+data.content[i].file+'" width="78" height="78" class="pull-right" /></div>';
 						} else {
 							opt += '<div class="article_list"><div class="f_l">'+data.content[i].title+'</div><img src="'+data.content[i].file+'" width="78" height="78" class="pull-right" /></div>';
 						}
@@ -271,7 +271,7 @@
 				
 				$('.create_news').hide();
 				var index = $('.select_mobile_area').length;
-				$('.material_info').children().children('h4').html('图文 ' + index);
+				$('.material_info').children().children('h4').html(js_lang.graphic + index);
 				
 				$('input[name="title"]').val('');
 				$('input[name="sort"]').val('');
@@ -293,12 +293,12 @@
 					$childobj	= $($this.attr('data-child')),
 					$childobj_clonearea	= $($this.attr('data-child-clone-area')),
 					option		= {parentobj : $parentobj, parentobj_clonearea : $parentobj_clonearea, before : before, childobj : $childobj, childobj_clonearea : $childobj_clonearea};
-					!$parentobj ? console.log('clone-obj方法未设置data-parent参数。') : app.material_edit.clone_obj(option);
+					!$parentobj ? console.log(js_lang.clone_no_parent) : app.material_edit.clone_obj(option);
 				
 				$(document).unbind('keyup').on("keyup", "input[name^='title']" ,function(){
 					$this = $(this);
 					if ($this.val() == '') {
-						$('.material_info_select').find('.title_show').html('标题');
+						$('.material_info_select').find('.title_show').html(js_lang.title);
 					} else {
 						$('.material_info_select').find('.title_show').html($this.val());
 					}
@@ -308,7 +308,7 @@
 					$this = $(this);
 					var index = $this.parents('.select_mobile_area').index() + 1;
 					if ($this.val() == '') {
-						$('.material_info_select').find('.show_image').html('缩略图');
+						$('.material_info_select').find('.show_image').html(js_lang.thumbnail);
 					} else {
 						setTimeout(function(){
 							var src = $this.parents('.controls').find("img").attr('src');
@@ -325,7 +325,7 @@
 			});
 		},
 		clone_obj(options) {
-			if(!options.parentobj)return console.log('批量操作缺少参数！');
+			if(!options.parentobj)return console.log(js_lang.batch_less_parameter);
 			var tmpObj = options.parentobj.clone();
 			tmpObj.removeClass('hide');
 			tmpObj.removeClass('mobile_news_auxiliary_clone');
@@ -334,11 +334,11 @@
 			if(options.childobj && options.childobj_clonearea) {
 				var size = options.childobj_clonearea.children('div').size() + 2;
 				if (size >= 9) {
-					var error = {'message':'图文最多只能添加8条', 'state':'error'};
+					var error = {'message':js_lang.images_most8, 'state':'error'};
 					ecjia.admin.showmessage(error);
 					return false;
 				}
-				$('.material_add_info').children().children('h4').html('图文 ' + size);
+				$('.material_add_info').children().children('h4').html(js_lang.graphic + size);
 				num = size - 1;
 			}
 			
@@ -359,12 +359,12 @@
 				$('.create_news').show();
 				var index = $(this).parents('.select_mobile_area').index() + 1;
 				
-				$('.material_info').children().children('h4').html('图文 ' + index);
+				$('.material_info').children().children('h4').html(js_lang.graphic + index);
 				var edit_area = $('.mobile_news_view').children('.select_mobile_area').eq(index-1);
 				
 				$(document).unbind('keyup').on("keyup", "input[name^='title']" ,function(){
 					if ($(this).val() == '') {
-						edit_area.find('.title_show').html('标题');
+						edit_area.find('.title_show').html(js_lang.title);
 					} else {
 						edit_area.find('.title_show').html($(this).val());
 					}
@@ -373,7 +373,7 @@
 				$(document).unbind('change').on("change", 'input[name^="image_url"]' ,function(){
 					$this = $(this);
 					if ($(this).val() == '') {
-						edit_area.find('.show_image').html('缩略图');
+						edit_area.find('.show_image').html(js_lang.thumbnail);
 					} else {
 						setTimeout(function(){
 							var src = $this.parents('.controls').find("img").attr('src');
@@ -402,11 +402,11 @@
 					if (data.content.file) {
 						$('.fileupload').addClass('fileupload-exists').removeClass('fileupload-new');
 						if (img) {
-							$('.fileupload-preview').html('<img src="'+data.content.file+'" alt="图片预览">')
+							$('.fileupload-preview').html('<img src="'+data.content.file+'" alt=js_lang.img_priview>')
 						} else {
 							$('.fileupload-preview').children('img').show().attr('src', data.content.file);
 						}
-						$('.fileupload').children('a').removeAttr('data-dismiss').attr({'href':data.content.href, 'data-toggle':'ajaxremove', 'data-msg':'您确定要删除该封面素材吗？'});
+						$('.fileupload').children('a').removeAttr('data-dismiss').attr({'href':data.content.href, 'data-toggle':'ajaxremove', 'data-msg':js_lang.remove_material_cover});
 					} else {
 						$('.fileupload').removeClass('fileupload-exists').addClass('fileupload-new');
 						$('.fileupload-preview').html('');
@@ -448,17 +448,17 @@
 							});
 						}, 'json');
 					}
-				}, {ok:"确定", cancel:"取消"});
+				}, {ok:js_lang.ok, cancel:js_lang.cancel});
 			});
 			
 			$('[data-toggle="remove-obj"]').die().live('click', function() {
 				var index = $(this).parents('.select_mobile_area').index();
 				$('.mobile_news_view').children().eq(index).remove();
-				$('.material_info').children().children('h4').html('图文 ' + index);
+				$('.material_info').children().children('h4').html(js_lang.graphic + index);
 				app.material_edit.edit_area_show(index);
 				$('.create_news').show();
 				
-				$('.material_info_select').find('.title_show').html('标题');
+				$('.material_info_select').find('.title_show').html(js_lang.title);
 				$('.material_info_select').find('.show_image').html('');
 				
 				var a = $('.create_news').prev('.select_mobile_area').children('.edit_mask').children('a');
@@ -512,7 +512,7 @@
 					title : {required : true},
 				},
 				messages:{
-					title : {required : "请输入图文标题"},
+					title : {required : js_lang.title_placeholder_graphic},
 				},
 				submitHandler : function() {
 					$form.ajaxSubmit({
@@ -532,7 +532,7 @@
 			$(document).unbind('keyup').on("keyup", "input[name^='title']" ,function(){
 				$this = $(this);
 				if ($this.val() == '') {
-					edit_area.find('.title_show').html('标题');
+					edit_area.find('.title_show').html(js_lang.title);
 				} else {
 					edit_area.find('.title_show').html($this.val());
 				}
@@ -545,7 +545,7 @@
 				$this = $(this);
 				var index = $this.parents('.select_mobile_area').index() + 1;
 				if ($this.val() == '') {
-					edit_area.eq(0).find('.show_image').html('缩略图');
+					edit_area.eq(0).find('.show_image').html(js_lang.thumbnail);
 				} else {
 					setTimeout(function(){
 						var src = $this.parents('.controls').find("img").attr('src');
