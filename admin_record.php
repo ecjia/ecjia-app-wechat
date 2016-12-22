@@ -325,12 +325,12 @@ class admin_record extends ecjia_admin {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
-		$start_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-7, date('Y'));
-		$end_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-6, date('Y'));
-		
+		$start_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-4, date('Y')) + 28800;
+		$end_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-3, date('Y')) + 28800;
+
 		$p = 0;
 		$id_list = $this->db_customer_session->where(array('wechat_id' => $wechat_id))->get_field('id', true);
-		for ($j=1; $j<=7; $j++) {
+		for ($j=1; $j<=5; $j++) {
 			for ($i=1; ; $i++) {
 				$info = $wechat->getMsgrecord($start_time, $end_time, $i, 50);
 				if (RC_Error::is_error($info)) {
@@ -350,15 +350,14 @@ class admin_record extends ecjia_admin {
 					$this->db_customer_session->batch_insert($arr);
 					$p++;
 				} else {
-					$start_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-7, date('Y'));
-					$end_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-6, date('Y'));
+					$start_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-4, date('Y')) + 28800;
+					$end_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-3, date('Y')) + 28800;
 					break;
 				}
 			}
 			$start_time = $start_time + $j * 24*3600;
 			$end_time = $end_time + $j * 24*3600;
 		}
-		
 		if ($p > 0 && !empty($id_list)) {
 			$this->db_customer_session->where(array('wechat_id' => $wechat_id, 'id' => $id_list))->delete();
 		}

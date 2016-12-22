@@ -580,7 +580,7 @@ return array(
 	'get_message_record_success'=> '获取客服会话记录成功',
 	'chat_record_synchro'		=> '会话记录同步操作',
 	'get_message_record'		=> '获取客服会话记录',
-	'get_message_record_notice' => '通过点击该按钮可以获取客服最近7天的会话记录到本地。',
+	'get_message_record_notice' => '通过点击该按钮可以获取客服最近5天的会话记录到本地。',
 	'last_five_days'			=> '最近五天',	
 	'today'						=> '今天',
 	'yesterday'					=> '昨天',
