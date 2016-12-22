@@ -507,7 +507,7 @@ return array(
     'reply_message'             => '回复内容',
     'the_material_del'          => '该素材已删除',
     'remove'                    => '移除',
-    'rule_name'                 => '规则名称：',
+    'label_rule_name'           => '规则名称：',
     'rule_name_max'             => '规则名最多60个字',
     'more_keywords_split'       => '添加多个关键字，用","隔开（建议在一个规则里设置一个关键字，以便粉丝获得想要的答案。）',
     'lable_reply'               => '回复：',
