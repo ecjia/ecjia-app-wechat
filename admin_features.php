@@ -48,7 +48,7 @@ class admin_features extends ecjia_admin {
 		$db_wechat_extend = RC_Loader::load_app_model('wechat_extend_model');
 		
 		$where = array(
-			'type'=>'function',
+			'type'	=> 'function',
 			'enable'=> '1'
 		);
 		$count = $db_wechat_extend->where($where)->count();

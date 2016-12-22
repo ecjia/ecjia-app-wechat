@@ -192,6 +192,7 @@ return array(
 	'male'						=> '男',
 	'female'					=> '女',
 	'label_province'			=> '省-市：',
+	'label_user_tag'			=> '用户标签：',
 	'lable_user_group'			=> '用户组：',
 	'label_subscribe_time'		=> '关注时间：',
 	'label_bind_user'			=> '绑定用户：',
