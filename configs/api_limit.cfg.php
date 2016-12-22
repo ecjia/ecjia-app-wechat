@@ -287,7 +287,7 @@ return array(
     
     /*数据统计*/
     'datacube/getusersummary' => array(
-    	'title' => RC_Lang::get('wechat::wechat.get_user_data'),
+    	'title' => RC_Lang::get('wechat::wechat.get_add_user_data'),
     	'times' => null,
     	'api'   => 'https://api.weixin.qq.com/datacube/getusersummary'
     ),
@@ -604,7 +604,7 @@ return array(
     	'api'   => 'https://api.weixin.qq.com/scan/merchantinfo/get'
     ),
     'product/create' => array(
-    	'title' => RC_Lang::get('wechat::wechat.add_goods'),
+    	'title' => RC_Lang::get('wechat::wechat.create_goods'),
     	'times' => null,
     	'api'   => 'https://api.weixin.qq.com/scan/product/create'
     ),
