@@ -694,7 +694,7 @@ return array(
 	'label_oauth_count'			=> '微信OAuth推送量：',
 	'label_last_time'			=> '最后更新时间：',
     
-    //wechat_material.dwt 模板
+    //material 模板
     'notice_public_not_certified'   => '抱歉！您当前公众号属于“未认证的公众号”，该模块目前还不支持“未认证的公众号”。',
     'forever_material'              => '永久素材',
     'provisional_material'          => '临时素材',
@@ -707,6 +707,26 @@ return array(
     'remove_voice_material' => '您确定要删除该语音素材吗？',
     'remove_video_material' => '您确定要删除该视频素材吗？',
     'unfind_any_recode'     => '没有找到任何记录',
+    'cover_images'          => '封面图片',
+    'title'                 => '标题',
+    'graphic'               => '图文',
+    'author'                => '作者：',
+    'cover'                 => '封面：',
+    'cover_img_centent'     => '封面图片显示在正文中',
+    'img_size900x500'       => '（大图片建议尺寸：900像素 * 500像素）',
+    'img_size200x200'       => '（小图片建议尺寸：200像素 * 200像素）',
+    'summary'               => '摘要：',
+    'optional_for54'        => '选填，如果不填写会默认抓取正文前54个字',
+    'text_link'             => '原文链接：',
+    'main_body'             => '正文',
+    'label_video'           => '视频：',
+    'modify_video'          => '修改视频',
+    'uploadmp4_most10'      => '上传视频格式为mp4，大小不得超过10MB',
+    'label_video_intro'     => '视频简介：',
+    'thumbnail'             => '缩略图',
+    
+    
+    
     
     /*configs*/
     'get_access_token'		   => '获取access_token',
