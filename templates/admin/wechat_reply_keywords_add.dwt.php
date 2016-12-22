@@ -185,7 +185,7 @@
 							<div class="controls">
 			                    <input type="hidden" name="content_type" value="{$data['reply_type']}">
 			                    <input type="hidden" name="id" value="{$data.id}">
-			                    <input type="submit" class="btn btn-gebo" value="更新">
+			                    <input type="submit" class="btn btn-gebo" value="{lang key='wechat::wechat.update'}">
 		                    </div>
 	                  	</div>
 	            	</div>
@@ -199,7 +199,7 @@
 <div class="modal hide fade keywords_material" id="add_material">
 	<div class="modal-header">
 		<button class="close" data-dismiss="modal">×</button>
-		<h3>{t}选择素材{/t}</h3>
+		<h3>{lang key='wechat::wechat.select_material'}</h3>
 	</div>
 
 	<div class="modal-body keywords_modal_body">
@@ -217,7 +217,7 @@
 				</div>
 				<div class="control-group m_t10 m_b0 hide">
 					<div class="t_c">
-						<input type="button" class="btn btn-gebo material_verify" value="确定" />
+						<input type="button" class="btn btn-gebo material_verify" value="{lang key='wechat::wechat.ok'}" />
 					</div>
 				</div>
 			</div>
