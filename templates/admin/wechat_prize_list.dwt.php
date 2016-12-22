@@ -109,7 +109,7 @@
                         </div>    
                         
                         <div class="control-group formSep">
-                            <label class="control-label">{lang key='wechat::wechat.label_nick'}</label>
+                            <label class="control-label">{lang key='wechat::wechat.label_nickname'}</label>
                             <div class="controls nickname">
                             </div>
                         </div>
