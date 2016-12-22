@@ -669,7 +669,7 @@ return array(
 	
 	'menu_name'			=> '菜单名称',
 	'menu_keywords'		=> '菜单关键词',
-	'menu_url'			=> '菜单url',
+	'menu_url'			=> '外链url',
 	'edit_sort'			=> '编辑排序',
 	
 	'label_parent_menu'		=> '父级菜单：',
