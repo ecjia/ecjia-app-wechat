@@ -98,9 +98,9 @@
         					<div class="controls">
 								<input name="menu_id" type="hidden"value="{$wechatmenus.id}">
 								{if $errormsg}
-								<input type="submit" name="submit" value="{lang key='system::system.ok'}" disabled="disabled" class="btn btn-gebo" />	
+								<input type="submit" name="submit" value="{lang key='wechat::wechat.ok'}" disabled="disabled" class="btn btn-gebo" />	
 								{else}
-								<input type="submit" name="submit" value="{lang key='system::system.ok'}" class="btn btn-gebo" />	
+								<input type="submit" name="submit" value="{lang key='wechat::wechat.ok'}" class="btn btn-gebo" />	
 								{/if}
 							</div>
 						</div>

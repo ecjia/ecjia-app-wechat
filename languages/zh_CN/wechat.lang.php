@@ -711,7 +711,7 @@ return array(
     /*configs*/
     'get_access_token'		   => '获取access_token',
     'get_server_ip'		       => '获取微信服务器IP地址',
-    'custom_menu'		       => '自定义菜单创建',
+    'custom_menu_create'	   => '自定义菜单创建',
     'custom_menu_demadn'	   => '自定义菜单查询',
     'custom_menu_del'	       => '自定义菜单删除',
     'custom_menu_add'	       => '创建个性化菜单',
