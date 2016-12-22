@@ -23,14 +23,14 @@
 </div>
 	
 <div class="row-fluid">
-	<div class="rule_form m_t20">
+	<div class="rule_form">
 		<div class="span12">
 			<form class="form-horizontal" method="post" action="{$form_action}" name="theForm">
 				<fieldset>
 					<!-- {if !$id} -->
 					<div class="add_rule_form m_b20">
 						<div class="control-group formSep">
-							<label class="control-label">{lang key='wechat::wechat.rule_name'}</label>
+							<label class="control-label">{lang key='wechat::wechat.label_rule_name'}</label>
 							<div class="controls">
 								<input type="text" class="w280" name="rule_name" maxlength="60" size="30"/>
 								<span class="input-must">{lang key='system::system.require_field'}</span>

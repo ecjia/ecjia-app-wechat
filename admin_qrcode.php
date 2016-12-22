@@ -50,11 +50,11 @@ class admin_qrcode extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
-			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.overview') . '</p>'
+			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.qrcode_content') . '</p>'
 		));
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
-			'<p><strong>' . RC_Lang::get('wechat::wechat.qrcode_content') . '</strong></p>' .
+			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:二维码管理#.E4.BA.8C.E7.BB.B4.E7.A0.81.E7.AE.A1.E7.90.86" target="_blank">'.RC_Lang::get('wechat::wechat.qrcode_help').'</a>') . '</p>'
 		);
 		
