@@ -513,6 +513,12 @@ return array(
     'lable_reply'               => '回复：',
     'add'                       => '添加',
     
+    'auto_reply_help'           => '关于消息自动回复帮助文档',
+    'auto_keywords_help'        => '关于关键词回复帮助文档',
+    'edit_rule_help'            => '关于编辑规则帮助文档',
+    'add_rule_help'             => '关于添加规则帮助文档',
+    
+    
     /*request*/
     'api_request_list'	        => 'Api请求统计列表',
     'api_request_statistics'	=> '欢迎访问ECJia智能后台API请求统计页面，当前公众号的所有API请求统计都会显示在此列表中。',
