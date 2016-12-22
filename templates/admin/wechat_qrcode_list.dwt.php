@@ -77,7 +77,7 @@
 					    		<div class="edit-list">
 							     	{assign var=view_url value=RC_Uri::url('wechat/admin_qrcode/qrcode_get',"id={$val.id}")}
 						      		<a class="ajaxwechat" href="{$view_url}">{lang key='wechat::wechat.get_qrcode'}</a>&nbsp;|&nbsp;
-						      		<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{t}您确定要删除该二维码吗？{/t}" href='{RC_Uri::url("wechat/admin_qrcode/remove","id={$val.id}")}'>{lang key='system::system.drop'}</a>
+						      		<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_qrcode_confirm'}" href='{RC_Uri::url("wechat/admin_qrcode/remove","id={$val.id}")}'>{lang key='system::system.drop'}</a>
 							    </div>
 							</td>
 							<td>
