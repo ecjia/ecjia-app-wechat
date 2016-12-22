@@ -30,6 +30,8 @@ class admin_menus extends ecjia_admin {
 		RC_Script::enqueue_script('jquery-uniform');
 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Script::enqueue_script('wechat_menus', RC_App::apps_url('statics/js/wechat_menus.js', __FILE__), array(), false, true);
+		RC_Script::localize_script('wechat_menus', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+		
 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js') );
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		
