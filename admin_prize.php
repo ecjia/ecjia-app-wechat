@@ -64,7 +64,7 @@ class admin_prize extends ecjia_admin {
 		}
 		
 		$this->assign_lang();
-		$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.subscription_service_info'), RC_Lang::get('wechat::wechat.wechat_subscription_type'.$type)));
+		$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.subscription_service_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 		$this->display('wechat_prize_list.dwt');
 	}
 	
