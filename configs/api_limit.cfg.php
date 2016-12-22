@@ -17,7 +17,7 @@ return array(
 		
 	/*自定义菜单*/
     'menu/create' => array(
-    	'title' => RC_Lang::get('wechat::wechat.custom_menu'),
+    	'title' => RC_Lang::get('wechat::wechat.custom_menu_create'),
         'times' => '1000',
         'api' => 'https://api.weixin.qq.com/cgi-bin/menu/create'
     ),
