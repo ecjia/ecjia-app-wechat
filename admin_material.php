@@ -336,7 +336,7 @@ class admin_material extends ecjia_admin {
 	}
 	
 	public function update() {
-		$this->admin_priv('wechat_material_udpate');
+		$this->admin_priv('wechat_material_update');
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
