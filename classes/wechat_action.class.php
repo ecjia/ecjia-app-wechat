@@ -473,54 +473,99 @@ class wechat_action {
     	$replymsg = $wr_db->field($field)->find(array('wechat_id'=>$wechat_id,'type'=>'subscribe'));
     	$media_db = RC_Loader::load_app_model('wechat_media_model', 'wechat');
     	if ($replymsg['reply_type'] == 'text') {
-    		$content = array(
-    			'ToUserName'   => $request->getParameter('FromUserName'),
-    			'FromUserName' => $request->getParameter('ToUserName'),
-    			'CreateTime'   => SYS_TIME,
-    			'MsgType'      => 'text',
-    			'Content'      => $replymsg['content']
-    		);
-    		wechat_method::record_msg($openid, $replymsg['content'], 1);
+    		if(!empty($replymsg['content'])){
+    			$content = array(
+    					'ToUserName'   => $request->getParameter('FromUserName'),
+    					'FromUserName' => $request->getParameter('ToUserName'),
+    					'CreateTime'   => SYS_TIME,
+    					'MsgType'      => 'text',
+    					'Content'      => $replymsg['content']
+    			);
+    			wechat_method::record_msg($openid, $replymsg['content'], 1);
+    		}else{
+    			$content = array(
+    					'ToUserName'   => $request->getParameter('FromUserName'),
+    					'FromUserName' => $request->getParameter('ToUserName'),
+    					'CreateTime'   => SYS_TIME,
+    					'MsgType'      => 'text',
+    					'Content'      => '感谢您的关注'
+    			);
+    			wechat_method::record_msg($openid, '感谢您的关注', 1);
+    		}
     	} else if ($replymsg['reply_type'] == 'image') {
-    		$thumb   = $media_db->where(array('id' => $replymsg['media_id']))->get_field('thumb');
-    		$content = array(
-	            'ToUserName'    => $request->getParameter('FromUserName'),
-	            'FromUserName'  => $request->getParameter('ToUserName'),
-	            'CreateTime'    => SYS_TIME,
-	            'MsgType'       => 'image',
-	            'Image'         => array(
-	                'MediaId' => $thumb //通过素材管理接口上传多媒体文件，得到的id。
-	            )
-       		);
-    		wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.image_content'), 1);
+    		if(!empty($replymsg['media_id'])){
+    			$thumb   = $media_db->where(array('id' => $replymsg['media_id']))->get_field('thumb');
+    			$content = array(
+    					'ToUserName'    => $request->getParameter('FromUserName'),
+    					'FromUserName'  => $request->getParameter('ToUserName'),
+    					'CreateTime'    => SYS_TIME,
+    					'MsgType'       => 'image',
+    					'Image'         => array(
+    							'MediaId' => $thumb //通过素材管理接口上传多媒体文件，得到的id。
+    					)
+    			);
+    			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.image_content'), 1);
+    		}else{
+    			$content = array(
+    					'ToUserName'   => $request->getParameter('FromUserName'),
+    					'FromUserName' => $request->getParameter('ToUserName'),
+    					'CreateTime'   => SYS_TIME,
+    					'MsgType'      => 'text',
+    					'Content'      => '感谢您的关注'
+    			);
+    			wechat_method::record_msg($openid, '感谢您的关注', 1);
+    		}
     	}else if ($replymsg['reply_type'] == 'voice') {
-    		$media_id = $media_db->where(array('id' => $replymsg['media_id']))->get_field('media_id');
-    		$content = array(
-    			'ToUserName'    => $request->getParameter('FromUserName'),
-    			'FromUserName'  => $request->getParameter('ToUserName'),
-    			'CreateTime'    => SYS_TIME,
-    			'MsgType'       => 'voice',
-    			'Voice'         => array(
-    				'MediaId' 	=> $media_id, //通过素材管理接口上传多媒体文件，得到的id。
-    			)
-    		);
-    		wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.voice_content'), 1);
+    		if(!empty($replymsg['media_id'])){
+    			$media_id = $media_db->where(array('id' => $replymsg['media_id']))->get_field('media_id');
+    			$content = array(
+    					'ToUserName'    => $request->getParameter('FromUserName'),
+    					'FromUserName'  => $request->getParameter('ToUserName'),
+    					'CreateTime'    => SYS_TIME,
+    					'MsgType'       => 'voice',
+    					'Voice'         => array(
+    							'MediaId' 	=> $media_id, //通过素材管理接口上传多媒体文件，得到的id。
+    					)
+    			);
+    			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.voice_content'), 1);
+    		}else{
+    			$content = array(
+    					'ToUserName'   => $request->getParameter('FromUserName'),
+    					'FromUserName' => $request->getParameter('ToUserName'),
+    					'CreateTime'   => SYS_TIME,
+    					'MsgType'      => 'text',
+    					'Content'      => '感谢您的关注'
+    			);
+    			wechat_method::record_msg($openid, '感谢您的关注', 1);
+    		}
     	}else if ($replymsg['reply_type'] == 'video') {
-    		$field='title, digest, media_id';
-    		$mediaInfo = $media_db->field($field)->find(array('id' => $replymsg['media_id']));
-    		$content = array(
-    			'ToUserName'    => $request->getParameter('FromUserName'),
-    			'FromUserName'  => $request->getParameter('ToUserName'),
-    			'CreateTime'    => SYS_TIME,
-    			'MsgType'       => 'video',
-    			'Video'         => array(
-    				'MediaId' 	=> $media_id, //通过素材管理接口上传多媒体文件，得到的id。
-    				'Title' 	=> $mediaInfo['title'],
-    				'Description' => $mediaInfo['digest']
-    			)
-    		);
-    		wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.video_content'), 1);
+    		if(!empty($replymsg['media_id'])){
+    			$field='title, digest, media_id';
+    			$mediaInfo = $media_db->field($field)->find(array('id' => $replymsg['media_id']));
+    			$content = array(
+    					'ToUserName'    => $request->getParameter('FromUserName'),
+    					'FromUserName'  => $request->getParameter('ToUserName'),
+    					'CreateTime'    => SYS_TIME,
+    					'MsgType'       => 'video',
+    					'Video'         => array(
+    							'MediaId' 	=> $media_id, //通过素材管理接口上传多媒体文件，得到的id。
+    							'Title' 	=> $mediaInfo['title'],
+    							'Description' => $mediaInfo['digest']
+    					)
+    			);
+    			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.video_content'), 1);
+    		}else{
+    			$content = array(
+    					'ToUserName'   => $request->getParameter('FromUserName'),
+    					'FromUserName' => $request->getParameter('ToUserName'),
+    					'CreateTime'   => SYS_TIME,
+    					'MsgType'      => 'text',
+    					'Content'      => '感谢您的关注'
+    			);
+    			wechat_method::record_msg($openid, '感谢您的关注', 1);
+    		}
     	}
+
     	$response = Component_WeChat_Response::create($content);
     	RC_Logger::getLogger('pay')->debug('RESPONSE: ' . json_encode($response->getContent()));
     	$response->send();

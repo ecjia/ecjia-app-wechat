@@ -110,9 +110,9 @@ class admin_response extends ecjia_admin {
 		} else {
 			$content = !empty($_POST['content']) ? $_POST['content'] : '';
 			$media_id = 0;
-			if (empty($content)) {
-				return $this->showmessage(RC_Lang::get('wechat::wechat.input_select_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
+// 			if (empty($content)) {
+// 				return $this->showmessage(RC_Lang::get('wechat::wechat.input_select_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 			}
 		}
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
@@ -336,9 +336,9 @@ class admin_response extends ecjia_admin {
 		} else {
 			$content = !empty($_POST['content']) ? $_POST['content'] : '';
 			$media_id = 0;
-			if (empty($content)) {
-				return $this->showmessage(RC_Lang::get('wechat::wechat.input_select_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
+// 			if (empty($content)) {
+// 				return $this->showmessage(RC_Lang::get('wechat::wechat.input_select_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 			}
 		}
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
