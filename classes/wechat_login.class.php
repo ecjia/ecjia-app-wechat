@@ -35,23 +35,6 @@ class wechat_login
         $this->oauth = new Component_WeChat_WeChat($config); 
     }
     
-//     /**
-//      * 生成授权网址
-//      */
-//     public function authorize_url() {
-//         $callback_url = $this->configure['sns_wechat_callback'];
-//         $state = md5(uniqid(rand(), TRUE));
-//         $params = array(
-//             'redirect_uri'  => $callback_url,
-//             'scope'         => 'snsapi_login',
-//             'state'         => $state,
-//         );
-//         $_SESSION['wechat_login_state'] = $state;
-//         $code_url = $this->oauth->getQRConnectCodeUrl($params);
-        
-//         return $code_url;
-//     }
-    
     public function callback() {
         $state = $_SESSION['wechat_login_state'];
         $callback_url = $this->configure['sns_wechat_callback'];
@@ -75,41 +58,6 @@ class wechat_login
             return new ecjia_error('sns_wechat_authorize_failure', RC_Lang::get('wechat::wechat.authorize_failure'));
         }
     }
-    
-//     /**
-//      * 获取access token
-//      */
-//     public function access_token($callback_url, $code) {
-//         $result = $this->oauth->getWebToken($code);
-//         if (!$result) {
-//             return new ecjia_error('sns_wechat_access_token_failure', '获取用户Access Token失败');
-//         }
-//         $this->access_token = $result['access_token'];
-//         $this->open_id = $result['unionid'];
-//         $this->real_open_id = $result['openid'];
-//         return $result;
-//     }
-    
-//     /**
-//      * 使用refresh token 获取新的access token
-//      * @param unknown $refresh_token
-//      */
-//     public function access_token_refresh($refresh_token) {
-        
-//     }
-    
-//     /**
-//      * 获取登录用户信息
-//      */
-//     public function me() {
-//         $result = $this->oauth->getWebUserInfo($this->real_open_id, $this->access_token);
-//         if (!$result) {
-//             return new ecjia_error('sns_wechat_user_info_failure', '获取用户User Info失败');
-//         }
-//         return $result;
-//     }
-    
-    
     
     public function get_username() {
         return $this->generate_username();
