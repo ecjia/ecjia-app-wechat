@@ -69,7 +69,7 @@
 					<th class="w150">{lang key='wechat::wechat.nickname'}</th>
 					<th class="w100">{lang key='wechat::wechat.province'}</th>
 					<th class="w80">{lang key='wechat::wechat.subscribe_time'}</th>
-					<th class="w80">{lang key='wechat::wechat.bind_user'}</th>
+					<th class="w100">{lang key='wechat::wechat.bind_user'}</th>
 				</tr>
 			</thead>
 			<tbody>
