@@ -144,8 +144,8 @@ class wechat_method {
     public static function wechat_instance($uuid) {
         RC_Loader::load_app_class('platform_account', 'platform', false);
         $platform_account = platform_account::make($uuid);
-        $platform = $platform_account->getPlatform();
-        $account = $platform_account->getAccount();
+        $platform         = $platform_account->getPlatform();
+        $account          = $platform_account->getAccount();
         
         if ($platform == 'wechat') {
             $config = array(

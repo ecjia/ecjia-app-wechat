@@ -1,9 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA群发消息
  */
-
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_mass_message extends ecjia_admin {
 	private $wm_db;
@@ -220,8 +220,8 @@ class admin_mass_message extends ecjia_admin {
 	public function get_material_info() {
 		$filter = $_GET['JSON'];
 		$filter = (object)$filter;
-		$id = $filter->id;
-		$type = $filter->type;
+		$id     = $filter->id;
+		$type   = $filter->type;
 		
 		$info = $this->wm_db->where(array('id' => $id))->find();
 		$info['type'] = isset($info['type']) ? $info['type'] : '';
@@ -291,10 +291,10 @@ class admin_mass_message extends ecjia_admin {
 	public function mass_del() {
 		$this->admin_priv('wechat_message_manage');
 
-		$uuid = platform_account::getCurrentUUID('wechat');
-		$wechat = wechat_method::wechat_instance($uuid);
+		$uuid             = platform_account::getCurrentUUID('wechat');
+		$wechat           = wechat_method::wechat_instance($uuid);
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id        = $platform_account->getAccountID();
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		$msg_id = $this->wechat_mass->where(array('id' => $id))->get_field('msg_id');

@@ -11,5 +11,4 @@ class wechat_mass_history_model extends Component_Model_Model {
 
 }
 
-
 // end

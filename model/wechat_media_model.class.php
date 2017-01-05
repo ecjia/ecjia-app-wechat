@@ -7,9 +7,6 @@ class wechat_media_model extends Component_Model_Model {
 		$this->table_name = 'wechat_media';
 		parent::__construct();
 	}
-	
-
 }
-
 
 // end

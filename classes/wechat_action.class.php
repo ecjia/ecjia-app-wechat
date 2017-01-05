@@ -34,10 +34,10 @@ class wechat_action {
         RC_Loader::load_app_class('wechat_response', 'wechat', false);
         $wechat_id = wechat_method::wechat_id();
        
-        $wr_db = RC_Loader::load_app_model('wechat_reply_model', 'wechat');
+        $wr_db    = RC_Loader::load_app_model('wechat_reply_model', 'wechat');
         $media_db = RC_Loader::load_app_model('wechat_media_model', 'wechat');
-        $field = 'reply_type,content,media_id';
-        $data = $wr_db->field($field)->find(array('wechat_id'=>$wechat_id,'type'=>'msg'));
+        $field    = 'reply_type,content,media_id';
+        $data     = $wr_db->field($field)->find(array('wechat_id'=>$wechat_id,'type'=>'msg'));
         if ($data['reply_type'] == 'text') {
         	$msg = $data['content'];
         	$content = wechat_response::Text_reply($request, $msg);
@@ -87,18 +87,18 @@ class wechat_action {
             return $content;
         }
         
-        $wr_db = RC_Loader::load_app_model('wechat_reply_model', 'wechat');
+        $wr_db     = RC_Loader::load_app_model('wechat_reply_model', 'wechat');
         $wr_viewdb = RC_Loader::load_app_model('wechat_reply_viewmodel','wechat');
-        $media_db = RC_Loader::load_app_model('wechat_media_model', 'wechat');
+        $media_db  = RC_Loader::load_app_model('wechat_media_model', 'wechat');
         RC_Loader::load_app_class('platform_account', 'platform', false);
         RC_Loader::load_app_func('global','wechat'); 
                
-        $uuid = trim($_GET['uuid']);
-        $account = platform_account::make($uuid);
-        $wechat_id = $account->getAccountID();
-        $rule_keywords = $request->getParameter('content');
+        $uuid           = trim($_GET['uuid']);
+        $account        = platform_account::make($uuid);
+        $wechat_id      = $account->getAccountID();
+        $rule_keywords  = $request->getParameter('content');
         wechat_method::record_msg($request->getParameter('FromUserName'),$rule_keywords);
-        $result = $wr_viewdb->where(array('wrk.rule_keywords = '."'$rule_keywords'", 'wr.wechat_id' => $wechat_id))->field('wr.content,wr.media_id,wr.reply_type')->select();
+        $result         = $wr_viewdb->where(array('wrk.rule_keywords = '."'$rule_keywords'", 'wr.wechat_id' => $wechat_id))->field('wr.content,wr.media_id,wr.reply_type')->select();
         if(!empty($result)) {
             if (!empty($result[0]['media_id'])) {
                 $field='id, title, content, digest, file, type, file_name, article_id, link';
@@ -135,8 +135,8 @@ class wechat_action {
                         'CreateTime' 	=> SYS_TIME,
                         'MsgType' 		=> $result[0]['reply_type'],
                         'Video' 		=> array(
-                            'MediaId' 	=> $msg,
-                            'Title' 	=> $mediaInfo['title'],
+                            'MediaId' 	  => $msg,
+                            'Title' 	  => $mediaInfo['title'],
                             'Description' => $mediaInfo['digest']
                         )
                     );
@@ -149,10 +149,10 @@ class wechat_action {
                         foreach ($artids as $key => $val) {
                             $field='id, title, file, content, digest,link';
                             $artinfo = $media_db->field($field)->find(array('id'=>$val, 'wechat_id' => $wechat_id));
-                            $articles[$key]['Title'] = $artinfo['title'];
-                            $articles[$key]['Description'] = '';
-                            $articles[$key]['PicUrl'] = RC_Upload::upload_url($artinfo['file']);
-                            $articles[$key]['Url'] = $artinfo['link'];
+                            $articles[$key]['Title']        = $artinfo['title'];
+                            $articles[$key]['Description']  = '';
+                            $articles[$key]['PicUrl']       = RC_Upload::upload_url($artinfo['file']);
+                            $articles[$key]['Url']          = $artinfo['link'];
                         }
                     } else {
                         if (!empty($mediaInfo['digest'])){
@@ -160,10 +160,10 @@ class wechat_action {
                         } else {
                             $desc = msubstr(strip_tags(html_out($mediaInfo['content'])),100);
                         }
-                        $articles[0]['Title'] = $mediaInfo['title'];
+                        $articles[0]['Title']       = $mediaInfo['title'];
                         $articles[0]['Description'] = $desc;
-                        $articles[0]['PicUrl'] = RC_Upload::upload_url($mediaInfo['file']);
-                        $articles[0]['Url'] = $mediaInfo['link'];
+                        $articles[0]['PicUrl']      = RC_Upload::upload_url($mediaInfo['file']);
+                        $articles[0]['Url']         = $mediaInfo['link'];
                     }
                     $count = count($articles);
                     $content = array(
@@ -179,11 +179,11 @@ class wechat_action {
         
             } else {
                 $content = array(
-                    'ToUserName' => $request->getParameter('FromUserName'),
-                    'FromUserName' => $request->getParameter('ToUserName'),
-                    'CreateTime' => SYS_TIME,
-                    'MsgType' => 'text',
-                    'Content' => $result[0]['content']
+                    'ToUserName'    => $request->getParameter('FromUserName'),
+                    'FromUserName'  => $request->getParameter('ToUserName'),
+                    'CreateTime'    => SYS_TIME,
+                    'MsgType'       => 'text',
+                    'Content'       => $result[0]['content']
                 );
                 wechat_method::record_msg($request->getParameter('FromUserName'),$result[0]['content'], 1);
             }
@@ -206,11 +206,11 @@ class wechat_action {
      */
     public static function Image_action($request) {
         $content = array(
-            'ToUserName' => $request->getParameter('FromUserName'),
-            'FromUserName' => $request->getParameter('ToUserName'),
-            'CreateTime' => SYS_TIME,
-            'MsgType' => 'image',
-            'Image' => array(
+            'ToUserName'    => $request->getParameter('FromUserName'),
+            'FromUserName'  => $request->getParameter('ToUserName'),
+            'CreateTime'    => SYS_TIME,
+            'MsgType'       => 'image',
+            'Image'         => array(
                 'MediaId'=>$request->getParameter('MediaId')//通过素材管理接口上传多媒体文件，得到的id。
             )
         );
@@ -235,11 +235,11 @@ class wechat_action {
      */
     public static function Voice_action($request) {
         $content = array(
-            'ToUserName' => $request->getParameter('FromUserName'),
-            'FromUserName' => $request->getParameter('ToUserName'),
-            'CreateTime' => SYS_TIME,
-            'MsgType' => 'voice',
-            'Voice' => array(
+            'ToUserName'    => $request->getParameter('FromUserName'),
+            'FromUserName'  => $request->getParameter('ToUserName'),
+            'CreateTime'    => SYS_TIME,
+            'MsgType'       => 'voice',
+            'Voice'         => array(
                 'MediaId'=>$request->getParameter('MediaId')//通过素材管理接口上传多媒体文件，得到的id
             )
         );
@@ -265,13 +265,13 @@ class wechat_action {
      */
     public static function Video_action($request) {
         $content = array(
-            'ToUserName' => $request->getParameter('FromUserName'),
-            'FromUserName' => $request->getParameter('ToUserName'),
-            'CreateTime' => SYS_TIME,
-            'MsgType' => 'video',
-            'Video' => array(
-                'MediaId'=>$request->getParameter('MediaId'), //通过素材管理接口上传多媒体文件，得到的id
-                'Title'=>'test',
+            'ToUserName'     => $request->getParameter('FromUserName'),
+            'FromUserName'   => $request->getParameter('ToUserName'),
+            'CreateTime'     => SYS_TIME,
+            'MsgType'        => 'video',
+            'Video'          => array(
+                'MediaId'    =>$request->getParameter('MediaId'), //通过素材管理接口上传多媒体文件，得到的id
+                'Title'      =>'test',
                 'Description'=>'testneirong'
             )
         );
@@ -301,16 +301,16 @@ class wechat_action {
      */
     public static function Music_action($request) {    
         $content = array(
-            'ToUserName' => $request->getParameter('FromUserName'),
-            'FromUserName' => $request->getParameter('ToUserName'),
-            'CreateTime' => SYS_TIME,
-            'MsgType' => 'music',
-            'Music' => array(
-                'Title'=>'',
-                'Description'=>'',
-                'MusicUrl'=>'',
-                'HQMusicUrl'=>'',//高质量音乐链接，WIFI环境优先使用该链接播放音乐
-                'ThumbMediaId'=>'',//缩略图的媒体id，通过素材管理接口上传多媒体文件，得到的id
+            'ToUserName'    => $request->getParameter('FromUserName'),
+            'FromUserName'  => $request->getParameter('ToUserName'),
+            'CreateTime'    => SYS_TIME,
+            'MsgType'       => 'music',
+            'Music'         => array(
+                'Title'         =>'',
+                'Description'   =>'',
+                'MusicUrl'      =>'',
+                'HQMusicUrl'    =>'',//高质量音乐链接，WIFI环境优先使用该链接播放音乐
+                'ThumbMediaId'  =>'',//缩略图的媒体id，通过素材管理接口上传多媒体文件，得到的id
             )
         );
         $response = Component_WeChat_Response::create($content);
@@ -371,23 +371,23 @@ class wechat_action {
      */
     public static function Articles_action($request) {
         $content = array(
-            'ToUserName' => $request->getParameter('FromUserName'),
-            'FromUserName' => $request->getParameter('ToUserName'),
-            'CreateTime' => SYS_TIME,
-            'MsgType' => 'news',
-            'ArticleCount' => '',
-            'Articles' => array(
-            'item'=>array(
-            'Title' => '',
-            'Description' => '',
-            'PicUrl' => '',
-            'Url'=>''
-                ),
-                'item'=>array(
-                'Title' => '',
-                'Description' => '',
-                'PicUrl' => '',
-                'Url'=>''
+            'ToUserName'    => $request->getParameter('FromUserName'),
+            'FromUserName'  => $request->getParameter('ToUserName'),
+            'CreateTime'    => SYS_TIME,
+            'MsgType'       => 'news',
+            'ArticleCount'  => '',
+            'Articles'      => array(
+                'item'      =>array(
+                        'Title'         => '',
+                        'Description'   => '',
+                        'PicUrl'        => '',
+                        'Url'           =>''
+                    ),
+                'item'      =>array(
+                        'Title'         => '',
+                        'Description'   => '',
+                        'PicUrl'        => '',
+                        'Url'           =>''
                     )
             )
         );
@@ -406,16 +406,16 @@ class wechat_action {
     	RC_Loader::load_app_class('wechat_method', 'wechat', false);
     	RC_Loader::load_app_class('platform_account', 'platform', false);
     
-    	$uuid = trim($_GET['uuid']);
+    	$uuid   = trim($_GET['uuid']);
     	$wechat = wechat_method::wechat_instance($uuid);
     	
     	$openid = $request->getParameter('FromUserName');
-    	$info = $wechat->getUserInfo($openid);
+    	$info   = $wechat->getUserInfo($openid);
     	if (empty($info)) {
     		$info = array();
     	}
 
-    	$account = platform_account::make($uuid);
+    	$account   = platform_account::make($uuid);
     	$wechat_id = $account->getAccountID();
     	
     	if (isset($info['unionid']) && $info['unionid']) {
@@ -550,9 +550,9 @@ class wechat_action {
     					'CreateTime'    => SYS_TIME,
     					'MsgType'       => 'video',
     					'Video'         => array(
-    							'MediaId' 	=> $media_id, //通过素材管理接口上传多媒体文件，得到的id。
-    							'Title' 	=> $mediaInfo['title'],
-    							'Description' => $mediaInfo['digest']
+    							'MediaId' 	     => $media_id, //通过素材管理接口上传多媒体文件，得到的id。
+    							'Title' 	     => $mediaInfo['title'],
+    							'Description'    => $mediaInfo['digest']
     					)
     			);
     			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.video_content'), 1);
@@ -584,7 +584,7 @@ class wechat_action {
     	RC_Loader::load_app_class('wechat_method', 'wechat', false);
     	RC_Loader::load_app_class('platform_account', 'platform', false);
     	
-    	$uuid = trim($_GET['uuid']);
+    	$uuid   = trim($_GET['uuid']);
     	$wechat = wechat_method::wechat_instance($uuid);
     	$openid = $request->getParameter('FromUserName');
     	
@@ -597,20 +597,20 @@ class wechat_action {
     	$account = platform_account::make($uuid);
     	$wechat_id = $account->getAccountID();
     	
-    	$data['wechat_id'] = $wechat_id;
-    	$data['group_id'] = isset($info['groupid']) ? $info['groupid'] : $wechat->getUserGroup($openid);
-    	$data['subscribe'] = 1;
-    	$data['openid'] = $openid;
-    	$data['nickname'] = $info['nickname'];
-    	$data['sex'] = $info['sex'];
-    	$data['city'] = $info['city'];
-    	$data['country'] = $info['country'];
-    	$data['province'] = $info['province'];
-    	$data['language'] = $info['language'];
-    	$data['headimgurl'] = $info['headimgurl'];
+    	$data['wechat_id']      = $wechat_id;
+    	$data['group_id']       = isset($info['groupid']) ? $info['groupid'] : $wechat->getUserGroup($openid);
+    	$data['subscribe']      = 1;
+    	$data['openid']         = $openid;
+    	$data['nickname']       = $info['nickname'];
+    	$data['sex']            = $info['sex'];
+    	$data['city']           = $info['city'];
+    	$data['country']        = $info['country'];
+    	$data['province']       = $info['province'];
+    	$data['language']       = $info['language'];
+    	$data['headimgurl']     = $info['headimgurl'];
     	$data['subscribe_time'] = $info['subscribe_time'];
-    	$data['remark'] = $info['remark'];
-    	$data['unionid'] = isset($info['unionid']) ? $info['unionid'] : '';
+    	$data['remark']         = $info['remark'];
+    	$data['unionid']        = isset($info['unionid']) ? $info['unionid'] : '';
     	
     	$wechatuser_db->insert($data);
     }
@@ -623,11 +623,11 @@ class wechat_action {
 		$wechatuser_db = RC_Loader::load_app_model('wechat_user_model', 'wechat');
 		RC_Loader::load_app_class('platform_account', 'platform', false);
 		
-		$uuid = trim($_GET['uuid']);
-		$account = platform_account::make($uuid);
+		$uuid      = trim($_GET['uuid']);
+		$account   = platform_account::make($uuid);
 		$wechat_id = $account->getAccountID();
-		$openid = $request->getParameter('FromUserName');
-		$rs = $wechatuser_db->where(array('openid' => $openid,'wechat_id' => $wechat_id))->count();
+		$openid    = $request->getParameter('FromUserName');
+		$rs        = $wechatuser_db->where(array('openid' => $openid,'wechat_id' => $wechat_id))->count();
 		if ($rs > 0) {
 			$wechatuser_db->where(array('openid' => $openid,'wechat_id' => $wechat_id))->update(array('subscribe' => 0));
 		}

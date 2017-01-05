@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA用户管理
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_subscribe extends ecjia_admin {
 	private $wu_viewdb;
@@ -79,7 +80,7 @@ class admin_subscribe extends ecjia_admin {
 			
 			//微信id、type、关键字
 			$where = "u.wechat_id = $wechat_id";
-			$type = isset($_GET['type']) ? $_GET['type'] : 'all';
+			$type     = isset($_GET['type'])     ? $_GET['type']           : 'all';
 			$keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
 			
 			//用户标签列表
@@ -240,7 +241,7 @@ class admin_subscribe extends ecjia_admin {
 		$this->admin_priv('wechat_subscribe_delete');
 		
 		$tag_id = !empty($_GET['tag_id']) ? intval($_GET['tag_id']) : 0;
-		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
+		$id     = !empty($_GET['id'])     ? intval($_GET['id'])     : 0;
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
@@ -457,7 +458,11 @@ class admin_subscribe extends ecjia_admin {
 		 	$this->assign('type', $type);
 		 	$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 		 	
-		 	$tag_arr['item'] = $this->wechat_tag->field('id, tag_id, name, count')->where(array('wechat_id' => $wechat_id))->order(array('id' => 'desc', 'sort' => 'desc'))->select();
+		 	$tag_arr['item'] = $this->wechat_tag
+                        		 	->field('id, tag_id, name, count')
+                        		 	->where(array('wechat_id' => $wechat_id))
+                        		 	->order(array('id' => 'desc', 'sort' => 'desc'))
+                        		 	->select();
 		 	$this->assign('tag_arr', $tag_arr);
 		 	
 		 	$uid = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
@@ -475,7 +480,10 @@ class admin_subscribe extends ecjia_admin {
 		 			$info['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['subscribe_time']-8*3600);
 		 		}
 		 		$tag_list = $this->wechat_user_tag->where(array('userid' => $info['uid']))->get_field('tagid', true);
-		 		$name_list = $this->wechat_tag->where(array('tag_id' => $tag_list, 'wechat_id' => $wechat_id))->order(array('tag_id' => 'desc'))->get_field('name', true);
+		 		$name_list = $this->wechat_tag
+                		 		->where(array('tag_id' => $tag_list, 'wechat_id' => $wechat_id))
+                		 		->order(array('tag_id' => 'desc'))
+                		 		->get_field('name', true);
 		 		if (!empty($name_list)) {
 		 			$info['tag_name'] = implode('，', $name_list);
 		 		}
@@ -485,7 +493,12 @@ class admin_subscribe extends ecjia_admin {
 		 	$this->assign('message', $message);
 		 	
 		 	//最后发送时间
-		 	$last_send_time = $this->custom_message_viewdb->join(null)->where(array('uid' => $uid, 'iswechat' => 0))->order(array('id' => 'desc'))->limit(1)->get_field('send_time');
+		 	$last_send_time = $this->custom_message_viewdb
+                        		 	->join(null)
+                        		 	->where(array('uid' => $uid, 'iswechat' => 0))
+                        		 	->order(array('id' => 'desc'))
+                        		 	->limit(1)
+                        		 	->get_field('send_time');
 		 	$time = RC_Time::gmtime();
 		 	if ($time - $last_send_time > 48*3600) {
 		 		$this->assign('disabled', '1');
@@ -614,17 +627,17 @@ class admin_subscribe extends ecjia_admin {
 		$openid = !empty($_GET['openid']) 	? trim($_GET['openid']) 	: '';
 		
 		if ($type == 'remove_out') {
-			$data['group_id'] = 0;
+			$data['group_id']  = 0;
 			$data['subscribe'] = 1;
-			$sn = RC_Lang::get('wechat::wechat.remove_blacklist');
-			$success_msg = RC_Lang::get('wechat::wechat.remove_blacklist_success');
-			$error_msg = RC_Lang::get('wechat::wechat.remove_blacklist_error');
+			$sn                = RC_Lang::get('wechat::wechat.remove_blacklist');
+			$success_msg       = RC_Lang::get('wechat::wechat.remove_blacklist_success');
+			$error_msg         = RC_Lang::get('wechat::wechat.remove_blacklist_error');
 		} else {
-			$data['group_id'] = 1;
+			$data['group_id']  = 1;
 			$data['subscribe'] = 0;
-			$sn = RC_Lang::get('wechat::wechat.add_blacklist');
-			$success_msg = RC_Lang::get('wechat::wechat.add_blacklist_success');
-			$error_msg = RC_Lang::get('wechat::wechat.add_blacklist_error');
+			$sn                = RC_Lang::get('wechat::wechat.add_blacklist');
+			$success_msg       = RC_Lang::get('wechat::wechat.add_blacklist_success');
+			$error_msg         = RC_Lang::get('wechat::wechat.add_blacklist_error');
 		}
 		
 		//微信端更新
@@ -651,7 +664,7 @@ class admin_subscribe extends ecjia_admin {
 		$wechat_id = $platform_account->getAccountID();
 		$platform_name = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('name');
 		
-		$uid = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
+		$uid     = !empty($_GET['uid'])     ? intval($_GET['uid'])     : 0;
 		$last_id = !empty($_GET['last_id']) ? intval($_GET['last_id']) : 0;
 		$chat_id = !empty($_GET['chat_id']) ? intval($_GET['chat_id']) : 0;
 		
@@ -664,7 +677,12 @@ class admin_subscribe extends ecjia_admin {
 		$page = new ecjia_page($count, 10, 5);
 		$limit = $page->limit();
 
-		$list = $custom_message_viewdb->join('wechat_user')->field('m.*, wu.nickname')->where($where)->order(array('m.id' => 'desc'))->limit($limit)->select();
+		$list = $custom_message_viewdb->join('wechat_user')
+                                		->field('m.*, wu.nickname')
+                                		->where($where)
+                                		->order(array('m.id' => 'desc'))
+                                		->limit($limit)
+                                		->select();
 
 		if (!empty($list)) {
 			foreach ($list as $key => $val) {
@@ -673,10 +691,10 @@ class admin_subscribe extends ecjia_admin {
 					$list[$key]['nickname'] = $platform_name;
 				}
 			}
-			$end_list = end($list);
+			$end_list     = end($list);
 			$reverse_list = array_reverse($list);
 		} else {
-			$end_list = null;
+			$end_list     = null;
 			$reverse_list = null;
 		}
 		return array('item' => $reverse_list, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'last_id' => $end_list['id']);
@@ -815,10 +833,10 @@ class admin_subscribe extends ecjia_admin {
 			$where['wechat_id'] = $wechat_id;
 			$this->wechat_tag->where($where)->delete();
 			foreach ($list['tags'] as $key => $val) {
-				$data['wechat_id'] = $wechat_id;
-				$data['tag_id'] = $val['id'];
-				$data['name'] = $val['name'] == RC_Lang::get('wechat::wechat.star_group') ? RC_Lang::get('wechat::wechat.star_user') : $val['name'];
-				$data['count'] = $val['count'];
+				$data['wechat_id']  = $wechat_id;
+				$data['tag_id']     = $val['id'];
+				$data['name']       = $val['name'] == RC_Lang::get('wechat::wechat.star_group') ? RC_Lang::get('wechat::wechat.star_user') : $val['name'];
+				$data['count']      = $val['count'];
 				$this->wechat_tag->insert($data);
 			}
 		}

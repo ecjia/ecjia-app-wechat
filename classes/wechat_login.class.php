@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 微信公众平台登录
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class wechat_login
 {

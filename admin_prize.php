@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA抽奖记录
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_prize extends ecjia_admin {
 	private $db_prize;

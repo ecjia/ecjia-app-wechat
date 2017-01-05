@@ -1,9 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * ECJIA提醒设置
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_remind extends ecjia_admin {
 	private $db_platform_account;
@@ -97,4 +97,5 @@ class admin_remind extends ecjia_admin {
 		$this->display('wechat_remind_list.dwt');
 	}
 }
+
 //end

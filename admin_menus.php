@@ -1,9 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * ECJIA自定义菜单
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_menus extends ecjia_admin {
 	private $db_menu;
@@ -353,18 +353,18 @@ class admin_menus extends ecjia_admin {
 					if ($value['sub_button']) {
 						$data = array();
 						foreach ($value['sub_button'] as $k => $v) {
-							$v['name'] = isset($v['name']) ? $v['name'] : '';
-							$v['type'] = isset($v['type']) ? $v['type'] : '';
-							$v['url'] = isset($v['url']) ? $v['url'] : '';
-							$v['key'] = isset($v['key']) ? $v['key'] : '';
+							$v['name']   = isset($v['name']) ? $v['name'] : '';
+							$v['type']   = isset($v['type']) ? $v['type'] : '';
+							$v['url']    = isset($v['url'])  ? $v['url']  : '';
+							$v['key']    = isset($v['key'])  ? $v['key']  : '';
 							
-							$data['wechat_id'] = $wechat_id;
-							$data['name'] = $v['name'];
-							$data['type'] = $v['type'];
-							$data['url'] = $v['url'];
-							$data['key'] = $v['key'];
-							$data['status'] = 1;
-							$data['pid'] = $id;
+							$data['wechat_id']   = $wechat_id;
+							$data['name']        = $v['name'];
+							$data['type']        = $v['type'];
+							$data['url']         = $v['url'];
+							$data['key']         = $v['key'];
+							$data['status']      = 1;
+							$data['pid']         = $id;
 							$this->db_menu->insert($data);
 						}
 					}

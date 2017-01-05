@@ -1,9 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA自动回复
  */
-
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_response extends ecjia_admin {
 	private $wm_db;
@@ -238,8 +238,8 @@ class admin_response extends ecjia_admin {
 	public function get_material_info() {
 		$filter = $_GET['JSON'];
 		$filter = (object)$filter;
-		$id = $filter->id;
-		$type = $filter->type;
+		$id     = $filter->id;
+		$type   = $filter->type;
 		
 		$info = $this->wm_db->where(array('id' => $id))->find();
 		if (empty($info['file']) || $info['type'] == 'voice' || $info['type'] == 'video') {
@@ -488,12 +488,12 @@ class admin_response extends ecjia_admin {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_accounts_again'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 
-		$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-		$content_type = isset($_POST['content_type']) ? $_POST['content_type'] : '';
-		$rule_keywords = isset($_POST['rule_keywords']) ? trim($_POST['rule_keywords']) : '';
-		$data['rule_name'] = isset($_POST['rule_name']) ? trim($_POST['rule_name']) : '';
-		$data['media_id'] = !empty($_POST['media_id']) ? intval($_POST['media_id']) : '';
-		$data['content'] = isset($_POST['content']) ? trim($_POST['content']) : '';
+		$id                = isset($_POST['id'])              ? intval($_POST['id'])          : 0;
+		$content_type      = isset($_POST['content_type'])    ? $_POST['content_type']        : '';
+		$rule_keywords     = isset($_POST['rule_keywords'])   ? trim($_POST['rule_keywords']) : '';
+		$data['rule_name'] = isset($_POST['rule_name'])       ? trim($_POST['rule_name'])     : '';
+		$data['media_id']  = !empty($_POST['media_id'])       ? intval($_POST['media_id'])    : '';
+		$data['content']   = isset($_POST['content'])         ? trim($_POST['content'])       : '';
 		$data['wechat_id'] = $wechat_id;
 		$data['reply_type'] = $content_type;
 		
@@ -802,4 +802,5 @@ class admin_response extends ecjia_admin {
 		return $article;
 	}
 }
+
 //end

@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA二维码
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_qrcode extends ecjia_admin {
 	private $db_qrcode;
@@ -199,8 +200,8 @@ class admin_qrcode extends ecjia_admin {
 			if($qrcode['type'] == 0) {
 				$data = array(
 					'expire_seconds' => $qrcode['expire_seconds'],
-					'action_name' => 'QR_SCENE',
-					'action_info' => array('scene'=>(array('scene_id' => $qrcode['scene_id'])))
+					'action_name'    => 'QR_SCENE',
+					'action_info'    => array('scene'=>(array('scene_id' => $qrcode['scene_id'])))
 				);
 			} else {
 				$data = array(

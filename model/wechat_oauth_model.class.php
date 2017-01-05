@@ -7,7 +7,6 @@ class wechat_oauth_model extends Component_Model_Model {
 		$this->table_name = 'wechat_oauth';
 		parent::__construct();
 	}
-
 }
 
 // end

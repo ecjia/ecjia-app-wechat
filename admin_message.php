@@ -1,10 +1,10 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * ECJIA消息管理
  */
 
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_message extends ecjia_admin {
 	private $db_platform_account;
@@ -132,8 +132,8 @@ class admin_message extends ecjia_admin {
 		$filter['earlier'] 					= count($custom_message_viewdb->join('wechat_user')->field('max(m.id) as id')->where($where5)->group('m.uid')->select());
 		
 		$count = count($custom_message_viewdb->join('wechat_user')->field('max(m.id) as id')->where($where)->group('m.uid')->select());
-		$page = new ecjia_page($count, 10, 5);
-		$list = $custom_message_viewdb->join('wechat_user')->field('max(m.id) as id, wu.uid, wu.nickname, wu.headimgurl')->where($where)->group('m.uid')->limit($page->limit())->select();
+		$page  = new ecjia_page($count, 10, 5);
+		$list  = $custom_message_viewdb->join('wechat_user')->field('max(m.id) as id, wu.uid, wu.nickname, wu.headimgurl')->where($where)->group('m.uid')->limit($page->limit())->select();
 		
 		$row = array();
 		if (!empty($list)) {

@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA素材
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_material extends ecjia_admin {
 	private $wm_db;
@@ -263,10 +264,10 @@ class admin_material extends ecjia_admin {
 				return $this->showmessage(wechat_method::wechat_error($rs1->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			//封面图片素材id
-			$data['thumb'] = $rs['media_id'];
-			$data['media_url'] = $rs['url'];
+			$data['thumb']       = $rs['media_id'];
+			$data['media_url']   = $rs['url'];
 			//图文消息的id
-			$data['media_id'] = $rs1['media_id'];
+			$data['media_id']    = $rs1['media_id'];
 			
 			$id = $this->wm_db->insert($data);
 			ecjia_admin::admin_log($title, 'add', 'article_material');
@@ -405,8 +406,8 @@ class admin_material extends ecjia_admin {
 				$data['size'] 		= $file['size'];
 				
 				//封面图片素材id
-				$data['thumb'] = $rs['media_id'];
-				$data['media_url'] = $rs['url'];
+				$data['thumb']      = $rs['media_id'];
+				$data['media_url']  = $rs['url'];
 			}
 			if (!empty($id)) {
 				//更新永久图文素材
@@ -861,9 +862,9 @@ class admin_material extends ecjia_admin {
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed_operate'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-		$title = !empty($_POST['video_title']) ? trim($_POST['video_title']) : '';
-		$digest = !empty($_POST['video_digest']) ? $_POST['video_digest'] : '';
-		$material = !empty($_GET['material']) ? 1 : 0;
+		$title    = !empty($_POST['video_title'])     ? trim($_POST['video_title']) : '';
+		$digest   = !empty($_POST['video_digest'])    ? $_POST['video_digest']      : '';
+		$material = !empty($_GET['material'])         ? 1                           : 0;
 		
 		if (empty($title)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.enter_title'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -1000,10 +1001,10 @@ class admin_material extends ecjia_admin {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed_operate'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
-		$title = !empty($_POST['video_title']) ? trim($_POST['video_title']) : '';
-		$digest = !empty($_POST['video_digest']) ? $_POST['video_digest'] : '';
-		$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-		$material = !empty($_GET['material']) ? 1 : 0;
+		$title    = !empty($_POST['video_title'])     ? trim($_POST['video_title'])   : '';
+		$digest   = !empty($_POST['video_digest'])    ? $_POST['video_digest']        : '';
+		$id       = !empty($_POST['id'])              ? intval($_POST['id'])          : 0;
+		$material = !empty($_GET['material'])         ? 1                             : 0;
 		
 		if (empty($title)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.enter_title'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -1112,9 +1113,9 @@ class admin_material extends ecjia_admin {
 	public function edit_file_name() {
 		$this->admin_priv('wechat_material_update');
 		
-		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		$val = isset($_GET['val']) ? $_GET['val'] : '';
-		$type = isset($_GET['type']) ? $_GET['type'] : '';
+		$id   = isset($_GET['id'])    ? intval($_GET['id'])   : 0;
+		$val  = isset($_GET['val'])   ? $_GET['val']          : '';
+		$type = isset($_GET['type'])  ? $_GET['type']         : '';
 		if ($type == 'voice' || $type == 'picture') {
 			if (empty($val)) {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.enter_filename'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -1144,7 +1145,10 @@ class admin_material extends ecjia_admin {
 		$wechat_id = $platform_account->getAccountID();
 		
 		$keyword = !empty($_POST['keyword']) ? trim($_POST['keyword']) : '';
-		$arr = $this->wm_db->field('id, file')->where(array('wechat_id' => $wechat_id, 'type' => 'news', 'title' => array('like' => "%".mysql_like_quote($keyword)."%")))->select();
+		$arr = $this->wm_db
+            		->field('id, file')
+            		->where(array('wechat_id' => $wechat_id, 'type' => 'news', 'title' => array('like' => "%".mysql_like_quote($keyword)."%")))
+            		->select();
 		
 		if (empty($arr)) {
 			$arr = array(0 => array(
@@ -1165,10 +1169,10 @@ class admin_material extends ecjia_admin {
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
 		
-		$filter = $_GET['JSON'];
-		$filter = (object)$filter;
-		$type = isset($filter->type) ? $filter->type : '';
-		$material = !empty($_GET['material']) ? 'material' : '';
+		$filter   = $_GET['JSON'];
+		$filter   = (object)$filter;
+		$type     = isset($filter->type)      ? $filter->type : '';
+		$material = !empty($_GET['material']) ? 'material'    : '';
 		
 		if ($type == 'image') {
 			$where = "(file is NOT NULL and (type = 'image' or type = 'news')) and wechat_id = $wechat_id";
@@ -1340,4 +1344,5 @@ class admin_material extends ecjia_admin {
 		return $data;
 	}
 }
+
 //end

@@ -1,9 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * ECJIA客服管理
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_customer extends ecjia_admin {
 	private $db_platform_account;
@@ -222,9 +222,9 @@ class admin_customer extends ecjia_admin {
 	public function update() {
 		$this->admin_priv('wechat_customer_update');
 		
-		$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-		$kf_account = !empty($_POST['kf_account']) ? trim($_POST['kf_account']) : '';
-		$nickname = !empty($_POST['kf_nick']) ? trim($_POST['kf_nick']) : '';
+		$id           = !empty($_POST['id'])          ? intval($_POST['id'])          : 0;
+		$kf_account   = !empty($_POST['kf_account'])  ? trim($_POST['kf_account'])    : '';
+		$nickname     = !empty($_POST['kf_nick'])     ? trim($_POST['kf_nick'])       : '';
 		
 		$info = $this->db_customer->find(array('id' => $id));
 		$status = !empty($_POST['status']) ? intval($_POST['status']) : 0;

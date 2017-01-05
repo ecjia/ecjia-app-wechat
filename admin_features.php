@@ -1,10 +1,10 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * ECJIA功能扩展
  */
 
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_features extends ecjia_admin {
 	public function __construct() {
@@ -52,9 +52,9 @@ class admin_features extends ecjia_admin {
 			'enable'=> '1'
 		);
 		$count = $db_wechat_extend->where($where)->count();
-		$page = new ecjia_page($count, 15, 5);
-		$arr = array ();
-		$data = $db_wechat_extend->where($where)->order('id ASC')->limit($page->limit())->select();
+		$page  = new ecjia_page($count, 15, 5);
+		$arr   = array ();
+		$data  = $db_wechat_extend->where($where)->order('id ASC')->limit($page->limit())->select();
 		if (isset($data)) {
 			foreach ($data as $rows) {
 				$arr[] = $rows;

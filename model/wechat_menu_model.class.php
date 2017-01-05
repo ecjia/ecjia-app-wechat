@@ -7,9 +7,6 @@ class wechat_menu_model extends Component_Model_Model {
 		$this->table_name = 'wechat_menu';
 		parent::__construct();
 	}
-	
-
 }
-
 
 // end

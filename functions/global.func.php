@@ -95,4 +95,5 @@ function html_out($str) {
 	$str = stripslashes($str);
 	return $str;
 }
+
 //end

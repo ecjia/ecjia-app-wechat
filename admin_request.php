@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA API请求次数统计
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_request extends ecjia_admin {
 	private $db_request;

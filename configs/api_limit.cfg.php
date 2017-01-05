@@ -4,29 +4,30 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 公众号调用接口每日限制
  */
+ 
 return array(
 	/*获取接口调用凭据*/
 	'token' => array(
 		'title' => RC_Lang::get('wechat::wechat.get_access_token'),
 	    'times' => '2000',
-	    'api' => 'https://api.weixin.qq.com/cgi-bin/token'
+	    'api'   => 'https://api.weixin.qq.com/cgi-bin/token'
 	),
 	'getcallbackip' => array(
 		'title' => RC_Lang::get('wechat::wechat.get_server_ip'),
 		'times' => null,
-		'api' => 'https://api.weixin.qq.com/cgi-bin/getcallbackip'
+		'api'   => 'https://api.weixin.qq.com/cgi-bin/getcallbackip'
 	),
 		
 	/*自定义菜单*/
     'menu/create' => array(
     	'title' => RC_Lang::get('wechat::wechat.custom_menu_create'),
         'times' => '1000',
-        'api' => 'https://api.weixin.qq.com/cgi-bin/menu/create'
+        'api'   => 'https://api.weixin.qq.com/cgi-bin/menu/create'
     ),
     'menu/get' => array(
     	'title' => RC_Lang::get('wechat::wechat.custom_menu_demadn'),
         'times' => '10000',
-        'api' => 'https://api.weixin.qq.com/cgi-bin/menu/get'
+        'api'   => 'https://api.weixin.qq.com/cgi-bin/menu/get'
     ),
     'menu/delete' => array(
     	'title' => RC_Lang::get('wechat::wechat.custom_menu_del'),
@@ -150,32 +151,32 @@ return array(
     'customservice/kfaccount/add' => array(
     	'title' => RC_Lang::get('wechat::wechat.add_server_account'),
     	'times' => null,
-    	'api' => 'https://api.weixin.qq.com/customservice/kfaccount/add'
+    	'api'   => 'https://api.weixin.qq.com/customservice/kfaccount/add'
     ),
     'customservice/kfaccount/update' => array(
     	'title' => RC_Lang::get('wechat::wechat.edit_server_account'),
     	'times' => null,
-    	'api' => 'https://api.weixin.qq.com/customservice/kfaccount/update'
+    	'api'   => 'https://api.weixin.qq.com/customservice/kfaccount/update'
     ),
     'customservice/kfaccount/del' => array(
     	'title' => RC_Lang::get('wechat::wechat.del_server_account'),
     	'times' => null,
-    	'api' => 'https://api.weixin.qq.com/customservice/kfaccount/del'
+    	'api'   => 'https://api.weixin.qq.com/customservice/kfaccount/del'
     ),
     'customservice/kfaccount/uploadheadimg' => array(
     	'title' => RC_Lang::get('wechat::wechat.set_server_head'),
     	'times' => null,
-    	'api' => 'http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg'
+    	'api'   => 'http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg'
     ),
     'customservice/getkflist' => array(
     	'title' => RC_Lang::get('wechat::wechat.get_all_server_account'),
     	'times' => null,
-    	'api' => 'https://api.weixin.qq.com/cgi-bin/customservice/getkflist'
+    	'api'   => 'https://api.weixin.qq.com/cgi-bin/customservice/getkflist'
     ),
     'customservice/getonlinekflist' => array(
     	'title' => RC_Lang::get('wechat::wechat.get_server_online_message'),
     	'times' => null,
-    	'api' => 'https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist'
+    	'api'   => 'https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist'
     ),
     'customservice/kfaccount/inviteworker' => array(
     	'title' => RC_Lang::get('wechat::wechat.invite_bind_server_account'),

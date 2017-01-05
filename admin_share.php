@@ -1,9 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * ECJIA扫码引荐
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_share extends ecjia_admin {
 	private $db_qrcode;

@@ -1,8 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA客服会话记录
  */
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_record extends ecjia_admin {
 	private $wu_viewdb;
@@ -103,10 +104,10 @@ class admin_record extends ecjia_admin {
 		}
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_message_record')));
 	
-		$uid = !empty($_GET['uid']) ? $_GET['uid'] : '';
-		$page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
-		$status = !empty($_GET['status']) ? intval($_GET['status']) : 1;
-		$kf_account = !empty($_GET['kf_account']) ? $_GET['kf_account'] : '';
+		$uid          = !empty($_GET['uid'])          ? $_GET['uid']              : '';
+		$page         = !empty($_GET['page'])         ? intval($_GET['page'])     : 1;
+		$status       = !empty($_GET['status'])       ? intval($_GET['status'])   : 1;
+		$kf_account   = !empty($_GET['kf_account'])   ? $_GET['kf_account']       : '';
 	
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.customer_message_record'));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.customer_chat_record'), 'href'=> RC_Uri::url('wechat/admin_record/init', array('status' => $status, 'kf_account' => $kf_account, 'page' => $page))));
@@ -152,8 +153,8 @@ class admin_record extends ecjia_admin {
 		$openid_list = $wechat_user_db->where(array('wechat_id' => $wechat_id))->get_field('openid', true);
 		$where = 'cs.opercode = 2003 and cs.wechat_id ='.$wechat_id;
 	
-		$filter['kf_account'] = !empty($_GET['kf_account']) ? $_GET['kf_account'] : 0;
-		$filter['status'] = !empty($_GET['status']) ? intval($_GET['status']) : 1;
+		$filter['kf_account'] = !empty($_GET['kf_account']) ? $_GET['kf_account']     : 0;
+		$filter['status']     = !empty($_GET['status'])     ? intval($_GET['status']) : 1;
 		
 		if ($filter['kf_account']) {
 			$where .= " and cs.kf_account = "."'$filter[kf_account]'";
@@ -247,9 +248,9 @@ class admin_record extends ecjia_admin {
 		$wechat_id = $platform_account->getAccountID();
 		$platform_name = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('name');
 	
-		$uid = !empty($_GET['uid']) ? $_GET['uid'] : '';
+		$uid     = !empty($_GET['uid'])     ? $_GET['uid']             : '';
 		$last_id = !empty($_GET['last_id']) ? intval($_GET['last_id']) : 0;
-		$chat_id = !empty($_GET['chat_id']) ? $_GET['chat_id'] : 0;
+		$chat_id = !empty($_GET['chat_id']) ? $_GET['chat_id']         : 0;
 		
 		$openid = $this->wechat_user_db->where(array('uid' => $uid))->get_field('openid');
 	
@@ -364,4 +365,5 @@ class admin_record extends ecjia_admin {
 		return $this->showmessage(RC_Lang::get('wechat::wechat.get_message_record_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/admin_record/init')));
 	}
 }
+
 //end

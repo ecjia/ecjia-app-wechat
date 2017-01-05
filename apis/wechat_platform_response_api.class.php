@@ -1,10 +1,12 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 后台微信公众平台
  * @author royalwang
  *
  */
+ 
 class wechat_platform_response_api extends Component_Event_Api
 {
 
