@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA 应用语言包
  */
-
 return array(
 	//全局
 	'add_success'		=> '添加成功',

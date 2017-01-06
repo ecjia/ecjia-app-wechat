@@ -4,9 +4,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 后台微信公众平台
  * @author royalwang
- *
  */
- 
 class wechat_admin_menu_api extends Component_Event_Api
 {
 

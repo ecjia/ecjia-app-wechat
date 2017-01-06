@@ -1,5 +1,4 @@
 // JavaScript Document
-
 ;(function(app, $) {
 	app.message_template_list = {
 		init : function() {

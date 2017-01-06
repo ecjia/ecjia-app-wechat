@@ -1,6 +1,5 @@
 // JavaScript Document
-;
-(function(app, $) {
+;(function(app, $) {
 app.admin_record = {
 	init : function() {
 		$(".ajaxswitch").on('click', function(e){
@@ -179,4 +178,5 @@ app.admin_record = {
 	},
 };
 })(ecjia.admin, jQuery);
+
 // end

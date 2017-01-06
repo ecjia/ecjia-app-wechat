@@ -1,6 +1,5 @@
 // JavaScript Document
-;
-(function(app, $) {
+;(function(app, $) {
 	app.response = {
 		init : function() {
 			$('#add_material').on('hide.bs.modal', function () {
@@ -266,4 +265,5 @@
 		}
 	}
 })(ecjia.admin, jQuery);
+
 // end

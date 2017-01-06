@@ -1,6 +1,5 @@
 // JavaScript Document
-;
-(function(app, $) {
+;(function(app, $) {
 app.admin_remind = {
 	init : function() {
 		$(".ajaxswitch").on('click', function(e){
@@ -30,4 +29,5 @@ app.admin_remind = {
 	}
 };
 })(ecjia.admin, jQuery);
+
 // end

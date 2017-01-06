@@ -4,8 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA消息管理
  */
-
-
 class admin_message extends ecjia_admin {
 	private $db_platform_account;
 	private $wu_viewdb;

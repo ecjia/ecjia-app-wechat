@@ -1,6 +1,5 @@
 // JavaScript Document
-;
-(function(app, $) {
+;(function(app, $) {
 	app.admin_request = {
 		init : function() {
 //			app.admin_request.data();
@@ -212,4 +211,5 @@
 		},
 	};
 })(ecjia.admin, jQuery);
+
 // end

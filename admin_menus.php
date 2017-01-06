@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA自定义菜单
  */
-
 class admin_menus extends ecjia_admin {
 	private $db_menu;
 	private $db_platform_account;
@@ -215,6 +214,7 @@ class admin_menus extends ecjia_admin {
 	 */
 	public function update() {
 		$this->admin_priv('wechat_menus_update');
+		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
 		
@@ -254,6 +254,7 @@ class admin_menus extends ecjia_admin {
 	 */
 	public function sys_menu() {
 		$this->admin_priv('wechat_menus_manage');
+		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
 		if (is_ecjia_error($wechat_id)) {
@@ -382,6 +383,7 @@ class admin_menus extends ecjia_admin {
 		$this->admin_priv('wechat_menus_delete');
 		
 		$this->admin_priv('wechat_subscribe_manage');
+		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));

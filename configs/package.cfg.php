@@ -4,9 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * 公众平台应用
  */
-
-defined('IN_ECJIA') or exit('No permission resources.');
-
 return array(
 	'identifier' 	=> 'ecjia.wechat',
 	'directory' 	=> 'wechat',

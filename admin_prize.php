@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA抽奖记录
  */
-
 class admin_prize extends ecjia_admin {
 	private $db_prize;
 	private $db_platform_account;

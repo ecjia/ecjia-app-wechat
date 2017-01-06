@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA客服会话记录
  */
-
 class admin_record extends ecjia_admin {
 	private $wu_viewdb;
 	private $wechat_user_db;

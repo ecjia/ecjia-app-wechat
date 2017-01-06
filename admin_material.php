@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA素材
  */
-
 class admin_material extends ecjia_admin {
 	private $wm_db;
 	private $wr_db;
@@ -47,6 +46,7 @@ class admin_material extends ecjia_admin {
 	 */
 	public function init() {
 		$this->admin_priv('wechat_material_manage');
+		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage')));
 		
