@@ -188,7 +188,7 @@ class admin_subscribe extends ecjia_admin {
 			//微信端更新
 			$rs = $wechat->setTag($tag_id, $name);
 			if (RC_Error::is_error($rs)) {
-				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			
 			//本地更新
@@ -596,7 +596,7 @@ class admin_subscribe extends ecjia_admin {
 		//微信端更新
 		$rs = $wechat->setUserRemark($openid, $remark);
 		if (RC_Error::is_error($rs)) {
-			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$data = array('remark' => $remark);
 		$update = $this->wechat_user_db->where(array('openid' => $openid, 'wechat_id' => $wechat_id))->update($data);

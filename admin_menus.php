@@ -309,7 +309,7 @@ class admin_menus extends ecjia_admin {
 			$rs = $wechat->setMenu($menu);
 			
 			if (RC_Error::is_error($rs)) {
-				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
 				ecjia_admin::admin_log(RC_Lang::get('wechat::wechat.make_menu'), 'setup', 'menu');
 				return $this->showmessage(RC_Lang::get('wechat::wechat.make_menu_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -332,7 +332,7 @@ class admin_menus extends ecjia_admin {
 			$wechat = wechat_method::wechat_instance($uuid);
 			$list = $wechat->getMenu();
 			if (RC_Error::is_error($list)) {
-				return $this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+				return $this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
 				$info = $this->db_menu->select();
 				if ($info) {
@@ -393,7 +393,7 @@ class admin_menus extends ecjia_admin {
 			$rs = $wechat->deleteMenu();
 			
 			if (RC_Error::is_error($rs)) {
-				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
 				ecjia_admin::admin_log(RC_Lang::get('wechat::wechat.clear_menu'), 'setup', 'menu');
 				$this->db_menu->where(array('id' => array('gt' => 0), 'wechat_id'=>$wechat_id))->update(array('status' => 0));

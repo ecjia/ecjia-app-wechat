@@ -214,7 +214,7 @@ class admin_qrcode extends ecjia_admin {
 			// 获取二维码ticket
 			$ticket = $wechat->getQrcodeTicket($data);
 			if (RC_Error::is_error($ticket)) {
-				return $this->showmessage(wechat_method::wechat_error($ticket->get_error_code()), ecjia_admin::MSGTYPE_JSON | ecjia_admin::MSGSTAT_ERROR);
+				return $this->showmessage(wechat_method::wechat_error($ticket->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
 				$data['ticket'] = $ticket['ticket'];
 				$data['expire_seconds'] = $ticket['expire_seconds'];
