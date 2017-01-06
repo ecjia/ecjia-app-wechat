@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA授权登陆
  */
-
 class admin_oauth extends ecjia_admin {
 	private $db_oauth;
 	private $db_platform_account;

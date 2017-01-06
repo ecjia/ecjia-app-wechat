@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA用户管理
  */
-
 class admin_subscribe extends ecjia_admin {
 	private $wu_viewdb;
 	private $wechat_user_db;
@@ -178,6 +177,7 @@ class admin_subscribe extends ecjia_admin {
 		}
 		if (!empty($id)) {
 			$this->admin_priv('wechat_subscribe_update');
+			
 			$data = array('name' => $name);
 			$is_only = $this->wechat_tag->where(array('id' => array('neq' => $id), 'name' => $name, 'wechat_id' => $wechat_id))->count();
 			if ($is_only != 0 ) {
@@ -278,6 +278,7 @@ class admin_subscribe extends ecjia_admin {
 	 */
 	public function get_usertag() {
 		$this->admin_priv('wechat_subscribe_manage');
+		
 		$result = $this->get_user_tags();
 		if ($result === true) {
 			//记录日志

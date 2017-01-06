@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA二维码
  */
-
 class admin_qrcode extends ecjia_admin {
 	private $db_qrcode;
 	private $db_platform_account;
@@ -187,6 +186,7 @@ class admin_qrcode extends ecjia_admin {
 		$this->admin_priv('wechat_qrcode_update');
 		
 		$this->admin_priv('wechat_subscribe_manage');
+		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		
 		$id = $_GET['id'];

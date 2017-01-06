@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA群发消息
  */
-
 class admin_mass_message extends ecjia_admin {
 	private $wm_db;
 	private $wechat_tag;

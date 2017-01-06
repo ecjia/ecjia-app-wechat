@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA消息模板
  */
-
 class admin_template extends ecjia_admin {
 	private $db_mail;
 	

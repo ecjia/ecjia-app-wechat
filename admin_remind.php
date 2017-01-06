@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA提醒设置
  */
-
 class admin_remind extends ecjia_admin {
 	private $db_platform_account;
 // 	private $wechat_template;

@@ -1,6 +1,5 @@
 // JavaScript Document
-;
-(function(app, $) {
+;(function(app, $) {
 	app.material = {
 		init : function() {
 			$( ".wookmark_list img" ).disableSelection();
@@ -557,4 +556,5 @@
 		},
 	};
 })(ecjia.admin, jQuery);
+
 // end

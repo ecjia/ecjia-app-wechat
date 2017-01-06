@@ -1,6 +1,5 @@
 // JavaScript Document
-;
-(function(app, $) {
+;(function(app, $) {
 	app.mass_message = {
 		init : function() {
 			$('#add_material').on('hide.bs.modal', function () {

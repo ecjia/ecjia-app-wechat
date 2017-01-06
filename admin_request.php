@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA API请求次数统计
  */
-
 class admin_request extends ecjia_admin {
 	private $db_request;
 
@@ -120,4 +119,5 @@ class admin_request extends ecjia_admin {
 		return $data;
 	}
 }
+
 //end

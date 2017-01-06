@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA自动回复
  */
-
 class admin_response extends ecjia_admin {
 	private $wm_db;
 	private $wr_db;
@@ -124,6 +123,7 @@ class admin_response extends ecjia_admin {
 		);
 		if (empty($id)){
 			$this->admin_priv('wechat_response_add');
+			
 			//添加
 			$id = $this->wr_db->insert($data);
 			
@@ -146,6 +146,7 @@ class admin_response extends ecjia_admin {
 			}
 		} else {
 			$this->admin_priv('wechat_response_update');
+			
 			//更新
 			$update = $this->wr_db->where(array('id' => $id))->update($data);
 			
@@ -346,6 +347,7 @@ class admin_response extends ecjia_admin {
 		);
 		if (empty($id)){
 			$this->admin_priv('wechat_response_add');
+			
 			//添加
 			$id = $this->wr_db->insert($data);
 			
@@ -370,6 +372,7 @@ class admin_response extends ecjia_admin {
 			}
 		} else {
 			$this->admin_priv('wechat_response_update');
+			
 			//更新
 			$update = $this->wr_db->where(array('id' => $id))->update($data);
 			
@@ -547,6 +550,7 @@ class admin_response extends ecjia_admin {
 		}
 		if (!empty($id)) {
 			$this->admin_priv('wechat_response_update');
+			
 			$this->admin_priv('wechat_response_delete');
 				
 			$update = $this->wr_db->where(array('id' => $id))->update($data);
@@ -555,6 +559,7 @@ class admin_response extends ecjia_admin {
 			ecjia_admin::admin_log($data['rule_name'], 'edit', 'reply_keywords_rule');
 		} else {
 			$this->admin_priv('wechat_response_add');
+			
 			$data['add_time'] = RC_Time::gmtime();
 			$id = $this->wr_db->insert($data);
 				

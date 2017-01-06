@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA客服管理
  */
-
 class admin_customer extends ecjia_admin {
 	private $db_platform_account;
 	private $db_customer;
@@ -46,6 +45,7 @@ class admin_customer extends ecjia_admin {
 	 */
 	public function init() {
 		$this->admin_priv('wechat_customer_manage');
+		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.customer_list'));
@@ -312,6 +312,7 @@ class admin_customer extends ecjia_admin {
 	
 	public function remove() {
 		$this->admin_priv('wechat_customer_delete');
+		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
 		
@@ -401,6 +402,7 @@ class admin_customer extends ecjia_admin {
 	
 	public function toggle_show() {
 		$this->admin_priv('wechat_customer_update');
+		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
 		
@@ -433,6 +435,7 @@ class admin_customer extends ecjia_admin {
 	
 	public function edit_nick() {
 		$this->admin_priv('wechat_customer_update');
+		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
 		

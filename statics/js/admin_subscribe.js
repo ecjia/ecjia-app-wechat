@@ -1,6 +1,5 @@
 // JavaScript Document
-;
-(function(app, $) {
+;(function(app, $) {
 	app.subscribe_message = {
 		init : function () {
 			$('.readed_message').on('click', function(e) {

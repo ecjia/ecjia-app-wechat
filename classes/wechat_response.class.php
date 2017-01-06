@@ -6,7 +6,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  *
  * WeChat Response
  */
-
 class wechat_response {
     /**
      * 回复文本消息
