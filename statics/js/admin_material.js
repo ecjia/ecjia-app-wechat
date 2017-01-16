@@ -104,7 +104,8 @@
 		//添加必填项js
 		the_Form : function() {
 			$(".start_time,.end_time").datepicker({
-				format: "yyyy-mm-dd"
+				format: "yyyy-mm-dd",
+				container : '.main_content',
 			});
 			var $form = $("form[name='theForm']");
 			var option = {
