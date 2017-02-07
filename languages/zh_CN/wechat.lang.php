@@ -155,6 +155,7 @@ return array(
 	'edit_customer_content'		=> '欢迎访问ECJia智能后台编辑客服帐号页面，在此页面可以进行编辑客服帐号操作。',
 	'edit_customer_help'		=> '关于编辑客服帐号帮助文档',
 	
+    'remove_kf_confirm'         => '您确定要删除该客服吗？',
 	'remove_customer_success'	=> '删除客服账号成功',
 	'get_customer_success'		=> '获取客服信息成功',
 	'get_online_customer_success' => '获取在线客服成功',
