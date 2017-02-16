@@ -128,7 +128,7 @@ class admin_oauth extends ecjia_admin {
 	 * 添加处理
 	 */
 	public function insert() {
-		$this->admin_priv('wechat_oauth_update');
+		$this->admin_priv('wechat_oauth_update', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -156,7 +156,7 @@ class admin_oauth extends ecjia_admin {
 	 * 编辑处理
 	 */
 	public function update() {
-		$this->admin_priv('wechat_oauth_update');
+		$this->admin_priv('wechat_oauth_update', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();

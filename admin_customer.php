@@ -167,7 +167,7 @@ class admin_customer extends ecjia_admin {
 	}
 	
 	public function insert() {
-		$this->admin_priv('wechat_customer_add');
+		$this->admin_priv('wechat_customer_add', ecjia::MSGTYPE_JSON);
 		
 		$kf_account = !empty($_POST['kf_account']) ? trim($_POST['kf_account']) : '';
 		$nickname = !empty($_POST['kf_nick']) ? trim($_POST['kf_nick']) : '';
@@ -265,7 +265,7 @@ class admin_customer extends ecjia_admin {
 	 * 编辑客服处理
 	 */
 	public function update() {
-		$this->admin_priv('wechat_customer_update');
+		$this->admin_priv('wechat_customer_update', ecjia::MSGTYPE_JSON);
 		
 		$id           = !empty($_POST['id'])          ? intval($_POST['id'])          : 0;
 		$kf_account   = !empty($_POST['kf_account'])  ? trim($_POST['kf_account'])    : '';
@@ -356,7 +356,7 @@ class admin_customer extends ecjia_admin {
 	}
 	
 	public function remove() {
-		$this->admin_priv('wechat_customer_delete');
+		$this->admin_priv('wechat_customer_delete', ecjia::MSGTYPE_JSON);
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
@@ -380,14 +380,14 @@ class admin_customer extends ecjia_admin {
 	}
 	
 	public function get_customer() {
-		$this->admin_priv('wechat_customer_manage');
+		$this->admin_priv('wechat_customer_manage', ecjia::MSGTYPE_JSON);
 		
 		$this->load_kf_list();
 		return $this->showmessage(RC_Lang::get('wechat::wechat.get_customer_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/admin_customer/init')));
 	}
 	
 	public function get_online_customer() {
-		$this->admin_priv('wechat_customer_manage');
+		$this->admin_priv('wechat_customer_manage', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -446,7 +446,7 @@ class admin_customer extends ecjia_admin {
 	}
 	
 	public function toggle_show() {
-		$this->admin_priv('wechat_customer_update');
+		$this->admin_priv('wechat_customer_update', ecjia::MSGTYPE_JSON);
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
@@ -479,7 +479,7 @@ class admin_customer extends ecjia_admin {
 	}
 	
 	public function edit_nick() {
-		$this->admin_priv('wechat_customer_update');
+		$this->admin_priv('wechat_customer_update', ecjia::MSGTYPE_JSON);
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
@@ -591,7 +591,8 @@ class admin_customer extends ecjia_admin {
 		$wechat_id = $platform_account->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
-			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			$this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			die();
 		}
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
@@ -601,7 +602,8 @@ class admin_customer extends ecjia_admin {
 		
 		$list = $wechat->getKflist();
 		if (RC_Error::is_error($list)) {
-			return $this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			$this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			die();
 		}
 		if (!empty($list)) {
 			foreach ($list['kf_list'] as $key => $val) {

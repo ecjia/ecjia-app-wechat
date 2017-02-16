@@ -87,7 +87,7 @@ class admin_record extends ecjia_admin {
 	
 	//查看用户客服消息记录
 	public function record_message() {
-		$this->admin_priv('wechat_record_manage');
+		$this->admin_priv('wechat_record_manage', ecjia::MSGTYPE_JSON);
 	
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -228,7 +228,7 @@ class admin_record extends ecjia_admin {
 	
 	//获取信息
 	public function read_message() {
-		$this->admin_priv('wechat_record_manage');
+		$this->admin_priv('wechat_record_manage', ecjia::MSGTYPE_JSON);
 	
 		$list = $this->get_message_list();
 		$message = count($list['item']) < 10 ? RC_Lang::get('wechat::wechat.no_more_message') : RC_Lang::get('wechat::wechat.searched');
@@ -314,7 +314,7 @@ class admin_record extends ecjia_admin {
 	
 	//获取客服会话聊天记录
 	public function get_customer_record() {
-		$this->admin_priv('wechat_record_manage');
+		$this->admin_priv('wechat_record_manage', ecjia::MSGTYPE_JSON);
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);

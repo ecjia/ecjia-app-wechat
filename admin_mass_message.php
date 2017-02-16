@@ -332,7 +332,7 @@ class admin_mass_message extends ecjia_admin {
 	 * 群发消息删除 1发送成功 2发送失败 3发送错误 4已删除
 	 */
 	public function mass_del() {
-		$this->admin_priv('wechat_message_manage');
+		$this->admin_priv('wechat_message_manage', ecjia::MSGTYPE_JSON);
 
 		$uuid             = platform_account::getCurrentUUID('wechat');
 		$wechat           = wechat_method::wechat_instance($uuid);

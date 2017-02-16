@@ -224,7 +224,7 @@ class admin_material extends ecjia_admin {
 	 * 图文添加数据插入
 	 */
 	public function insert() {
-		$this->admin_priv('wechat_material_add');
+		$this->admin_priv('wechat_material_add', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -382,7 +382,7 @@ class admin_material extends ecjia_admin {
 	}
 	
 	public function update() {
-		$this->admin_priv('wechat_material_update');
+		$this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -541,7 +541,7 @@ class admin_material extends ecjia_admin {
 	 * 删除图文封面图片
 	 */
 	public function remove_file() {
-		$this->admin_priv('wechat_material_delete');
+		$this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
 		
 		$id = $_GET['id'];
 		$info = $this->wm_db->find(array('id' => $id));
@@ -570,7 +570,7 @@ class admin_material extends ecjia_admin {
 	 * 删除图文素材
 	 */
 	public function remove() {
-		$this->admin_priv('wechat_material_delete');
+		$this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
@@ -621,7 +621,7 @@ class admin_material extends ecjia_admin {
 	 * 添加图片素材
 	 */
 	public function picture_insert() {
-		$this->admin_priv('wechat_material_add');
+		$this->admin_priv('wechat_material_add', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -687,7 +687,7 @@ class admin_material extends ecjia_admin {
 	 * 删除图片
 	 */
 	public function picture_remove() {
-		$this->admin_priv('wechat_material_delete');
+		$this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
 	
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
@@ -746,7 +746,7 @@ class admin_material extends ecjia_admin {
 	 * 语音添加
 	 */
 	public function voice_insert() {
-		$this->admin_priv('wechat_material_add');
+		$this->admin_priv('wechat_material_add', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -811,7 +811,7 @@ class admin_material extends ecjia_admin {
 	 * 删除语音
 	 */
 	public function voice_remove() {
-		$this->admin_priv('wechat_material_delete');
+		$this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
 	
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
@@ -896,7 +896,7 @@ class admin_material extends ecjia_admin {
 	}
 	
 	public function video_insert() {
-		$this->admin_priv('wechat_material_add');
+		$this->admin_priv('wechat_material_add', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -1034,7 +1034,7 @@ class admin_material extends ecjia_admin {
 	 * 视频素材更新
 	 */
 	public function video_update() {
-		$this->admin_priv('wechat_material_update');
+		$this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -1111,7 +1111,7 @@ class admin_material extends ecjia_admin {
 	 * 删除视频素材
 	 */
 	public function video_remove() {
-		$this->admin_priv('wechat_material_delete');
+		$this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
 	
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$wechat = wechat_method::wechat_instance($uuid);
@@ -1156,7 +1156,7 @@ class admin_material extends ecjia_admin {
 	 * 编辑素材名称或文件名称
 	 */
 	public function edit_file_name() {
-		$this->admin_priv('wechat_material_update');
+		$this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 		
 		$id   = isset($_GET['id'])    ? intval($_GET['id'])   : 0;
 		$val  = isset($_GET['val'])   ? $_GET['val']          : '';

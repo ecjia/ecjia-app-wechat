@@ -120,7 +120,7 @@ class admin_qrcode extends ecjia_admin {
 	 * 添加二维码处理
 	 */
 	public function insert() {
-		$this->admin_priv('wechat_qrcode_add');
+		$this->admin_priv('wechat_qrcode_add', ecjia::MSGTYPE_JSON);
 	
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -152,7 +152,7 @@ class admin_qrcode extends ecjia_admin {
 	 * 删除二维码
 	 */
 	public function remove()  {
-		$this->admin_priv('wechat_qrcode_delete');
+		$this->admin_priv('wechat_qrcode_delete', ecjia::MSGTYPE_JSON);
 		
 		$id = intval($_GET['id']);
 		$function = $this->db_qrcode->where(array('id' => $id))->get_field('function');
@@ -167,7 +167,7 @@ class admin_qrcode extends ecjia_admin {
 	 * 批量删除二维码
 	 */
 	public function batch() {
-		$this->admin_priv('wechat_qrcode_delete');
+		$this->admin_priv('wechat_qrcode_delete', ecjia::MSGTYPE_JSON);
 		
 		$info = $this->db_qrcode->in(array('id' => $_POST['id']))->select();
 		
@@ -183,7 +183,7 @@ class admin_qrcode extends ecjia_admin {
 	 * 更新并获取二维码
 	 */
 	public function qrcode_get() {
-		$this->admin_priv('wechat_qrcode_update');
+		$this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
 		
 		$this->admin_priv('wechat_subscribe_manage');
 		
@@ -237,7 +237,7 @@ class admin_qrcode extends ecjia_admin {
 	 * 切换状态
 	 */
 	public function toggle_show() {
-		$this->admin_priv('wechat_qrcode_update');
+		$this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
 	
 		$id     = intval($_POST['id']);
 		$val    = intval($_POST['val']);
@@ -257,7 +257,7 @@ class admin_qrcode extends ecjia_admin {
 	 * 手动排序
 	 */
 	public function edit_sort() {
-		$this->admin_priv('wechat_qrcode_update');
+		$this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
 
 		$id    = intval($_POST['pk']);
 		$sort  = trim($_POST['value']);

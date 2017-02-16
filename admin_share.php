@@ -97,7 +97,7 @@ class admin_share extends ecjia_admin {
 	 * 添加扫码引荐处理
 	 */
 	public function insert() {
-		$this->admin_priv('wechat_share_add');
+		$this->admin_priv('wechat_share_add', ecjia::MSGTYPE_JSON);
 	
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -120,7 +120,7 @@ class admin_share extends ecjia_admin {
 	 * 删除扫码引荐
 	 */
 	public function remove()  {
-		$this->admin_priv('wechat_share_delete');
+		$this->admin_priv('wechat_share_delete', ecjia::MSGTYPE_JSON);
 		
 		$id = intval($_GET['id']);
 		$username = $this->db_qrcode->where(array('id' =>$id))->get_field('username');
@@ -134,7 +134,7 @@ class admin_share extends ecjia_admin {
 	 * 手动排序
 	 */
 	public function edit_sort() {
-		$this->admin_priv('wechat_share_update');
+		$this->admin_priv('wechat_share_update', ecjia::MSGTYPE_JSON);
 
 		$id    = intval($_POST['pk']);
 		$sort  = trim($_POST['value']);

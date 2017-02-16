@@ -70,7 +70,7 @@ class admin_template extends ecjia_admin {
 	 * 添加模板处理
 	 */
 	public function insert() {
-		$this->admin_priv('message_template_add');
+		$this->admin_priv('message_template_add', ecjia::MSGTYPE_JSON);
 		
 		$template_code = trim($_POST['template_code']);
 		$subject       = trim($_POST['subject']);
@@ -120,7 +120,7 @@ class admin_template extends ecjia_admin {
 	 * 保存模板内容
 	 */
 	public function update() {
-		$this->admin_priv('message_template_update');
+		$this->admin_priv('message_template_update', ecjia::MSGTYPE_JSON);
 		
 		$id			   = intval($_POST['id']);
 		$template_code = trim($_POST['template_code']);
@@ -153,7 +153,7 @@ class admin_template extends ecjia_admin {
 	 * 删除消息模板
 	 */
 	public function remove()  {
-		$this->admin_priv('message_template_delete');
+		$this->admin_priv('message_template_delete', ecjia::MSGTYPE_JSON);
 	
 		$id = intval($_GET['id']);
 		$template_subject = $this->db_mail->where(array('template_id' =>$id))->get_field('template_subject');

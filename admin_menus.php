@@ -173,7 +173,7 @@ class admin_menus extends ecjia_admin {
 	 * 添加菜单处理
 	 */
 	public function insert() {
-		$this->admin_priv('wechat_menus_add');
+		$this->admin_priv('wechat_menus_add', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -258,7 +258,7 @@ class admin_menus extends ecjia_admin {
 	 * 编辑菜单处理
 	 */
 	public function update() {
-		$this->admin_priv('wechat_menus_update');
+		$this->admin_priv('wechat_menus_update', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -298,7 +298,7 @@ class admin_menus extends ecjia_admin {
 	 * 生成自定义菜单
 	 */
 	public function sys_menu() {
-		$this->admin_priv('wechat_menus_manage');
+		$this->admin_priv('wechat_menus_manage', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -367,7 +367,7 @@ class admin_menus extends ecjia_admin {
 	 * 获取自定义菜单
 	 */
 	public function get_menu() {
-		$this->admin_priv('wechat_menus_manage');
+		$this->admin_priv('wechat_menus_manage', ecjia::MSGTYPE_JSON);
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
@@ -425,9 +425,7 @@ class admin_menus extends ecjia_admin {
 	 * 删除自定义菜单
 	 */
 	public function delete_menu() {
-		$this->admin_priv('wechat_menus_delete');
-		
-		$this->admin_priv('wechat_subscribe_manage');
+		$this->admin_priv('wechat_menus_delete', ecjia::MSGTYPE_JSON);
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		
@@ -453,7 +451,7 @@ class admin_menus extends ecjia_admin {
 	 * 删除菜单
 	 */
 	public function remove()  {
-		$this->admin_priv('wechat_menus_delete');
+		$this->admin_priv('wechat_menus_delete', ecjia::MSGTYPE_JSON);
 		
 		$id = intval($_GET['id']);
 		$name = $this->db_menu->where(array('id' =>$id))->get_field('name');
@@ -473,7 +471,7 @@ class admin_menus extends ecjia_admin {
 	 * 手动排序
 	 */
 	public function edit_sort() {
-		$this->admin_priv('wechat_menus_update');
+		$this->admin_priv('wechat_menus_update', ecjia::MSGTYPE_JSON);
 		
 		$id    = intval($_POST['pk']);
 		$sort  = trim($_POST['value']);
@@ -497,7 +495,7 @@ class admin_menus extends ecjia_admin {
 	 * 切换是否显示
 	 */
 	public function toggle_show() {
-		$this->admin_priv('wechat_menus_update');
+		$this->admin_priv('wechat_menus_update', ecjia::MSGTYPE_JSON);
 	
 		$id     = intval($_POST['id']);
 		$val    = intval($_POST['val']);

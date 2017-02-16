@@ -122,7 +122,7 @@ class admin_response extends ecjia_admin {
 			'reply_type' => $reply_type
 		);
 		if (empty($id)){
-			$this->admin_priv('wechat_response_add');
+			$this->admin_priv('wechat_response_add', ecjia::MSGTYPE_JSON);
 			
 			//添加
 			$id = $this->wr_db->insert($data);
@@ -145,7 +145,7 @@ class admin_response extends ecjia_admin {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
-			$this->admin_priv('wechat_response_update');
+			$this->admin_priv('wechat_response_update', ecjia::MSGTYPE_JSON);
 			
 			//更新
 			$update = $this->wr_db->where(array('id' => $id))->update($data);
@@ -346,7 +346,7 @@ class admin_response extends ecjia_admin {
 			'reply_type' => $reply_type
 		);
 		if (empty($id)){
-			$this->admin_priv('wechat_response_add');
+			$this->admin_priv('wechat_response_add', ecjia::MSGTYPE_JSON);
 			
 			//添加
 			$id = $this->wr_db->insert($data);
@@ -371,7 +371,7 @@ class admin_response extends ecjia_admin {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
-			$this->admin_priv('wechat_response_update');
+			$this->admin_priv('wechat_response_update', ecjia::MSGTYPE_JSON);
 			
 			//更新
 			$update = $this->wr_db->where(array('id' => $id))->update($data);
@@ -549,16 +549,15 @@ class admin_response extends ecjia_admin {
 			}
 		}
 		if (!empty($id)) {
-			$this->admin_priv('wechat_response_update');
-			
-			$this->admin_priv('wechat_response_delete');
+			$this->admin_priv('wechat_response_update', ecjia::MSGTYPE_JSON);
+			$this->admin_priv('wechat_response_delete', ecjia::MSGTYPE_JSON);
 				
 			$update = $this->wr_db->where(array('id' => $id))->update($data);
 			$this->wrk_db->where(array('rid' => $id))->delete();
 				
 			ecjia_admin::admin_log($data['rule_name'], 'edit', 'reply_keywords_rule');
 		} else {
-			$this->admin_priv('wechat_response_add');
+			$this->admin_priv('wechat_response_add', ecjia::MSGTYPE_JSON);
 			
 			$data['add_time'] = RC_Time::gmtime();
 			$id = $this->wr_db->insert($data);
@@ -585,7 +584,7 @@ class admin_response extends ecjia_admin {
 	 * 删除规则
 	 */
 	public function remove_rule() {
-		$this->admin_priv('wechat_response_delete');
+		$this->admin_priv('wechat_response_delete', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
