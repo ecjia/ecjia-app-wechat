@@ -183,8 +183,8 @@ class admin_menus extends ecjia_admin {
 		$type 	= !empty($_POST['type']) 	? $_POST['type'] 		: '';
 		$key	= !empty($_POST['key']) 	? $_POST['key'] 		: '';
 		$url 	= !empty($_POST['url']) 	? $_POST['url'] 		: '';
-		$status = !empty($_POST['status']) 	? $_POST['status'] 		: '';
-		$sort 	= !empty($_POST['sort']) 	? $_POST['sort'] 		: '';
+		$status = !empty($_POST['status']) 	? intval($_POST['status']) 	: 0;
+		$sort 	= !empty($_POST['sort']) 	? intval($_POST['sort']) 	: 0;
 		
 		$data = array(
 			'wechat_id'	=> $wechat_id,
@@ -268,9 +268,9 @@ class admin_menus extends ecjia_admin {
 		$type 	= !empty($_POST['type']) 	? $_POST['type'] 		: '';
 		$key	= !empty($_POST['key']) 	? $_POST['key'] 		: '';
 		$url 	= !empty($_POST['url']) 	? $_POST['url'] 		: '';
-		$status = !empty($_POST['status']) 	? $_POST['status'] 		: '';
-		$sort 	= !empty($_POST['sort']) 	? $_POST['sort'] 		: '';
-		$menu_id = !empty($_POST['menu_id']) ? intval($_POST['menu_id']) : 0;
+		$status = !empty($_POST['status']) 	? intval($_POST['status']) 		: 0;
+		$sort 	= !empty($_POST['sort']) 	? intval($_POST['sort']) 		: 0;
+		$menu_id = !empty($_POST['menu_id']) ? intval($_POST['menu_id']) 	: 0;
 		
 		$data = array(
 			'pid'		=>	$pid,

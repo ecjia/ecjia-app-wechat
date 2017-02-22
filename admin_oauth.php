@@ -135,7 +135,7 @@ class admin_oauth extends ecjia_admin {
 		
 		$oauth_status 		= isset($_POST['oauth_status']) 		? $_POST['oauth_status'] 		: '';
 		$oauth_redirecturi 	= isset($_POST['oauth_redirecturi']) 	? $_POST['oauth_redirecturi'] 	: '';
-		$oauth_count 		= isset($_POST['oauth_count']) 			? $_POST['oauth_count'] 		: '';
+		$oauth_count 		= isset($_POST['oauth_count']) 			? intval($_POST['oauth_count']) : 0;
 		$last_time 			= RC_Time::gmtime();
 		
 		$data = array(
@@ -163,7 +163,7 @@ class admin_oauth extends ecjia_admin {
 		
 		$oauth_status 		= isset($_POST['oauth_status']) 		? $_POST['oauth_status'] 		: '';
 		$oauth_redirecturi 	= isset($_POST['oauth_redirecturi']) 	? $_POST['oauth_redirecturi'] 	: '';
-		$oauth_count 		= isset($_POST['oauth_count']) 			? $_POST['oauth_count'] 		: '';
+		$oauth_count 		= isset($_POST['oauth_count']) 			? intval($_POST['oauth_count']) : 0;
 		$last_time 			= RC_Time::gmtime();
 		
 		$data = array(

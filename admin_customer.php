@@ -471,7 +471,7 @@ class admin_customer extends ecjia_admin {
 			'status' 				=> $val,
 			'kf_wx'	 				=> '',
 			'invite_wx'				=> '',
-			'invite_expire_time' 	=> '',
+			'invite_expire_time' 	=> 0,
 			'invite_status'			=> ''
 		);
 		$this->db_customer->where(array('id' => $id))->update($data);
@@ -632,7 +632,7 @@ class admin_customer extends ecjia_admin {
 					$data['kf_wx']		= !empty($v['kf_wx']) ? $v['kf_wx'] : '';
 						
 					$data['invite_wx']			= !empty($v['invite_wx']) 			? $v['invite_wx'] 			: '';
-					$data['invite_expire_time']	= !empty($v['invite_expire_time']) 	? $v['invite_expire_time'] 	: '';
+					$data['invite_expire_time']	= !empty($v['invite_expire_time']) 	? $v['invite_expire_time'] 	: 0;
 					$data['invite_status']		= !empty($v['invite_status']) 		? $v['invite_status'] 		: '';
 					$data['kf_headimgurl'] 		= $v['kf_headimgurl'];
 					
@@ -657,7 +657,7 @@ class admin_customer extends ecjia_admin {
 					$data['status'] 		= 1;
 						
 					$data['invite_wx']			= !empty($v['invite_wx']) 			? $v['invite_wx'] 			: '';
-					$data['invite_expire_time']	= !empty($v['invite_expire_time']) 	? $v['invite_expire_time'] 	: '';
+					$data['invite_expire_time']	= !empty($v['invite_expire_time']) 	? $v['invite_expire_time'] 	: 0;
 					$data['invite_status']		= !empty($v['invite_status']) 		? $v['invite_status'] 		: '';
 					$this->db_customer->insert($data);
 				}

@@ -152,7 +152,7 @@ class admin_record extends ecjia_admin {
 		$openid_list = $wechat_user_db->where(array('wechat_id' => $wechat_id))->get_field('openid', true);
 		$where = 'cs.opercode = 2003 and cs.wechat_id ='.$wechat_id;
 	
-		$filter['kf_account'] = !empty($_GET['kf_account']) ? $_GET['kf_account']     : 0;
+		$filter['kf_account'] = !empty($_GET['kf_account']) ? $_GET['kf_account']     : '';
 		$filter['status']     = !empty($_GET['status'])     ? intval($_GET['status']) : 1;
 		
 		if ($filter['kf_account']) {

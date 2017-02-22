@@ -238,11 +238,11 @@ class admin_material extends ecjia_admin {
 		}
 		$title 		= !empty($_POST['title']) 	? trim($_POST['title']) 	: '';
 		$author 	= !empty($_POST['author']) 	? trim($_POST['author']) 	: '';
-		$is_show 	= !empty($_POST['is_show']) ? $_POST['is_show'] 		: '';
+		$is_show 	= !empty($_POST['is_show']) ? intval($_POST['is_show']) : 0;
 		$digest 	= !empty($_POST['digest']) 	? $_POST['digest'] 			: '';
 		$link 		= !empty($_POST['link']) 	? trim($_POST['link']) 		: '';
 		$content 	= !empty($_POST['content']) ? $_POST['content'] 		: '';
-		$sort 		= !empty($_POST['sort']) 	? $_POST['sort'] 			: '';
+		$sort 		= !empty($_POST['sort']) 	? intval($_POST['sort']) 	: 0;
 		
 		if (empty($title)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.enter_images_title'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -396,11 +396,11 @@ class admin_material extends ecjia_admin {
 		}
 		$title 		= !empty($_POST['title']) 	? trim($_POST['title']) 	: '';
 		$author 	= !empty($_POST['author']) 	? trim($_POST['author']) 	: '';
-		$is_show 	= !empty($_POST['is_show']) ? $_POST['is_show'] 		: '';
+		$is_show 	= !empty($_POST['is_show']) ? intval($_POST['is_show']) : 0;
 		$digest 	= !empty($_POST['digest']) 	? $_POST['digest'] 			: '';
 		$link 		= !empty($_POST['link']) 	? trim($_POST['link']) 		: '';
 		$content 	= !empty($_POST['content']) ? $_POST['content'] 		: '';
-		$sort 		= !empty($_POST['sort']) 	? $_POST['sort'] 			: '';
+		$sort 		= !empty($_POST['sort']) 	? intval($_POST['sort']) 	: 0;
 		$id			= !empty($_POST['id'])		? intval($_POST['id'])		: 0;
 		
 		$index = !empty($_POST['index']) ? intval($_POST['index']) : 0;
@@ -774,7 +774,7 @@ class admin_material extends ecjia_admin {
 		$data = array(
 			'title' 	=> '',
 			'author' 	=> '',
-			'is_show' 	=> '',
+			'is_show' 	=> 0,
 			'link' 		=> '',
 			'sort' 		=> 0,
 			'digest' 	=> '',

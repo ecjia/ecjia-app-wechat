@@ -106,9 +106,9 @@ class admin_share extends ecjia_admin {
 			'wechat_id'			=>	$wechat_id,
 			'username'			=>	trim($_POST['username']),
 			'scene_id'			=>	intval($_POST['scene_id']),
-	  		'expire_seconds'	=>	$_POST['expire_seconds'],
+	  		'expire_seconds'	=>	intval($_POST['expire_seconds']),
 			'function'			=>	$_POST['functions'],
-			'sort'  			=>	$_POST['sort']
+			'sort'  			=>	intval($_POST['sort'])
 		);
 		$this->db_qrcode->insert($data);
 		

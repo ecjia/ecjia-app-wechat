@@ -125,13 +125,13 @@ class admin_qrcode extends ecjia_admin {
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
 		
-		$type 			= isset($_POST['type']) 			? $_POST['type'] 			: '';
-		$expire_seconds = isset($_POST['expire_seconds']) 	? $_POST['expire_seconds'] 	: '';
-		$functions 		= isset($_POST['functions']) 		? $_POST['functions'] 		: '';
-		$scene_id 		= isset($_POST['scene_id']) 		? $_POST['scene_id'] 		: '';
-		$status 		= isset($_POST['status']) 			? $_POST['status'] 			: '';
-		$sort 			= isset($_POST['sort']) 			? $_POST['sort'] 			: '';
-		
+		$type 			= isset($_POST['type']) 			? intval($_POST['type']) 			: 0;
+		$expire_seconds = isset($_POST['expire_seconds']) 	? intval($_POST['expire_seconds']) 	: 0;
+		$functions 		= isset($_POST['functions']) 		? $_POST['functions'] 				: '';
+		$scene_id 		= isset($_POST['scene_id']) 		? intval($_POST['scene_id']) 		: 0;
+		$status 		= isset($_POST['status']) 			? intval($_POST['status']) 			: 0;
+		$sort 			= isset($_POST['sort']) 			? intval($_POST['sort']) 			: 0;
+
 		$data = array(
 			'wechat_id'			=>	$wechat_id,
 			'type'				=>	$type,

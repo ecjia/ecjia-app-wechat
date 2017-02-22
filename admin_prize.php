@@ -226,7 +226,7 @@ class admin_prize extends ecjia_admin {
 		if ($activity_type) {
 			$where['activity_type'] = $activity_type;
 		}
-		$count = $db_prize->where($where)->count ();
+		$count = $db_prize->where($where)->count();
 		$page = new ecjia_page($count, 10, 5);
 		
 		$data = $db_prize->where($where)->order('dateline DESC')->limit($page->limit())->select();
