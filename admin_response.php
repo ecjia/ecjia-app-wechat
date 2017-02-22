@@ -20,7 +20,6 @@ class admin_response extends ecjia_admin {
 		$this->wr_viewdb = RC_Loader::load_app_model('wechat_reply_viewmodel');
 		
 		RC_Loader::load_app_class('platform_account', 'platform', false);
-		
 		RC_Loader::load_app_func('global');
 		assign_adminlog_content();
 		

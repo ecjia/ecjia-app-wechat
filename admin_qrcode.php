@@ -141,7 +141,6 @@ class admin_qrcode extends ecjia_admin {
 			'status' 	 		=>	$status,
 			'sort'  			=>	$sort
 		);
-
 		$this->db_qrcode->insert($data);
 		
 		ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $functions), 'add', 'qrcode');

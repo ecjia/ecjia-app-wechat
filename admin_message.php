@@ -53,7 +53,6 @@ class admin_message extends ecjia_admin {
 	private $db_platform_account;
 	private $wu_viewdb;
 	private $wechat_user_tag;
-	private $wechat_user_group;
 	private $wechat_tag;
 	
 	public function __construct() {
@@ -66,7 +65,6 @@ class admin_message extends ecjia_admin {
 		$this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
 		$this->wu_viewdb = RC_Loader::load_app_model('wechat_user_viewmodel');
 		$this->wechat_user_tag = RC_Loader::load_app_model('wechat_user_tag_model');
-		$this->wechat_user_group = RC_Loader::load_app_model('wechat_user_group_model');
 		$this->wechat_tag = RC_Loader::load_app_model('wechat_tag_model');
 		
 		RC_Loader::load_app_class('platform_account', 'platform', false);

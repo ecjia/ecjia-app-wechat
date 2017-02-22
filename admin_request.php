@@ -5,8 +5,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * ECJIA API请求次数统计
  */
 class admin_request extends ecjia_admin {
-	private $db_request;
-
 	public function __construct() {
 		parent::__construct();
 		
@@ -14,7 +12,6 @@ class admin_request extends ecjia_admin {
 		RC_Loader::load_app_func('global');
 		assign_adminlog_content();
 
-		$this->db_request = RC_Loader::load_app_model('wechat_request_times_model');
 		RC_Loader::load_app_class('platform_account', 'platform', false);
 
 		/* 加载全局 js/css */

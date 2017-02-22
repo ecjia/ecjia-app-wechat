@@ -12,7 +12,6 @@ class admin_share extends ecjia_admin {
 		parent::__construct();
 		
 		RC_Lang::load('wechat');
-		
 		RC_Loader::load_app_func('global');
 		assign_adminlog_content();
 

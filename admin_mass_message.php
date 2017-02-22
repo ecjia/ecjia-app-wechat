@@ -52,7 +52,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class admin_mass_message extends ecjia_admin {
 	private $wm_db;
 	private $wechat_tag;
-	private $wechat_user_db;
 	private $wechat_mass;
 	private $db_platform_account;
 	
@@ -63,7 +62,6 @@ class admin_mass_message extends ecjia_admin {
 		
 		$this->wm_db = RC_Loader::load_app_model('wechat_media_model');
 		$this->wechat_tag = RC_Loader::load_app_model('wechat_tag_model');
-		$this->wechat_user_db = RC_Loader::load_app_model('wechat_user_model');
 		$this->wechat_mass = RC_Loader::load_app_model('wechat_mass_history_model');
 		
 		$this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
