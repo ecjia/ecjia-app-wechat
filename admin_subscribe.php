@@ -818,24 +818,28 @@ class admin_subscribe extends ecjia_admin {
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-		$wechat = wechat_method::wechat_instance($uuid);
 		
-		$list = $wechat->getTags();
-		if (RC_Error::is_error($list)) {
-			return $this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
-		if (!empty($list['tags'])) {
-			$where['wechat_id'] = $wechat_id;
-			$this->wechat_tag->where($where)->delete();
-			foreach ($list['tags'] as $key => $val) {
-				$data['wechat_id']  = $wechat_id;
-				$data['tag_id']     = $val['id'];
-				$data['name']       = $val['name'] == RC_Lang::get('wechat::wechat.star_group') ? RC_Lang::get('wechat::wechat.star_user') : $val['name'];
-				$data['count']      = $val['count'];
-				$this->wechat_tag->insert($data);
-			}
-		}
-		return true;
+		try {
+    		$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+    		$list = $wechat->user_tag->lists()->toArray();
+    		
+    		if (!empty($list['tags'])) {
+    			$where['wechat_id'] = $wechat_id;
+    			$this->wechat_tag->where($where)->delete();
+    			foreach ($list['tags'] as $key => $val) {
+    				$data['wechat_id']  = $wechat_id;
+    				$data['tag_id']     = $val['id'];
+    				$data['name']       = $val['name'] == RC_Lang::get('wechat::wechat.star_group') ? RC_Lang::get('wechat::wechat.star_user') : $val['name'];
+    				$data['count']      = $val['count'];
+    				$this->wechat_tag->insert($data);
+    			}
+    		}
+    		
+    		return true;
+		} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+		     
+		    return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}		
 	}
 }
 
