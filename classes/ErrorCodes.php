@@ -135,12 +135,8 @@ class ErrorCodes {
     );
     
     
-    public function getError($code) {
-        $code = str_replace('wechat_error_', '', $code);
-        if (isset(self::$error_codes[$code])) {
-            return self::$error_codes[$code];
-        }
-        return null;
+    public static function getError($code) {
+        return array_get(self::$error_codes, $code, '未知错误');
     }
     
 }

@@ -361,7 +361,7 @@ class admin_menus extends ecjia_admin {
                 
 			} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
 			    
-			    return $this->showmessage(wechat_method::wechat_error($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			    return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
 	}
@@ -425,7 +425,7 @@ class admin_menus extends ecjia_admin {
 			    return $this->showmessage(RC_Lang::get('wechat::wechat.get_menu_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/admin_menus/init')));
 			} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
 			    
-			    return $this->showmessage(wechat_method::wechat_error($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			    return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
 	}
@@ -453,7 +453,7 @@ class admin_menus extends ecjia_admin {
 		        return $this->showmessage(RC_Lang::get('wechat::wechat.clear_menu_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/admin_menus/init')));
 	        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
 	             
-	            return $this->showmessage(wechat_method::wechat_error($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+	            return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 	        }
 		}
 	}
