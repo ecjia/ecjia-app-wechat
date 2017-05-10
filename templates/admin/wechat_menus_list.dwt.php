@@ -49,7 +49,7 @@
 			<table class="table table-striped smpl_tbl table-hide-edit" style="table-layout:fixed;">
 				<thead>
 					<tr>
-						<th class="w250">{lang key='wechat::wechat.menu_name'}</th>
+						<th class="w200">{lang key='wechat::wechat.menu_name'}</th>
 						<th class="w110">{lang key='wechat::wechat.menu_keywords'}</th>
 						<th class="w200">{lang key='wechat::wechat.menu_url'}</th>
 						<th class="w80">{lang key='wechat::wechat.status'}</th>
