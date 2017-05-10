@@ -63,16 +63,16 @@ class admin_request extends ecjia_admin {
 			$list = $this->get_list();
 			if (!empty($limits['item'])) {
 				foreach ($limits['item'] as $k => $v) {
-					//次数无限制的不显示
-					if ($v['times'] == '') {
-						unset($limits['item'][$k]);
-					}
 					if (!empty($list)) {
 						foreach ($list as $key => $val) {
 							if ($k == $val['api_name']) {
 								$limits['item'][$k]['info'] = $val;
 							}
 						}	
+					}
+					//次数无限制的不显示
+					if ($v['times'] == '') {
+						unset($limits['item'][$k]);
 					}
 				}
 			}
