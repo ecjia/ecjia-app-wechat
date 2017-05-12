@@ -321,7 +321,7 @@ class admin_subscribe extends ecjia_admin {
 		        } else {
 		            $num = ceil($wechat_user['total'] / 10000);
 		            for ($i = 1; $i < $num; $i ++) {
-		                $wechat_user1 = $wechat->user->lists($wechat_user['next_openid']);
+		                $wechat_user1 = $wechat->user->lists($wechat_user['next_openid'])->toArray();
 		                $wechat_user_list = array_merge($wechat_user['data']['openid'], $wechat_user1['data']['openid']);
 		            }
 		        }
