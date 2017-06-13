@@ -436,6 +436,7 @@ class admin_subscribe extends ecjia_admin {
 		        $info2 = $wechat->user->batchGet($arr1)->toArray();
 		        foreach ($info2['user_info_list'] as $key => $v) {
 		            $info2['user_info_list'][$key]['wechat_id'] = $wechat_id;
+		            $info2['user_info_list'][$key]['headimgurl'] = is_ssl() && !empty($v['headimgurl']) ? str_replace('http://', 'https://', $v['headimgurl']) : $v['headimgurl'];
 		            $uid = $this->wechat_user_db->insert($info2['user_info_list'][$key]);
 		            if (!empty($v['tagid_list'])) {
 		                foreach ($v['tagid_list'] as $val) {
@@ -459,6 +460,7 @@ class admin_subscribe extends ecjia_admin {
 		        $info3 = $wechat->user->batchGet($arr2)->toArray();
 		        foreach ($info3['user_info_list'] as $key => $v) {
 		            $info3['user_info_list'][$key]['subscribe'] = 1;
+		            $info3['user_info_list'][$key]['headimgurl'] = is_ssl() && !empty($v['headimgurl']) ? str_replace('http://', 'https://', $v['headimgurl']) : $v['headimgurl'];
 		            $where['wechat_id'] = $wechat_id;
 		            $where['openid'] = $v['openid'];
 		            $this->wechat_user_db->where($where)->update($info3['user_info_list'][$key]);
