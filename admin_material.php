@@ -719,8 +719,8 @@ class admin_material extends ecjia_admin {
 		//图片素材
 		if ($info['type'] == 'image') {
 			//删除图片
-			if (!empty($info['file']) && file_exists(RC_Upload::upload_path($info['file']))) {
-				$disk = RC_Filesystem::disk();
+			$disk = RC_Filesystem::disk();
+			if (!empty($info['file']) && $disk->exists(RC_Upload::upload_path($info['file']))) {
 				$disk->delete(RC_Upload::upload_path($info['file']));
 			}
 			
@@ -841,8 +841,8 @@ class admin_material extends ecjia_admin {
 		}
 		
 		//删除语音
-		if (!empty($info['file']) && file_exists(RC_Upload::upload_path($info['file']))) {
-			$disk = RC_Filesystem::disk();
+		$disk = RC_Filesystem::disk();
+		if (!empty($info['file']) && $disk->exists(RC_Upload::upload_path($info['file']))) {
 			$disk->delete(RC_Upload::upload_path($info['file']));
 		}
 		$this->wm_db->where(array('id' => $id))->delete();
@@ -1141,8 +1141,8 @@ class admin_material extends ecjia_admin {
 		}
 		
 		//删除视频
-		if (!empty($info['file']) && file_exists(RC_Upload::upload_path($info['file']))) {
-			$disk = RC_Filesystem::disk();
+		$disk = RC_Filesystem::disk();
+		if (!empty($info['file']) && $disk->exists(RC_Upload::upload_path($info['file']))) {
 			$disk->delete(RC_Upload::upload_path($info['file']));
 		}
 	
