@@ -35,7 +35,8 @@
 			<div class="ecjia-login-b">
 			    <div class="around">
 			        <input type="hidden" name="openid" value="{$openid}">
-			        <a class="ecjia-bind-login btn" data-url="{url path='wechat/mobile_userbind/bind_login_insert'}">关联</a>
+			         <input type="hidden" name="uuid" value="{$uuid}">
+			        <a class="ecjia-bind-login btn" href="{url path='wechat/mobile_userbind/bind_login_insert'}">关联</a>
 			    </div>	
 			</div>
 		</div>
