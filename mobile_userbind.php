@@ -102,13 +102,12 @@ class mobile_userbind extends ecjia_front {
     	$user_profile = $wechat_user->getWechatUser();
     	
     	$connect_user  = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
-    	$connect_user->saveOpenId('', '', $user_profile, 7200);
-    	
+    	$connect_user->saveOpenId('', '', serialize($user_profile), 7200);
         /*创建用户*/
 		$username = $connect_user->getGenerateUserName();
 		$password = $connect_user->getGeneratePassword();
 		$email    = $connect_user->getGenerateEmail();
-
+		
         $user_info = RC_Api::api('user', 'add_user', array('username' => $username, 'password' => $password, 'email' => $email, 'sex' => $sex, 'reg_time' => RC_Time::gmtime()));
        
         if (is_ecjia_error($user_info)) {
@@ -172,7 +171,7 @@ class mobile_userbind extends ecjia_front {
     		}
     		
     		$connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
-    		$connect_user->saveOpenId('', '', $user_profile, 7200);
+    		$connect_user->saveOpenId('', '', serialize($user_profile), 7200);
     		
     		$result = $connect_user->bindUser($row['user_id']);
     		if ($result) {
