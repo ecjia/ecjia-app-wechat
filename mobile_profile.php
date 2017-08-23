@@ -62,19 +62,31 @@ class mobile_profile extends ecjia_front {
       
     }
     
-    
     public function init() {
     	$openid = trim($_GET['openid']);
     	$uuid   = trim($_GET['uuid']);
     	
-    	$account = platform_account::make($uuid);
-    	$wechat_id = $account->getAccountID();
+    	$account     = platform_account::make($uuid);
+    	$wechat_id   = $account->getAccountID();
     	$wechat_user = new wechat_user($wechat_id, $openid);
-    	$data['wechat_image'] 	= $wechat_user->getImage();
-    	$data['wechat_nickname'] = $wechat_user->getNickname();
+    	$unionid     = $wechat_user->getUnionid();
+  
+    	$connect_user  = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
+    	$user_info = RC_DB::table('users')->where('user_id', $connect_user->getUserId())->select('user_name', 'email', 'mobile_phone', 'user_rank')->first();
+    
+    	$db_user_rank = RC_Model::model('user/user_rank_model');
+    	if ($user_info['user_rank'] == 0) {
+    		// 非特殊等级，根据等级积分计算用户等级（注意：不包括特殊等级）
+    		$row = $db_user_rank->field('rank_id, rank_name')->find(array('special_rank' => 0 , 'min_points' => array('elt' => intval($user_info['rank_points'])) , 'max_points' => array('gt' => intval($user_info['rank_points']))));
+    	} else {
+    		// 特殊等级
+    		$row = $db_user_rank->field('rank_id, rank_name')->find(array('rank_id' => $user_info[user_rank]));
+    	}
+    	$user_info['user_rank_name'] = $row['rank_name'];
+    	$user_info['user_rank_id']   = $row['rank_id'];
+    	$user_info['wechat_image'] = $wechat_user->getImage();
+    	$this->assign('user_info', $user_info);
     	
-    	$this->assign('data', $data);
-
     	$this->assign('icon_wechat_user', RC_App::apps_url('statics/front/images/icon_wechat_user.png', __FILE__));
         $this->display(
             RC_Package::package('app::wechat')->loadTemplate('front/bind_user_profile.dwt', true)

@@ -174,7 +174,7 @@ class mobile_userbind extends ecjia_front {
     		
     		$result = $connect_user->bindUser($row['user_id']);
     		if ($result) {
-    			return ecjia_front::$controller->showmessage('恭喜您，关联成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init')));
+    			return ecjia_front::$controller->showmessage('恭喜您，关联成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid))));
     		} else {
     			return ecjia_front::$controller->showmessage('抱歉，关联失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     		}
