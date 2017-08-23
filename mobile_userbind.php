@@ -70,15 +70,14 @@ class mobile_userbind extends ecjia_front {
     	$wechat_id = $account->getAccountID();
     	$wechat_user = new wechat_user($wechat_id, $openid);
     	$unionid     = $wechat_user->getUnionid();
+    	$data['wechat_image'] 	 = $wechat_user->getImage();
+    	$data['wechat_nickname'] = $wechat_user->getNickname();
     	
     	$connect_user  = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
     	if ($connect_user->checkUser()) {
-    		return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('user_id' => $user_info['user_id'], 'openid' => $openid, 'uuid' => $uuid)));
+    		return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid)));
     	}
-    	
-    	//获取微信用户信息
-    	$data['wechat_image'] 	= $wechat_user->getImage();
-    	$data['wechat_nickname'] = $wechat_user->getNickname();
+
     	$data['register_url'] = RC_Uri::url('wechat/mobile_userbind/register', array('uuid' => $uuid, 'openid' => $openid));
         $data['bind_url']  = RC_Uri::url('wechat/mobile_userbind/bind_login', array('uuid' => $uuid, 'openid' => $openid));
         $this->assign('data', $data);
