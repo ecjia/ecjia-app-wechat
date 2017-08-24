@@ -55,7 +55,7 @@
 			        </li>
 			    	<!-- {/if} -->
 			        <li>
-			            <a href="{url path='wechat/mobile_profile/reset_get_code'}" class="reset_pwd">
+			            <a href='{url path="wechat/mobile_profile/reset_get_code" args="mobile={$user_info.mobile_phone}"}' class="reset_pwd">
 			        		<span class="icon-name margin-no-l">重设密码</span>
 			        		<i class="iconfont icon-jiantou-right margin-r-icon"></i>
 			    		</a>

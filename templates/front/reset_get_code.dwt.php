@@ -13,27 +13,23 @@
 	<header class="ecjia-header">
 		<div class="ecjia-header-left">
 		</div>
-		<div class="ecjia-header-title">重设密码</div>
+		<div class="ecjia-header-title">设置新密码</div>
 	</header>
 	<body>
 	   <div class="ecjia-form ecjia-login">
-	        <div class="form-group margin-right-left">
-	    		<label class="input-1">
-	    			<input name="mobile" type="text" placeholder="请输入手机号">
-	    		</label>
-	    	</div>
+	   		<input name="mobile" type="hidden" value="{$mobile}" />
+	    	<p class="text-st-mobile">绑定手机号：{$mobile}</p>
 	        <p class="text-st">请输入收到的短信验证码</p>
 	    	<div class="form-group small-text">
 	    		<label class="input-1">
-	    			<input name="code" type="text" id="code" placeholder="输入验证码" />
+	    			<input name="code" type="text" value="" placeholder="输入验证码" />
 	    		</label>
 	    	</div>
 	    	<div class="small-submit">
-	    	    <input name="mobile1" type="hidden" value="{$mobile}" />
-	            <a class="get_code btn" href="{url path='user/get_password/mobile_register_account'}">获取验证码</a>
+	            <a class="get_code btn" id="get_code" href="{url path='wechat/mobile_profile/get_code'}">获取验证码</a>
 	        </div>
 	    	 <div class="around">
-	    	  <a class="next_pwd btn ecjia-login-margin-top" href="{RC_Uri::url('user/get_password/mobile_register')}">下一步</a>
+	    	  <a class="next_pwd btn ecjia-login-margin-top" href="{url path='wechat/mobile_profile/next_pwd'}">下一步</a>
 	    	 </div>
 		 </div> 
 
