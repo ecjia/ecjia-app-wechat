@@ -36,6 +36,7 @@
 		        </ul>
 		    </div>
 		    <div class="ecjia-list list-short">
+		     	<input name="mobile_value" type="hidden" value="{$user_info.mobile_phone}"/>
 			    <ul class="ecjia-list list-short nmargin-t">
 			    	<!-- {if $user_info.mobile_phone} -->
 			    	 <li>
@@ -45,7 +46,7 @@
 			    		</a>
 			        </li>
 			    	<!-- {else} -->
-			    	 <li>
+			    	<li>
 			            <a href='{url path="user/profile/account_bind" args="type=mobile"}'>
 			        		<span class="icon-name margin-no-l">绑定手机</span>
 			        		<span class="icon-price">未绑定</span>
@@ -53,12 +54,10 @@
 			    		</a>
 			        </li>
 			    	<!-- {/if} -->
-			    	
 			        <li>
-			            <a href="{url path='user/profile/edit_password'}">
-			        		<span class="icon-name margin-no-l">修改密码</span>
-			        		<span class="icon-price"></span>
-			        		<i class="iconfont icon-jiantou-right  margin-r-icon"></i>
+			            <a href="{url path='wechat/mobile_profile/reset_get_code'}" class="reset_pwd">
+			        		<span class="icon-name margin-no-l">重设密码</span>
+			        		<i class="iconfont icon-jiantou-right margin-r-icon"></i>
 			    		</a>
 			        </li>
 			   </ul>
