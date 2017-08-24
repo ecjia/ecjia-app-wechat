@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10,IE=11"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<head lang="zh-CN">
-		<title>个人中心</title>
+		<title>用户中心</title>
 		<link rel="stylesheet" type="text/css" href="{$front_url}/css/touch.css" />
 		<link rel="stylesheet" type="text/css" href="{$front_url}/css/style.css" />
 	</head>
@@ -47,7 +47,7 @@
 			        </li>
 			    	<!-- {else} -->
 			    	<li>
-			            <a href='{url path="user/profile/account_bind" args="type=mobile"}'>
+			            <a href='{url path="wechat/mobile_profile/bind_mobile"}'>
 			        		<span class="icon-name margin-no-l">绑定手机</span>
 			        		<span class="icon-price">未绑定</span>
 			        		<i class="iconfont  icon-jiantou-right  margin-r-icon"></i>

@@ -41,6 +41,7 @@
 			ecjia.bind.get_code();
 			ecjia.bind.next_pwd();
 			ecjia.bind.finish_pwd();
+			ecjia.bind.bind_mobile();
 			
 		},
 		
@@ -124,6 +125,26 @@
 						location.href = data.url;
 					}
 				});
+			});
+		},
+		
+		//绑定手机号
+		bind_mobile:function() {
+			$('.bind_mobile').on('click', function(e) {
+				e.preventDefault();
+				var url = $(this).attr('href');
+				var code = $('input[name="code"]').val();
+				var mobile = $('input[name="mobile"]').val();
+				var info = {'code': code,'mobile':mobile};
+				$.post(url, info, function(data) {
+					if (data.state == 'error') {
+						alert(data.message);
+					} else if (data.state == 'success'){
+						alert(data.message);
+						location.href = data.url;
+					}
+				});
+	
 			});
 		}
 	};
