@@ -73,14 +73,13 @@
 			function SetRemainTime() {
 				if (curCount == 0) {
 					window.clearInterval(InterValObj); 		//停止计时器
-					$("#mobile").removeAttr("readonly");	//启用按钮
-					$("#get_code").removeAttr("disabled"); 	//启用按钮
-					$("#get_code").val("重新发送");
-					$("input[name='get_code']").attr("class", "btn btn-info login-btn");
+					$("#get_code").text("重新发送" + curCount + "(s)");
+					$('#get_code').attr('href','JavaScript:return false;'); 
+					$('#get_code').css("cursor", "default");
+					$('#get_code').attr("class", "btn-org");
 				} else {
 					curCount--;
-					$("#get_code").attr("disabled", "true");
-					$("#get_code").val("重新发送" + curCount + "(s)");
+					$("#get_code").text("重新发送" + curCount + "(s)");
 				}
 			};
 		},
