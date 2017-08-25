@@ -56,6 +56,10 @@
 				var url = $(this).attr('href');
 				var mobile = $("input[name='mobile']").val();
 				var info = {'mobile': mobile};
+				
+				var date = new Date();
+				date.setTime(date.getTime() + (30 * 60 * 1000));
+				$.cookie('wechat_get_code_url', url, {expires: date});
 				$.post(url, info, function(data) {
 					if (data.state == 'success') {　
 						curCount = count;
@@ -72,11 +76,12 @@
 			//timer处理函数
 			function SetRemainTime() {
 				if (curCount == 0) {
-					window.clearInterval(InterValObj); 		//停止计时器
-					$("#get_code").text("重新发送" + curCount + "(s)");
-					$('#get_code').attr('href','JavaScript:return false;'); 
-					$('#get_code').css("cursor", "default");
-					$('#get_code').attr("class", "btn-org");
+					var url = $.cookie('wechat_get_code_url');
+		            window.clearInterval(InterValObj);//停止计时器
+		            $("#get_code").text("重新发送");//启用按钮
+		            $('#get_code').attr('href', url);
+		            $('#get_code').css("cursor", "pointer");
+		            $('#get_code').attr("class", "btn");
 				} else {
 					curCount--;
 					$("#get_code").text("重新发送" + curCount + "(s)");
