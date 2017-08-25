@@ -49,15 +49,19 @@
 			    	<li>
 			            <a href='{url path="wechat/mobile_profile/bind_mobile"}'>
 			        		<span class="icon-name margin-no-l">绑定手机</span>
-			        		<span class="icon-price">未绑定</span>
-			        		<i class="iconfont  icon-jiantou-right  margin-r-icon"></i>
+			        		<span class="icon-price" style="margin-right: 16px;">未绑定</span>
+			        		<div class="user-img-text">
+								<img src="{$front_url}/images/arrow-right.png" />
+							</div>
 			    		</a>
 			        </li>
 			    	<!-- {/if} -->
 			        <li>
 			            <a href='{url path="wechat/mobile_profile/reset_get_code" args="mobile={$user_info.mobile_phone}"}' class="reset_pwd">
 			        		<span class="icon-name margin-no-l">重设密码</span>
-			        		<i class="iconfont icon-jiantou-right margin-r-icon"></i>
+			        		<div class="user-img-text">
+								<img src="{$front_url}/images/arrow-right.png" />
+							</div>
 			    		</a>
 			        </li>
 			   </ul>

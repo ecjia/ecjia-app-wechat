@@ -19,16 +19,19 @@
 		<div class="ecjia-form  ecjia-login">
 			<div class="form-group margin-right-left ">
 				<label class="input">
-					<i class="iconfont icon-dengluyonghuming"></i>
-					<input placeholder="{$lang.name_or_mobile}" name="username" datatype="*3-16|zh2-7" errormsg="用户名错误请重新输入！" nullmsg="请输入用户名户或手机号" />
+					<div class="wechat-user-img-left">
+						<img src="{$front_url}/images/wechat_name.png" />
+					</div>
+					<input placeholder="请输入用户名" name="username" />
 				</label>
 			</div>
 			
 			<div class="form-group ecjia-margin-t margin-right-left">
 				<label class="input">
-					<i class="iconfont icon-lock "></i>
-					<i class="iconfont icon-attention ecjia-login-margin-l"  id="password1"></i>
-					<input placeholder="{$lang.input_passwd}" name="password" type="password" id="password-1" datatype="*6-16" errormsg="密码错误请重新输入！" nullmsg="请输入密码" />
+					<div class="wechat-user-img-left">
+						<img src="{$front_url}/images/wechat_pwd.png" />
+					</div>
+					<input placeholder="请输入密码" name="password" type="password" />
 				</label>
 			</div>
 			

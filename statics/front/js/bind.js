@@ -59,10 +59,10 @@
 				$.post(url, info, function(data) {
 					if (data.state == 'success') {　
 						curCount = count;
-						$("#mobile").attr("readonly", "true");
-						$("#get_code").attr("disabled", "true");
-						$("#get_code").val("重新发送" + curCount + "(s)");
-						$("input[name='get_code']").attr("class", "btn btn-org login-btn");
+						$("#get_code").text("重新发送" + curCount + "(s)");
+						$('#get_code').attr('href','JavaScript:return false;'); 
+						$('#get_code').css("cursor", "default");
+						$('#get_code').attr("class", "btn-org");
 						InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
 					}
 					alert(data.message);
@@ -111,9 +111,6 @@
 				var url = $(this).attr('href');
 				var password         = $("input[name='password']").val();
 				var confirm_password = $("input[name='confirm_password']").val();
-				if(password =='' || confirm_password =='') {
-					alert('密码不能为空');
-				}
 				var info = {
 					'password': password,
 					'confirm_password': confirm_password

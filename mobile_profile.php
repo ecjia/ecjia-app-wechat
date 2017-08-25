@@ -57,9 +57,7 @@ class mobile_profile extends ecjia_front {
         RC_Loader::load_app_class('wechat_user', 'wechat', false);
         
         $this->assign('front_url', RC_App::apps_url('statics/front', __FILE__));
-        $this->assign('system_statics_url', RC_Uri::admin_url('statics'));
-        $this->assign('logo_pic', RC_App::apps_url('statics/front/images/logo_pic.png', __FILE__));
-      
+        $this->assign('system_statics_url', RC_Uri::admin_url('statics'));      
     }
     
     public function init() {
@@ -151,6 +149,10 @@ class mobile_profile extends ecjia_front {
     public function reset_pwd_update(){
     	$password = trim($_POST['password']);
     	$confirm_password  = trim($_POST['confirm_password']);
+    	
+    	if ($password =='' || $confirm_password== '') {
+    		return ecjia_front::$controller->showmessage('密码不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
     	
     	if ($password != $confirm_password) {
     		return ecjia_front::$controller->showmessage('新密码和确认密码须保持一致', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
