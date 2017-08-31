@@ -115,13 +115,18 @@ class mobile_userbind extends ecjia_front {
         	//绑定用户
         	$result = $connect_user->bindUser($user_info['user_id']);
         	if ($result) {
+        		$info = RC_DB::table('platform_config')->where('account_id', $wechat_id)->where('ext_code', 'mp_userbind')->first();
+        		$getUserId = $user_info['user_id'];
+        		
+        		// 积分/红包赠送
+        		$this->give_point($openid, $info, $getUserId);
+        		
         		return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('user_id' => $user_info['user_id'], 'openid' => $openid, 'uuid' => $uuid)));
         	} else {
         		return ecjia_front::$controller->showmessage('绑定用户失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         	}
         }
     }
-    
     
     //已有账号绑定
     public function bind_login() {
@@ -174,6 +179,11 @@ class mobile_userbind extends ecjia_front {
     		
     		$result = $connect_user->bindUser($row['user_id']);
     		if ($result) {
+    			// 积分/红包赠送
+    			$getUserId = $row['user_id'];
+    			$info = RC_DB::table('platform_config')->where('account_id', $wechat_id)->where('ext_code', 'mp_userbind')->first();
+    			$this->give_point($openid, $info, $getUserId);
+    			
     			return ecjia_front::$controller->showmessage('恭喜您，关联成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid))));
     		} else {
     			return ecjia_front::$controller->showmessage('抱歉，关联失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -192,5 +202,87 @@ class mobile_userbind extends ecjia_front {
     	} else {
     		return ecjia_front::$controller->showmessage('您输入账号信息不正确，绑定失败！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}	
+    }
+    
+    
+    /**
+     * 积分赠送
+     */
+    public function give_point($openid, $info, $getUserId) {
+    	if (!empty($info)) {
+    		//插件配置信息
+    		$config = array();
+    		$config = unserialize($info['ext_config']);
+    		foreach ($config as $k => $v) {
+    			if ($v['name'] == 'point_status') {
+    				$point_status = $v['value'];
+    			}
+    			if ($v['name'] == 'point_interval') {
+    				$point_interval = $v['value'];
+    			}
+    			if ($v['name'] == 'point_num') {
+    				$point_num = $v['value'];
+    			}
+    			if ($v['name'] == 'point_value') {
+    				$point_value = $v['value'];
+    			}
+    			if ($v['name'] == 'bonus_status') {
+    				$bonus_status = $v['value'];
+    			}
+    			if ($v['name'] == 'bonus_id') {
+    				$bonus_id = $v['value'];
+    			}
+    		}
+    		
+    		// 开启积分赠送
+    		if (isset($point_status) && $point_status == 1) {
+    			$wechat_point_db = RC_Loader::load_app_model('wechat_point_model', 'wechat');
+    			$where = 'openid = "' . $openid . '" and createtime > (UNIX_TIMESTAMP(NOW())- ' .$point_interval . ') and keywords = "'.$info['ext_code'].'" ';
+    			$num = $wechat_point_db->where($where)->count('*');
+    			if ($num < $point_num) {
+    				$this->do_point($openid, $info, $point_value, $getUserId);
+    			}
+    		}
+
+    		//开启赠送红包
+    		if (isset($bonus_status) && $bonus_status == 1) {
+    			$data['bonus_type_id'] = $bonus_id;
+    			$data['bonus_sn'] = 0;
+    			$data['user_id'] = $getUserId;
+    			$data['used_time'] = 0;
+    			$data['order_id'] = 0;
+    			$data['emailed'] = 0;
+    			RC_DB::table('user_bonus')->insertGetId($data);
+    		}
+    	}
+    }
+    
+    /**
+     * 执行赠送积分
+     */
+    public function do_point($openid, $info, $point_value, $getUserId) {
+    	$rank_points = RC_DB::TABLE('users')->where('user_id', $getUserId)->pluck('rank_points');
+    	$count_points = intval($rank_points) + intval($point_value);
+    	$point = array(
+    		'rank_points' => $count_points
+    	);
+    	RC_DB::table('users')->where('user_id', $getUserId)->update($point);
+    	// 积分记录
+    	$data['user_id']      =  $getUserId;
+    	$data['user_money']   =  0;
+    	$data['frozen_money'] =  0;
+    	$data['rank_points']  =  $point_value;
+    	$data['pay_points']   =  0;
+    	$data['change_time']  =  RC_Time::gmtime();
+    	$data['change_desc']  = '绑定积分赠送';
+    	$data['change_type']  =  ACT_OTHER;
+    	$log_id = RC_DB::table('account_log')->insertGetId($data);
+    	 
+    	// 从表记录
+    	$data1['log_id']     = $log_id;
+    	$data1['openid']     = $openid;
+    	$data1['keywords']   = $info['ext_code'];
+    	$data1['createtime'] = RC_Time::gmtime();
+    	RC_DB::table('wechat_point')->insertGetId($data1);
     }
 }
