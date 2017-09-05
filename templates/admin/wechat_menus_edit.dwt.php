@@ -62,6 +62,7 @@
 							<div class="controls">
 								<input type="radio" name="type" value="click" {if $wechatmenus.type eq 'click'}checked{/if}><span>click</span>
 								<input type="radio" name="type" value="view"  {if $wechatmenus.type eq 'view'}checked{/if}><span>view</span>
+								<input type="radio" name="type" value="miniprogram"  {if $wechatmenus.type eq 'miniprogram'}checked{/if}><span>miniprogram</span>
 							</div>
 						</div>
 						
@@ -75,7 +76,7 @@
 						<div id="urldiv" class="control-group formSep">
 							<label class="control-label">{lang key='wechat::wechat.label_menu_url'}</label>
 							<div class="controls">
-								<input type="text" name="url" id="url" value="{if $wechatmenus.url}{$wechatmenus.url}{else}http://{/if}" />
+								<input type="text" name="url" id="url" value="{$wechatmenus.url}" />
 							</div>
 						</div>
 						
