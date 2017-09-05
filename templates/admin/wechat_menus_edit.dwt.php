@@ -60,9 +60,9 @@
 						<div class="control-group formSep" >
 							<label class="control-label">{lang key='wechat::wechat.label_menu_type'}</label>
 							<div class="controls">
-								<input type="radio" name="type" value="click" {if $wechatmenus.type eq 'click'}checked{/if}><span>click</span>
-								<input type="radio" name="type" value="view"  {if $wechatmenus.type eq 'view'}checked{/if}><span>view</span>
-								<input type="radio" name="type" value="miniprogram"  {if $wechatmenus.type eq 'miniprogram'}checked{/if}><span>miniprogram</span>
+								<input type="radio" name="type" value="click" {if $wechatmenus.type eq 'click'}checked{/if}><span>发送消息</span>
+								<input type="radio" name="type" value="view"  {if $wechatmenus.type eq 'view'}checked{/if}><span>跳转网页</span>
+								<input type="radio" name="type" value="miniprogram"  {if $wechatmenus.type eq 'miniprogram'}checked{/if}><span>跳转小程序</span>
 							</div>
 						</div>
 						
