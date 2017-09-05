@@ -337,11 +337,6 @@ class admin_menus extends ecjia_admin {
 			'status'	=>	$status,
 			'sort'		=>	$sort
 		);
-		if ($type == 'click'){
-			$data['url']='';
-		} elseif ($type == 'view') {
-			$data['key']='';
-		}
 		
 		$this->db_menu->where(array('id' => $menu_id))->update($data);
 		
