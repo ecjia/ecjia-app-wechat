@@ -589,12 +589,19 @@ class admin_menus extends ecjia_admin {
 		
 		if (!empty($list)) {
 			foreach ($list as $vo) {
+				if ($vo['type'] == 'miniprogram') {
+					$config_url = unserialize($vo['url']);
+					$vo['url'] = $config_url['url'];
+				}
 				if ($vo['pid'] == 0) {
-					$vo['val'] = ($vo['type'] == 'click') ? $vo['key'] : $vo['url'];
 					$sub_button = array();
 					foreach ($list as $val) {
-						$val['val'] = ($val['type'] == 'click') ? $val['key'] : $val['url'];
-						if ($val['pid'] == $vo['id']) {
+						
+						if ($vo['id'] == $val['pid']) {
+							if ($val['type'] == 'miniprogram') {
+								$child_url = unserialize($val['url']);
+								$val['url'] = $child_url['url'];
+							}
 							$sub_button[] = $val;
 						}
 					}
@@ -603,6 +610,7 @@ class admin_menus extends ecjia_admin {
 				}
 			}
 		}
+		
 		return array ('menu_list' => $result);
 	}
 	
