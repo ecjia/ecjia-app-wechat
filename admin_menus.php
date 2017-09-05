@@ -591,7 +591,7 @@ class admin_menus extends ecjia_admin {
 			foreach ($list as $vo) {
 				if ($vo['type'] == 'miniprogram') {
 					$config_url = unserialize($vo['url']);
-					$vo['url'] = $config_url['url'];
+					$vo['url'] = $config_url['pagepath'];
 				}
 				if ($vo['pid'] == 0) {
 					$sub_button = array();
@@ -600,7 +600,7 @@ class admin_menus extends ecjia_admin {
 						if ($vo['id'] == $val['pid']) {
 							if ($val['type'] == 'miniprogram') {
 								$child_url = unserialize($val['url']);
-								$val['url'] = $child_url['url'];
+								$val['url'] = $child_url['pagepath'];
 							}
 							$sub_button[] = $val;
 						}
