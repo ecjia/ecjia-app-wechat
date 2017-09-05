@@ -14,17 +14,17 @@
 					if ($("input[name='type']:checked").val() == 'click') {
 						$('#keydiv').show();
 						$('#urldiv').hide();
+						$('#weappdiv').hide();
 						$("input[name='url']").val("");
-
 					} else if ($("input[name='type']:checked").val() == 'view') {
 						$('#keydiv').hide();
 						$('#urldiv').show();
-						$('#miniprogram').hide();
+						$('#weappdiv').hide();
 						$("input[name='key']").val("");
 					} else {
 						$('#keydiv').hide();
 						$('#urldiv').hide();
-						$('#miniprogram').show();
+						$('#weappdiv').show();
 						$("input[name='url']").val("");
 						$("input[name='key']").val("");
 					}

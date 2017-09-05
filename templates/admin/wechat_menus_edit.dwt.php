@@ -80,6 +80,18 @@
 							</div>
 						</div>
 						
+						<div id="weappdiv" class="control-group formSep" >
+							<label class="control-label">选择小程序：</label>
+							<div class="controls">
+								<select class="form-control"  id="weapp_appid" name="weapp_appid">
+			                        <option value='0'>请选择</option>
+			                      	<!-- {foreach from=$weapplist key=key item=val} -->
+									<option value="{$key}" {if $key eq $wechatmenus.app_id}selected{/if}>{$val}</option>
+									<!-- {/foreach} -->
+								</select>
+							</div>
+						</div>
+						
 						<div class="control-group formSep" >
 							<label class="control-label">{lang key='wechat::wechat.label_menu_status'}</label>
 							<div class="controls">

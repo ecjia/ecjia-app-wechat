@@ -163,6 +163,9 @@ class admin_menus extends ecjia_admin {
 			$wechatmenus['status'] 	= 0;
 			$this->assign('wechatmenus', $wechatmenus);
 			
+			$weapplist = $this->get_weapplist();
+			$this->assign('weapplist', $weapplist);
+			
 			$this->assign('form_action', RC_Uri::url('wechat/admin_menus/insert'));
 		}
 		
@@ -205,15 +208,18 @@ class admin_menus extends ecjia_admin {
 			}
 		} else {
 			//小程序配置信息
-			$appid = RC_DB::TABLE('platform_account')->where('platform', 'weapp')->pluck('appid');
 			$h5_url = RC_Uri::home_url().'/sites/m/';
-			
-			$miniprogram_config = array(
-				'url'      => $h5_url,
-				'appid'    => $appid,
-				'pagepath' => 'pages/ecjia-store/ecjia'
-			);
-			$url = serialize($miniprogram_config);
+			$weapp_appid = $_POST['weapp_appid'];
+			if(empty($weapp_appid)) {
+				return $this->showmessage('请选择小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			} else {
+				$miniprogram_config = array(
+					'url'      => $h5_url,
+					'appid'    => $weapp_appid,
+					'pagepath' => 'pages/ecjia-store/ecjia'
+				);
+				$url = serialize($miniprogram_config);
+			}
 		}
 		
 		$data = array(
@@ -262,7 +268,12 @@ class admin_menus extends ecjia_admin {
 
 	    $id = intval($_GET['id']);
 	  	$wechatmenus = $this->db_menu->find(array('id' => $id));
+	  	if ($wechatmenus['type'] == 'miniprogram') {
+	  		$config_url = unserialize($wechatmenus['url']);
+	  		$wechatmenus['app_id'] = $config_url['appid'];
+	  	}
 		$this->assign('wechatmenus', $wechatmenus);
+	
 		
 		$where['pid'] = 0;
 		$where[] = "id <> $id";
@@ -273,6 +284,9 @@ class admin_menus extends ecjia_admin {
 		
 		$child = $this->db_menu->where(array('id' => $id))->get_field('pid');
 		$this->assign('child', $child);
+		
+		$weapplist = $this->get_weapplist();
+		$this->assign('weapplist', $weapplist);
 		
 		$this->assign('form_action', RC_Uri::url('wechat/admin_menus/update'));
 	
@@ -318,15 +332,18 @@ class admin_menus extends ecjia_admin {
 			}
 		} else {
 			//小程序配置信息
-			$appid = RC_DB::TABLE('platform_account')->where('platform', 'weapp')->pluck('appid');
 			$h5_url = RC_Uri::home_url().'/sites/m/';
-				
-			$miniprogram_config = array(
+			$weapp_appid = $_POST['weapp_appid'];
+			if(empty($weapp_appid)) {
+				return $this->showmessage('请选择小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			} else {
+				$miniprogram_config = array(
 					'url'      => $h5_url,
-					'appid'    => $appid,
+					'appid'    => $weapp_appid,
 					'pagepath' => 'pages/ecjia-store/ecjia'
-			);
-			$url = serialize($miniprogram_config);
+				);
+				$url = serialize($miniprogram_config);
+			}
 		}
 		$data = array(
 			'pid'		=>	$pid,
@@ -632,6 +649,21 @@ class admin_menus extends ecjia_admin {
 		}
 		
 		return array ('menu_list' => $result);
+	}
+	
+	
+	/**
+	 * 取得小程序
+	 */
+	private function get_weapplist() {
+		$data = RC_DB::table('platform_account')->where('platform','weapp')->select('appid','name')->get();
+		$list = array();
+		if (!empty($data)) {
+			foreach ($data as $row) {
+				$list[$row['appid']] = $row['name'];
+			}
+		}
+		return $list;
 	}
 	
 	/**
