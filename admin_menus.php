@@ -439,40 +439,60 @@ class admin_menus extends ecjia_admin {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		} else {
 
-			
-
 			try {
 			    $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 			    $list = $wechat->menu->all()->toArray();
-			    
 			    $info = $this->db_menu->select();
 			    if ($info) {
 			        $this->db_menu->where(array('wechat_id' => $wechat_id))->delete();
 			    }
-			    	
+			    
+			    //一级菜单处理
 			    foreach ($list['menu']['button'] as $key => $value) {
 			        $value['type'] = isset($value['type']) ? $value['type'] : '';
-			        $value['url'] = isset($value['url']) ? $value['url'] : '';
-			        $value['key'] = isset($value['key']) ? $value['key'] : '';
-			    
+			        $value['url']  = isset($value['url'])  ? $value['url'] : '';
+			        $value['key']  = isset($value['key'])  ? $value['key'] : '';
+			        
 			        if ($value['type'] == 'view') {
 			            $array = array('name' => $value['name'], 'status' => 1, 'type' => 'view', 'url' => $value['url'], 'wechat_id' => $wechat_id);
-			        } else {
+			        } elseif ($value['type'] == 'click') {
 			            $array = array('name' => $value['name'], 'status' => 1, 'type' => 'click', 'key' => $value['key'], 'wechat_id'=> $wechat_id);
+			        } elseif ($value['type'] == 'miniprogram')  {
+			        	$config_url =array(
+			        		'url'      => $value['url'],
+			        		'appid'    => $value['appid'],
+			        		'pagepath' => $value['pagepath']
+			        	);
+			        	$array = array('name' => $value['name'], 'status' => 1, 'type' => 'miniprogram', 'url' => serialize($config_url), 'wechat_id'=> $wechat_id);
+			        } else {
+			        	$array = array('name' => $value['name'], 'status' => 1, 'type' => $value['type'], 'url' => $value['url'], 'key' => $value['key'], 'wechat_id'=> $wechat_id);
 			        }
+			        
 			        $id = $this->db_menu->insert($array);
+			        
+			        
+			        //子集菜单处理
 			        if ($value['sub_button']) {
-			            $data = array();
+			        	$data = array();
 			            foreach ($value['sub_button'] as $k => $v) {
 			                $v['name']   = isset($v['name']) ? $v['name'] : '';
 			                $v['type']   = isset($v['type']) ? $v['type'] : '';
 			                $v['url']    = isset($v['url'])  ? $v['url']  : '';
 			                $v['key']    = isset($v['key'])  ? $v['key']  : '';
-			                	
+			                
+			                if($v['type'] == 'miniprogram'){
+			                	$child_url =array(
+		                			'url'      => $v['url'],
+		                			'appid'    => $v['appid'],
+		                			'pagepath' => $v['pagepath']
+			                	);
+			                	$data['url'] = serialize($child_url);
+			                } else {
+			                	$data['url']  = $v['url'];
+			                }	
 			                $data['wechat_id']   = $wechat_id;
 			                $data['name']        = $v['name'];
 			                $data['type']        = $v['type'];
-			                $data['url']         = $v['url'];
 			                $data['key']         = $v['key'];
 			                $data['status']      = 1;
 			                $data['pid']         = $id;
