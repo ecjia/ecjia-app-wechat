@@ -289,15 +289,45 @@ class admin_menus extends ecjia_admin {
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
 		
-		$pid	= !empty($_POST['pid'])		? intval($_POST['pid']) : 0;
+		$menu_id = !empty($_POST['menu_id']) ? intval($_POST['menu_id']) 	: 0;
+
+		$pid	= !empty($_POST['pid'])		? intval($_POST['pid']) : 0	;
 		$name 	= !empty($_POST['name']) 	? trim($_POST['name']) 	: '';
+		
 		$type 	= !empty($_POST['type']) 	? $_POST['type'] 		: '';
 		$key	= !empty($_POST['key']) 	? $_POST['key'] 		: '';
-		$url 	= !empty($_POST['url']) 	? $_POST['url'] 		: '';
-		$status = !empty($_POST['status']) 	? intval($_POST['status']) 		: 0;
-		$sort 	= !empty($_POST['sort']) 	? intval($_POST['sort']) 		: 0;
-		$menu_id = !empty($_POST['menu_id']) ? intval($_POST['menu_id']) 	: 0;
+		$web_url= !empty($_POST['url']) 	? $_POST['url'] 		: '';
 		
+		$status = !empty($_POST['status']) 	? intval($_POST['status']) 	: 0;
+		$sort 	= !empty($_POST['sort']) 	? intval($_POST['sort']) 	: 0;
+		
+		
+		if (empty($name)) {
+			return $this->showmessage('菜单名称不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+		
+		if ($type == 'click') {
+			if (empty($key)) {
+				return $this->showmessage('当菜单类型为click时，菜单关键词不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		} elseif ($type == 'view') {
+			if (empty($web_url)) {
+				return $this->showmessage('当菜单类型为view 时，外链url不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			} else {
+				$url = $web_url;
+			}
+		} else {
+			//小程序配置信息
+			$appid = RC_DB::TABLE('platform_account')->where('platform', 'weapp')->pluck('appid');
+			$h5_url = RC_Uri::home_url().'/sites/m/';
+				
+			$miniprogram_config = array(
+					'url'      => $h5_url,
+					'appid'    => $appid,
+					'pagepath' => 'pages/ecjia-store/ecjia'
+			);
+			$url = serialize($miniprogram_config);
+		}
 		$data = array(
 			'pid'		=>	$pid,
 			'name'		=>	$name,
