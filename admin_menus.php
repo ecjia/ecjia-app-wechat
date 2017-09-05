@@ -402,15 +402,20 @@ class admin_menus extends ecjia_admin {
 					foreach ($val['sub_button'] as $k => $v) {
 						$menu[$key]['sub_button'][$k]['type'] = $v['type'];
 						$menu[$key]['sub_button'][$k]['name'] = $v['name'];
-						if ('click' == $v['type']) {
+						if ($v['type'] == 'click') {
 							$menu[$key]['sub_button'][$k]['key'] = $v['key'];
-						} else {
+						} elseif ($v['type'] == 'view') {
 							$menu[$key]['sub_button'][$k]['url'] = $this->html_out($v['url']);
+						} else {
+							$child_url = unserialize($v['url']);
+							$menu[$key]['sub_button'][$k]['url']     = $this->html_out($child_url['url']);
+							$menu[$key]['sub_button'][$k]['appid']   = $child_url['appid'];
+							$menu[$key]['sub_button'][$k]['pagepath']= $child_url['pagepath'];
 						}
 					}
 				}
 			}
-
+			
 			$uuid = platform_account::getCurrentUUID('wechat');
 			try {
                 $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
