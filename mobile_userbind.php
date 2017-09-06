@@ -58,7 +58,6 @@ class mobile_userbind extends ecjia_front {
         
         $this->assign('front_url', RC_App::apps_url('statics/front', __FILE__));
         $this->assign('system_statics_url', RC_Uri::admin_url('statics'));
-        $this->assign('logo_pic', RC_App::apps_url('statics/front/images/logo_pic.png', __FILE__));
       
     }
     
