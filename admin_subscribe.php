@@ -408,16 +408,11 @@ class admin_subscribe extends ecjia_admin {
 		
 		$arr1 = $arr2 = array();
 		
-		$s = $p;//数组切割开始位置
-		if (!empty($next_openid)) {
-			$s = 0;
-		}
-		$list = array_slice($wechat_user_list, $s, 100);
+		$list = array_slice($wechat_user_list, $p, 100);
 		$total = count($wechat_user_list);
 		$counts = count($list);
 		
 		$p += $counts;
-		$s = $p;
 
 		$where = '';
 		if (!empty($list)) {
@@ -485,7 +480,7 @@ class admin_subscribe extends ecjia_admin {
 
 		}
 
-		if ($s < $total) {
+		if ($p < $total) {
 			RC_Cache::app_cache_set('wechat_user_position_'.$wechat_id, $p, 'wechat');
 			return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.get_user_already'), $p), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url("wechat/admin_subscribe/get_userinfo"), 'notice' => 1, 'p' => $p));
 		} else {
