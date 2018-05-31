@@ -70,13 +70,15 @@
             </div>
 			<div class="card-body">
 				<button type="button" class="btn btn-info"><i class="fa fa-tag"></i> 打标签</button>
-				<div class="form-inline float-right" >
-					<div class="input-group">
-		          		<input type="text" name="keywords" class="form-control" placeholder="{lang key='platform::platform.input_plat_name_key'}">
-		            	<div class="input-group-append">
-		            		<button type="submit" class="btn btn-info search_wechat">{lang key='platform::platform.search'}</button>
-		             	</div>
-		        	</div>
+				<div class="form-inline float-right">
+					<form class="form-inline" method="post" action="{$form_action}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="search_from">
+						<div class="input-group">
+			          		<input type="text" name="keywords" value="{$smarty.get.keywords}" class="form-control" placeholder="{lang key='wechat::wechat.search_user_placeholder'}">
+			            	<div class="input-group-append">
+			            		<button type="submit" class="btn btn-info search-btn">{lang key='wechat::wechat.search'}</button>
+			             	</div>
+			        	</div>
+		        	</form>
 				</div>
 			</div>
 			
@@ -171,6 +173,7 @@
 					</div>
 				</div>
             </div>
+            <!-- {$list.page} -->
         </div>
     </div>
 </div>

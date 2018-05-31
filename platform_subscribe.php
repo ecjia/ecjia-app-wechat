@@ -157,7 +157,7 @@ class platform_subscribe extends ecjia_platform {
 			}
 			//用户列表
 			$total = $this->wu_viewdb->join(null)->where($where)->count();
-			$page = new ecjia_page($total, 10, 5);
+			$page = new ecjia_platform_page($total, 10, 5);
 			$list = $this->wu_viewdb->join(array('users'))->field('u.*, user_name')->where($where)->order(array('u.subscribe_time' => 'desc'))->limit($page->limit())->select();
 			
 			if (!empty($list)) {
