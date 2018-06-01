@@ -329,7 +329,7 @@
 				$('.old_tag_name').show();
 				var id = $(this).attr('value');
 				$('#edit_tag input[name="id"]').val(id);
-				
+				$('#edit_tag').modal('show');
 				var $form = $("form[name='edit_tag']");
 				var option = {
 					rules:{

@@ -164,7 +164,7 @@
 												</a>
 												{if $val['tag_id'] != 0  && $val['tag_id'] != 1 && $val['tag_id'] != 2}
 													<span class="float-right">
-														<a class="subscribe-icon-edit {if $val.id eq $smarty.get.id}white{/if}" data-toggle="modal" href="#edit_tag" title="{lang key='wechat::wechat.edit_user_tag'}" data-name="{$val.name}" value="{$val.id}"><i class="ft-edit f_s15"></i></a>
+														<a class="subscribe-icon-edit {if $val.id eq $smarty.get.id}white{/if}" title="{lang key='wechat::wechat.edit_user_tag'}" data-name="{$val.name}" value="{$val.id}"><i class="ft-edit f_s15"></i></a>
 														<a class="ajaxremove no-underline {if $val.id eq $smarty.get.id}white{/if}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_tag_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/remove","id={$val.id}&tag_id={$val.tag_id}")}' title="{lang key='wechat::wechat.remove_user_tag'}"><i class="ft-trash-2 f_s15 m_l5"></i></a>
 													</span>
 												{/if}
@@ -193,13 +193,16 @@
 </div>
 
 
-<div class="modal hide fade" id="edit_tag">
-	<div class="modal-header">
-		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='wechat::wechat.edit_user_tag'}</h3>
-	</div>
-	<div class="modal-body" id="group_modal">
-		<div class="row-fluid">
+<div class="modal fade text-left" id="edit_tag">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">{lang key='wechat::wechat.edit_user_tag'}</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
+			</div>
+
 			<!-- {if $errormsg} -->
 			    <div class="alert alert-error">
 		            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
@@ -213,29 +216,35 @@
 				</div>
 				<!-- {/if} -->
 			<!-- {/if} -->
-			<div class="span12">
-			<form class="form-horizontal" method="post" name="edit_tag" action="{url path='wechat/platform_subscribe/edit_tag'}">
-				<fieldset>
-					<div class="control-group formSep">
-						<label class="control-label old_tag_name" for="user_name">{lang key='wechat::wechat.label_old_tag_name'}</label>
-						<div class="controls w200 ecjiaf-wwb">
-							<span class="old_tag"></span>
+
+			<form class="form" method="post" name="edit_tag" action="{url path='wechat/platform_subscribe/edit_tag'}">
+				<div class="card-body">
+					<div class="form-body">
+
+						<div class="form-group row">
+							<label class="col-md-3 label-control old_tag_name text-right">{lang key='wechat::wechat.label_old_tag_name'}</label>
+							<div class="col-md-8">
+								<span class="old_tag"></span>
+							</div>
 						</div>
-					</div>	
-					<div class="control-group formSep">
-						<label class="control-label new_tag_name" for="user_name">{lang key='wechat::wechat.label_new_tag_name'}</label>
-						<div class="controls">
-							<input type="text" name="new_tag" autocomplete="off"/>
-							<span class="input-must">*</span>
+
+						<div class="form-group row">
+							<label class="col-md-3 label-control old_tag_name text-right">{lang key='wechat::wechat.label_old_tag_name'}</label>
+							<div class="col-md-8">
+								<input class="form-control" type="text" name="new_tag" autocomplete="off"/>
+							</div>
+							<div class="col-md-1"><span class="input-must">*</span></div>
 						</div>
+						
 					</div>
-					<div class="control-group t_c m_b0">
-						<button class="btn btn-gebo" type="submit" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
-						<input type="hidden" name="id" />
-					</div>
-				</fieldset>
+				</div>
+
+				<div class="modal-footer justify-content-center">
+			   		<input type="hidden" name="id" />
+					<input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+				</div>
 			</form>
-			</div>
+
 		</div>
 	</div>
 </div>
@@ -268,7 +277,7 @@
 				<div class="card-body">
 					<div class="form-body">
 						<div class="form-group row">
-							<label class="col-md-3 label-control new_tag_name text-right" for="user_name">{lang key='wechat::wechat.label_tag_name'}</label>
+							<label class="col-md-3 label-control new_tag_name text-right">{lang key='wechat::wechat.label_tag_name'}</label>
 							<div class="col-md-8">
 								<input class="form-control" type="text" name="new_tag" autocomplete="off"/>
 							</div>
