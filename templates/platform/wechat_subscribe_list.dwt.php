@@ -69,7 +69,9 @@
                 <h4 class="card-title">{$ur_here}</h4>
             </div>
 			<div class="card-body">
-				<button type="button" class="btn btn-info"><i class="fa fa-tag"></i> 打标签</button>
+				<!-- {if $smarty.get.type neq 'unsubscribe' && $smarty.get.type neq 'blacklist'} -->
+				<button type="button" class="btn btn-info set-label-btn" data-url="{$get_checked}"><i class="fa fa-tag"></i> 打标签</button>
+				<!-- {/if} -->
 				<div class="form-inline float-right">
 					<form class="form-inline" method="post" action="{$form_action}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="search_from">
 						<div class="input-group">
@@ -87,7 +89,10 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th class="table_checkbox w30"><input type="checkbox" data-toggle="selectall" data-children=".checkbox"/></th>
+								<th class="table_checkbox w30">
+									<input type="checkbox" data-toggle="selectall" data-children=".checkbox" id="customCheck"/>
+									<label for="customCheck"></label>
+								</th>
 								<th class="w80">{lang key='wechat::wechat.headimg_url'}</th>
 								<th class="w150">{lang key='wechat::wechat.nickname'}</th>
 								<th class="w100">{lang key='wechat::wechat.province'}</th>
@@ -95,9 +100,12 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!-- {foreach from=$list.item item=val} -->
+							<!-- {foreach from=$list.item item=val key=key} -->
 							<tr class="big">
-								<td><input class="checkbox" type="checkbox" name="checkboxes[]" value="{$val.openid}" /></td>
+								<td>
+									<input class="checkbox" type="checkbox" name="checkboxes[]" value="{$val.openid}" id="checkbox_{$key}" />
+									<label for="checkbox_{$key}"></label>
+								</td>
 								<td>
 									{if $val.headimgurl}
 									<img class="thumbnail" src="{$val.headimgurl}">
@@ -128,8 +136,14 @@
 				</div>
 				<div class="sidebar-detached sidebar-right col-md-3">
 					<div class="card">
-						<div class="card-body">
-				            <p class="lead"><h4>{lang key='wechat::wechat.user_tag_list'}</h4></p>
+						<div class="card-body" style="padding-top:0;">
+			            	<h4>{lang key='wechat::wechat.user_tag_list'}
+			            		<span class="float-right">
+			            			<a class="subscribe-icon-plus" title="{lang key='wechat::wechat.add_user_tag'}" data-toggle="modal" href="#add_tag" >
+			            				<i class="ft-plus"></i>
+			            			</a>
+			            		</span>
+			            	</h4>
 							<div class="media-list list-group">
 								<div class="list-group-item list-group-item-action media {if $smarty.get.type eq 'all'}active{/if}">
 									<a class="media-link" href="{url path="wechat/platform_subscribe/init" args="&type=all"}">
@@ -266,36 +280,45 @@
 	</div>
 </div>
 
-<div class="modal hide fade" id="set_label">
-	<div class="modal-header">
-		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='wechat::wechat.set_tag'}</h3>
-	</div>
-	<div class="modal-body tag_popover">
-		<!-- {if $errormsg} -->
-	    <div class="alert alert-error">
-            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
-        </div>
-		<!-- {/if} -->
-		
-		<!-- {if $warn} -->
-			<!-- {if $type eq 0} -->
-			<div class="alert alert-error">
-				<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+<div class="modal fade text-left" id="set_label">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">{lang key='wechat::wechat.set_tag'}</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
 			</div>
+			<!-- {if $errormsg} -->
+		    <div class="alert alert-error">
+	            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+	        </div>
 			<!-- {/if} -->
-		<!-- {/if} -->
-		<form class="form-inline" method="post" action="{$label_action}&action=set_label" name="label_form">
-			<div class="popover_inner">
-				<div class="popover_content">
-					<div class="popover_tag_list">
-					</div>
-					<span class="label_block hide ecjiafc-red">{lang key='wechat::wechat.up_tag_count'}</span>
+			
+			<!-- {if $warn} -->
+				<!-- {if $type eq 0} -->
+				<div class="alert alert-error">
+					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
 				</div>
-				<input type="hidden" name="openid" />
-				<div class="popover_bar"><a href="javascript:;" class="btn btn-gebo set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</a>&nbsp;</div>
-	   		</div>
-	   	</form>
+				<!-- {/if} -->
+			<!-- {/if} -->
+			<form class="form" method="post" action="{$label_action}&action=set_label" name="label_form">
+				<div class="modal-body tag_popover">
+					<div class="popover_inner p_b0">
+						<div class="popover_content">
+							<div class="popover_tag_list">
+							</div>
+							<span class="label_block hide ecjiafc-red">{lang key='wechat::wechat.up_tag_count'}</span>
+						</div>
+			   		</div>
+		   		</div>
+		   	
+			   	<div class="modal-footer">
+			   		<input type="hidden" name="openid" />
+					<button type="button" class="btn btn-outline-primary set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 <!-- {/block} -->

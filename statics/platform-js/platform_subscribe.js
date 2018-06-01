@@ -401,7 +401,7 @@
 						checkboxes.push($(this).val());
 					});
 					if (checkboxes == '') {
-						smoke.alert(js_lang.pls_select_user);
+						smoke.alert(js_lang.pls_select_user, {ok: '确定',});
 						return false;
 					} else {
 						$('input[name="openid"]').val(checkboxes);
@@ -430,21 +430,20 @@
 			if (data.content.length > 0) {
 				for (var i = 0; i < data.content.length; i++) {
 					if (data.content[i].checked == 1) {
-						var $opt = $('<label class="frm_checkbox_label"><input type="checkbox" class="frm_checkbox" checked="checked" name="tag_id[]" value="'+data.content[i].tag_id+'"><span class="lbl_content">'+data.content[i].name+'</span></label>');
+						var $opt = $('<label class="frm_checkbox_label"><input type="checkbox" class="frm_checkbox" checked="checked" name="tag_id[]" value="'+data.content[i].tag_id+'" id="tag_'+data.content[i].tag_id+'"><label for="tag_'+data.content[i].tag_id+'"></label><span class="lbl_content">'+data.content[i].name+'</span></label>');
 					} else {
-						var $opt = $('<label class="frm_checkbox_label"><input type="checkbox" class="frm_checkbox" name="tag_id[]" value="'+data.content[i].tag_id+'"><span class="lbl_content">'+data.content[i].name+'</span></label>');
+						var $opt = $('<label class="frm_checkbox_label"><input type="checkbox" class="frm_checkbox" name="tag_id[]" value="'+data.content[i].tag_id+'" id="tag_'+data.content[i].tag_id+'"><label for="tag_'+data.content[i].tag_id+'"></label><span class="lbl_content">'+data.content[i].name+'</span></label>');
 					}
 					$('.popover_tag_list').append($opt);
-					$('input[type="checkbox"]').uniform();
+//					$('input[type="checkbox"]').uniform();
 				}
 			}
 			$('.frm_checkbox').click(function() {
-				var c = $("input[name='tag_id[]']:checked").length-1, limit = 3;
-
+				var c = $("input[name='tag_id[]']:checked").length+1, limit = 3;
 				$(this).attr('checked') == 'checked' ? c++ : c--;
 				if (c > limit){ 
-					$(this).attr('checked', false);
-					$.uniform.update($(this));
+					$(this).prop('checked', false);
+//					$.uniform.update($(this));
 					$(".label_block").show();
 					c--;
 				} else {
