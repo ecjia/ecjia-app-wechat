@@ -2,7 +2,7 @@
 ;(function(app, $) {
 	app.subscribe_message = {
 		init : function () {
-			$('.readed_message').on('click', function(e) {
+			$('.readed_message').off('click').on('click', function(e) {
 				var $this 		= $(this),
 					admin_id 	= $this.attr('data-id'),
 					url 		= $this.attr('data-href'),
@@ -35,12 +35,12 @@
 				}
 			});
 			
-			$('.send_msg').on('click', function(e) {
+			$('.send_msg').off('click').on('click', function(e) {
 				app.subscribe_message.sendMsg();
 				e.preventDefault();
 			});
 			
-			$(".set-label-btn").on('click', function(e) {
+			$(".set-label-btn").off('click').on('click', function(e) {
 				var openid = $(this).attr('data-openid');
 				var uid = $(this).attr('data-uid');
 				$('input[name="openid"]').val(openid);
@@ -56,7 +56,7 @@
 				$('#set_label').modal('show');
 			});
 			
-			$(".set_label").on('click', function(e) {
+			$(".set_label").off('click').on('click', function(e) {
 				var $form = $("form[name='label_form']"); 
 				$form.ajaxSubmit({
 					dataType : "json",
@@ -81,7 +81,7 @@
 					$('input[type="checkbox"]').uniform();
 				}
 			}
-			$('.frm_checkbox_label').click(function() {
+			$('.frm_checkbox_label').off('click').on('click', function() {
 				$("input[name='tag_id[]']").attr('disabled', true);
 				if ($("input[name='tag_id[]']:checked").length >= 3) {
 					$("input[name='tag_id[]']:checked").attr('disabled', false);
@@ -93,7 +93,7 @@
 		
 		//编辑备注
 		edit_customer_remark : function() {
-			$('.edit_remark_icon').on('click', function(e) {
+			$('.edit_remark_icon').off('click').on('click', function(e) {
 				e.preventDefault();
 				var remark = $('input[name="remark"]').val();
 				$('.remark_info').hide();
@@ -101,7 +101,7 @@
 				$('.remark').show();
 			});
 			
-			$('.remark_ok').on('click', function(e) {
+			$('.remark_ok').off('click').on('click', function(e) {
 				e.preventDefault();
 				var $this = $(this),
 					remark = $('input[name="remark"]').val(),
@@ -122,7 +122,7 @@
 				}
 			});
 			
-			$('.remark_cancel').on('click', function(e) {
+			$('.remark_cancel').off('click').on('click', function(e) {
 				e.preventDefault();
 				var remark = $('input[name="remark"]').val();
 				$('.remark_info').show();
@@ -177,7 +177,7 @@
 	
 	app.admin_subscribe = {
 		init : function() {
-			$(".ajaxswitch").on('click', function(e){
+			$(".ajaxswitch").off('click').on('click', function(e){
 				e.preventDefault();
 				var url = $(this).attr('href');
 				$.get(url, function(data){
@@ -255,7 +255,7 @@
 	  //   		},
    //  		});
 
-			$('.search-btn').on('click', function(e) {
+			$('.search-btn').off('click').on('click', function(e) {
 				e.preventDefault();
 				var keywords	= $("input[name='keywords']").val();
 				var url			= $("form[name='search_from']").attr('action'); //请求链接
@@ -271,7 +271,7 @@
 			
 			app.admin_subscribe.edit_tag();
 			
-			$(".ajaxmenu").on('click', function(e){
+			$(".ajaxmenu").off('click').on('click', function(e){
 				e.preventDefault();
 				var $this = $(this);
 				$this.html(js_lang.getting).addClass('disabled');
@@ -359,8 +359,9 @@
 				$form.validate(options);
 			});	
 			
-			$('.subscribe-icon-plus').off('click').on('click',function() {
+			$('.subscribe-icon-plus').off('click').on('click', function() {
 				$('input[name="new_tag"]').val('');
+				$('#add_tag').modal('show');
 				var $form = $("form[name='add_tag']");
 				var option = {
 					rules:{
@@ -385,7 +386,7 @@
 		},
 		
 		batch_set_label : function() {
-			$(".set-label-btn").on('click', function(e) {
+			$(".set-label-btn").off('click').on('click', function(e) {
 				var openid = $(this).attr('data-openid');
 				var uid = $(this).attr('data-uid');
 				searchURL = $(this).attr('data-url');
@@ -414,7 +415,7 @@
 				$('#set_label').modal('show');
 			});
 			
-			$(".set_label").on('click', function(e) {
+			$(".set_label").off('click').on('click', function(e) {
 				var $form = $("form[name='label_form']"); 
 				$form.ajaxSubmit({
 					dataType : "json",
@@ -438,7 +439,7 @@
 //					$('input[type="checkbox"]').uniform();
 				}
 			}
-			$('.frm_checkbox').click(function() {
+			$('.frm_checkbox').off('click').on('click', function() {
 				var c = $("input[name='tag_id[]']:checked").length+1, limit = 3;
 				$(this).attr('checked') == 'checked' ? c++ : c--;
 				if (c > limit){ 

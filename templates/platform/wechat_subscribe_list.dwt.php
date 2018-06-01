@@ -139,7 +139,7 @@
 						<div class="card-body" style="padding-top:0;">
 			            	<h4>{lang key='wechat::wechat.user_tag_list'}
 			            		<span class="float-right">
-			            			<a class="subscribe-icon-plus" title="{lang key='wechat::wechat.add_user_tag'}" data-toggle="modal" href="#add_tag" >
+			            			<a class="subscribe-icon-plus" title="{lang key='wechat::wechat.add_user_tag'}">
 			            				<i class="ft-plus"></i>
 			            			</a>
 			            		</span>
@@ -240,13 +240,16 @@
 	</div>
 </div>
 	
-<div class="modal hide fade" id="add_tag">
-	<div class="modal-header">
-		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='wechat::wechat.add_user_tag'}</h3>
-	</div>
-	<div class="modal-body" id="group_modal">
-		<div class="row-fluid">
+<div class="modal fade text-left" id="add_tag">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">{lang key='wechat::wechat.add_user_tag'}</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
+			</div>
+
 			<!-- {if $errormsg} -->
 			    <div class="alert alert-error">
 		            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
@@ -260,22 +263,26 @@
 				</div>
 				<!-- {/if} -->
 			<!-- {/if} -->
-			<div class="span12">
-			<form class="form-horizontal" method="post" name="add_tag" action="{url path='wechat/platform_subscribe/edit_tag'}">
-				<fieldset>
-					<div class="control-group formSep">
-						<label class="control-label new_tag_name" for="user_name">{lang key='wechat::wechat.label_tag_name'}</label>
-						<div class="controls">
-							<input type="text" name="new_tag" autocomplete="off"/>
-							<span class="input-must">*</span>
+
+			<form class="form" method="post" name="add_tag" action="{url path='wechat/platform_subscribe/edit_tag'}">
+				<div class="card-body">
+					<div class="form-body">
+						<div class="form-group row">
+							<label class="col-md-3 label-control new_tag_name text-right" for="user_name">{lang key='wechat::wechat.label_tag_name'}</label>
+							<div class="col-md-8">
+								<input class="form-control" type="text" name="new_tag" autocomplete="off"/>
+							</div>
+							<div class="col-md-1"><span class="input-must">*</span></div>
 						</div>
 					</div>
-					<div class="control-group t_c m_b0">
-						<button class="btn btn-gebo" type="submit" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
-					</div>
-				</fieldset>
+				</div>
+
+				<div class="modal-footer justify-content-center">
+			   		<input type="hidden" name="openid" />
+					<input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+				</div>
 			</form>
-			</div>
+
 		</div>
 	</div>
 </div>
@@ -313,7 +320,7 @@
 			   		</div>
 		   		</div>
 		   	
-			   	<div class="modal-footer">
+			   	<div class="modal-footer justify-content-center">
 			   		<input type="hidden" name="openid" />
 					<button type="button" class="btn btn-outline-primary set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
 				</div>
