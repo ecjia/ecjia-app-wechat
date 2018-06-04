@@ -247,13 +247,13 @@
 				});
 			});
 			
-			// $('[data-toggle="popover"]').popover({ 
-	  //   		html: true,
-	  //   		content: function() {
-	  //   			var uid = $(this).attr('data-uid');
-	  //   			return $("#popover-content_" + uid).html();
-	  //   		},
-   //  		});
+//			 $('[data-toggle="popover"]').popover({ 
+//	     		html: true,
+//	     		content: function() {
+//	     			var uid = $(this).attr('data-uid');
+//	     			return $("#popover-content_" + uid).html();
+//	     		},
+//     		});
 
 			$('.search-btn').off('click').on('click', function(e) {
 				e.preventDefault();
@@ -436,7 +436,6 @@
 						var $opt = $('<label class="frm_checkbox_label"><input type="checkbox" class="frm_checkbox" name="tag_id[]" value="'+data.content[i].tag_id+'" id="tag_'+data.content[i].tag_id+'"><label for="tag_'+data.content[i].tag_id+'"></label><span class="lbl_content">'+data.content[i].name+'</span></label>');
 					}
 					$('.popover_tag_list').append($opt);
-//					$('input[type="checkbox"]').uniform();
 				}
 			}
 			$('.frm_checkbox').off('click').on('click', function() {
@@ -444,7 +443,6 @@
 				$(this).attr('checked') == 'checked' ? c++ : c--;
 				if (c > limit){ 
 					$(this).prop('checked', false);
-//					$.uniform.update($(this));
 					$(".label_block").show();
 					c--;
 				} else {
