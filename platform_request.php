@@ -68,9 +68,9 @@ class platform_request extends ecjia_platform {
 		RC_Style::enqueue_style('uniform-aristo');
 // 		RC_Script::enqueue_script('jquery-uniform');
 		RC_Script::enqueue_script('jquery-chosen');
-		RC_Script::enqueue_script('admin_request', RC_App::apps_url('statics/js/admin_request.js', __FILE__), array(), false, true);
-		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
-		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
+		RC_Script::enqueue_script('admin_request', RC_App::apps_url('statics/platform-js/admin_request.js', __FILE__), array(), false, true);
+// 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
+// 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		RC_Script::localize_script('admin_request', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.api_request_list'), RC_Uri::url('wechat/admin_request/init')));
 	}
