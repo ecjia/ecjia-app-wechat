@@ -70,16 +70,16 @@ class platform_qrcode extends ecjia_platform {
 		RC_Script::enqueue_script('jquery-validate');
 		RC_Script::enqueue_script('jquery-form');
 		RC_Script::enqueue_script('smoke');
-		RC_Style::enqueue_style('chosen');
-		RC_Style::enqueue_style('uniform-aristo');
+// 		RC_Style::enqueue_style('chosen');
+// 		RC_Style::enqueue_style('uniform-aristo');
 // 		RC_Script::enqueue_script('jquery-uniform');
-		RC_Script::enqueue_script('jquery-chosen');
+// 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Script::enqueue_script('wechat_qrcode', RC_App::apps_url('statics/platform-js/wechat_qrcode.js', __FILE__), array(), false, true);
 // 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js') );
 // 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		
 		RC_Script::localize_script('wechat_qrcode', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.qrcode_manage'), RC_Uri::url('wechat/admin_qrcode/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.qrcode_manage'), RC_Uri::url('wechat/platform_qrcode/init')));
 	}
 
 	/**
@@ -90,7 +90,7 @@ class platform_qrcode extends ecjia_platform {
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.qrcode_manage')));
-		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_qr_code'), 'href'=> RC_Uri::url('wechat/admin_qrcode/add')));
+		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_qr_code'), 'href'=> RC_Uri::url('wechat/platform_qrcode/add')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.qrcode_manage'));
 
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -117,7 +117,7 @@ class platform_qrcode extends ecjia_platform {
 			
 			$listdb = $this->get_qrcodelist();
 			$this->assign('listdb', $listdb);
-			$this->assign('search_action', RC_Uri::url('wechat/admin_qrcode/init'));
+			$this->assign('search_action', RC_Uri::url('wechat/platform_qrcode/init'));
 		}
 
 		$this->assign_lang();
@@ -133,7 +133,7 @@ class platform_qrcode extends ecjia_platform {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_qr_code')));
 		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_qr_code'));
-		$this->assign('action_link', array('href' => RC_Uri::url('wechat/admin_qrcode/init'), 'text' => RC_Lang::get('wechat::wechat.qrcode_list')));
+		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_qrcode/init'), 'text' => RC_Lang::get('wechat::wechat.qrcode_list')));
 		
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
@@ -157,7 +157,7 @@ class platform_qrcode extends ecjia_platform {
 			$this->assign('type', $type);
 			$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 			
-			$this->assign('form_action', RC_Uri::url('wechat/admin_qrcode/insert'));
+			$this->assign('form_action', RC_Uri::url('wechat/platform_qrcode/insert'));
 		}
 		
 		$this->assign_lang();
@@ -192,7 +192,7 @@ class platform_qrcode extends ecjia_platform {
 		$this->db_qrcode->insert($data);
 		
 		ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $functions), 'add', 'qrcode');
-		return $this->showmessage(RC_Lang::get('wechat::wechat.add_qrcode_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/admin_qrcode/init')));
+		return $this->showmessage(RC_Lang::get('wechat::wechat.add_qrcode_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
 	}
 		
 	/**
@@ -207,7 +207,7 @@ class platform_qrcode extends ecjia_platform {
 		$this->db_qrcode->where(array('id' => $id))->delete();
 		
 		ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $function), 'remove', 'qrcode');
-		return $this->showmessage(RC_Lang::get('wechat::wechat.remove_qrcode_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/admin_qrcode/init')));
+		return $this->showmessage(RC_Lang::get('wechat::wechat.remove_qrcode_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
 	}
 	
 	/**
@@ -223,7 +223,7 @@ class platform_qrcode extends ecjia_platform {
 		foreach ($info as $v) {
 			ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $v['function']), 'batch_remove', 'qrcode');
 		}
-		return $this->showmessage(RC_Lang::get('wechat::wechat.batch_operate_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/admin_qrcode/init')));
+		return $this->showmessage(RC_Lang::get('wechat::wechat.batch_operate_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
 	}
 	
 	/**
@@ -297,7 +297,7 @@ class platform_qrcode extends ecjia_platform {
 		} else {
 			ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.close_function_is'), $function), 'setup', 'qrcode');
 		}
-		return $this->showmessage(RC_Lang::get('wechat::wechat.edit_status_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/admin_qrcode/init')));
+		return $this->showmessage(RC_Lang::get('wechat::wechat.edit_status_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
 	}
 	
 	/**
@@ -315,7 +315,7 @@ class platform_qrcode extends ecjia_platform {
 			} else {
 				if ($this->db_qrcode->where(array('id' => $id))->update(array('sort' => $sort))) {
 					ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $function), 'edit', 'qrcode');
-					return $this->showmessage(RC_Lang::get('wechat::wechat.edit_sort_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/admin_qrcode/init')) );
+					return $this->showmessage(RC_Lang::get('wechat::wechat.edit_sort_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_qrcode/init')) );
 				}
 			}
 		} else {

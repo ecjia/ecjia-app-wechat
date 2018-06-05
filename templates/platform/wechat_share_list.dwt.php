@@ -16,7 +16,7 @@
 	    </div>
 	</div>
 </div>
-<!-- {/if} -->	
+<!-- {/if} -->
 
 <!-- {if $errormsg} -->
 <div class="row">

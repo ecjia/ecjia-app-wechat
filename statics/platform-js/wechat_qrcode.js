@@ -2,13 +2,13 @@
 ;(function(app, $) {
 	app.wechat_qrcode_list = {
 		init : function() {
-			$("form[name='searchForm'] .search_qrcode").on('click', function(e){
+			$("form[name='searchForm'] .search_qrcode").off('click').on('click', function(e){
 				e.preventDefault();
 				var url = $("form[name='searchForm']").attr('action') + '&keywords=' +$("input[name='keywords']").val();
 				ecjia.pjax(url);
 			});		
 			
-			$(".ajaxswitch").on('click', function(e){
+			$(".ajaxswitch").off('click').on('click', function(e){
 				e.preventDefault();
 				var url = $(this).attr('href');
 				$.get(url, function(data){
@@ -16,7 +16,7 @@
 				}, 'json');
 			});
 			
-			$(".ajaxwechat").on('click', function(e){
+			$(".ajaxwechat").off('click').on('click', function(e){
 				e.preventDefault();
 				var url = $(this).attr('href');
 				$.get(url, function(data){

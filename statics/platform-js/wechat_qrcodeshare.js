@@ -2,7 +2,7 @@
 ;(function(app, $) {
 	app.wechat_qrcodeshare_list = {
 			init : function() {		
-				$(".ajaxswitch").on('click', function(e){
+				$(".ajaxswitch").off('click').on('click', function(e){
 					e.preventDefault();
 					var url = $(this).attr('href');
 					$.get(url, function(data){
@@ -10,7 +10,7 @@
 					}, 'json');
 				});	
 				
-				$(".ajaxwechat").on('click', function(e){
+				$(".ajaxwechat").off('click').on('click', function(e){
 					e.preventDefault();
 					var url = $(this).attr('href');
 					$.get(url, function(data){
