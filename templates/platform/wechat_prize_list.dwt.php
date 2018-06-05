@@ -58,7 +58,7 @@
 							<td class="hide-edit-area hide_edit_area_bottom"> 
 						    	<span>{$val.nickname}</span>
 						    	<div class="edit-list">
-						    		<a class="send_message" data-nickname="{$val.nickname}" data-uid="{$val.uid}" data-openid="{$val.openid}" title="{lang key='wechat::wechat.inform_user'}">{lang key='wechat::wechat.inform_user'}</a>&nbsp;|&nbsp;
+						    		<a class="send_message" href="javascript:;" data-nickname="{$val.nickname}" data-uid="{$val.uid}" data-openid="{$val.openid}" title="{lang key='wechat::wechat.inform_user'}">{lang key='wechat::wechat.inform_user'}</a>&nbsp;|&nbsp;
 						        	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{t}您确定要删除该获奖名单[{$val.nickname}]吗？{/t}" href='{RC_Uri::url("wechat/platform_prize/remove","id={$val.id}")}' title="{lang key='wechat::wechat.delete'}">{lang key='wechat::wechat.delete'}</a>
 								</div>
 						    </td>
