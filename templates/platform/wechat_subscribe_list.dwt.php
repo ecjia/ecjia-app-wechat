@@ -229,7 +229,7 @@
 
 						<div class="form-group row">
 							<label class="col-md-3 label-control old_tag_name text-right">{lang key='wechat::wechat.label_old_tag_name'}</label>
-							<div class="col-md-8">
+							<div class="col-md-8 controls">
 								<input class="form-control" type="text" name="new_tag" autocomplete="off"/>
 							</div>
 							<div class="col-md-1"><span class="input-must">*</span></div>
@@ -277,7 +277,7 @@
 					<div class="form-body">
 						<div class="form-group row">
 							<label class="col-md-3 label-control new_tag_name text-right">{lang key='wechat::wechat.label_tag_name'}</label>
-							<div class="col-md-8">
+							<div class="col-md-8 controls">
 								<input class="form-control" type="text" name="new_tag" autocomplete="off"/>
 							</div>
 							<div class="col-md-1"><span class="input-must">*</span></div>

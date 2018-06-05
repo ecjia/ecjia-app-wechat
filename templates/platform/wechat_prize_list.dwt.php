@@ -59,16 +59,16 @@
 						    	<span>{$val.nickname}</span>
 						    	<div class="edit-list">
 						    		<a class="send_message" data-nickname="{$val.nickname}" data-uid="{$val.uid}" data-openid="{$val.openid}" title="{lang key='wechat::wechat.inform_user'}">{lang key='wechat::wechat.inform_user'}</a>&nbsp;|&nbsp;
-						        	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{t}您确定要删除该获奖名单[{$val.nickname}]吗？{/t}" href='{RC_Uri::url("wechat/admin_prize/remove","id={$val.id}")}' title="{lang key='wechat::wechat.delete'}">{lang key='wechat::wechat.delete'}</a>
+						        	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{t}您确定要删除该获奖名单[{$val.nickname}]吗？{/t}" href='{RC_Uri::url("wechat/platform_prize/remove","id={$val.id}")}' title="{lang key='wechat::wechat.delete'}">{lang key='wechat::wechat.delete'}</a>
 								</div>
 						    </td>
 							<td>{$val.prize_name}</td>
 							<td>{if is_array($val['winner'])}{lang key='wechat::wechat.lable_name'}{$val['winner']['name']}<br />{lang key='wechat::wechat.lable_mobile'}{$val['winner']['phone']}<br />{lang key='wechat::wechat.lable_address'}{$val['winner']['address']}{/if}</td>
 							<td>
 								{if $val['issue_status'] eq 1}
-						    	<a class="ajaxissue" href='{RC_Uri::url("wechat/admin_prize/winner_issue","id={$val.id}&cancel=1{if $smarty.get.type}&type={$smarty.get.type}{/if}")}'><i class="fontello-icon-ok"></i></a>
+						    	<a class="ajaxissue" href='{RC_Uri::url("wechat/platform_prize/winner_issue","id={$val.id}&cancel=1{if $smarty.get.type}&type={$smarty.get.type}{/if}")}'><i class="fontello-icon-ok"></i></a>
 						    	{else}
-						    	<a class="ajaxissue" href='{RC_Uri::url("wechat/admin_prize/winner_issue","id={$val.id}{if $smarty.get.type}&type={$smarty.get.type}{/if}")}'><i class="fontello-icon-cancel"></i></a>
+						    	<a class="ajaxissue" href='{RC_Uri::url("wechat/platform_prize/winner_issue","id={$val.id}{if $smarty.get.type}&type={$smarty.get.type}{/if}")}'><i class="fontello-icon-cancel"></i></a>
 						    	{/if}
 							</td>
 							<td>{$val.dateline}</td>
@@ -106,24 +106,17 @@
 				</div>
 			<!-- {/if} -->
 
-			<form class="form" method="post" name="the_form" action="{url path='wechat/admin_prize/send_message'}">
+			<form class="form" method="post" name="the_form" action="{url path='wechat/platform_prize/send_message'}">
 				<div class="card-body">
 					<div class="form-body">
 						<div class="form-group row">
 							<label class="col-md-4 label-control text-right">{lang key='wechat::wechat.label_message_content'}</label>
-							<div class="col-md-6">
+							<div class="col-md-8 controls">
 								<textarea name="message_content" class="form-control"></textarea>
-							</div>
-							<div class="col-md-1"><span class="input-must">*</span></div>
-						</div>
-						
-						<div class="form-group row">
-							<label class="col-md-4 label-control text-right"></label>
-							<div class="col-md-6">
-								<span class="help-block">{lang key='wechat::wechat.tip_info'}</span>
+								<label class="input-must">*</label>
+								<div class="help-block">{lang key='wechat::wechat.tip_info'}</div>
 							</div>
 						</div>
-						
 						<div class="form-group row">
 							<label class="col-md-4 label-control text-right">{lang key='wechat::wechat.label_nickname'}</label>
 							<div class="col-md-8 nickname"></div>
