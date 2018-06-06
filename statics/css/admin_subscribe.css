@@ -32,5 +32,17 @@
 .chat_box .col-lg-12.chat_content .card-body .media-text{padding:4px 8px;border:1px solid #ddd;background:#fafafa;-webkit-border-radius:6px;-moz-border-radius:6px;-ms-border-radius:6px;border-radius:6px;word-wrap:break-word}
 .chat_box .col-lg-12.chat_content .card-body .media-list .media{padding:.5rem 1.25rem}
 .chat_box .col-lg-12.chat_content{border:none}
-.chat_box .col-lg-12.chat_content .card-content{height:480px;overflow-y:auto}
-.chat_box .col-lg-12.chat_content .card{min-height:550px}
+.chat_box .col-lg-12.chat_content .card-content{height:518px;overflow-y:auto}
+.chat_box .col-lg-12.chat_content .card{height:550px;border: 1px solid #eee;}
+.chat_box .card.info_content{border: 1px solid #eee;}
+.chat_box .card.info_content .thumbnail {width: 80px;height: 80px;}
+.chat_box .col-lg-12.chat_content .media-text {
+	padding: 4px 8px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    border-radius: 6px;
+    word-wrap: break-word;
+}

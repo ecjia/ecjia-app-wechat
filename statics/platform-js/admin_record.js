@@ -158,7 +158,7 @@ app.admin_record = {
 		
 		!options.is_myself && msg_cloned.removeClass('chat-msg-mine').addClass('chat-msg-you');
 		msg_cloned.removeClass('msg_clone').show();
-		$('.msg_windows').stop().animate({
+		$('.chat_msg.media-list').stop().animate({
 			scrollTop: options.oldstart ? msg_cloned.offset().top : 9999999
 		}, 1000);
 	},
