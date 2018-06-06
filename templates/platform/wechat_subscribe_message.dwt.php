@@ -115,7 +115,21 @@
 										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.label_remark'}</label>
 										<div class="col-md-7 controls">
 											<span class="p_l10">
-												<span class="remark_info p_r5">{$info.remark}</span>
+												{if $info.remark}
+													<span class="remark_info p_r5">{$info.remark}</span>
+												{/if}
+												{if $info['group_id'] neq 1 && $info['subscribe'] neq 0}
+												<a class="edit_remark_icon" ><i class="ft-edit"></i></a>
+												{/if}
+												<span class="remark" style="display:none;">
+													<input class="remark w100 form-control f_l" type="text" name="remark" value="{$info.remark}" maxlength="30">
+													<a class="edit_remark_url m_l10" href="javascript:;" 
+														data-page="{$smarty.get.page}" data-remark="{$info.remark}" data-uid="{$info.uid}" 
+														data-openid="{$info.openid}" data-url="{RC_Uri::url('wechat/platform_subscribe/edit_remark')}">
+														<i class="fa fa-check remark_ok"></i>
+														<i class="fa fa-times remark_cancel"></i>
+													</a>
+												</span>
 											</span>
 										</div>
 									</div>
@@ -135,15 +149,12 @@
 									</div>
 									
 									<div class="form-group row">
-										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.lable_user_group'}</label>
+										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.label_user_tag'}</label>
 										<div class="col-md-7 controls">
-											<span class="p_l10">
-												<!-- {foreach from=$group_list item=val} -->
-													<!-- {if $val.group_id eq $info.group_id} -->
-														<span class="group_info p_r5">{$val.name}</span>
-													<!-- {/if} -->
-												<!-- {/foreach} -->
-											</span>
+											<span class="p_l10">{if $info['group_id'] eq 1}{else}{if $info['tag_name']}{$info['tag_name']}{else}{lang key='wechat::wechat.no_tag'}{/if}{/if}</span>
+											<!-- {if $info.group_id neq 1 && $info.subscribe neq 0} -->
+											<a class="set-label-btn" data-openid="{$info.openid}" data-uid="{$info.uid}" data-url="{$get_checked}" href="javascript:;"><i class="ft-tag"></i></a>
+											<!-- {/if} -->
 										</div>
 									</div>
 									
@@ -160,6 +171,22 @@
 											<span class="p_l10">{if $info['user_name']}{$info['user_name']}{else}{lang key='wechat::wechat.not_bind_yet'}{/if}</span>
 										</div>
 									</div>
+									
+									<div class="form-group row">
+										<label class="col-md-5 label-control text-right"></label>
+										<div class="col-md-7 controls">
+											<!-- {if $info.group_id eq 1} -->
+											<a class="ajaxremove no-underline btn btn-light m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/backlist","uid={$info.uid}&openid={$info.openid}&type=remove_out&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.remove_blacklist'}">{lang key='wechat::wechat.remove_blacklist'}</a>
+											<!-- {else} -->
+												<!-- {if $info.subscribe eq 0} -->
+												<a class="btn m_t14" disabled>{lang key='wechat::wechat.add_blacklist'}</a>
+												<!-- {else} -->
+												<a class="ajaxremove no-underline btn btn-light m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/backlist","uid={$info.uid}&openid={$info.openid}&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}">{lang key='wechat::wechat.add_blacklist'}</a>
+												<!-- {/if} -->
+											<!-- {/if} -->
+										</div>
+									</div>
+							
 								</div>
 							</div>
 						</div>
