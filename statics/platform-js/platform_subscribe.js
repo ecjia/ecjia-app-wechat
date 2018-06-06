@@ -27,7 +27,7 @@
 							var new_last_id = data.last_id ? data.last_id : parseInt(last_id) - 10;
 							$this.attr('data-lastid', new_last_id);
 							data.msg_list.length < 10 && $this.text(data.message).attr('disabled', 'disabled');
-							$('.msg_window').prepend($this.parents('.chat_msg'));
+							$('.chat_msg.media-list').prepend($this.parents('.chat_msg'));
 						} else {
 							$this.text(data.message).attr('disabled','disabled');
 						}
@@ -163,13 +163,13 @@
 		 */
 		addMsgItem: function(options) {
 			var msg_cloned = $('.msg_clone').clone();
-			options.oldstart ? $('.msg_window').prepend(msg_cloned) : $('.msg_window').append(msg_cloned);
+			options.oldstart ? $('.chat_msg.media-list').prepend(msg_cloned) : $('.chat_msg.media-list').append(msg_cloned);
 			msg_cloned.find('.chat_msg_date').html(options.send_time);
-			msg_cloned.find('.chat_msg_body').html(options.tr_msg);
+			msg_cloned.find('.media-text').html(options.tr_msg);
 			msg_cloned.find('.chat_user_name').html(options.chat_user);
 			!options.is_myself && msg_cloned.removeClass('chat-msg-mine').addClass('chat-msg-you');
 			msg_cloned.removeClass('msg_clone').show();
-			$('.msg_window').stop().animate({
+			$('.chat_msg.media-list').stop().animate({
 				scrollTop: options.oldstart ? msg_cloned.offset().top : 9999999
 			}, 1000);
 		},

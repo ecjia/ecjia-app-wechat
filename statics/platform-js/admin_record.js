@@ -118,7 +118,7 @@ app.admin_record = {
 						var new_last_id = data.last_id ? data.last_id : parseInt(last_id) - 10;
 						$this.attr('data-lastid', new_last_id);
 						data.msg_list.length < 10 && $this.text(data.message).attr('disabled', 'disabled');
-						$('.msg_windows').prepend($this.parents('.chat_msg'));
+						$('.chat_msg.media-list').prepend($this.parents('.chat_msg'));
 					} else {
 						$this.text(data.message).attr('disabled','disabled');
 					}
@@ -151,7 +151,7 @@ app.admin_record = {
 	 */
 	addMsgItem: function(options) {
 		var msg_cloned = $('.msg_clone').clone();
-		options.oldstart ? $('.chat_msg.media-list').prepend(msg_cloned) : $('.msg_windows').append(msg_cloned);
+		options.oldstart ? $('.chat_msg.media-list').prepend(msg_cloned) : $('.chat_msg.media-list').append(msg_cloned);
 		msg_cloned.find('.chat_msg_date').html(options.send_time);
 		msg_cloned.find('.chat_user_name').html(options.chat_user);
 		msg_cloned.find('.media-text').html(options.tr_msg);

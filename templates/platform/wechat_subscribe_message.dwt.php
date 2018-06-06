@@ -3,7 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-	ecjia.platform.admin_record.init();
+	ecjia.platform.subscribe_message.init();
 </script>
 <!-- {/block} -->
 
@@ -47,17 +47,17 @@
 							<div class="card-header popover-header">
 								<h4 class="card-title">{lang key='wechat::wechat.label_chat_user'}<span class="act_users">{$info.nickname}</span></h4>
 							</div>
-							<div class="card-content collapse show popover-body">
+							<div class="card-content collapse show popover-body chat-box">
 								<div class="chat_msg clearfix">
-									<div class="chat_msg_heading t_c"><a class="readed_message" href="javascript:;" data-chatid="{$info.openid}" data-lastid="{$message.last_id}" data-href="{$last_action}">{lang key='wechat::wechat.view_earlier_message'}</a></div>
+									<div class="chat_msg_heading t_c"><a class="readed_message" href="javascript:;" data-chatid="{$info.uid}" data-lastid="{$message.last_id}" data-href="{$last_action}">{lang key='wechat::wechat.view_earlier_message'}</a></div>
 								</div>
 								<div class="card-body">
 									<div class="chat_msg media-list">
 										<!-- {foreach from=$message.item item=msg} -->
-										<div class="media {if $msg.opercode eq 2003} chat-msg-mine{else if $msg.opercode eq 2002} chat-msg-you{/if} last_chat">
+										<div class="media {if $msg.iswechat eq 1} chat-msg-mine{else} chat-msg-you{/if} last_chat">
 											<div class="media-body">
-												<h5 class="media-heading"><span class="chat_msg_date">{$msg.time}</span><span class="chat_user_name">{if $msg.opercode eq 2003}{$msg.nickname}{else if $msg.opercode eq 2002}{$msg.kf_account}{/if}</span></h5>
-												<h5 class="media-text {if $msg.opercode eq 2003}text-right{/if}">{$msg.text}</h5>
+												<h5 class="media-heading"><span class="chat_msg_date">{$msg.send_time}</span><span class="chat_user_name">{$msg.nickname}</span></h5>
+												<h5 class="media-text {if $msg.iswechat eq 1}text-right{/if}">{$msg.msg}</h5>
 											</div>
 										</div>
 										<!-- {/foreach} -->
@@ -70,6 +70,18 @@
 									</div>
 								</div>
 							</div>
+								<div class="chat_editor_box">
+									<textarea class="col-lg-12" name="chat_editor" id="chat_editor" cols="30" rows="3" maxlength="600"></textarea>
+									<div class="btn-group send_btns">
+										<a class="btn btn-small btn-info {if !$disabled}send_msg{/if}" {if $disabled}disabled="disabled"{/if} href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>
+									</div>
+									<span class="tip_info">{lang key='wechat::wechat.tip_info'}</span>
+									<span class="word_info">{lang key='wechat::wechat.word_info'}</span>
+									<input type="hidden" name="chat_user" id="chat_user" value="{$info.uid}" />
+									<input type="hidden" name="openid" id="openid" value="{$info.openid}" />
+									<input type="hidden" name="nickname" id="nickname" value="{$info.nickname}" />
+									<input type="hidden" name="platform_name" id="platform_name" value="{$info.platform_name}" />
+								</div>
 						</div>
 					</div>
 					
@@ -156,5 +168,36 @@
             </div>
         </div>
     </div>
+</div>
+	
+
+
+<div class="modal hide fade" id="set_label">
+	<div class="modal-header">
+		<button class="close" data-dismiss="modal">×</button>
+		<h3>{lang key='wechat::wechat.set_tag'}</h3>
+	</div>
+	<div class="modal-body tag_popover">
+		<form class="form-inline" method="post" action="{$label_action}&action=set_user_label" name="label_form">
+			<div class="popover_inner">
+				<div class="popover_content">
+					<div class="popover_tag_list">
+						<!-- {foreach from=$group_list.item item=val} -->
+						<label class="frm_checkbox_label">
+							{if $val.group_id neq 1}
+							<input type="checkbox" class="frm_checkbox" name="group_id[]" value="{$val.group_id}">
+							<span class="lbl_content">{$val.name}</span>
+							{/if}
+						</label>
+						<!-- {/foreach} -->
+					</div>
+					<span class="help-block m_b5">{lang key='wechat::wechat.up_tag_count'}</span>
+				</div>
+				<input type="hidden" name="openid" />
+				<input type="hidden" name="uid" />
+				<div class="popover_bar"><a href="javascript:;" class="btn btn-gebo set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</a>&nbsp;</div>
+	   		</div>
+	   	</form>
+	</div>
 </div>
 <!-- {/block} -->
