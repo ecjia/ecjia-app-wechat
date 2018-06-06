@@ -53,26 +53,49 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class wechat_platform_menu_api extends Component_Event_Api {
 
     public function call(&$options) {
-        $menus = ecjia_platform::make_admin_menu('staff', '仪表盘', RC_Uri::url('merchant/dashboard/init'), 0)->add_icon('fa-dashboard')->add_base('dashboard');
-
-        $mymenus = ecjia_platform::make_admin_menu('14_merchant', __('店铺'), '', 10)->add_icon('fa-home')->add_base('store')->add_purview(array('merchant_manage', 'franchisee_manage', 'bank_manage', 'shopguide_manage'));
-        $submenus = array(
-            ecjia_platform::make_admin_menu('01_merchant_setinfo', __('店铺设置'), RC_Uri::url('merchant/merchant/init'), 1)->add_purview('merchant_manage')->add_icon('fa-gears'), //'merchant_info'
-            ecjia_platform::make_admin_menu('02_merchant_franchisee', __('入驻信息'), RC_Uri::url('merchant/mh_franchisee/init'), 2)->add_purview('franchisee_manage')->add_icon('fa-info-circle'), //'enter_info'
-            ecjia_platform::make_admin_menu('03_merchant_Receipt', __('收款账号'), RC_Uri::url('merchant/mh_franchisee/receipt'), 3)->add_purview('franchisee_bank')->add_icon('fa-credit-card'), //'enter_info'
-            ecjia_platform::make_admin_menu('05_merchant_switch', __('店铺上下线'), RC_Uri::url('merchant/merchant/mh_switch'), 5)->add_purview('merchant_switch')->add_icon('fa-power-off'), 
-            ecjia_platform::make_admin_menu('06_merchant_template', __('小程序模版'), RC_Uri::url('merchant/merchant/template'), 6)->add_purview('merchant_template')->add_icon('fa-navicon'), 
-        		
-            ecjia_platform::make_admin_menu('07_merchant_printer', __('小票机'), RC_Uri::url('printer/mh_print/init'), 7)->add_purview('mh_printer_manage')->add_icon('fa-print'),
+        $menus = ecjia_platform::make_admin_menu('staff', '仪表盘', RC_Uri::url('platform/dashboard/init'), 0)->add_icon('fa-dashboard')->add_base('dashboard');
+        
+        $navmenus = ecjia_admin::make_admin_menu('nav-header', RC_Lang::get('wechat::wechat.weixin_notice'), '', 17);
+        $usermenus = ecjia_admin::make_admin_menu('15_content', '用户管理', '', 18)->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('01_wechat', RC_Lang::get('wechat::wechat.user_manage'), RC_Uri::url('wechat/platform_subscribe/init'), 1)->add_purview('wechat_subscribe_manage'),
+                ecjia_admin::make_admin_menu('02_wechat', RC_Lang::get('wechat::wechat.message_manage'), RC_Uri::url('wechat/platform_message/init'), 2)->add_purview('wechat_subscribe_message_manage'),
+                ecjia_admin::make_admin_menu('03_wechat', RC_Lang::get('wechat::wechat.mass_message'), RC_Uri::url('wechat/platform_mass_message/init'), 3)->add_purview('wechat_message_manage'),
+            )
         );
         
-        $mymenus->add_submenu($submenus);
-        $mymenus = RC_Hook::apply_filters('wechat_platform_menu_api', $mymenus);
-
-        if ($mymenus->has_submenus()) {
-        	return array($menus, $mymenus);
-        }
-        return false;
+        $replymenus = ecjia_admin::make_admin_menu('15_content', '自动回复', '', 18)->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('06_wechat', RC_Lang::get('wechat::wechat.custom_menu'), RC_Uri::url('wechat/platform_menus/init'), 6)->add_purview('wechat_menus_manage'),
+                ecjia_admin::make_admin_menu('07_wechat', RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type'=>'news', 'material' => 1)), 7)->add_purview('wechat_material_manage'),
+                ecjia_admin::make_admin_menu('08_wechat', RC_Lang::get('wechat::wechat.auto_reply'), RC_Uri::url('wechat/platform_response/reply_subscribe'), 8)->add_purview('wechat_response_manage'),
+                ecjia_admin::make_admin_menu('09_wechat', RC_Lang::get('wechat::wechat.reply_keyword'), RC_Uri::url('wechat/platform_response/reply_keywords'), 9)->add_purview('wechat_response_manage')
+            )
+        );
+        
+        
+        $kefumenus = ecjia_admin::make_admin_menu('15_content', '客服管理', '', 18)->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('11_wechat', RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('wechat/platform_customer/init'), 11)->add_purview('wechat_customer_manage'),
+                ecjia_admin::make_admin_menu('12_wechat', RC_Lang::get('wechat::wechat.service_record'), RC_Uri::url('wechat/platform_record/init'), 12)->add_purview('wechat_record_manage'),
+            )
+            );
+        
+        $tgmenus = ecjia_admin::make_admin_menu('15_content', '推广管理', '', 18)->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('14_wechat', RC_Lang::get('wechat::wechat.channel_code'), RC_Uri::url('wechat/platform_qrcode/init'), 14)->add_purview('wechat_qrcode_manage'),
+                ecjia_admin::make_admin_menu('15_wechat', RC_Lang::get('wechat::wechat.sweep_recommend'), RC_Uri::url('wechat/platform_share/init'), 15)->add_purview('wechat_share_manage'),
+                ecjia_admin::make_admin_menu('17_wechat', RC_Lang::get('wechat::wechat.draw_record'), RC_Uri::url('wechat/platform_prize/init'), 17)->add_purview('wechat_prize_manage'),
+            )
+            );
+        
+        $tjmenus = ecjia_admin::make_admin_menu('15_content', '统计管理', '', 18)->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('18_wechat', RC_Lang::get('wechat::wechat.api_request'), RC_Uri::url('wechat/platform_request/init'), 18)->add_purview('wechat_request_manage'),
+            )
+            );
+        
+        return array($menus, $navmenus, $usermenus, $replymenus, $kefumenus, $tgmenus, $tjmenus);
     }
 }
 
