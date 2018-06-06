@@ -151,10 +151,11 @@ app.admin_record = {
 	 */
 	addMsgItem: function(options) {
 		var msg_cloned = $('.msg_clone').clone();
-		options.oldstart ? $('.msg_windows').prepend(msg_cloned) : $('.msg_windows').append(msg_cloned);
+		options.oldstart ? $('.chat_msg.media-list').prepend(msg_cloned) : $('.msg_windows').append(msg_cloned);
 		msg_cloned.find('.chat_msg_date').html(options.send_time);
-		msg_cloned.find('.chat_msg_body').html(options.tr_msg);
 		msg_cloned.find('.chat_user_name').html(options.chat_user);
+		msg_cloned.find('.media-text').html(options.tr_msg);
+		
 		!options.is_myself && msg_cloned.removeClass('chat-msg-mine').addClass('chat-msg-you');
 		msg_cloned.removeClass('msg_clone').show();
 		$('.msg_windows').stop().animate({

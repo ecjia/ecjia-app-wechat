@@ -46,38 +46,47 @@
     </div>
 </div>
 
-<div class="row-fluid">
-	<div class="chat_box table table-hide-edit" data-url='{$chat_action}'>
-		<div class="span8 chat_content h550">
-			<div class="chat_heading clearfix">
-				{lang key='wechat::wechat.label_chat_user'}<span class="act_users">{$info.nickname}</span>
-			</div>
-
-			<div class="msg_windows">
-				<div class="chat_msg clearfix">
-					<div class="chat_msg_heading t_c"><a class="readed_message" href="javascript:;" data-chatid="{$info.openid}" data-lastid="{$message.last_id}" data-href="{$last_action}">{lang key='wechat::wechat.view_earlier_message'}</a></div>
+	<div class="chat_box row" data-url='{$chat_action}' style="padding-left:15px;">
+		
+		<div class="col-xl-8 col-lg-12 chat_content h550">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">{lang key='wechat::wechat.label_chat_user'}<span class="act_users">{$info.nickname}</span></h4>
 				</div>
-				<!-- {foreach from=$message.item item=msg} -->
-				<div class="chat_msg clearfix{if $msg.opercode eq 2003} chat-msg-mine{else if $msg.opercode eq 2002} chat-msg-you{/if} last_chat">
-					<div class="chat_msg_heading"><span class="chat_msg_date">{$msg.time}</span><span class="chat_user_name">{if $msg.opercode eq 2003}{$msg.nickname}{else if $msg.opercode eq 2002}{$msg.kf_account}{/if}</span></div>
-					<div class="chat_msg_body">{$msg.text}</div>
-				</div>
-				<!-- {/foreach} -->
-				<div class="chat_msg clearfix chat-msg-mine msg_clone" style="display:none">
-					<div class="chat_msg_heading"><span class="chat_msg_date"></span><span class="chat_user_name"></span></div>
-					<div class="chat_msg_body"></div>
+				<div class="card-content collapse show">
+					<div class="chat_msg clearfix">
+						<div class="chat_msg_heading t_c"><a class="readed_message" href="javascript:;" data-chatid="{$info.openid}" data-lastid="{$message.last_id}" data-href="{$last_action}">{lang key='wechat::wechat.view_earlier_message'}</a></div>
+					</div>
+					<div class="card-body">
+						<div class="chat_msg media-list">
+							<!-- {foreach from=$message.item item=msg} -->
+							<div class="media {if $msg.opercode eq 2003} chat-msg-mine{else if $msg.opercode eq 2002} chat-msg-you{/if} last_chat">
+								<div class="media-body">
+									<h5 class="media-heading"><span class="chat_msg_date">{$msg.time}</span><span class="chat_user_name">{if $msg.opercode eq 2003}{$msg.nickname}{else if $msg.opercode eq 2002}{$msg.kf_account}{/if}</span></h5>
+									<h5 class="media-text {if $msg.opercode eq 2003}text-right{/if}">{$msg.text}</h5>
+								</div>
+							</div>
+							<!-- {/foreach} -->
+							<div class="media msg_clone chat-msg-mine" style="display:none">
+								<div class="media-body">
+									<h5 class="media-heading"><span class="chat_msg_date"></span><span class="chat_user_name"></span></h5>
+									<h5 class="media-text"></h5>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		
-		<div class="span4 right-bar move-mod">
-			<div class="foldable-list move-mod-group">
-				<div class="accordion-group h550">
-					<div class="accordion-heading">
-						<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#customer_info">
-							<strong>{lang key='wechat::wechat.user_info'}</strong>
-						</a>
-					</div>
+		
+		<div class="col-xl-4 col-lg-12 right-bar move-mod">
+			
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">{lang key='wechat::wechat.user_info'}</h4>
+				</div>
+				<div class="card-body">
 					<div class="accordion-body in collapse" id="customer_info">
 						<div class="accordion-inner">
 							<div class="control-group control-group-small formSep">
@@ -153,5 +162,4 @@
 			</div>
 		</div>
 	</div>
-</div>
 <!-- {/block} -->
