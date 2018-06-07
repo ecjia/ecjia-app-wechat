@@ -735,7 +735,7 @@ class platform_subscribe extends ecjia_platform {
 			$where =  "m.uid = '".$uid."' AND (m.iswechat = 0 OR m.iswechat = 1)";
 		}
 		$count = $custom_message_viewdb->where($where)->count();
-		$page = new ecjia_page($count, 10, 5);
+		$page = new ecjia_platform_page($count, 10, 5);
 		$limit = $page->limit();
 
 		$list = $custom_message_viewdb->join('wechat_user')

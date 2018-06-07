@@ -254,7 +254,7 @@ class platform_record extends ecjia_platform {
 		
 		$total = $customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('max(cs.id) as id')->where($where)->group('cs.openid')->select();
 		$count = count($total);
-		$page = new ecjia_page($count, 10, 5);
+		$page = new ecjia_platform_page($count, 10, 5);
 		// $list = $customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('max(cs.id) as id, wu.*')->where($where)->group('cs.openid')->limit($page->limit())->order(array('cs.time' => 'desc'))->select();
 
 		$list = RC_DB::table('wechat_customer_session as cs')
@@ -321,7 +321,7 @@ class platform_record extends ecjia_platform {
 		}
 		
 		$count = $customer_session_viewdb->join(null)->where($where)->count();
-		$page = new ecjia_page($count, 10, 5);
+		$page = new ecjia_platform_page($count, 10, 5);
 		$limit = $page->limit();
 		$list = $customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('cs.*, c.kf_nick, wu.nickname')->where($where)->order(array('cs.time' => 'desc'))->limit($limit)->select();
 		
