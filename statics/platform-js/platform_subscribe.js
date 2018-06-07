@@ -41,6 +41,7 @@
 			});
 			
 			$(".set-label-btn").off('click').on('click', function(e) {
+				$('#set_label').modal('show');
 				var openid = $(this).attr('data-openid');
 				var uid = $(this).attr('data-uid');
 				$('input[name="openid"]').val(openid);
@@ -73,12 +74,12 @@
 			if (data.content.length > 0) {
 				for (var i = 0; i < data.content.length; i++) {
 					if (data.content[i].checked == 1) {
-						var $opt = $('<label class="frm_checkbox_label"><input type="checkbox" class="frm_checkbox" checked="checked" name="tag_id[]" value="'+data.content[i].tag_id+'"><span class="lbl_content">'+data.content[i].name+'</span></label>');
+						var $opt = $('<label class="frm_checkbox_label"><input type="checkbox" class="frm_checkbox" checked="checked" name="tag_id[]" value="'+data.content[i].tag_id+'" id="tag_'+data.content[i].tag_id+'"><label for="tag_'+data.content[i].tag_id+'"></label><span class="lbl_content">'+data.content[i].name+'</span></label>');
 					} else {
-						var $opt = $('<label class="frm_checkbox_label"><input type="checkbox" class="frm_checkbox" name="tag_id[]" value="'+data.content[i].tag_id+'"><span class="lbl_content">'+data.content[i].name+'</span></label>');
+						var $opt = $('<label class="frm_checkbox_label"><input type="checkbox" class="frm_checkbox" name="tag_id[]" value="'+data.content[i].tag_id+'" id="tag_'+data.content[i].tag_id+'"><label for="tag_'+data.content[i].tag_id+'"></label><span class="lbl_content">'+data.content[i].name+'</span></label>');
 					}
 					$('.popover_tag_list').append($opt);
-					$('input[type="checkbox"]').uniform();
+//					$('input[type="checkbox"]').uniform();
 				}
 			}
 			$('.frm_checkbox_label').off('click').on('click', function() {

@@ -186,7 +186,6 @@
 											<!-- {/if} -->
 										</div>
 									</div>
-							
 								</div>
 							</div>
 						</div>
@@ -196,35 +195,58 @@
         </div>
     </div>
 </div>
-	
 
-
-<div class="modal hide fade" id="set_label">
-	<div class="modal-header">
-		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='wechat::wechat.set_tag'}</h3>
-	</div>
-	<div class="modal-body tag_popover">
-		<form class="form-inline" method="post" action="{$label_action}&action=set_user_label" name="label_form">
-			<div class="popover_inner">
-				<div class="popover_content">
-					<div class="popover_tag_list">
-						<!-- {foreach from=$group_list.item item=val} -->
-						<label class="frm_checkbox_label">
-							{if $val.group_id neq 1}
-							<input type="checkbox" class="frm_checkbox" name="group_id[]" value="{$val.group_id}">
-							<span class="lbl_content">{$val.name}</span>
-							{/if}
-						</label>
-						<!-- {/foreach} -->
-					</div>
-					<span class="help-block m_b5">{lang key='wechat::wechat.up_tag_count'}</span>
+<div class="modal fade text-left" id="set_label">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">{lang key='wechat::wechat.set_tag'}</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<!-- {if $errormsg} -->
+		    <div class="alert alert-error">
+	            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+	        </div>
+			<!-- {/if} -->
+			
+			<!-- {if $warn} -->
+				<!-- {if $type eq 0} -->
+				<div class="alert alert-error">
+					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
 				</div>
-				<input type="hidden" name="openid" />
-				<input type="hidden" name="uid" />
-				<div class="popover_bar"><a href="javascript:;" class="btn btn-gebo set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</a>&nbsp;</div>
-	   		</div>
-	   	</form>
+				<!-- {/if} -->
+			<!-- {/if} -->
+			
+			<form class="form" method="post" action="{$label_action}&action=set_user_label" name="label_form">
+				<div class="modal-body tag_popover">
+					<div class="popover_inner p_b0">
+						<div class="popover_content">
+							<div class="popover_tag_list">
+							<!-- {foreach from=$group_list.item item=val} -->
+							<label class="frm_checkbox_label">
+								{if $val.group_id neq 1}
+								<input type="checkbox" class="frm_checkbox" name="tag_id[]" value="{$val.group_id}" id="tag_{$val.group_id}">
+								<label for="tag_{$val.group_id}"></label>
+								<span class="lbl_content">{$val.name}</span>
+								{/if}
+							</label>
+							<!-- {/foreach} -->
+							</div>
+							<span class="label_block hide ecjiafc-red">{lang key='wechat::wechat.up_tag_count'}</span>
+						</div>
+			   		</div>
+		   		</div>
+		   	
+			   	<div class="modal-footer justify-content-center">
+			   		<input type="hidden" name="openid" />
+			   		<input type="hidden" name="uid" />
+					<button type="button" class="btn btn-light set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
+
 <!-- {/block} -->
