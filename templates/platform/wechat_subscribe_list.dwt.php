@@ -10,45 +10,28 @@
 <!-- {block name="home-content"} -->
 
 <!-- {if $unionid eq 1} -->
-<div class="row">
-	<div class="col-12">
-	    <div class="alert alert-dismissible mb-2 alert-warning">
-	    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><span aria-hidden="true">×</span></button>
-	    	<strong>{lang key='wechat::wechat.label_notice'}</strong>{lang key='wechat::wechat.unionid_error_info'}
-	    </div>
-	</div>
+<div class="alert alert-warning">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><span aria-hidden="true">×</span></button>
+	<strong>{lang key='wechat::wechat.label_notice'}</strong>{lang key='wechat::wechat.unionid_error_info'}
 </div>
 <!-- {/if} -->
 
 	
 <!-- {if $errormsg} -->
-<div class="row">
-	<div class="col-12">
-	    <div class="alert alert-dismissible mb-2 alert-error">
-	    	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
-	    </div>
-	</div>
+<div class="alert alert-danger">
+	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 </div>
 <!-- {/if} -->
 	
 <!-- {if $warn && $type eq 0} -->
-<div class="row">
-	<div class="col-12">
-	    <div class="alert alert-dismissible mb-2 alert-error">
-	    	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-	    </div>
-	</div>
+<div class="alert alert-danger">
+	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
 </div>
 <!-- {/if} -->
 	
 <div class="row">
     <div class="col-12">
         <div class="card">
-        	<div class="card-header">
-                <h4 class="card-title">
-                	{platform_account::getAccountSwtichDisplay('wechat')}
-                </h4>
-            </div>
             <div class="card-header">
                 <h4 class="card-title">
                 	{lang key='wechat::wechat.user_manage_synchro'}
@@ -203,14 +186,14 @@
 			</div>
 
 			<!-- {if $errormsg} -->
-			    <div class="alert alert-error">
+			    <div class="alert alert-danger">
 		            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 		        </div>
 			<!-- {/if} -->
 			
 			<!-- {if $warn} -->
 				<!-- {if $type eq 0} -->
-				<div class="alert alert-error">
+				<div class="alert alert-danger">
 					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
 				</div>
 				<!-- {/if} -->
@@ -259,14 +242,14 @@
 			</div>
 
 			<!-- {if $errormsg} -->
-			    <div class="alert alert-error">
+			    <div class="alert alert-danger">
 		            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 		        </div>
 			<!-- {/if} -->
 			
 			<!-- {if $warn} -->
 				<!-- {if $type eq 0} -->
-				<div class="alert alert-error">
+				<div class="alert alert-danger">
 					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
 				</div>
 				<!-- {/if} -->
@@ -305,14 +288,14 @@
 				</button>
 			</div>
 			<!-- {if $errormsg} -->
-		    <div class="alert alert-error">
+		    <div class="alert alert-danger">
 	            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 	        </div>
 			<!-- {/if} -->
 			
 			<!-- {if $warn} -->
 				<!-- {if $type eq 0} -->
-				<div class="alert alert-error">
+				<div class="alert alert-danger">
 					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
 				</div>
 				<!-- {/if} -->

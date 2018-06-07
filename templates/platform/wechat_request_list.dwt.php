@@ -10,12 +10,8 @@
 <!-- {block name="home-content"} -->
 
 <!-- {if $errormsg} -->
-<div class="row">
-	<div class="col-12">
-	    <div class="alert alert-dismissible mb-2 alert-error">
-	    	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
-	    </div>
-	</div>
+<div class="alert alert-danger">
+	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 </div>
 <!-- {/if} -->
 
