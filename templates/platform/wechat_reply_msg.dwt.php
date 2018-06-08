@@ -23,10 +23,10 @@
             <div class="card-body">
             	<ul class="nav nav-tabs">
 					<li class="nav-item">
-						<a class="nav-link data-pjax active" href='{url path="wechat/platform_response/reply_subscribe"}'>{lang key='wechat::wechat.attention_auto_reply'}</a>
+						<a class="nav-link data-pjax" href='{url path="wechat/platform_response/reply_subscribe"}'>{lang key='wechat::wechat.attention_auto_reply'}</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link data-pjax" href='{url path="wechat/platform_response/reply_msg"}'>{lang key='wechat::wechat.message_auto_reply'}</a>
+						<a class="nav-link data-pjax active" href='{url path="wechat/platform_response/reply_msg"}'>{lang key='wechat::wechat.message_auto_reply'}</a>
 					</li>
 				</ul>
 				
@@ -34,7 +34,7 @@
 					<div class="m_t10">
 						<div class="form-body">
 							<div class="form-group row">
-								<div class="col-lg-12 controls material-table" data-url="{url path='wechat/platform_response/get_material_list'}">
+								<div class="col-lg-12 controls material-table" data-url="{url path='wechat/platform_mass_message/get_material_list'}">
 									<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
 										<li class="nav-item text-material">
 											<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"></i></a>
@@ -114,4 +114,5 @@
 		</div>
 	</div>
 </div>
+
 <!-- {/block} -->
