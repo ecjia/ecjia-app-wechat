@@ -114,7 +114,7 @@
 		                    </td>
 		                    <td>
 		                    	{if $item.status neq 4}
-		                    	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_record_confirm'}" href='{RC_Uri::url("wechat/platform_mass_message/mass_del", "id={$item.id}")}' title="{lang key='system::system.drop'}"><i class="fontello-icon-trash"/></i></a>
+		                    	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_record_confirm'}" href='{RC_Uri::url("wechat/platform_mass_message/mass_del", "id={$item.id}")}' title="{lang key='system::system.drop'}"><i class="ft-trash-2"/></i></a>
 		                   		{/if}
 		                    </td>
 						</tr>

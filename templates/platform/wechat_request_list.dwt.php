@@ -18,11 +18,6 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-        	<div class="card-header">
-                <h4 class="card-title">
-                	{platform_account::getAccountSwtichDisplay('wechat')}
-                </h4>
-            </div>
 			<div class="card-header">
                 <h4 class="card-title">{$ur_list}</h4>
             </div>
