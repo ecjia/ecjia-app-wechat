@@ -97,7 +97,7 @@
 					<!-- {elseif $id} -->
 					<div class="edit_rule_form m_b20">
 						<div class="control-group formSep">
-							<label class="control-label">{lang key='wechat::wechat.rule_name'}</label>
+							<label class="control-label">{lang key='wechat::wechat.label_rule_name'}</label>
 							<div class="controls">
 								<input type="text" class="w280" name="rule_name" maxlength="60" size="30" value="{if $id}{$data.rule_name}{/if}"/>
 								<span class="input-must">{lang key='system::system.require_field'}</span>
