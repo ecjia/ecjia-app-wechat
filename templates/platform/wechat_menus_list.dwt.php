@@ -3,7 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-// 	ecjia.admin.wechat_menus_list.init();
+	ecjia.platform.wechat_menus_list.init();
 </script>
 <!-- {/block} -->
 <!-- {block name="home-content"} -->
@@ -70,8 +70,8 @@
 							<td>
 								<span>
 									{assign var=edit_url value=RC_Uri::url('wechat/platform_menus/edit',"id={$val.id}")}
-									<a class="data-pjax no-underline" href="{$edit_url}" title="{lang key='system::system.edit'}"><i class="fontello-icon-edit"></i></a>
-									<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t}您确定要删除菜单[{$val.name}]吗？{/t}" href='{RC_Uri::url("wechat/platform_menus/remove","id={$val.id}")}' title="{lang key='system::system.drop'}"><i class="fontello-icon-trash"></i></a>
+									<a class="data-pjax no-underline" href="{$edit_url}" title="{lang key='system::system.edit'}"><i class="ft-edit"></i></a>
+									<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t}您确定要删除菜单[{$val.name}]吗？{/t}" href='{RC_Uri::url("wechat/platform_menus/remove","id={$val.id}")}' title="{lang key='system::system.drop'}"><i class="ft-trash-2"></i></a>
 								</span>
 							</td>
 						</tr>
