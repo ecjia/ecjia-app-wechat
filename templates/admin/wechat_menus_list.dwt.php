@@ -25,7 +25,7 @@
 
 <div>
 	<h3 class="heading">
-		{lang key='wechat::wechat.label_notice'}
+		{lang key='wechat::wechat.wechat_menu'}
 	</h3>
 </div>
 <div style="margin-left: 20px;">
