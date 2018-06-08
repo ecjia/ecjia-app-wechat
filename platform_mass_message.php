@@ -80,7 +80,7 @@ class platform_mass_message extends ecjia_platform {
 // 		RC_Script::enqueue_script('jquery-chosen');
 				
 		RC_Script::enqueue_script('admin_mass_message', RC_App::apps_url('statics/platform-js/admin_mass_message.js', __FILE__), array(), false, true);
-		RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/css/admin_material.css', __FILE__));
+		RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
 		
 		RC_Script::localize_script('admin_mass_message', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.mass_message')));
@@ -107,7 +107,7 @@ class platform_mass_message extends ecjia_platform {
 			$list = $this->wechat_tag->where(array('wechat_id' => $wechat_id))->where(array('tag_id' => array('neq' => 1)))->order(array('tag_id' => 'asc'))->select();
 
 			$this->assign('list', $list);
-			$this->assign('form_action', RC_Uri::url('wechat/admin_mass_message/mass_message'));
+			$this->assign('form_action', RC_Uri::url('wechat/platform_mass_message/mass_message'));
 		}
 		
 		$this->assign_lang();
@@ -145,7 +145,6 @@ class platform_mass_message extends ecjia_platform {
 		} elseif ($content_type == 'image') {
 			$field = 'thumb';
 		}
-		
 		$type = 'media_id';
 		//发送文本
 		if ($content_type == 'text') {
@@ -193,7 +192,7 @@ class platform_mass_message extends ecjia_platform {
 		$msg_data['send_time'] 	= RC_Time::gmtime();
 		$msg_data['msg_id'] 	= $rs['msg_id'];
 		$mass_id = $this->wechat_mass->insert($msg_data);
-		return $this->showmessage(RC_Lang::get('wechat::wechat.mass_task_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/admin_mass_message/init')));
+		return $this->showmessage(RC_Lang::get('wechat::wechat.mass_task_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_mass_message/init')));
 	}
 	
 	public function get_material_list() {

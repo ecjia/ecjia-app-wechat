@@ -20,16 +20,18 @@
     </div>
 {/if}
 
-<div class="modal hide fade" id="add_material">
-	<div class="modal-header">
-		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='wechat::wechat.select_material'}</h3>
-	</div>
-
-	<div class="modal-body keywords_modal_body">
-		<div class="row-fluid">
-			<div class="span12 form-horizontal material_choose" data-url="{url path='wechat/platform_mass_message/get_material_info'}">
-                <div class="material_choose_list">
+<div class="modal fade text-left" id="add_material">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">{lang key='wechat::wechat.select_material'}</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
+			</div>
+			
+			<div class="form material_choose" data-url="{url path='wechat/platform_mass_message/get_material_info'}">
+				<div class="material_choose_list">
                     <div class="material_select m_0">
                         <table class="table smpl_tbl dataTable m_b0">
                             <thead>
@@ -39,11 +41,11 @@
                         </table>
 					</div>
 				</div>
-                <div class="control-group m_t10 m_b0 hide">
-                    <div class="t_c">
-                        <input type="button" class="btn btn-gebo material_verify" {if $errormsg}disabled="disabled"{/if} value="{lang key='wechat::wechat.ok'}" />
-					</div>
-                </div>
+		   	
+			   	<div class="modal-footer justify-content-center">
+			   		<input type="hidden" name="openid" />
+					<input type="button" class="btn btn-light material_verify" {if $errormsg}disabled="disabled"{/if} value="{lang key='wechat::wechat.ok'}" />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -95,50 +97,50 @@
 							</div>
 
 							<div class="form-group row">
-								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_select_material'}</label>
-								<div class="col-lg-8 controls">
-									<div class="material-table span12" data-url="{url path='wechat/admin_mass_message/get_material_list'}">
-	                                    <div class="w-box">
-	                                        <div class="w-box-content cnt_a">
-	                                            <div class="page-toolbar clearfix">
-	                                                <div class="btn-group pull-left">
-	                                                	<a title="{lang key='wechat::wechat.text'}" class="btn  toolbar-icon text-material"><i class="icon-pencil"></i></a>
-	                                                    <a href="#add_material" data-toggle="modal" title="{lang key='wechat::wechat.image'}" class="btn toolbar-icon picture-material"><i class="icon-picture"></i></a>
-	                                                    <a href="#add_material" data-toggle="modal" title="{lang key='wechat::wechat.voice'}" class="btn toolbar-icon music-material"><i class="fontello-icon-mic"></i></a>
-	                                                    <a href="#add_material" data-toggle="modal" title="{lang key='wechat::wechat.video'}" class="btn toolbar-icon video-material"><i class="icon-facetime-video"></i></a>
-	                                                    <a href="#add_material" data-toggle="modal" title="{lang key='wechat::wechat.text_message'}" class="btn toolbar-icon list-material"><i class=" icon-list-alt"></i></a>
-	                                                </div>
-	                                                <span class="input-must">{lang key='system::system.require_field'}</span>
-	                                                
-	                                                <div class="text m_b10 {if $data.media_id}hidden{/if}">
-	                                                    <textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5"></textarea>
-	                                                </div>
-	                                            
-	                                                <div class="material_picture {if empty($data.media_id)}hidden{/if}">
-	                                                     {if $data['media']}
-	                                                        {if $data['media']['type'] == 'voice'}
-	                                                            <input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
-	                                                        {elseif $subscribe['media']['type'] == 'video'}
-	                                                            <input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
-	                                                        {else}
-	                                                            <input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
-	                                                        {/if}
-	                                                    {/if}
-	                                                </div>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                </div>
+								<label class="col-lg-2 label-control text-right">
+									<span class="input-must">{lang key='system::system.require_field'}</span>
+									{lang key='wechat::wechat.label_select_material'}
+								</label>
+								<div class="col-lg-8 controls material-table" data-url="{url path='wechat/platform_mass_message/get_material_list'}">
+									<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
+										<li class="nav-item">
+											<a class="nav-link active text-material" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"></i></a>
+										</li>
+										<li class="nav-item picture-material">
+											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.image'}"><i class="fa fa-file-image-o"></i></a>
+										</li>
+										<li class="nav-item music-material">
+											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.voice'}"><i class="fa fa-music"></i></a>
+										</li>
+										<li class="nav-item video-material">
+											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.video'}"><i class="fa fa-video-camera"></i></a>
+										</li>
+										<li class="nav-item list-material">
+											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.text_message'}"><i class="fa fa-list-alt"></i></a>
+										</li>
+									</ul>
+                               		<div class="text m_b10 {if $data.media_id}hidden{/if}">
+                               			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5"></textarea>
+                                	</div>
+                                	
+                					<div class="material_picture {if empty($data.media_id)}hidden{/if}">
+                                    	{if $data['media']}
+                                   			{if $data['media']['type'] == 'voice'}
+	                                   			<input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
+	                                  		{elseif $subscribe['media']['type'] == 'video'}
+                                         		<input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
+                                     		{else}
+                                    			<input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
+                                 			{/if}
+                                		{/if}
+	                      			</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer justify-content-center">
-						{if $errormsg || ($type_error && $type neq 2)}
-						<input type="submit" name="submit" value="{lang key='wechat::wechat.ok'}" class="btn btn-light" disabled="disabled" />	
-						{else}
-						<input type="submit" name="submit" value="{lang key='wechat::wechat.ok'}" class="btn btn-light" />	
-						{/if}
+						<input type="hidden" name="content_type" value="text">
+						<input type="submit" class="btn btn-light" value="{lang key='wechat::wechat.send_msg'}" {if $errormsg}disabled="disabled"{/if}/>
 					</div>
 				</form>	
             </div>
