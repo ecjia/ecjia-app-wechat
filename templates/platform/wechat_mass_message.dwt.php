@@ -103,8 +103,8 @@
 								</label>
 								<div class="col-lg-8 controls material-table" data-url="{url path='wechat/platform_mass_message/get_material_list'}">
 									<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
-										<li class="nav-item">
-											<a class="nav-link active text-material" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"></i></a>
+										<li class="nav-item text-material">
+											<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"></i></a>
 										</li>
 										<li class="nav-item picture-material">
 											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.image'}"><i class="fa fa-file-image-o"></i></a>
