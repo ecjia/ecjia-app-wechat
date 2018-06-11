@@ -71,20 +71,20 @@
 									<fieldset>
 										<div class="form-group row">
 											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
-											<div class="col-lg-8 controls">
+											<div class="col-lg-9 controls">
 												<input class='span8 form-control' type='text' name='title' value='{$list.title}'/>
 												<span class="input-must">*</span>
 											</div>
 										</div>
 										<div class="form-group row">
 											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.author'}</label>
-											<div class="col-lg-8 controls">
+											<div class="col-lg-9 controls">
 												<input class='span8 form-control' type='text' name='author' value='{$list.author}'/>
 											</div>
 										</div>
 										<div class="form-group row">
 											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.cover'}</label>
-											<div class="col-lg-8 controls">
+											<div class="col-lg-9 controls">
 												<div class="fileupload {if $list.file}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">	
 													<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;">
 														{if $list.file}
@@ -108,21 +108,21 @@
 										</div>
 										<div class="form-group row">
 											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.summary'}</label>
-											<div class="col-lg-8 controls">
+											<div class="col-lg-9 controls">
 												<textarea name="digest" cols="55" rows="6" class="span8 form-control">{$list.digest}</textarea>
 											</div>
 										</div>
 										
 										<div class="form-group row">
 											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.text_link'}</label>
-											<div class="col-lg-8 controls">
+											<div class="col-lg-9 controls">
 												<input name='link' class='span8 form-control' type='text' value='{$list.link}'/>
 											</div>
 										</div>
 										
 										<div class="form-group row sort_form">
 											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_sort'}</label>
-											<div class="col-lg-8 controls">
+											<div class="col-lg-9 controls">
 												<input name='sort' class='span8 form-control' type='text' value='{$list.sort}'/>
 											</div>
 										</div>
@@ -131,8 +131,8 @@
 											<h3 class="heading card-title col-lg-12">
 											{lang key='wechat::wechat.main_body'}
 											</h3>
-											<div class="row-fluid">
-												<div class="span12">
+											<div class="row">
+												<div class="col-lg-10">
 													{ecjia:editor content=$list.content textarea_name='content' is_teeny=0}
 												</div>
 											</div>
@@ -140,7 +140,7 @@
 										
 										<div class="form-group row">
 											<label class="col-lg-1 label-control text-right"></label>
-											<div class="col-lg-8 controls">
+											<div class="col-lg-9 controls">
 												<input type="hidden" name="id" value="{$list.id}">
 												<input type="hidden" name="index">
 												<input type="submit" value="{lang key='wechat::wechat.update'}" class="btn btn-lighr"/>

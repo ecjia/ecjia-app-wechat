@@ -105,8 +105,8 @@
 									</div>
 									<div class="form-group row">
 										<h3 class="heading card-title col-lg-12">{lang key='wechat::wechat.main_body'}</h3>
-										<div class="row-fluid">
-											<div class="span12">
+										<div class="row">
+											<div class="col-lg-10">
 												{ecjia:editor content='' textarea_name='content'}
 											</div>
 										</div>
