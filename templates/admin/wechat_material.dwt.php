@@ -120,7 +120,7 @@
 <!-- {if $smarty.get.type eq image} -->
 <div class="row-fluid">
 	<div class="span12">
-		<div class="fileupload" data-type="image" data-action="{$form_action}{if $smarty.get.material}&material=1{/if}" data-remove="{url path='goods/admin_gallery/drop_image'}"></div>
+		<div class="fileupload" data-type="image" data-action="{$form_action}{if $smarty.get.material}&material=1{/if}"></div>
 	</div>
 </div>
 <div class="row-fluid goods-photo-list{if !$lists.item} hide{/if}">
@@ -177,7 +177,7 @@
 <!-- {if $smarty.get.type eq voice} -->
 <div class="row-fluid">
 	<div class="span12">
-		<div class="fileupload" data-type="voice" data-action="{$form_action}{if $smarty.get.material}&material=1{/if}" data-remove="{url path='goods/admin_gallery/drop_image'}"></div>
+		<div class="fileupload" data-type="voice" data-action="{$form_action}{if $smarty.get.material}&material=1{/if}"></div>
 	</div>
 </div>
 <div class="row-fluid goods-photo-list{if !$lists.item} hide{/if}">
