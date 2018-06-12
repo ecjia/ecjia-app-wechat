@@ -49,7 +49,7 @@
 										<div class="media {if $msg.iswechat eq 1} chat-msg-mine{else} chat-msg-you{/if} last_chat">
 											<div class="media-body">
 												<h5 class="media-heading"><span class="chat_msg_date">{$msg.send_time}</span><span class="chat_user_name">{$msg.nickname}</span></h5>
-												<h5 class="media-text {if $msg.iswechat eq 1}text-right{/if}">{$msg.msg}</h5>
+												<h5 class="media-text {if $msg.iswechat eq 1}text-left{/if}">{$msg.msg}</h5>
 											</div>
 										</div>
 										<!-- {/foreach} -->

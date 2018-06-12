@@ -49,7 +49,7 @@
 										<div class="media {if $msg.opercode eq 2003} chat-msg-mine{else if $msg.opercode eq 2002} chat-msg-you{/if} last_chat">
 											<div class="media-body">
 												<h5 class="media-heading"><span class="chat_msg_date">{$msg.time}</span><span class="chat_user_name">{if $msg.opercode eq 2003}{$msg.nickname}{else if $msg.opercode eq 2002}{$msg.kf_account}{/if}</span></h5>
-												<h5 class="media-text {if $msg.opercode eq 2003}text-right{/if}">{$msg.text}</h5>
+												<h5 class="media-text {if $msg.opercode eq 2003}text-left{/if}">{$msg.text}</h5>
 											</div>
 										</div>
 										<!-- {/foreach} -->
