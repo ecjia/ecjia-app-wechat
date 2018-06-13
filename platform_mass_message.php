@@ -87,7 +87,7 @@ class platform_mass_message extends ecjia_platform {
 	}
 
 	public function init() {
-// 		$this->admin_priv('wechat_message_manage');
+		$this->admin_priv('wechat_message_manage');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.send_message')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.send_message'));
@@ -301,7 +301,7 @@ class platform_mass_message extends ecjia_platform {
 	 * 群发消息列表
 	 */
 	public function mass_list() {
-// 		$this->admin_priv('wechat_message_manage');
+		$this->admin_priv('wechat_message_manage');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.send_record')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.send_record'));
@@ -329,7 +329,7 @@ class platform_mass_message extends ecjia_platform {
 	 * 群发消息删除 1发送成功 2发送失败 3发送错误 4已删除
 	 */
 	public function mass_del() {
-// 		$this->admin_priv('wechat_message_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_message_manage', ecjia::MSGTYPE_JSON);
 
 		$uuid             = platform_account::getCurrentUUID('wechat');
 		$wechat           = wechat_method::wechat_instance($uuid);

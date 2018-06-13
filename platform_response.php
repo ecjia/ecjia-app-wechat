@@ -91,7 +91,7 @@ class platform_response extends ecjia_platform {
 	 * 关注自动回复
 	 */
 	public function reply_subscribe() {
-// 		$this->admin_priv('wechat_response_manage');
+		$this->admin_priv('wechat_response_manage');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.auto_reply')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.auto_reply'));
@@ -320,7 +320,7 @@ class platform_response extends ecjia_platform {
 	 * 消息自动回复
 	 */
 	public function reply_msg() {
-// 		$this->admin_priv('wechat_response_manage');
+		$this->admin_priv('wechat_response_manage');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.auto_reply')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.auto_reply'));
@@ -447,7 +447,7 @@ class platform_response extends ecjia_platform {
 	 * 关键词自动回复
 	 */
 	public function reply_keywords() {
-// 		$this->admin_priv('wechat_response_manage');
+		$this->admin_priv('wechat_response_manage');
 		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.reply_keyword'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.reply_keyword')));
@@ -481,7 +481,7 @@ class platform_response extends ecjia_platform {
 	}
 	
 	public function reply_keywords_add() {
-// 		$this->admin_priv('wechat_response_add');
+		$this->admin_priv('wechat_response_add');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.reply_keyword'), RC_Uri::url('wechat/platform_response/reply_keywords')));
 		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_response/reply_keywords'), 'text' => RC_Lang::get('wechat::wechat.reply_keyword')));
@@ -635,7 +635,7 @@ class platform_response extends ecjia_platform {
 	 * 删除规则
 	 */
 	public function remove_rule() {
-// 		$this->admin_priv('wechat_response_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_response_delete', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();

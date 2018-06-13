@@ -79,7 +79,7 @@ class platform_request extends ecjia_platform {
 	 * Api请求次数统计列表
 	 */
 	public function init() {
-// 		$this->admin_priv('wechat_request_manage');
+		$this->admin_priv('wechat_request_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.api_request')));

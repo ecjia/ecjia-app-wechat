@@ -92,7 +92,7 @@ class platform_subscribe extends ecjia_platform {
 	}
 
 	public function init() {
-// 		$this->admin_priv('wechat_subscribe_manage');
+		$this->admin_priv('wechat_subscribe_manage');
 
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.subscribe_manage')));

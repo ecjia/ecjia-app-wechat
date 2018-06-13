@@ -89,7 +89,7 @@ class platform_customer extends ecjia_platform {
 	 * 多客服账号列表
 	 */
 	public function init() {
-		// $this->admin_priv('wechat_customer_manage');
+		$this->admin_priv('wechat_customer_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer')));
@@ -128,7 +128,7 @@ class platform_customer extends ecjia_platform {
 	
 	
 	public function add() {
-		// $this->admin_priv('wechat_customer_add');
+		$this->admin_priv('wechat_customer_add');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_customer')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_customer'));

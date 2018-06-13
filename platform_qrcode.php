@@ -86,7 +86,7 @@ class platform_qrcode extends ecjia_platform {
 	 * 二维码列表
 	 */
 	public function init() {
-// 		$this->admin_priv('wechat_qrcode_manage');
+		$this->admin_priv('wechat_qrcode_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.qrcode_manage')));
@@ -128,7 +128,7 @@ class platform_qrcode extends ecjia_platform {
 	 * 添加二维码页面
 	 */
 	public function add() {
-// 		$this->admin_priv('wechat_qrcode_add');
+		$this->admin_priv('wechat_qrcode_add');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_qr_code')));
 		
@@ -168,7 +168,7 @@ class platform_qrcode extends ecjia_platform {
 	 * 添加二维码处理
 	 */
 	public function insert() {
-// 		$this->admin_priv('wechat_qrcode_add', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_qrcode_add', ecjia::MSGTYPE_JSON);
 	
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -199,7 +199,7 @@ class platform_qrcode extends ecjia_platform {
 	 * 删除二维码
 	 */
 	public function remove()  {
-// 		$this->admin_priv('wechat_qrcode_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_qrcode_delete', ecjia::MSGTYPE_JSON);
 		
 		$id = intval($_GET['id']);
 		$function = $this->db_qrcode->where(array('id' => $id))->get_field('function');
@@ -214,7 +214,7 @@ class platform_qrcode extends ecjia_platform {
 	 * 批量删除二维码
 	 */
 	public function batch() {
-// 		$this->admin_priv('wechat_qrcode_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_qrcode_delete', ecjia::MSGTYPE_JSON);
 		
 		$info = $this->db_qrcode->in(array('id' => $_POST['id']))->select();
 		
@@ -230,9 +230,9 @@ class platform_qrcode extends ecjia_platform {
 	 * 更新并获取二维码
 	 */
 	public function qrcode_get() {
-// 		$this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
 		
-// 		$this->admin_priv('wechat_subscribe_manage');
+		$this->admin_priv('wechat_subscribe_manage');
 		
 		$uuid = platform_account::getCurrentUUID('wechat');
 		
@@ -284,7 +284,7 @@ class platform_qrcode extends ecjia_platform {
 	 * 切换状态
 	 */
 	public function toggle_show() {
-// 		$this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
 	
 		$id     = intval($_POST['id']);
 		$val    = intval($_POST['val']);
@@ -304,7 +304,7 @@ class platform_qrcode extends ecjia_platform {
 	 * 手动排序
 	 */
 	public function edit_sort() {
-// 		$this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
 
 		$id    = intval($_POST['pk']);
 		$sort  = trim($_POST['value']);

@@ -87,7 +87,7 @@ class platform_share extends ecjia_platform {
 	 * 扫码引荐列表加载
 	 */
 	public function init() {
-// 		$this->admin_priv('wechat_share_manage');
+		$this->admin_priv('wechat_share_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.scan_code')));
@@ -117,7 +117,7 @@ class platform_share extends ecjia_platform {
 	 * 添加扫码引荐
 	 */
 	public function add() {
-// 		$this->admin_priv('wechat_share_add');
+		$this->admin_priv('wechat_share_add');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_qr_code')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_qr_code'));
@@ -144,7 +144,7 @@ class platform_share extends ecjia_platform {
 	 * 添加扫码引荐处理
 	 */
 	public function insert() {
-// 		$this->admin_priv('wechat_share_add', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_share_add', ecjia::MSGTYPE_JSON);
 	
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
@@ -167,7 +167,7 @@ class platform_share extends ecjia_platform {
 	 * 删除扫码引荐
 	 */
 	public function remove()  {
-// 		$this->admin_priv('wechat_share_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_share_delete', ecjia::MSGTYPE_JSON);
 		
 		$id = intval($_GET['id']);
 		$username = $this->db_qrcode->where(array('id' =>$id))->get_field('username');
@@ -181,7 +181,7 @@ class platform_share extends ecjia_platform {
 	 * 手动排序
 	 */
 	public function edit_sort() {
-// 		$this->admin_priv('wechat_share_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_share_update', ecjia::MSGTYPE_JSON);
 
 		$id    = intval($_POST['pk']);
 		$sort  = trim($_POST['value']);

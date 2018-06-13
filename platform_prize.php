@@ -88,7 +88,7 @@ class platform_prize extends ecjia_platform {
 	 * 抽奖记录页面
 	 */
 	public function init() {
-// 		$this->admin_priv('wechat_prize_manage');
+		$this->admin_priv('wechat_prize_manage');
 	
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.mail_record_list'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.draw_record')));
@@ -120,7 +120,7 @@ class platform_prize extends ecjia_platform {
 	 * 发放奖品
 	 */
 	public function winner_issue(){
-// 		$this->admin_priv('wechat_prize_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_prize_manage', ecjia::MSGTYPE_JSON);
 		
 		$id 	= isset($_GET['id'])		?	intval($_GET['id'])		:0;
 		$cancel = isset($_GET['cancel']) 	? 	intval($_GET['cancel']) : 0;
@@ -146,7 +146,7 @@ class platform_prize extends ecjia_platform {
 	 * 删除记录
 	 */
 	public function remove(){
-// 		$this->admin_priv('wechat_prize_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_prize_manage', ecjia::MSGTYPE_JSON);
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		$delete = $this->db_prize->where(array('id' => $id))->delete();
@@ -162,7 +162,7 @@ class platform_prize extends ecjia_platform {
 	 * 发送消息通知用户
 	 */
 	public function send_message() {
-// 		$this->admin_priv('wechat_custom_message_add', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_custom_message_add', ecjia::MSGTYPE_JSON);
 		
 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
 		$wechat_id = $platform_account->getAccountID();
