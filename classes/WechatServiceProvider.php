@@ -2,9 +2,9 @@
 
 namespace Ecjia\App\Wechat;
 
-use Royalcms\Component\App\AppServiceProvider;
+use Royalcms\Component\App\AppParentServiceProvider;
 
-class WechatServiceProvider extends  AppServiceProvider
+class WechatServiceProvider extends  AppParentServiceProvider
 {
     
     public function boot()
