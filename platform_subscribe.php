@@ -106,8 +106,8 @@ class platform_subscribe extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:用户管理#.E7.94.A8.E6.88.B7.E7.AE.A1.E7.90.86" target="_blank">'. RC_Lang::get('wechat::wechat.subscribe_manage_help') .'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+// 		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.subscribe_manage'));
 		$this->assign('form_action', RC_Uri::url('wechat/platform_subscribe/init'));
