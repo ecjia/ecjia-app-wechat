@@ -94,8 +94,8 @@ class platform_share extends ecjia_platform {
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_qr_code'), 'href'=> RC_Uri::url('wechat/platform_share/add')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.scan_code_list'));
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -123,8 +123,8 @@ class platform_share extends ecjia_platform {
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_qr_code'));
 		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_share/init'), 'text' => RC_Lang::get('wechat::wechat.scan_code_list')));
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
 		} else {
@@ -146,8 +146,8 @@ class platform_share extends ecjia_platform {
 	public function insert() {
 		$this->admin_priv('wechat_share_add', ecjia::MSGTYPE_JSON);
 	
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$data = array(
 			'wechat_id'			=>	$wechat_id,
@@ -206,8 +206,8 @@ class platform_share extends ecjia_platform {
 	private function get_sharelist() {
 		$db_qrcode = RC_Loader::load_app_model('wechat_qrcode_model');
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		$where[] ="wechat_id = '" .$wechat_id. "' and username is not null";
 		$count = $db_qrcode->where($where)->count();
 		$page = new ecjia_platform_page($count, 10, 5);

@@ -93,8 +93,8 @@ class platform_prize extends ecjia_platform {
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.mail_record_list'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.draw_record')));
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -164,8 +164,8 @@ class platform_prize extends ecjia_platform {
 	public function send_message() {
 		$this->admin_priv('wechat_custom_message_add', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.send_fail_platform'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -193,7 +193,7 @@ class platform_prize extends ecjia_platform {
 				'content' => $data['msg']
 			)
 		);
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		$rs = $wechat->sendCustomMessage($msg);
@@ -219,8 +219,8 @@ class platform_prize extends ecjia_platform {
 		$db_prize = RC_Loader::load_app_model('wechat_prize_model');
 		$db_wechat_user = RC_Loader::load_app_model('wechat_user_model');
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$where = array('wechat_id' => $wechat_id, 'prize_type' => 1);
 		

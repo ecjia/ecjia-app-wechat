@@ -104,8 +104,8 @@ class platform_menus extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:自定义菜单#.E8.87.AA.E5.AE.9A.E4.B9.89.E8.8F.9C.E5.8D.95" target="_blank">'.RC_Lang::get('wechat::wechat.wechat_menu_help').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -145,8 +145,8 @@ class platform_menus extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:自定义菜单#.E6.B7.BB.E5.8A.A0.E5.BE.AE.E4.BF.A1.E8.8F.9C.E5.8D.95" target="_blank">'.RC_Lang::get('wechat::wechat.wechat_menu_add_help').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -179,8 +179,8 @@ class platform_menus extends ecjia_platform {
 	public function insert() {
 		$this->admin_priv('wechat_menus_add');
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$pid	= !empty($_POST['pid'])		? intval($_POST['pid']) : 0	;
 		$name 	= !empty($_POST['name']) 	? trim($_POST['name']) 	: '';
@@ -259,8 +259,8 @@ class platform_menus extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:自定义菜单#.E7.BC.96.E8.BE.91.E5.BE.AE.E4.BF.A1.E8.8F.9C.E5.8D.95" target="_blank">'.RC_Lang::get('wechat::wechat.wechat_menu_edit_help').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
 		$this->assign('type', $type);
@@ -300,8 +300,8 @@ class platform_menus extends ecjia_platform {
 	public function update() {
 		$this->admin_priv('wechat_menus_update', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$menu_id = !empty($_POST['menu_id']) ? intval($_POST['menu_id']) 	: 0;
 
@@ -368,8 +368,8 @@ class platform_menus extends ecjia_platform {
 	public function sys_menu() {
 		$this->admin_priv('wechat_menus_manage', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		} else {
@@ -428,7 +428,7 @@ class platform_menus extends ecjia_platform {
 				}
 			}
 			
-			$uuid = platform_account::getCurrentUUID('wechat');
+			$uuid = $this->platformAccount->getUUID();
 			try {
                 $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
                 $rs = $wechat->menu->add($menu);
@@ -449,9 +449,9 @@ class platform_menus extends ecjia_platform {
 	public function get_menu() {
 		$this->admin_priv('wechat_menus_manage', ecjia::MSGTYPE_JSON);
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$uuid = $this->platformAccount->getUUID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		} else {
@@ -533,10 +533,10 @@ class platform_menus extends ecjia_platform {
 	public function delete_menu() {
 		$this->admin_priv('wechat_menus_delete', ecjia::MSGTYPE_JSON);
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		} else { 
@@ -616,8 +616,8 @@ class platform_menus extends ecjia_platform {
 	 * 取得菜单信息
 	 */
 	private function get_menuslist() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$list = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->orderBy('sort', 'asc')->get();
 		$result = array();

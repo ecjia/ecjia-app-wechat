@@ -112,8 +112,8 @@ class platform_response extends ecjia_platform {
 		$this->assign('add_material_action', RC_Uri::url('wechat/platform_response/add_material'));
 		
 		//自动回复数据
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
 		} else {
@@ -156,8 +156,8 @@ class platform_response extends ecjia_platform {
 			$media_id = 0;
 		}
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$data = array(
 			'wechat_id' => $wechat_id,
@@ -217,8 +217,8 @@ class platform_response extends ecjia_platform {
 	}
 	
 	public function get_material_list() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$list = array();
@@ -341,8 +341,8 @@ class platform_response extends ecjia_platform {
 		$this->assign('add_material_action', RC_Uri::url('wechat/platform_response/add_material'));
 		
 		//自动回复数据
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -380,8 +380,8 @@ class platform_response extends ecjia_platform {
 			$content = !empty($_POST['content']) ? $_POST['content'] : '';
 			$media_id = 0;
 		}
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$data = array(
 			'wechat_id' => $wechat_id,
@@ -464,8 +464,8 @@ class platform_response extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:关键词回复#.E5.85.B3.E9.94.AE.E8.AF.8D.E5.9B.9E.E5.A4.8D" target="_blank">'.RC_Lang::get('wechat::wechat.auto_keywords_help').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		$this->assign('form_action', RC_Uri::url('wechat/platform_response/reply_keywords'));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_rule'), 'href'=> RC_Uri::url('wechat/platform_response/reply_keywords_add')));
 		
@@ -489,8 +489,8 @@ class platform_response extends ecjia_platform {
 		$this->assign('form_action', RC_Uri::url('wechat/platform_response/reply_keywords_insert'));
 		$this->assign('add_material_action', RC_Uri::url('wechat/platform_response/add_material'));
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
 		}
@@ -535,8 +535,8 @@ class platform_response extends ecjia_platform {
 	}
 	
 	public function reply_keywords_insert() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_accounts_again'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -637,8 +637,8 @@ class platform_response extends ecjia_platform {
 	public function remove_rule() {
 		$this->admin_priv('wechat_response_delete', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 	
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.del_accounts_again'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -676,8 +676,8 @@ class platform_response extends ecjia_platform {
 	 * 获取规则列表
 	 */
 	private function get_rule_list() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 
 		$search_keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
 		$where = "type = 'keywords' and wechat_id = '$wechat_id'";

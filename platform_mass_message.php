@@ -92,8 +92,7 @@ class platform_mass_message extends ecjia_platform {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.send_message')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.send_message'));
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -120,11 +119,10 @@ class platform_mass_message extends ecjia_platform {
 	public function mass_message() {
 		RC_Loader::load_app_class('wechat_method', 'wechat', false);
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -196,8 +194,7 @@ class platform_mass_message extends ecjia_platform {
 	}
 	
 	public function get_material_list() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$list = array();
@@ -306,8 +303,7 @@ class platform_mass_message extends ecjia_platform {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.send_record')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.send_record'));
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -333,7 +329,7 @@ class platform_mass_message extends ecjia_platform {
 
 		$uuid             = platform_account::getCurrentUUID('wechat');
 		$wechat           = wechat_method::wechat_instance($uuid);
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
+		
 		$wechat_id        = $platform_account->getAccountID();
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
@@ -342,7 +338,7 @@ class platform_mass_message extends ecjia_platform {
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
 		} else {
-			$uuid = platform_account::getCurrentUUID('wechat');
+			$uuid = $this->platformAccount->getUUID();
 			$wechat = wechat_method::wechat_instance($uuid);
 			if (!empty($msg_id)) {
 				$rs = $wechat->deleteMass($msg_id);
@@ -397,8 +393,7 @@ class platform_mass_message extends ecjia_platform {
 		$mass_history = RC_Loader::load_app_model('wechat_mass_history_model');
 		$media_model = RC_Loader::load_app_model('wechat_media_model');
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$count = $mass_history->count();
 		$page = new ecjia_platform_page($count, 10, 5);

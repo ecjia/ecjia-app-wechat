@@ -163,8 +163,7 @@ class platform_material extends ecjia_platform {
 		$this->assign('action_link', $action_link);
 		$this->assign('form_action', $form_action);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.operate_before_pub'));
@@ -203,9 +202,7 @@ class platform_material extends ecjia_platform {
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E6.B7.BB.E5.8A.A0.E5.9B.BE.E6.96.87" target="_blank">'.RC_Lang::get('wechat::wechat.images_meterial_help').'</a>') . '</p>'
 		);
-		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_images'));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href'=> RC_Uri::url('wechat/platform_material/init', array('type'=> 'news', 'material' => $material))));
@@ -232,10 +229,9 @@ class platform_material extends ecjia_platform {
 	public function insert() {
 		$this->admin_priv('wechat_material_add', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -351,8 +347,7 @@ class platform_material extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E7.BC.96.E8.BE.91.E5.9B.BE.E6.96.87" target="_blank">'.RC_Lang::get('wechat::wechat.edit_material_help').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$this->assign('ur_here',RC_Lang::get('wechat::wechat.edit_material'));
 		$this->assign('form_action', RC_Uri::url('wechat/platform_material/update', array('id' => $_GET['id'], 'material' => $material)));
@@ -390,10 +385,9 @@ class platform_material extends ecjia_platform {
 	public function update() {
 		$this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		$parent_id = $_GET['id'];
@@ -557,7 +551,7 @@ class platform_material extends ecjia_platform {
 			$disk->delete(RC_Upload::upload_path().$info['file']);
 		}
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		if ($info['media_id'] && $info['is_material'] == 'material') {
@@ -578,11 +572,10 @@ class platform_material extends ecjia_platform {
 	public function remove() {
 		$this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		if (empty($id)) {
@@ -629,10 +622,9 @@ class platform_material extends ecjia_platform {
 	public function picture_insert() {
 		$this->admin_priv('wechat_material_add', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		if (is_ecjia_error($wechat_id)) {
@@ -695,11 +687,10 @@ class platform_material extends ecjia_platform {
 	public function picture_remove() {
 		$this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
 	
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		if (empty($id)) {
@@ -754,10 +745,9 @@ class platform_material extends ecjia_platform {
 	public function voice_insert() {
 		$this->admin_priv('wechat_material_add', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		if (is_ecjia_error($wechat_id)) {
@@ -819,11 +809,11 @@ class platform_material extends ecjia_platform {
 	public function voice_remove() {
 		$this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
 	
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		if (empty($id)) {
@@ -878,8 +868,8 @@ class platform_material extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E6.B7.BB.E5.8A.A0.E8.A7.86.E9.A2.91" target="_blank">'.RC_Lang::get('wechat::wechat.add_video_help').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_video'));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href'=> RC_Uri::url('wechat/platform_material/init', array('type'=>'video', 'material' => $material))));
@@ -904,10 +894,10 @@ class platform_material extends ecjia_platform {
 	public function video_insert() {
 		$this->admin_priv('wechat_material_add', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$wechat_id = $this->platformAccount->getAccountID();
+		
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		if (is_ecjia_error($wechat_id)) {
@@ -1009,8 +999,8 @@ class platform_material extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E7.BC.96.E8.BE.91.E8.A7.86.E9.A2.91" target="_blank">'.RC_Lang::get('wechat::wechat.edit_video_help').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$material = !empty($_GET['material']) ? 1 : 0;
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.edit_video'));
@@ -1042,10 +1032,10 @@ class platform_material extends ecjia_platform {
 	public function video_update() {
 		$this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		if (is_ecjia_error($wechat_id)) {
@@ -1119,11 +1109,11 @@ class platform_material extends ecjia_platform {
 	public function video_remove() {
 		$this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
 	
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		if (empty($id)) {
@@ -1192,8 +1182,8 @@ class platform_material extends ecjia_platform {
 	}
 	
 	public function search() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$keyword = !empty($_POST['keyword']) ? trim($_POST['keyword']) : '';
 		$arr = $this->wm_db
@@ -1217,8 +1207,8 @@ class platform_material extends ecjia_platform {
 	}
 	
 	public function get_material_list() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$filter   = $_GET['JSON'];
 		$filter   = (object)$filter;
@@ -1272,8 +1262,8 @@ class platform_material extends ecjia_platform {
 	}
 	
 	public function get_material_info() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$id = $_GET['id'];
 		$info = $this->wm_db->where(array('id' => $id, 'wechat_id' => $wechat_id))->find();
@@ -1298,8 +1288,8 @@ class platform_material extends ecjia_platform {
 	 * 获取所有素材列表
 	 */
 	private function get_all_material() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 	
 		$filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
 		$type = $filter['type'];

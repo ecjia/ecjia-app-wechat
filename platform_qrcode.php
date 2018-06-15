@@ -104,8 +104,8 @@ class platform_qrcode extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:二维码管理#.E4.BA.8C.E7.BB.B4.E7.A0.81.E7.AE.A1.E7.90.86" target="_blank">'.RC_Lang::get('wechat::wechat.qrcode_help').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -146,8 +146,8 @@ class platform_qrcode extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:二维码管理#.E6.B7.BB.E5.8A.A0.E4.BA.8C.E7.BB.B4.E7.A0.81" target="_blank">'.RC_Lang::get('wechat::wechat.qrcode_add_help').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -170,8 +170,8 @@ class platform_qrcode extends ecjia_platform {
 	public function insert() {
 		$this->admin_priv('wechat_qrcode_add', ecjia::MSGTYPE_JSON);
 	
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$type 			= isset($_POST['type']) 			? intval($_POST['type']) 			: 0;
 		$expire_seconds = isset($_POST['expire_seconds']) 	? intval($_POST['expire_seconds']) 	: 0;
@@ -234,7 +234,7 @@ class platform_qrcode extends ecjia_platform {
 		
 		$this->admin_priv('wechat_subscribe_manage');
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		
 		$id = $_GET['id'];
 		$field = 'type, scene_id, expire_seconds, qrcode_url, status, function';
@@ -327,8 +327,8 @@ class platform_qrcode extends ecjia_platform {
 	 * 取得二维码信息
 	 */
 	private function get_qrcodelist() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$db_qrcode = RC_Loader::load_app_model('wechat_qrcode_model');
 		

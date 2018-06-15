@@ -107,8 +107,8 @@ class platform_record extends ecjia_platform {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_chat_record')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.customer_chat_record'));
 
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -134,8 +134,8 @@ class platform_record extends ecjia_platform {
 	public function record_message() {
 		$this->admin_priv('wechat_record_manage', ecjia::MSGTYPE_JSON);
 	
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 	
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -189,8 +189,8 @@ class platform_record extends ecjia_platform {
 		$db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
 		$wechat_user_db = RC_Loader::load_app_model('wechat_user_model');
 	
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		$platform_name = $db_platform_account->where(array('id' => $wechat_id))->get_field('name');
 	
 		$openid_list = $wechat_user_db->where(array('wechat_id' => $wechat_id))->get_field('openid', true);
@@ -304,8 +304,8 @@ class platform_record extends ecjia_platform {
 	public function get_message_list() {
 		$customer_session_viewdb = RC_Loader::load_app_model('wechat_customer_session_viewmodel');
 	
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		$platform_name = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('name');
 	
 		$uid     = !empty($_GET['uid'])     ? $_GET['uid']             : '';
@@ -355,8 +355,8 @@ class platform_record extends ecjia_platform {
 	
 	//获取用户信息
 	public function get_user_info() {
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$uid = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
 		$info = $this->wu_viewdb->join(array('users'))->field('u.*, us.user_name')->find(array('u.uid' => $uid, 'u.wechat_id' => $wechat_id));
@@ -377,10 +377,10 @@ class platform_record extends ecjia_platform {
 	public function get_customer_record() {
 		$this->admin_priv('wechat_record_manage', ecjia::MSGTYPE_JSON);
 		
-		$uuid = platform_account::getCurrentUUID('wechat');
+		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);

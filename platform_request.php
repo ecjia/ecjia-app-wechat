@@ -97,8 +97,8 @@ class platform_request extends ecjia_platform {
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:API请求统计" target="_blank">'.RC_Lang::get('wechat::wechat.api_statistics_document').'</a>') . '</p>'
 		);
 		
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_accounts_operation'));
@@ -136,8 +136,8 @@ class platform_request extends ecjia_platform {
 	private function get_list() {
 		$db_request = RC_Loader::load_app_model('wechat_request_times_model');
 	
-		$platform_account = platform_account::make(platform_account::getCurrentUUID('wechat'));
-		$wechat_id = $platform_account->getAccountID();
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$where = "wechat_id = '$wechat_id'";
 		$type = !empty($_GET['type']) ? intval($_GET['type']) : 1;
