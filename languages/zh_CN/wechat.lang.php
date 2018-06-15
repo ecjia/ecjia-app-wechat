@@ -907,6 +907,8 @@ return array(
     'refresh_page_access_token'  => '刷新网页授权access_token',
     'page_access_user_info'    => '网页授权获取用户信息',
     'check_access_token'       => '检验授权凭证（access_token）是否有效',
+    
+    'extend_manage'			   => '插件管理'
 );		
 
 // end

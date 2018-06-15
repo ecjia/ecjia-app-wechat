@@ -53,13 +53,12 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class wechat_platform_menu_api extends Component_Event_Api {
 
     public function call(&$options) {
-        $menus = ecjia_platform::make_admin_menu('staff', '仪表盘', RC_Uri::url('platform/dashboard/init'), 0)->add_icon('fa-dashboard')->add_base('dashboard')->add_submenu(
-            array(
-                ecjia_admin::make_admin_menu('01_wechat_extend', RC_Lang::get('platform::platform.function_extend'), RC_Uri::url('platform/platform_extend/init'), 1)->add_purview('platform_extend_manage'),
-            )
-        );
+        $menus = ecjia_platform::make_admin_menu('staff', '仪表盘', RC_Uri::url('platform/dashboard/init'), 0)->add_icon('fa-dashboard')->add_base('dashboard');
+
+        $extend_menus = ecjia_admin::make_admin_menu('01_wechat_extend', RC_Lang::get('wechat::wechat.extend_manage'), RC_Uri::url('platform/platform_extend/init'), 1)->add_purview('platform_extend_manage');
         
         $navmenus = ecjia_admin::make_admin_menu('nav-header', RC_Lang::get('wechat::wechat.weixin_notice'), '', 17);
+        
         $usermenus = ecjia_admin::make_admin_menu('15_content', '用户管理', '', 18)->add_submenu(
             array(
                 ecjia_admin::make_admin_menu('01_wechat', RC_Lang::get('wechat::wechat.user_manage'), RC_Uri::url('wechat/platform_subscribe/init'), 1)->add_purview('wechat_subscribe_manage'),
@@ -99,7 +98,7 @@ class wechat_platform_menu_api extends Component_Event_Api {
             )
             );
         
-        return array($menus, $navmenus, $usermenus, $replymenus, $kefumenus, $tgmenus, $tjmenus);
+        return array($menus, $extend_menus, $navmenus, $usermenus, $replymenus, $kefumenus, $tgmenus, $tjmenus);
     }
 }
 
