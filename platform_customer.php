@@ -50,18 +50,12 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * ECJIA客服管理
  */
 class platform_customer extends ecjia_platform {
-	private $db_platform_account;
-	private $db_customer;
-
 	public function __construct() {
 		parent::__construct();
 		
 		RC_Lang::load('wechat');
 		RC_Loader::load_app_func('global');
 		Ecjia\App\Wechat\Helper::assign_adminlog_content();
-		
-		$this->db_customer = RC_Loader::load_app_model('wechat_customer_model');
-		$this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
 		
 		RC_Loader::load_app_class('platform_account', 'platform', false);
 		RC_Loader::load_app_class('wechat_method', 'wechat', false);
@@ -357,7 +351,7 @@ class platform_customer extends ecjia_platform {
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
-		$info = $this->db_customer->find(array('id' => $id));
+		$info =RC_DB::table('wechat_customer')->where('id', $id)->first();
 
 		if ($info['status'] == 1) {
 			//微信端删除客服账号
@@ -393,12 +387,14 @@ class platform_customer extends ecjia_platform {
 		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
-		$kf_account_list = $this->db_customer->where(array('wechat_id' => $wechat_id))->get_field('kf_account', true);
+		$kf_account_list = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->lists('kf_account');
 		$list = $wechat->getOnlineKflist();
 		
 		if (RC_Error::is_error($list)) {
 			return $this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
+		
+		$db_wechat_customer = RC_DB::table('wechat_customer');
 		if (!empty($list)) {
 			foreach ($list['kf_online_list'] as $key => $val) {
 				$kf_list[] = $val['kf_account'];
@@ -410,14 +406,11 @@ class platform_customer extends ecjia_platform {
 					$kf_account_list = array();
 				}
 				$arr = array_diff($kf_account_list, $kf_list);
-				$where = array(
-					'wechat_id' => $wechat_id,
-					'kf_account' . db_create_in($arr)
-				);
+				$db_wechat_customer->where('wechat_id', $wechat_id)->whereRaw('kf_account' . db_create_in($arr));
 			} else {
-				$where = array('wechat_id' => $wechat_id);
+				$db_wechat_customer->where('wechat_id', $wechat_id);
 			}
-			$this->db_customer->where($where)->update(array('online_status' => 0));
+			$db_wechat_customer->update(array('online_status' => 0));
 	
 			if (!empty($list['kf_online_list'])) {
 				foreach ($list['kf_online_list'] as $k => $v) {
@@ -425,14 +418,14 @@ class platform_customer extends ecjia_platform {
 						$data['online_status'] 	= $v['status'];
 						$data['kf_id'] 			= $v['kf_id'];
 						$data['accepted_case'] 	= $v['accepted_case'];
-						$this->db_customer->where(array('kf_account' => $v['kf_account'], 'wechat_id' => $wechat_id))->update($data);
+						RC_DB::table('wechat_customer')->where('kf_account', $v['kf_account'])->where('wechat_id', $wechat_id)->update($data);
 					} else {
 						$data['kf_account'] 	= $v['kf_account'];
 						$data['kf_id'] 			= $v['kf_id'];
 						$data['online_status'] 	= $v['status'];
 						$data['accepted_case'] 	= $v['accepted_case'];
 						$data['wechat_id'] 		= $wechat_id;
-						$this->db_customer->insert($data);
+						RC_DB::table('wechat_customer')->insert($data);
 					}
 				}
 			}
@@ -448,7 +441,7 @@ class platform_customer extends ecjia_platform {
 		
 		$id 	= intval($_POST['id']);
 		$val    = intval($_POST['val']);
-		$info 	= $this->db_customer->find(array('id' => $id));
+		$info = RC_DB::table('wechat_customer')->where('id', $id)->first();
 		if ($val == 1) {
 			//微信端添加客服账号
 			$rs = $wechat->addKfaccount($info['kf_account'], $info['kf_nick']);
@@ -481,7 +474,7 @@ class platform_customer extends ecjia_platform {
 		
 		$data['kf_nick'] = !empty($_POST['value']) ? $_POST['value'] : '';
 		$id = !empty($_POST['pk']) ? $_POST['pk'] : '';
-		$info = $this->db_customer->find(array('id' => $id));
+		$info = RC_DB::table('wechat_customer')->where('id', $id)->first();
 		
 		if (empty($data['kf_nick'])) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.customer_nick_require'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -494,7 +487,7 @@ class platform_customer extends ecjia_platform {
 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
-		$this->db_customer->where(array('id' => $id))->update($data);
+		RC_DB::table('wechat_customer')->where('id', $id)->update($data);
 		ecjia_admin::admin_log($info['kf_account'], 'edit', 'customer');
 		return $this->showmessage(RC_Lang::get('wechat::wechat.edit_nick_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
@@ -509,7 +502,7 @@ class platform_customer extends ecjia_platform {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_message')));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.customer_list'), 'href'=> RC_Uri::url('wechat/platform_customer/init')));
 		
-		$type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+		$type = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('type');
 		$this->assign('type', $type);
 		$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 		
@@ -541,22 +534,16 @@ class platform_customer extends ecjia_platform {
 	 * 获取客服列表
 	 */
 	private function get_list() {
-		$db_customer = RC_Loader::load_app_model('wechat_customer_model');
-		
 		$wechat_id = $this->platformAccount->getAccountID();
+		$db_customer = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id);
 		
-		$where['wechat_id'] = $wechat_id;
 		if (isset($_GET['type'])) {
-			$where['online_status'] = array('neq' => 0);
+			$db_customer->where('online_status', '!=', 0);
 		}
+		$list = $db_customer->get();
 		
-		$list = $db_customer->where($where)->select();
-		
-		$where = '';
-		$where = array('wechat_id' => $wechat_id, 'online_status' => array('neq' => 0));
-		
-		$filter['all'] = $db_customer->where(array('wechat_id' => $wechat_id))->count();
-		$filter['online'] = $db_customer->where($where)->count();
+		$filter['all'] = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->count();
+		$filter['online'] = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('online_status', '!=', 0)->count();
 		
 		if (!empty($list)) {
 			foreach ($list as $k => $v) {
@@ -581,7 +568,6 @@ class platform_customer extends ecjia_platform {
 	 * 刷新客服列表信息
 	 */
 	private function load_kf_list() {
-		
 		$wechat_id = $this->platformAccount->getAccountID();
 		
 		if (is_ecjia_error($wechat_id)) {
@@ -591,8 +577,7 @@ class platform_customer extends ecjia_platform {
 		
 		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
-		
-		$kf_account_list = $this->db_customer->where(array('wechat_id' => $wechat_id))->get_field('kf_account', true);
+		$kf_account_list = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->lists('kf_account');
 		
 		$list = $wechat->getKflist();
 		if (RC_Error::is_error($list)) {
@@ -603,20 +588,18 @@ class platform_customer extends ecjia_platform {
 			foreach ($list['kf_list'] as $key => $val) {
 				$kf_list[] = $val['kf_account'];
 			}
+			$db_wechat_customer = RC_DB::table('wechat_customer');
 			//更新微信端获取不到的客服 本地状态变更为0
 			if (!empty($kf_list)) {
 				if (empty($kf_account_list)) {
 					$kf_account_list = array();
 				}
 				$arr = array_diff($kf_account_list, $kf_list);
-				$where = array(
-					'wechat_id' => $wechat_id,
-					'kf_account' . db_create_in($arr)
-				);
+				$db_wechat_customer->where('wechat_id', $wechat_id)->whereRaw('kf_account' . db_create_in($arr));
 			} else {
-				$where = array('wechat_id' => $wechat_id);
+				$db_wechat_customer->where('wechat_id', $wechat_id);
 			}
-			$this->db_customer->where($where)->update(array('status' => 0));
+			$db_wechat_customer->update(array('status' => 0));
 			
 			foreach ($list['kf_list'] as $k => $v) {
 				if (in_array($v['kf_account'], $kf_account_list)) {
@@ -632,7 +615,8 @@ class platform_customer extends ecjia_platform {
 					
 					//微信端存在头像 删除本地头像
 					if (!empty($data['kf_headimgurl'])) {
-						$info = $this->db_customer->find(array('kf_account' => $v['kf_account'], 'wechat_id' => $wechat_id));
+						$info = RC_DB::table('wechat_customer')->where('kf_account', $v['kf_account'])->where('wechat_id', $wechat_id)->first();
+						
 						if (!empty($info['kf_headimgurl'])) {
 							if ((strpos($info['kf_headimgurl'], 'http://') === false) && (strpos($info['kf_headimgurl'], 'https://') === false)) {
 								$disk = RC_Filesystem::disk();
@@ -640,7 +624,7 @@ class platform_customer extends ecjia_platform {
 							}
 						}
 					}
-					$this->db_customer->where(array('kf_account' => $v['kf_account'], 'wechat_id' => $wechat_id))->update($data);
+					RC_DB::table('wechat_customer')->where('kf_account', $v['kf_account'])->where('wechat_id', $wechat_id)->update($data);
 				} else {
 					$data['kf_id'] 			= $v['kf_id'];
 					$data['kf_account'] 	= $v['kf_account'];
@@ -654,7 +638,7 @@ class platform_customer extends ecjia_platform {
 					$data['invite_expire_time']	= !empty($v['invite_expire_time']) 	? $v['invite_expire_time'] 	: 0;
 					$data['invite_status']		= !empty($v['invite_status']) 		? $v['invite_status'] 		: '';
 
-					$this->db_customer->insert($data);
+					RC_DB::table('wechat_customer')->insert($data);
 				}
 			}
 		}
