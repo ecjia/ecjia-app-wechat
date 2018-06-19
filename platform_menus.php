@@ -80,6 +80,8 @@ class platform_menus extends ecjia_platform {
 		
 		RC_Script::localize_script('wechat_menus', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.wechat_menu'), RC_Uri::url('wechat/platform_menus/init')));
+		
+		ecjia_platform_screen::get_current_screen()->set_subject('微信菜单');
 	}
 
 	/**

@@ -97,6 +97,8 @@ class platform_record extends ecjia_platform {
 		
 		RC_Script::localize_script('admin_record', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_chat_record'), RC_Uri::url('wechat/platform_record/init')));
+		
+		ecjia_platform_screen::get_current_screen()->set_subject('客服会话记录');
 	}
 	
 	//客服消息记录列表

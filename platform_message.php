@@ -84,6 +84,8 @@ class platform_message extends ecjia_platform {
 		
 		RC_Script::localize_script('platform_subscribe', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_manage'), RC_Uri::url('wechat/admin_subscribe/init')));
+		
+		ecjia_platform_screen::get_current_screen()->set_subject('消息管理');
 	}
 
 	public function init() {

@@ -73,6 +73,8 @@ class platform_request extends ecjia_platform {
 // 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		RC_Script::localize_script('admin_request', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.api_request_list'), RC_Uri::url('wechat/admin_request/init')));
+	
+		ecjia_platform_screen::get_current_screen()->set_subject('Api请求统计');
 	}
 
 	/**

@@ -83,6 +83,8 @@ class platform_customer extends ecjia_platform {
 		
 		RC_Script::localize_script('wechat_customer', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('wechat/platform_customer/init')));
+		
+		ecjia_platform_screen::get_current_screen()->set_subject('多客服账号');
 	}
 	
 	/**

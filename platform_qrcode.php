@@ -80,6 +80,8 @@ class platform_qrcode extends ecjia_platform {
 		
 		RC_Script::localize_script('wechat_qrcode', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.qrcode_manage'), RC_Uri::url('wechat/platform_qrcode/init')));
+		
+		ecjia_platform_screen::get_current_screen()->set_subject('渠道二维码');
 	}
 
 	/**

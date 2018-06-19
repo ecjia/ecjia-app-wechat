@@ -82,6 +82,8 @@ class platform_prize extends ecjia_platform {
 // 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		
 		RC_Script::localize_script('wechat_prize', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+		
+		ecjia_platform_screen::get_current_screen()->set_subject('抽奖记录');
 	}
 
 	/**
