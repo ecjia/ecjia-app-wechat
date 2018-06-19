@@ -50,21 +50,10 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * ECJIA群发消息
  */
 class platform_mass_message extends ecjia_platform {
-	private $wm_db;
-	private $wechat_tag;
-	private $wechat_mass;
-	private $db_platform_account;
-	
 	public function __construct() {
 		parent::__construct();
 		
 		RC_Lang::load('wechat');
-		
-		$this->wm_db = RC_Loader::load_app_model('wechat_media_model');
-		$this->wechat_tag = RC_Loader::load_app_model('wechat_tag_model');
-		$this->wechat_mass = RC_Loader::load_app_model('wechat_mass_history_model');
-		
-		$this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
 		RC_Loader::load_app_class('platform_account', 'platform', false);
 		RC_Loader::load_app_class('wechat_method', 'wechat', false);
 		
@@ -100,13 +89,12 @@ class platform_mass_message extends ecjia_platform {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
 		} else {
 			$this->assign('warn', 'warn');
-			$type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+			$type = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('type');
 			$this->assign('type', $type);
 			$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 			
 			//查找所有标签 不包括黑名单
-			$list = $this->wechat_tag->where(array('wechat_id' => $wechat_id))->where(array('tag_id' => array('neq' => 1)))->order(array('tag_id' => 'asc'))->select();
-
+			$list = RC_DB::table('wechat_tag')->where('wechat_id', $wechat_id)->where('tag_id', '!=', 1)->orderBy('tag_id', 'asc')->get();
 			$this->assign('list', $list);
 			$this->assign('form_action', RC_Uri::url('wechat/platform_mass_message/mass_message'));
 		}
@@ -158,7 +146,7 @@ class platform_mass_message extends ecjia_platform {
 			if (empty($id)) {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.pls_select_material'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			$media_id = $this->wm_db->where(array('wechat_id' => $wechat_id, 'id' => $id))->get_field($field);
+			$media_id = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->pluck($field);
 		}
 		if ($mass_type == 'all') {
 			//按全部用户群发
@@ -191,13 +179,14 @@ class platform_mass_message extends ecjia_platform {
 		$msg_data['media_id'] 	= $id;
 		$msg_data['send_time'] 	= RC_Time::gmtime();
 		$msg_data['msg_id'] 	= $rs['msg_id'];
-		$mass_id = $this->wechat_mass->insert($msg_data);
+		$mass_id = RC_DB::table('wechat_mass_history')->insertGetId($msg_data);
 		return $this->showmessage(RC_Lang::get('wechat::wechat.mass_task_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_mass_message/init')));
 	}
 	
 	public function get_material_list() {
 		$wechat_id = $this->platformAccount->getAccountID();
 		
+		$db_wechat_media = RC_DB::table('wechat_media');
 		if (is_ecjia_error($wechat_id)) {
 			$list = array();
 		} else {
@@ -206,14 +195,13 @@ class platform_mass_message extends ecjia_platform {
 			$type = isset($filter->type) ? $filter->type : '';
 			
 			if ($type == 'image') {
-				$where[] = "(file is NOT NULL and (type = 'image' or type = 'news')) and wechat_id = $wechat_id and thumb != ''";
+				$where = "(file is NOT NULL and (type = 'image' or type = 'news')) and wechat_id = $wechat_id and thumb != ''";
 			} elseif ($type == 'news') {
-				$where[] = "type = '$type' and parent_id = 0 and wechat_id = $wechat_id and media_id != ''";
+				$where = "type = '$type' and parent_id = 0 and wechat_id = $wechat_id and media_id != ''";
 			} else {
-				$where[] = "(file is NOT NULL and type = '$type') and wechat_id = $wechat_id";
+				$where = "(file is NOT NULL and type = '$type') and wechat_id = $wechat_id";
 			}
-			
-			$list = $this->wm_db->where($where)->select();
+			$list = $db_wechat_media->whereRaw($where)->get();
 
 			if (!empty($list)) {
 				foreach ($list as $key => $val) {
@@ -262,7 +250,7 @@ class platform_mass_message extends ecjia_platform {
 		$id     = $filter->id;
 		$type   = $filter->type;
 		
-		$info = $this->wm_db->where(array('id' => $id))->find();
+		$info = RC_DB::table('wechat_media')->where('id', $id)->first();
 		$info['type'] = isset($info['type']) ? $info['type'] : '';
 		
 		if (empty($info['file']) || $info['type'] == 'voice' || $info['type'] == 'video') {
@@ -289,7 +277,7 @@ class platform_mass_message extends ecjia_platform {
 			$info['content'] = $content;
 		}
 		
-		$is_articles = $this->wm_db->where(array('parent_id' => $id))->count();
+		$is_articles = RC_DB::table('wechat_media')->where('parent_id', $id)->count();
 		if ($type == 'news' && $is_articles != 0) {
 			$info = $this->get_article_list($id, $info['type']);
 		}
@@ -312,7 +300,7 @@ class platform_mass_message extends ecjia_platform {
 		} else {
 			$this->assign('warn', 'warn');
 			
-			$type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+			$type = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('type');
 			$this->assign('type', $type);
 			$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 			
@@ -335,7 +323,7 @@ class platform_mass_message extends ecjia_platform {
 		$wechat_id        = $platform_account->getAccountID();
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
-		$msg_id = $this->wechat_mass->where(array('id' => $id))->get_field('msg_id');
+		$msg_id = RC_DB::table('wechat_mass_history')->where('id', $id)->pluck('msg_id');
 		
 		if (is_ecjia_error($wechat_id)) {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
@@ -348,7 +336,7 @@ class platform_mass_message extends ecjia_platform {
 					return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
 			}
-			$this->wechat_mass->where(array('id' => $id))->update(array('status' => '4'));
+			RC_DB::table('wechat_mass_history')->where('id', $id)->update(array('status' => '4'));
 		}
 		return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
@@ -358,11 +346,12 @@ class platform_mass_message extends ecjia_platform {
 	 */
 	private function get_article_list($id, $type) {
 		$filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
-		$where[] = "type = '$type'";
+		
+		$db_mass_history = RC_DB::table('wechat_mass_history')->where('type', $type);
 		if ($id) {
-			$where[] .= "parent_id = '$id' or id = '$id'";
+			$db_mass_history->where('parent_id', $id)->orWhere('id', $id);
 		}
-		$data = $this->wm_db->where($where)->order(array('id' => 'asc'))->select();
+		$data = $db_mass_history->orderBy('id', 'asc')->get();
 		$article['id'] = $id;
 		
 		if (!empty($data)) {
@@ -392,20 +381,19 @@ class platform_mass_message extends ecjia_platform {
 	}
 	
 	private function get_mass_history_list(){
-		$mass_history = RC_Loader::load_app_model('wechat_mass_history_model');
-		$media_model = RC_Loader::load_app_model('wechat_media_model');
-		
 		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$count = $mass_history->count();
+		$db_mass_history = RC_DB::table('wechat_mass_history')->where('wechat_id', $wechat_id);
+		$count = $db_mass_history->count();
 		$page = new ecjia_platform_page($count, 10, 5);
-		$list = $mass_history->where(array('wechat_id' => $wechat_id))->order('send_time DESC')->limit($page->limit())->select();
+		$list = $db_mass_history->select('*')->orderBy('send_time', 'desc')->take(10)->skip($page->start_id-1)->get();
+		
 		if (!empty($list)) {
 			foreach ($list as $key => $val) {
 				if ($val['type'] == 'news') {
 					$list[$key]['children'] = $this->get_article_list($val['media_id'], $val['type']);
 				} else {
-					$info = $this->wm_db->find(array('wechat_id' => $wechat_id, 'id' => $val['media_id']));
+					$info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $val['media_id'])->first();
 					
 					$list[$key]['file_name'] = $info['file_name'];
 					if ($val['type'] == 'voice') {
