@@ -82,7 +82,7 @@ class wechat_platform_menu_api extends Component_Event_Api {
                 ecjia_admin::make_admin_menu('11_wechat', RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('wechat/platform_customer/init'), 11)->add_purview('wechat_customer_manage'),
                 ecjia_admin::make_admin_menu('12_wechat', RC_Lang::get('wechat::wechat.service_record'), RC_Uri::url('wechat/platform_record/init'), 12)->add_purview('wechat_record_manage'),
             )
-            );
+        );
         
         $tgmenus = ecjia_admin::make_admin_menu('15_content', '推广管理', '', 18)->add_submenu(
             array(
@@ -90,15 +90,15 @@ class wechat_platform_menu_api extends Component_Event_Api {
                 ecjia_admin::make_admin_menu('15_wechat', RC_Lang::get('wechat::wechat.sweep_recommend'), RC_Uri::url('wechat/platform_share/init'), 15)->add_purview('wechat_share_manage'),
                 ecjia_admin::make_admin_menu('17_wechat', RC_Lang::get('wechat::wechat.draw_record'), RC_Uri::url('wechat/platform_prize/init'), 17)->add_purview('wechat_prize_manage'),
             )
-            );
+        );
         
-        $tjmenus = ecjia_admin::make_admin_menu('15_content', '统计管理', '', 18)->add_submenu(
-            array(
-                ecjia_admin::make_admin_menu('18_wechat', RC_Lang::get('wechat::wechat.api_request'), RC_Uri::url('wechat/platform_request/init'), 18)->add_purview('wechat_request_manage'),
-            )
-            );
+//         $tjmenus = ecjia_admin::make_admin_menu('15_content', '统计管理', '', 18)->add_submenu(
+//             array(
+//                 ecjia_admin::make_admin_menu('18_wechat', RC_Lang::get('wechat::wechat.api_request'), RC_Uri::url('wechat/platform_request/init'), 18)->add_purview('wechat_request_manage'),
+//             )
+//         );
         
-        return array($menus, $extend_menus, $navmenus, $usermenus, $replymenus, $kefumenus, $tgmenus, $tjmenus);
+        return array($menus, $extend_menus, $navmenus, $usermenus, $replymenus, $kefumenus, $tgmenus);
     }
 }
 
