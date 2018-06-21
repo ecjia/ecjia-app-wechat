@@ -72,6 +72,22 @@
 				}
 			});	
 			
+			app.wechat_menus_list.add();
+		},
+		
+		add: function() {
+			$('[data-toggle="add-menu"]').off('click').on('click', function() {
+				var $this = $(this),
+					pid = $this.attr('data-pid'),
+					url = $('input[name="add_url"]').val();
+				var info = {
+					pid: pid
+				}
+				$.post(url, info, function(data) {
+					ecjia.pjax(data.pjaxurl);
+				});
+				
+			});
 		}
 	};
 	
