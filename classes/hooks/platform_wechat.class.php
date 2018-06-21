@@ -44,12 +44,43 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-defined('IN_ECJIA') or exit('No permission resources.');
+use Ecjia\App\Platform\Frameworks\Platform\Account;
 
+defined('IN_ECJIA') or exit('No permission resources.');
 class wechat_platform_hooks {
     
     public static function platform_dashboard_header_messages() {
-        
+    	$platformAccount = new Account(session('uuid'));
+    	$wechat_id = $platformAccount->getAccountID();
+    	
+    	$start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+    	$end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')+1, date('Y'));
+    	 
+    	$list = RC_DB::table('wechat_custom_message as m')
+    	->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+    	->selectRaw('max(m.id) as id, wu.uid, wu.nickname, wu.headimgurl')
+    	->where(RC_DB::raw('wu.subscribe'), 1)
+    	->where(RC_DB::raw('m.iswechat'), 0)
+    	->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
+    	->where(RC_DB::raw('m.send_time'), '>', $start)
+    	->where(RC_DB::raw('m.send_time'), '<', $end)
+    	->groupBy(RC_DB::raw('m.uid'))
+    	->take(5)
+    	->get();
+    	
+    	if (!empty($list)) {
+    		foreach ($list as $key => $val) {
+    			$info = RC_DB::table('wechat_custom_message')->where('id', $val['id'])->first();
+    			$list[$key]['send_time']	= RC_Time::local_date(ecjia::config('time_format'), $info['send_time']);
+    			$list[$key]['msg'] 		 	= $info['msg'];
+    			$list[$key]['uid'] 		 	= $info['uid'];
+    		}
+    	}
+    	ecjia_platform::$controller->assign('list', $list);
+    	 
+    	$count = count($list);
+    	ecjia_platform::$controller->assign('count', $count);
+    	
         ecjia_platform::$controller->display('library/common_header_messages.lbi');
     }
 }
