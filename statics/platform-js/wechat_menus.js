@@ -93,6 +93,7 @@
 		
 		edit: function() {
 			$('[data-toggle="edit-menu"]').off('click').on('click', function() {
+				
 				var $this = $(this),
 					id = $this.attr('data-id'),
 					pid = $this.attr('data-pid'),
@@ -100,6 +101,15 @@
 				var info = {
 					id: id,
 					pid: pid
+				}
+
+				$('.menu-sub-item').removeClass('current');
+				$('.menu-item').removeClass('size1of1');
+				
+				if ($this.parent().hasClass('menu-item')) {
+					$this.parent('.menu-item').addClass('size1of1');
+				} else {
+					$this.parent('.menu-sub-item').addClass('current');
 				}
 				$.post(url, info, function(data) {
 					$('.weixin-menu-detail').html(data.data);
