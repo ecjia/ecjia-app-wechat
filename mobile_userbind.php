@@ -260,7 +260,7 @@ class mobile_userbind extends ecjia_front {
      * 执行赠送积分
      */
     public function do_point($openid, $info, $point_value, $getUserId) {
-    	$rank_points = RC_DB::TABLE('users')->where('user_id', $getUserId)->pluck('rank_points');
+    	$rank_points = RC_DB::table('users')->where('user_id', $getUserId)->pluck('rank_points');
     	$count_points = intval($rank_points) + intval($point_value);
     	$point = array(
     		'rank_points' => $count_points
