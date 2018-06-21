@@ -225,7 +225,7 @@ class platform_menus extends ecjia_platform {
 		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$pid	= !empty($_POST['pid'])		? intval($_POST['pid']) : 0	;
-		$name 	= !empty($_POST['name']) 	? trim($_POST['name']) 	: '菜单名称';
+		$name 	= !empty($_POST['name']) 	? trim($_POST['name']) 	: !empty($pid) ? '子菜单名称' : '菜单名称';
 		
 		$type 	= !empty($_POST['type']) 	? $_POST['type'] 		: 'click';
 		$key	= !empty($_POST['key']) 	? $_POST['key'] 		: '';
@@ -673,7 +673,6 @@ class platform_menus extends ecjia_platform {
 				if ($vo['pid'] == 0) {
 					$sub_button = array();
 					foreach ($list as $val) {
-						
 						if ($vo['id'] == $val['pid']) {
 							if ($val['type'] == 'miniprogram') {
 								$child_url = unserialize($val['url']);
@@ -684,6 +683,15 @@ class platform_menus extends ecjia_platform {
 					}
 					$vo['sub_button'] = $sub_button;
 					$result[] = $vo;
+				}
+			}
+		}
+		
+		if (!empty($result)) {
+			foreach ($result as $k => $v) {
+				$result[$k]['count'] = 0;
+				if (!empty($v['sub_button'])) {
+					$result[$k]['count'] = count($v['sub_button']);
 				}
 			}
 		}

@@ -22,23 +22,6 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">
-                	{lang key='wechat::wechat.wechat_menu'}
-                </h4>
-            </div>
-            <div class="card-body">
-				<div><button type="button" class="ajaxmenu  btn" data-url='{RC_Uri::url("wechat/platform_menus/get_menu")}'>{lang key='wechat::wechat.get_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_menu_notice'}</span></div><br/>
-				<div><button type="button" class="ajaxmenu  btn" data-url='{RC_Uri::url("wechat/platform_menus/delete_menu")}' data-msg="{lang key='wechat::wechat.clear_menu_confirm'}">{lang key='wechat::wechat.clear_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.clear_menu_notice'}</span></div><br/>
-				<div><button type="button" class="ajaxmenu  btn" data-url='{RC_Uri::url("wechat/platform_menus/sys_menu")}'>{lang key='wechat::wechat.make_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.make_menu_notice'}</span></div>
-            </div>
-		</div>
-	</div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
 			<div class="card-header">
                 <h4 class="card-title">
                 	{$ur_here}
@@ -69,19 +52,26 @@
 			                                <div class="menu-item-title">
 			                                    <span>菜单名称</span>
 			                                </div>
-			                                <ul class="weixin-sub-menu" v-show="selectedMenuIndex===i">
-			                                    <li class="menu-sub-item">
+			                                <ul class="weixin-sub-menu">
+			                                	<!-- {foreach from=$list.sub_button item=sub} -->
+			                                	<li class="menu-sub-item">
+			                                		<div class="menu-item-title">{$sub.name}</div>
+			                                	</li>
+			                                	<!-- {/foreach} -->
+			                                	
+			                                	{if $list.count lt 5}
+			                                    <li class="menu-sub-item" data-toggle="add-menu" data-pid="{$list.id}">
 			                                        <div class="menu-item-title">
 			                                            <i class="icon14_menu_add"></i>
 			                                        </div>
 			                                    </li>
+			                                    {/if}
 			                                    <i class="menu-arrow arrow_out"></i>
 			                                    <i class="menu-arrow arrow_in"></i>
 			                                </ul>
 			                            </li>
-			                            <li class="menu-item" v-if="menu.button.length<3" @click="addMenu(1)"> <i class="icon14_menu_add"></i></li>
+			                            <li class="menu-item"> <i class="icon14_menu_add"></i></li>
 			                            <!-- {foreachelse} -->
-			                            
 			                            <li class="menu-item size1of1">
 			                                <div class="menu-item-title" data-toggle="add-menu" data-pid="0">
 			                                    <i class="icon14_menu_add"></i>
