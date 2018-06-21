@@ -417,7 +417,7 @@ class platform_subscribe extends ecjia_platform {
 		$counts = count($list);
 		
 		$p += $counts;
-		$where = '';
+		$where = array();
 		if (!empty($list)) {
 			foreach ($list as $k => $vs) {
 				//不在表中为新关注用户、添加用户信息
