@@ -7,6 +7,7 @@
 </script>
 <!-- {/block} -->
 <!-- {block name="home-content"} -->
+
 {if $warn && $type eq 0}
 <div class="alert alert-error">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
@@ -31,7 +32,7 @@
                 </h4>
             </div>
             <div class="col-md-12">
-				<div class="weixin-menu-content" style="">
+				<div class="weixin-menu-content">
 		            <div id="weixin-app-menu">
 		                <div class="weixin-menu-right">
 							<div class="weixin-menu-detail">
@@ -47,22 +48,26 @@
 			                    <div class="weixin-bd">
 			                        <ul class="weixin-menu" id="weixin-menu">
 			                        
-			                        	<!-- {foreach from=$menu_list item=list} -->
-			                            <li class="menu-item">
-			                                <div class="menu-item-title">
+			                        	<!-- {foreach from=$menu_list item=list name=m} -->
+			                            <li class="menu-item size_{$count} {if !$list.sub_button}curr{/if}">
+			                                <div class="menu-item-title" data-toggle="edit-menu" data-id="{$list.id}" data-pid="{$list.pid}">
+			                                	{if $list.sub_button}
+			                                	<i class="icon_menu_dot"></i>
+			                                	{/if}
 			                                    <span>菜单名称</span>
 			                                </div>
-			                                <ul class="weixin-sub-menu">
-			                                	<!-- {foreach from=$list.sub_button item=sub} -->
-			                                	<li class="menu-sub-item">
-			                                		<div class="menu-item-title">{$sub.name}</div>
+			                                
+			                                <ul class="weixin-sub-menu {if !$smarty.foreach.m.first}hide{/if}">
+			                                	<!-- {foreach from=$list.sub_button item=sub name=s} -->
+			                                	<li class="menu-sub-item {if ($smarty.foreach.s.first && !$id) || ($id eq $sub.id)}current{/if}">
+			                                		<div class="menu-item-title" data-toggle="edit-menu" data-id="{$sub.id}" data-pid="{$sub.pid}">{$sub.name}</div>
 			                                	</li>
 			                                	<!-- {/foreach} -->
 			                                	
 			                                	{if $list.count lt 5}
 			                                    <li class="menu-sub-item" data-toggle="add-menu" data-pid="{$list.id}">
 			                                        <div class="menu-item-title">
-			                                            <i class="icon14_menu_add"></i>
+			                                            <a class="pre_menu_link" href="javascript:void(0);" title="最多添加5个子菜单"><i class="icon14_menu_add"></i></a>
 			                                        </div>
 			                                    </li>
 			                                    {/if}
@@ -70,16 +75,11 @@
 			                                    <i class="menu-arrow arrow_in"></i>
 			                                </ul>
 			                            </li>
-			                            <li class="menu-item"> <i class="icon14_menu_add"></i></li>
-			                            <!-- {foreachelse} -->
-			                            <li class="menu-item size1of1">
-			                                <div class="menu-item-title" data-toggle="add-menu" data-pid="0">
-			                                    <i class="icon14_menu_add"></i>
-			                                    <span>添加菜单</span>
-			                                </div>
-			                            </li>
 			                            <!-- {/foreach} -->
 			                            
+			                            {if $count lt 3}
+			                            <li class="menu-item size_{$count}" data-toggle="add-menu" data-pid="0"><a class="pre_menu_link" href="javascript:void(0);" title="最多添加3个一级菜单"> <i class="icon14_menu_add"></i> {if $count eq 0}<span>添加菜单</span>{/if}</a></li>
+			                            {/if}
 			                        </ul>
 			                    </div>
 			            	</div>
@@ -94,6 +94,7 @@
 		            {/if}
 		            
 		            <input type="hidden" name="add_url" value="{$form_action}" />
+		            <input type="hidden" name="edit_url" value="{$edit_url}" />
 		        </div>
             </div>
         </div>

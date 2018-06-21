@@ -73,6 +73,7 @@
 			});	
 			
 			app.wechat_menus_list.add();
+			app.wechat_menus_list.edit();
 		},
 		
 		add: function() {
@@ -88,7 +89,25 @@
 				});
 				
 			});
-		}
+		},
+		
+		edit: function() {
+			$('[data-toggle="edit-menu"]').off('click').on('click', function() {
+				var $this = $(this),
+					id = $this.attr('data-id'),
+					pid = $this.attr('data-pid'),
+					url = $('input[name="edit_url"]').val();
+				var info = {
+					id: id,
+					pid: pid
+				}
+				$.post(url, info, function(data) {
+					$('.weixin-menu-detail').html(data.data);
+					app.wechat_menus_edit.init();
+				});
+				
+			});
+		},
 	};
 	
 })(ecjia.platform, jQuery);
