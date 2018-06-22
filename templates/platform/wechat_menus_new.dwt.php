@@ -32,9 +32,11 @@
 				<div class="weixin-menu-content">
 		            <div id="weixin-app-menu">
 		                <div class="weixin-menu-right">
-		                	<div class="weixin-menu-right-content">
-		                		<div class="menu_initial_tips">点击左侧菜单进行编辑操作</div>
-							</div>
+		                	<form class="form" name="the_form" method="post" action="{RC_Uri::url('wechat/platform_menus/update')}">
+			                	<div class="weixin-menu-right-content">
+			                		<div class="menu_initial_tips">点击左侧菜单进行编辑操作</div>
+								</div>
+							</form>
 		                </div>
 		                
 		                <!-- 预览窗 -->
@@ -86,7 +88,7 @@
 		            
 		            {if $menu_list}
 		            <div class="weixin-btn-group">
-		                <div data-toggle="btn-create" class="btn btn-success" data-url='{RC_Uri::url("wechat/platform_menus/sys_menu")}' data-msg="发布成功后会覆盖原版本，且将在24小时内对所有用户生效，确认发布？">保存并发布</div>
+		                <div data-toggle="btn-create" class="btn btn-success m_l20" data-url='{RC_Uri::url("wechat/platform_menus/sys_menu")}' data-msg="发布成功后会覆盖原版本，且将在24小时内对所有用户生效，确认发布？">发布</div>
 		            </div>
 		            {/if}
 		            
