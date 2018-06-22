@@ -26,16 +26,14 @@
 			<div class="card-header">
                 <h4 class="card-title">
                 	{$ur_here}
-                	{if $action_link}
-					<a class="btn btn-light plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="ft-plus"></i>{$action_link.text}</a>
-					{/if}
                 </h4>
             </div>
             <div class="col-md-12">
 				<div class="weixin-menu-content">
 		            <div id="weixin-app-menu">
 		                <div class="weixin-menu-right">
-							<div class="weixin-menu-detail">
+		                	<div class="weixin-menu-right-content">
+		                		<div class="menu_initial_tips">点击左侧菜单进行编辑操作</div>
 							</div>
 		                </div>
 		                
@@ -47,25 +45,24 @@
 			                    </div>
 			                    <div class="weixin-bd">
 			                        <ul class="weixin-menu" id="weixin-menu">
-			                        
 			                        	<!-- {foreach from=$menu_list item=list name=m} -->
-			                            <li class="menu-item size_{$count} {if !$list.sub_button}curr{/if}">
+			                            <li class="menu-item size_{$count}">
 			                                <div class="menu-item-title" data-toggle="edit-menu" data-id="{$list.id}" data-pid="{$list.pid}">
 			                                	{if $list.sub_button}
 			                                	<i class="icon_menu_dot"></i>
 			                                	{/if}
-			                                    <span>菜单名称</span>
+			                                    <span>{$list.name}</span>
 			                                </div>
 			                                
-			                                <ul class="weixin-sub-menu {if !$smarty.foreach.m.first}hide{/if}">
+			                                <ul class="weixin-sub-menu hide">
 			                                	<!-- {foreach from=$list.sub_button item=sub name=s} -->
-			                                	<li class="menu-sub-item {if ($smarty.foreach.s.first && !$id) || ($id eq $sub.id)}current{/if}">
+			                                	<li class="menu-sub-item {if $id eq $sub.id}current{/if}">
 			                                		<div class="menu-item-title" data-toggle="edit-menu" data-id="{$sub.id}" data-pid="{$sub.pid}">{$sub.name}</div>
 			                                	</li>
 			                                	<!-- {/foreach} -->
 			                                	
 			                                	{if $list.count lt 5}
-			                                    <li class="menu-sub-item" data-toggle="add-menu" data-pid="{$list.id}">
+			                                    <li class="menu-sub-item" data-toggle="add-menu" data-pid="{$list.id}" data-count="{$list.count}">
 			                                        <div class="menu-item-title">
 			                                            <a class="pre_menu_link" href="javascript:void(0);" title="最多添加5个子菜单"><i class="icon14_menu_add"></i></a>
 			                                        </div>
@@ -89,12 +86,15 @@
 		            
 		            {if $menu_list}
 		            <div class="weixin-btn-group">
-		                <div id="btn-create" class="btn btn-success">保存并发布</div>
+		                <div data-toggle="btn-create" class="btn btn-success">保存并发布</div>
 		            </div>
 		            {/if}
 		            
 		            <input type="hidden" name="add_url" value="{$form_action}" />
 		            <input type="hidden" name="edit_url" value="{$edit_url}" />
+		            <input type="hidden" name="del_url" value="{$del_url}" />
+		            <input type="hidden" name="check_url" value="{$check_url}" />
+		            <input type="hidden" name="update_url" value="{$update_url}" />
 		        </div>
             </div>
         </div>
