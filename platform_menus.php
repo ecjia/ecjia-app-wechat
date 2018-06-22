@@ -447,17 +447,12 @@ class platform_menus extends ecjia_platform {
 			$data = array('name' => $name);
 		}
 		
-		if (isset($_POST['type'])) {
-			$type = trim($_POST['type']);
-			$data = array('type' => $type);
-		}
-		
 		if (isset($_POST['key'])) {
 			$key = trim($_POST['key']);
-			if (empty($name)) {
+			if (empty($key)) {
 				return $this->showmessage('菜单关键词不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			$data = array('key' => $key);
+			$data = array('key' => $key, 'url' => '', 'type' => 'click');
 		}
 		
 		if (isset($_POST['url'])) {
@@ -465,7 +460,10 @@ class platform_menus extends ecjia_platform {
 			if (empty($url)) {
 				return $this->showmessage('外链url不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			$data = array('url' => $url);
+			if (strpos($url, 'http://') === false && strpos($url, 'https://') === false) {
+				return $this->showmessage('外链url格式错误', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+			$data = array('url' => $url, 'key' => '', 'type' => 'view');
 		}
 		
 		if (isset($_POST['weapp_appid'])) {
@@ -473,7 +471,7 @@ class platform_menus extends ecjia_platform {
 			if (empty($url)) {
 				return $this->showmessage('请选择要跳转的小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			$data = array('url' => $url);
+			$data = array('url' => $url, 'key' => '', 'type' => 'miniprogram');
 		}
 		RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
 		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -679,7 +677,7 @@ class platform_menus extends ecjia_platform {
 		
 		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$id = intval($_POST['id']);
+		$id = intval($_GET['id']);
 		$info = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->first();
 		
 		if ($info['pid'] == 0) {
@@ -754,6 +752,7 @@ class platform_menus extends ecjia_platform {
 		$listdb = $this->get_menuslist();
 		$menu_list = $listdb['menu_list'];
 
+		$id = 0;
 		if (!empty($menu_list)) {
 			foreach ($menu_list as $k => $v) {
 				if ($v['type'] == 'click') {
@@ -809,7 +808,7 @@ class platform_menus extends ecjia_platform {
 			
 			$res = $this->fetch('library/wechat_menu_db.lbi');
 			$result = $this->fetch('library/wechat_menu_sub.lbi');
-			return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $res, 'result' => $result));
+			return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $res, 'result' => $result, 'id' => $id));
 		}
 	}
 	

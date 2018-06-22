@@ -345,7 +345,7 @@ class platform_customer extends ecjia_platform {
 	}
 	
 	public function remove() {
-		// $this->admin_priv('wechat_customer_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_customer_delete', ecjia::MSGTYPE_JSON);
 		
 		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);

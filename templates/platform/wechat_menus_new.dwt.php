@@ -86,7 +86,7 @@
 		            
 		            {if $menu_list}
 		            <div class="weixin-btn-group">
-		                <div data-toggle="btn-create" class="btn btn-success">保存并发布</div>
+		                <div data-toggle="btn-create" class="btn btn-success" data-url='{RC_Uri::url("wechat/platform_menus/sys_menu")}' data-msg="发布成功后会覆盖原版本，且将在24小时内对所有用户生效，确认发布？">保存并发布</div>
 		            </div>
 		            {/if}
 		            

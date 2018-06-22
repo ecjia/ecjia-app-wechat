@@ -218,7 +218,7 @@ class platform_subscribe extends ecjia_platform {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.tag_name_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		if (!empty($id)) {
-			// $this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
+			$this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
 			
 			$data = array('name' => $name);
 			$is_only = $this->wechat_tag->where(array('id' => array('neq' => $id), 'name' => $name, 'wechat_id' => $wechat_id))->count();
@@ -244,7 +244,7 @@ class platform_subscribe extends ecjia_platform {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.edit_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
-			// $this->admin_priv('wechat_subscribe_add', ecjia::MSGTYPE_JSON);
+			$this->admin_priv('wechat_subscribe_add', ecjia::MSGTYPE_JSON);
 			
 			$count = $this->wechat_tag->where(array('wechat_id' => $wechat_id))->count();
 			if ($count == 100) {
@@ -280,7 +280,7 @@ class platform_subscribe extends ecjia_platform {
 	 * 删除标签
 	 */
 	public function remove() {
-		// $this->admin_priv('wechat_subscribe_delete', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_subscribe_delete', ecjia::MSGTYPE_JSON);
 		
 		$tag_id = !empty($_GET['tag_id']) ? intval($_GET['tag_id']) : 0;
 		$id     = !empty($_GET['id'])     ? intval($_GET['id'])     : 0;
@@ -319,7 +319,7 @@ class platform_subscribe extends ecjia_platform {
 	 * 获取全部标签
 	 */
 	public function get_usertag() {
-		// $this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
 		
 		$result = $this->get_user_tags();
 		if ($result === true) {
@@ -333,7 +333,7 @@ class platform_subscribe extends ecjia_platform {
 	 * 获取用户信息
 	 */
 	public function get_userinfo() {
-		// $this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
 		
 		$uuid = $this->platformAccount->getUUID();
 		
@@ -499,7 +499,7 @@ class platform_subscribe extends ecjia_platform {
 	
 	//用户消息记录	
 	public function subscribe_message() {
-		// $this->admin_priv('wechat_subscribe_message_manage');
+		$this->admin_priv('wechat_subscribe_message_manage');
 		
 		
 		$wechat_id = $this->platformAccount->getAccountID();
@@ -572,7 +572,7 @@ class platform_subscribe extends ecjia_platform {
 	
 	//获取信息
 	public function read_message() {
-		// $this->admin_priv('wechat_subscribe_message_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_subscribe_message_manage', ecjia::MSGTYPE_JSON);
 		
 		$list = $this->get_message_list();
 		$message = count($list['item']) < 10 ? RC_Lang::get('wechat::wechat.no_more_message') : RC_Lang::get('wechat::wechat.searched');
@@ -585,7 +585,7 @@ class platform_subscribe extends ecjia_platform {
 	
 	//发送信息
 	public function send_message() {
-		// $this->admin_priv('wechat_subscribe_message_add', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_subscribe_message_add', ecjia::MSGTYPE_JSON);
 		
 		
 		$wechat_id = $this->platformAccount->getAccountID();
@@ -635,7 +635,7 @@ class platform_subscribe extends ecjia_platform {
 	}
 	
 	public function edit_remark() {
-		// $this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
 		
 		$uuid = $this->platformAccount->getUUID();
 		
@@ -673,7 +673,7 @@ class platform_subscribe extends ecjia_platform {
 	
 	//添加/移出黑名单
 	public function backlist() {
-		// $this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
 		
 		$uuid = $this->platformAccount->getUUID();
 		

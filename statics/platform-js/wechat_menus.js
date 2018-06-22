@@ -15,18 +15,18 @@
 						$('#keydiv').show();
 						$('#urldiv').hide();
 						$('#weappdiv').hide();
-						$("input[name='url']").val("");
+//						$("input[name='url']").val("");
 					} else if ($("input[name='type']:checked").val() == 'view') {
 						$('#keydiv').hide();
 						$('#urldiv').show();
 						$('#weappdiv').hide();
-						$("input[name='key']").val("");
+//						$("input[name='key']").val("");
 					} else {
 						$('#keydiv').hide();
 						$('#urldiv').hide();
 						$('#weappdiv').show();
-						$("input[name='url']").val("");
-						$("input[name='key']").val("");
+//						$("input[name='url']").val("");
+//						$("input[name='key']").val("");
 					}
 				});
 				$('input[name="type"]:checked').trigger('click');
@@ -160,11 +160,28 @@
 				var $this = $(this),
 					url = $('input[name="check_url"]').val();
 				$.post(url, function(data) {
-					$('#weixin-menu').html(data.data);
-					$('.weixin-menu-right-content').html(data.result);
-					app.wechat_menus_edit.init();
-					app.wechat_menus_list.init();
-					$('.div-input').find('.menu-tips').removeClass('hide');
+					if (data.id != 0) {
+						$('#weixin-menu').html(data.data);
+						$('.weixin-menu-right-content').html(data.result);
+						app.wechat_menus_edit.init();
+						app.wechat_menus_list.init();
+						$('.div-input').find('.menu-tips').removeClass('hide');
+					} else {
+						var $this = $('[data-toggle="btn-create"]');
+						var url = $this.attr('data-url');
+						var message = $this.attr('data-msg');
+						if (message) {
+							smoke.confirm(message,function(e){
+								e && $.get(url, function(data){
+									ecjia.platform.showmessage(data);
+								}, 'json');
+							}, {ok:js_lang.ok, cancel:js_lang.cancel});
+						} else {
+							$.get(url, function(data){
+								ecjia.platform.showmessage(data);
+							}, 'json');
+						}
+					}
 				});
 			});
 		},
@@ -184,25 +201,6 @@
 						ecjia.platform.showmessage(data);
 						return false;
 					}
-					app.wechat_menus_list.check()
-				})
-			});
-			
-			$('input[name="type"]').change(function() {
-				var $this = $(this),
-					val = $('input[name="type"]:checked').val(),
-					id = $('input[name="id"]').val(),
-					url = $('input[name="update_url"]').val();
-				var info = {
-					'type': val,
-					'id': id
-				};
-				$.post(url, info, function(data) {
-					if (data.state == 'error') {
-						ecjia.platform.showmessage(data);
-						return false;
-					}
-					app.wechat_menus_list.check()
 				})
 			});
 			
@@ -220,7 +218,6 @@
 						ecjia.platform.showmessage(data);
 						return false;
 					}
-					app.wechat_menus_list.check()
 				})
 			});
 			
@@ -238,7 +235,6 @@
 						ecjia.platform.showmessage(data);
 						return false;
 					}
-					app.wechat_menus_list.check()
 				})
 			});
 			
@@ -256,21 +252,9 @@
 						ecjia.platform.showmessage(data);
 						return false;
 					}
-					app.wechat_menus_list.check()
 				})
 			});
 		},
-		
-		check: function() {
-			var url = $('input[name="check_url"]').val();
-			$.post(url, function(data) {
-				$('#weixin-menu').html(data.data);
-				$('.weixin-menu-right-content').html(data.result);
-				app.wechat_menus_edit.init();
-				app.wechat_menus_list.init();
-				$('.div-input').find('.menu-tips').removeClass('hide');
-			});
-		}
 	};
 	
 })(ecjia.platform, jQuery);

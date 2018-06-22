@@ -604,15 +604,15 @@ class platform_response extends ecjia_platform {
 			}
 		}
 		if (!empty($id)) {
-// 			$this->admin_priv('wechat_response_update', ecjia::MSGTYPE_JSON);
-// 			$this->admin_priv('wechat_response_delete', ecjia::MSGTYPE_JSON);
+			$this->admin_priv('wechat_response_update', ecjia::MSGTYPE_JSON);
+			$this->admin_priv('wechat_response_delete', ecjia::MSGTYPE_JSON);
 				
 			$update = $this->wr_db->where(array('id' => $id))->update($data);
 			$this->wrk_db->where(array('rid' => $id))->delete();
 				
 			ecjia_admin::admin_log($data['rule_name'], 'edit', 'reply_keywords_rule');
 		} else {
-// 			$this->admin_priv('wechat_response_add', ecjia::MSGTYPE_JSON);
+			$this->admin_priv('wechat_response_add', ecjia::MSGTYPE_JSON);
 			
 			$data['add_time'] = RC_Time::gmtime();
 			$id = $this->wr_db->insert($data);
