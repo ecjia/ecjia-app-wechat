@@ -2,7 +2,7 @@
 <div class="weixin-menu-detail">
 	<div class="menu-input-group" style="border-bottom: 2px #e8e8e8 solid;">
 		<div class="menu-name">{$wechat_menus.name}</div>
-		<div class="menu-del" data-toggle="del-menu" data-id="{$id}">删除子菜单</div>
+		<div class="menu-del" data-toggle="del-menu" data-id="{$id}">{if $wechat_menus.pid eq 0}删除菜单{else}删除子菜单{/if}</div>
 	</div>
 	<div class="menu-input-group">
 		<div class="menu-label col-lg-3">菜单名称：</div>
