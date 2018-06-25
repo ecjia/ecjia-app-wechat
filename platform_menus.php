@@ -119,7 +119,6 @@ class platform_menus extends ecjia_platform {
 		$this->assign('edit_url', RC_Uri::url('wechat/platform_menus/get_menu_info'));
 		$this->assign('del_url', RC_Uri::url('wechat/platform_menus/remove'));
 		$this->assign('check_url', RC_Uri::url('wechat/platform_menus/check'));
-		$this->assign('update_url', RC_Uri::url('wechat/platform_menus/auto_save'));
 		
 		$this->assign_lang();
 		$this->display('wechat_menus_list.dwt');
@@ -338,7 +337,7 @@ class platform_menus extends ecjia_platform {
 		
 		if ($type == 'click') {
 			if (empty($key)) {
-				return $this->showmessage('菜单关键词不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 				return $this->showmessage('菜单关键词不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} elseif ($type == 'view') {
 			if (empty($web_url)) {
@@ -353,7 +352,7 @@ class platform_menus extends ecjia_platform {
 			//小程序配置信息
 			$h5_url = RC_Uri::home_url().'/sites/m/';
 			$weapp_appid = $_POST['weapp_appid'];
-			if(empty($weapp_appid)) {
+			if (empty($weapp_appid)) {
 				return $this->showmessage('请选择小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
 				$miniprogram_config = array(
@@ -400,54 +399,6 @@ class platform_menus extends ecjia_platform {
 		
 		return $this->showmessage('保存成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $res, 'result' => $result));
 	}
-	
-	public function auto_save() {
-		$this->admin_priv('wechat_menus_update', ecjia::MSGTYPE_JSON);
-		
-		$wechat_id = $this->platformAccount->getAccountID();
-		
-		$id = intval($_POST['id']);
-		if (isset($_POST['name'])) {
-			$name = trim($_POST['name']);
-			if (empty($name)) {
-				return $this->showmessage('菜单名称不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			if (strlen($name) > 16) {
-				return $this->showmessage('字数不超过8个汉字或16个字母', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			$data = array('name' => $name);
-		}
-		
-		if (isset($_POST['key'])) {
-			$key = trim($_POST['key']);
-			if (empty($key)) {
-				return $this->showmessage('菜单关键词不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			$data = array('key' => $key, 'url' => '', 'type' => 'click');
-		}
-		
-		if (isset($_POST['url'])) {
-			$url = trim($_POST['url']);
-			if (empty($url)) {
-				return $this->showmessage('外链url不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			if (strpos($url, 'http://') === false && strpos($url, 'https://') === false) {
-				return $this->showmessage('外链url格式错误', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			$data = array('url' => $url, 'key' => '', 'type' => 'view');
-		}
-		
-		if (isset($_POST['weapp_appid'])) {
-			$url = trim($_POST['weapp_appid']);
-			if (empty($url)) {
-				return $this->showmessage('请选择要跳转的小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			$data = array('url' => $url, 'key' => '', 'type' => 'miniprogram');
-		}
-		RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
-		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
-	}
-	
 	
 	/**
 	 * 生成自定义菜单
@@ -792,7 +743,7 @@ class platform_menus extends ecjia_platform {
 		
 		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$list = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->orderBy('id', 'asc')->get();
+		$list = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->orderBy('sort', 'asc')->get();
 		$result = array();
 		
 		if (!empty($list)) {

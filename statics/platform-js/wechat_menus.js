@@ -1,52 +1,37 @@
 // JavaScript Document
 ;(function(app, $) {	
 	app.wechat_menus_edit = {
-			init : function() {
-				$(".ajaxswitch").on('click', function(e){
-					e.preventDefault();
-					var url = $(this).attr('href');
-					$.get(url, function(data){
-						ecjia.platform.showmessage(data);
-					}, 'json');
-				});	
-				
-				$(document).on('click', 'input[name="type"]', function(e){
-					if ($("input[name='type']:checked").val() == 'click') {
-						$('#keydiv').show();
-						$('#urldiv').hide();
-						$('#weappdiv').hide();
-//						$("input[name='url']").val("");
-					} else if ($("input[name='type']:checked").val() == 'view') {
-						$('#keydiv').hide();
-						$('#urldiv').show();
-						$('#weappdiv').hide();
-//						$("input[name='key']").val("");
-					} else {
-						$('#keydiv').hide();
-						$('#urldiv').hide();
-						$('#weappdiv').show();
-//						$("input[name='url']").val("");
-//						$("input[name='key']").val("");
-					}
-				});
-				$('input[name="type"]:checked').trigger('click');
-				
-//				$('form').on('submit', function(e) {
-//					e.preventDefault();
-//					$(this).ajaxSubmit({
-//						dataType : "json",
-//						success : function(data) {
-//							ecjia.platform.showmessage(data);
-//						}
-//					});
-//				});
-			}
-		};
-	
+		init : function() {
+			$(".ajaxswitch").off('click').on('click', function(e){
+				e.preventDefault();
+				var url = $(this).attr('href');
+				$.get(url, function(data){
+					ecjia.platform.showmessage(data);
+				}, 'json');
+			});	
+			
+			$('input[name="type"]').off('click').on('click', function(e){
+				if ($("input[name='type']:checked").val() == 'click') {
+					$('#keydiv').show();
+					$('#urldiv').hide();
+					$('#weappdiv').hide();
+				} else if ($("input[name='type']:checked").val() == 'view') {
+					$('#keydiv').hide();
+					$('#urldiv').show();
+					$('#weappdiv').hide();
+				} else {
+					$('#keydiv').hide();
+					$('#urldiv').hide();
+					$('#weappdiv').show();
+				}
+			});
+			$('input[name="type"]:checked').trigger('click');
+		}
+	};
 	
 	app.wechat_menus_list = {
 		init : function() {
-			$(".ajaxswitch").on('click', function(e){
+			$(".ajaxswitch").off('click').on('click', function(e){
 				e.preventDefault();
 				var url = $(this).attr('href');
 				$.get(url, function(data){
@@ -55,7 +40,7 @@
 			});	
 			
 			
-			$(".ajaxmenu").on('click', function(e){
+			$(".ajaxmenu").off('click').on('click', function(e){
 				e.preventDefault();
 				var url = $(this).attr('data-url');
 				var message = $(this).attr('data-msg');
@@ -76,7 +61,6 @@
 			app.wechat_menus_list.edit();
 			app.wechat_menus_list.remove();
 			app.wechat_menus_list.save();
-//			app.wechat_menus_list.auto_save();
 			app.wechat_menus_list.btn_save();
 		},
 		
@@ -186,76 +170,6 @@
 				});
 			});
 		},
-		
-//		auto_save: function() {
-//			$('input[name="name"]').blur(function() {
-//				var $this = $(this),
-//					val = $this.val(),
-//					id = $('input[name="id"]').val(),
-//					url = $('input[name="update_url"]').val();
-//				var info = {
-//					'name': val,
-//					'id': id
-//				};
-//				$.post(url, info, function(data) {
-//					if (data.state == 'error') {
-//						ecjia.platform.showmessage(data);
-//						return false;
-//					}
-//				})
-//			});
-//			
-//			$('input[name="key"]').blur(function() {
-//				var $this = $(this),
-//					val = $this.val(),
-//					id = $('input[name="id"]').val(),
-//					url = $('input[name="update_url"]').val();
-//				var info = {
-//					'key': val,
-//					'id': id
-//				};
-//				$.post(url, info, function(data) {
-//					if (data.state == 'error') {
-//						ecjia.platform.showmessage(data);
-//						return false;
-//					}
-//				})
-//			});
-//			
-//			$('input[name="url"]').blur(function() {
-//				var $this = $(this),
-//					val = $this.val(),
-//					id = $('input[name="id"]').val(),
-//					url = $('input[name="update_url"]').val();
-//				var info = {
-//					'url': val,
-//					'id': id
-//				};
-//				$.post(url, info, function(data) {
-//					if (data.state == 'error') {
-//						ecjia.platform.showmessage(data);
-//						return false;
-//					}
-//				})
-//			});
-//			
-//			$('input[name="weapp_appid"]').change(function() {
-//				var $this = $(this),
-//					val = $('select[name="weapp_appid"]:selected').val(),
-//					id = $('input[name="id"]').val(),
-//					url = $('input[name="update_url"]').val();
-//				var info = {
-//					'weapp_appid': val,
-//					'id': id
-//				};
-//				$.post(url, info, function(data) {
-//					if (data.state == 'error') {
-//						ecjia.platform.showmessage(data);
-//						return false;
-//					}
-//				})
-//			});
-//		},
 		
 		btn_save: function() {
             $('.btn-save').off('click').on('click', function() {

@@ -15,6 +15,7 @@
 				字数不超过8个汉字或16个字母
 			</p>
 		</div>
+		<span class="input-must">*</span>
 	</div>
 	
 	<div class="menu-input-group">
@@ -29,7 +30,7 @@
 	<div class="menu-input-group div-input" id="keydiv">
 		<div class="menu-label col-lg-3">菜单关键词：</div>
 		<div class="menu-input col-lg-8">
-			<input class="form-control col-lg-8" type="text" name="key" id="key" value="{$wechat_menus.key}" />
+			<input class="form-control" type="text" name="key" id="key" value="{$wechat_menus.key}" />
 			<p class="menu-tips hide" style="color:#e15f63" v-show="menuNameBounds">
 				请设置菜单关键词
 			</p>
@@ -54,6 +55,21 @@
 				<!-- {/foreach} -->
 			</select>
 			<p class="menu-tips" style="color:#e15f63; display: none;">请选择小程序</p>
+		</div>
+	</div>
+	
+	<div class="menu-input-group">
+		<div class="menu-label col-lg-3">是否开启：</div>
+		<div class="menu-input col-lg-8">
+			<input id="status_1" type="radio" name="status" value="1" {if $wechat_menus.status eq 1}checked{/if}><label for="status_1"><span>是</span></label>
+			<input id="status_0" type="radio" name="status" value="0" {if $wechat_menus.status eq 0}checked{/if}><label for="status_0"><span>否</span></label>
+		</div>
+	</div>
+	
+	<div class="menu-input-group">
+		<div class="menu-label col-lg-3">排序：</div>
+		<div class="menu-input col-lg-8">
+			<input class="form-control" type="text" name="sort" value="{$wechat_menus.sort}" />
 		</div>
 	</div>
 

@@ -112,7 +112,6 @@
 		            <input type="hidden" name="edit_url" value="{$edit_url}" />
 		            <input type="hidden" name="del_url" value="{$del_url}" />
 		            <input type="hidden" name="check_url" value="{$check_url}" />
-		            <input type="hidden" name="update_url" value="{$update_url}" />
 		        </div>
             </div>
         </div>
