@@ -7,6 +7,7 @@
 </script>
 <!-- {/block} -->
 <!-- {block name="home-content"} -->
+
 {if $warn && $type eq 0}
 <div class="alert alert-error">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
@@ -30,7 +31,6 @@
             <div class="card-body">
 				<div><button type="button" class="ajaxmenu  btn" data-url='{RC_Uri::url("wechat/platform_menus/get_menu")}'>{lang key='wechat::wechat.get_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_menu_notice'}</span></div><br/>
 				<div><button type="button" class="ajaxmenu  btn" data-url='{RC_Uri::url("wechat/platform_menus/delete_menu")}' data-msg="{lang key='wechat::wechat.clear_menu_confirm'}">{lang key='wechat::wechat.clear_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.clear_menu_notice'}</span></div><br/>
-				<div><button type="button" class="ajaxmenu  btn" data-url='{RC_Uri::url("wechat/platform_menus/sys_menu")}'>{lang key='wechat::wechat.make_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.make_menu_notice'}</span></div>
             </div>
 		</div>
 	</div>
@@ -42,60 +42,78 @@
 			<div class="card-header">
                 <h4 class="card-title">
                 	{$ur_here}
-                	{if $action_link}
-					<a class="btn btn-light plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="ft-plus"></i>{$action_link.text}</a>
-					{/if}
                 </h4>
             </div>
             <div class="col-md-12">
-				<table class="table table-hide-edit">
-					<thead>
-						<tr>
-							<th class="w180">{lang key='wechat::wechat.menu_name'}</th>
-							<th class="w110">{lang key='wechat::wechat.menu_keywords'}</th>
-							<th class="w200">{lang key='wechat::wechat.menu_url'}</th>
-							<th class="w80">{lang key='wechat::wechat.status'}</th>
-							<th class="w80">{lang key='wechat::wechat.sort'}</th>
-							<th class="w80">{lang key='wechat::wechat.operate'}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<!-- {foreach from=$listdb.menu_list item=val} -->
-						<tr>
-							<td>{$val.name}</td>
-							<td>{$val.key}</td>
-							<td>{$val.url}</td>
-							<td><i class="{if $val.status eq '1'}fa fa-check cursor_pointer{else}fa fa-times cursor_pointer{/if}" data-trigger="toggleState" data-url="{RC_Uri::url('wechat/platform_menus/toggle_show')}" data-id="{$val.id}" ></i></td>
-							<td><span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('wechat/platform_menus/edit_sort')}" data-name="sort" data-pk="{$val.id}"  data-title="{lang key='wechat::wechat.edit_sort'}">{$val.sort}</span></td>
-							<td>
-								<span>
-									{assign var=edit_url value=RC_Uri::url('wechat/platform_menus/edit',"id={$val.id}")}
-									<a class="data-pjax no-underline" href="{$edit_url}" title="{lang key='system::system.edit'}"><i class="ft-edit"></i></a>
-									<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t}您确定要删除菜单[{$val.name}]吗？{/t}" href='{RC_Uri::url("wechat/platform_menus/remove","id={$val.id}")}' title="{lang key='system::system.drop'}"><i class="ft-trash-2"></i></a>
-								</span>
-							</td>
-						</tr>
-						<!-- {foreach $val.sub_button item=v} -->
-						<tr>
-							<td>&nbsp;|---&nbsp;&nbsp;{$v.name}</td>
-							<td>{$v.key}</td>
-							<td class="ecjiaf-pre ecjiaf-wsn">{$v.url}</td>
-							<td><i class="{if $v.status eq '1'}fa fa-check cursor_pointer{else}fa fa-times cursor_pointer{/if}" data-trigger="toggleState" data-url="{RC_Uri::url('wechat/platform_menus/toggle_show')}" data-id="{$v.id}" ></i></td>
-							<td><span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('wechat/platform_menus/edit_sort')}" data-name="sort" data-pk="{$v.id}"  data-title="{lang key='wechat::wechat.edit_sort'}">{$v.sort}</span></td>
-							<td>
-								<span>
-									{assign var=edit_url value=RC_Uri::url('wechat/platform_menus/edit',"id={$v.id}")}
-									<a class="data-pjax no-underline" href="{$edit_url}" title="{lang key='system::system.edit'}"><i class="ft-edit"></i></a>
-									<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t}您确定要删除菜单[{$v.name}]吗？{/t}" href='{RC_Uri::url("wechat/platform_menus/remove","id={$v.id}")}' title="{lang key='system::system.drop'}"><i class="ft-trash-2"></i></a>
-								</span>
-							</td>
-						</tr>
-						<!-- {/foreach} -->
-						<!--  {foreachelse} -->
-						<tr><td class="no-records" colspan="6">{lang key='system::system.no_records'}</td></tr>
-						<!-- {/foreach} -->
-					</tbody>
-				</table>						
+				<div class="weixin-menu-content">
+		            <div id="weixin-app-menu">
+		                <div class="weixin-menu-right">
+		                	<form class="form" name="the_form" method="post" action="{RC_Uri::url('wechat/platform_menus/update')}">
+			                	<div class="weixin-menu-right-content">
+			                		<div class="menu_initial_tips">点击左侧菜单进行编辑操作</div>
+								</div>
+							</form>
+		                </div>
+		                
+		                <!-- 预览窗 -->
+		                <div class="weixin-preview">
+		                	<div class="mobile_menu_preview">
+			                    <div class="weixin-hd">
+			                        <div class="weixin-title">{$platformAccount->getAccountName()}</div>
+			                    </div>
+			                    <div class="weixin-bd">
+			                        <ul class="weixin-menu" id="weixin-menu">
+			                        	<!-- {foreach from=$menu_list item=list name=m} -->
+			                            <li class="menu-item size_{$count}">
+			                                <div class="menu-item-title" data-toggle="edit-menu" data-id="{$list.id}" data-pid="{$list.pid}">
+			                                	{if $list.sub_button}
+			                                	<i class="icon_menu_dot"></i>
+			                                	{/if}
+			                                    <span>{$list.name}</span>
+			                                </div>
+			                                
+			                                <ul class="weixin-sub-menu hide">
+			                                	<!-- {foreach from=$list.sub_button item=sub name=s} -->
+			                                	<li class="menu-sub-item {if $id eq $sub.id}current{/if}">
+			                                		<div class="menu-item-title" data-toggle="edit-menu" data-id="{$sub.id}" data-pid="{$sub.pid}">{$sub.name}</div>
+			                                	</li>
+			                                	<!-- {/foreach} -->
+			                                	
+			                                	{if $list.count lt 5}
+			                                    <li class="menu-sub-item" data-toggle="add-menu" data-pid="{$list.id}" data-count="{$list.count}">
+			                                        <div class="menu-item-title">
+			                                            <a class="pre_menu_link" href="javascript:void(0);" title="最多添加5个子菜单"><i class="icon14_menu_add"></i></a>
+			                                        </div>
+			                                    </li>
+			                                    {/if}
+			                                    <i class="menu-arrow arrow_out"></i>
+			                                    <i class="menu-arrow arrow_in"></i>
+			                                </ul>
+			                            </li>
+			                            <!-- {/foreach} -->
+			                            
+			                            {if $count lt 3}
+			                            <li class="menu-item size_{$count}" data-toggle="add-menu" data-pid="0"><a class="pre_menu_link" href="javascript:void(0);" title="最多添加3个一级菜单"> <i class="icon14_menu_add"></i> {if $count eq 0}<span>添加菜单</span>{/if}</a></li>
+			                            {/if}
+			                        </ul>
+			                    </div>
+			            	</div>
+		                </div>
+		                
+		            </div>
+		            
+		            {if $menu_list}
+		            <div class="weixin-btn-group">
+		                <div data-toggle="btn-create" class="btn btn-success m_l20" data-url='{RC_Uri::url("wechat/platform_menus/sys_menu")}' data-msg="发布成功后会覆盖原版本，且将在24小时内对所有用户生效，确认发布？">发布</div>
+		            </div>
+		            {/if}
+		            
+		            <input type="hidden" name="add_url" value="{$form_action}" />
+		            <input type="hidden" name="edit_url" value="{$edit_url}" />
+		            <input type="hidden" name="del_url" value="{$del_url}" />
+		            <input type="hidden" name="check_url" value="{$check_url}" />
+		            <input type="hidden" name="update_url" value="{$update_url}" />
+		        </div>
             </div>
         </div>
     </div>
