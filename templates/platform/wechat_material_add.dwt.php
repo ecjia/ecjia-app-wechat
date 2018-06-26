@@ -56,8 +56,8 @@
 										<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
 										<div class="col-lg-9 controls">
 											<input class="span8 form-control" type="text" name="title" value='' />
-											<span class="input-must">*</span>
 										</div>
+										<span class="input-must">*</span>
 									</div>
 									<div class="form-group row">
 										<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.author'}</label>
@@ -77,8 +77,8 @@
 													<input type='file' name='image_url' size="35"/>
 												</span>
 												<a class="btn btn-danger fileupload-exists" data-dismiss="fileupload" href="javascrpt:;">{lang key='wechat::wechat.delete'}</a>
-												<span class="input-must">*</span>
 											</div>
+											<span class="input-must">*</span>
 								
 											<input type="checkbox" name="is_show" value="1" id="is_show_1"/><label for="is_show_1"></label>{lang key='wechat::wechat.cover_img_centent'}
 											<span class="help-block">{lang key='wechat::wechat.img_size900x500'}</span>
@@ -125,8 +125,8 @@
 							<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
 							<div class="col-lg-9 controls">
 								<input type="text" class="w280 form-control" name="video_title" maxlength="60" size="30" value="{$article.title}" />
-								<span class="input-must">*</span>
 							</div>
+							<span class="input-must">*</span>
 						</div>
 					
 						<!-- {if !$article.file} -->
@@ -140,9 +140,9 @@
 								</span>
 								<span class="fileupload-preview m_t10"></span>
 								<a class="close fileupload-exists" style="float: none" data-dismiss="fileupload" href="index.php-uid=1&page=form_extended.html#">&times;</a>	
-								<span class="input-must">*</span>
 								<div class="help-block">{lang key='wechat::wechat.uploadmp4_most10'}</div>
 							</div>
+							<span class="input-must">*</span>
 						</div>
 						<!-- {/if} -->
 					
@@ -150,8 +150,8 @@
 						<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_video_intro'}</label>
 						<div class="col-lg-9 controls">
 							<textarea name="video_digest" class="w280 form-control">{$article.digest}</textarea>
-							{if $material eq 1}<span class="input-must">*</span>{/if}
 						</div>
+						{if $material eq 1}<span class="input-must">*</span>{/if}
 					</div>
 						
 					<div class="modal-footer justify-content-center">

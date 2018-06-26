@@ -49,25 +49,25 @@
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_expire_seconds'}</label>
 								<div class="col-lg-8 controls">
 									<input type="text" name="expire_seconds" id="expire_seconds" class="form-control"/>
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_functions'}</label>
 								<div class="col-lg-8 controls">
 									<input type="text" name="functions" id="function" class="form-control"/>
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_scene_id'}</label>
 								<div class="col-lg-8 controls">
 									<input type="text" name="scene_id" id="scene_id" class="form-control"/>
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 									<div class="help-block">{lang key='wechat::wechat.scene_id_help'}</div>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">

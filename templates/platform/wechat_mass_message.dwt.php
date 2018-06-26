@@ -98,7 +98,6 @@
 
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 									{lang key='wechat::wechat.label_select_material'}
 								</label>
 								<div class="col-lg-8 controls material-table" data-url="{url path='wechat/platform_mass_message/get_material_list'}">
@@ -135,6 +134,7 @@
                                 		{/if}
 	                      			</div>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 						</div>
 					</div>

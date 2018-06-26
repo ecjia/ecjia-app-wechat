@@ -51,8 +51,8 @@
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_menu_name'}</label>
 								<div class="col-lg-8 controls">
 									<input class="form-control" type="text" name="name" id="name" value="{$wechatmenus.name}" />
-								<span class="input-must">{lang key='system::system.require_field'}</span>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">

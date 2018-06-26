@@ -104,9 +104,9 @@
 							<label class="col-md-4 label-control text-right">{lang key='wechat::wechat.label_message_content'}</label>
 							<div class="col-md-8 controls">
 								<textarea name="message_content" class="form-control"></textarea>
-								<label class="input-must">*</label>
 								<div class="help-block">{lang key='wechat::wechat.tip_info'}</div>
 							</div>
+							<label class="input-must">*</label>
 						</div>
 						<div class="form-group row">
 							<label class="col-md-4 label-control text-right">{lang key='wechat::wechat.label_nickname'}</label>

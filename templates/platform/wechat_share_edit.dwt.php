@@ -39,16 +39,16 @@
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_recommended_person'}</label>
 								<div class="col-lg-8 controls">
 									<input type="text" name="username" id="username" class="form-control"/>
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_recommended_id'}</label>
 								<div class="col-lg-8 controls">
 									<input type="text" name="scene_id" id="scene_id" class="form-control"/>
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">
@@ -63,8 +63,8 @@
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_functions'}</label>
 								<div class="col-lg-8 controls">
 									<input type="text" name="functions" id="function" class="form-control"/>
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">
