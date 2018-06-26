@@ -37,16 +37,16 @@
 								<div class="col-lg-12 controls material-table" data-url="{url path='wechat/platform_mass_message/get_material_list'}">
 									<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
 										<li class="nav-item text-material">
-											<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"></i></a>
+											<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>
 										</li>
 										<li class="nav-item picture-material">
-											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.image'}"><i class="fa fa-file-image-o"></i></a>
+											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.image'}"><i class="fa fa-file-image-o"> 图片</i></a>
 										</li>
 										<li class="nav-item music-material">
-											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.voice'}"><i class="fa fa-music"></i></a>
+											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.voice'}"><i class="fa fa-music"> 语音</i></a>
 										</li>
 										<li class="nav-item video-material">
-											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.video'}"><i class="fa fa-video-camera"></i></a>
+											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.video'}"><i class="fa fa-video-camera"> 视频</i></a>
 										</li>
 									</ul>
 							   		<div class="text m_b10 {if $subscribe.media_id}hidden{/if}">
