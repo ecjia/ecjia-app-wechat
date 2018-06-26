@@ -347,11 +347,11 @@ class platform_mass_message extends ecjia_platform {
 	private function get_article_list($id, $type) {
 		$filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
 		
-		$db_mass_history = RC_DB::table('wechat_media')->where('type', $type);
+		$db_wechat_media = RC_DB::table('wechat_media')->where('type', $type);
 		if ($id) {
-			$db_mass_history->where('parent_id', $id)->orWhere('id', $id);
+			$db_wechat_media->where('parent_id', $id)->orWhere('id', $id);
 		}
-		$data = $db_mass_history->orderBy('id', 'asc')->get();
+		$data = $db_wechat_media->orderBy('id', 'asc')->get();
 		$article['id'] = $id;
 		
 		if (!empty($data)) {
