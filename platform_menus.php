@@ -389,6 +389,9 @@ class platform_menus extends ecjia_platform {
 		$this->assign('pid', $info['pid']);
 		$this->assign('wechat_menus', $info);
 		
+		$weapplist = $this->get_weapplist();
+		$this->assign('weapplist', $weapplist);
+		
 		$res = $this->fetch('library/wechat_menu_db.lbi');
 		
 		if ($wechat_menus['pid'] == 0 && $count != 0) {
@@ -661,6 +664,9 @@ class platform_menus extends ecjia_platform {
 		
 		$count = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('pid', $wechat_menus['id'])->count();
 
+		$weapplist = $this->get_weapplist();
+		$this->assign('weapplist', $weapplist);
+		
 		if ($count != 0) {
 			$data = $this->fetch('library/wechat_menu.lbi');
 		} else {
@@ -730,6 +736,9 @@ class platform_menus extends ecjia_platform {
 			$this->assign('pid', $data['pid']);
 			$this->assign('wechat_menus', $data);
 			
+			$weapplist = $this->get_weapplist();
+			$this->assign('weapplist', $weapplist);
+			
 			$res = $this->fetch('library/wechat_menu_db.lbi');
 			$result = $this->fetch('library/wechat_menu_sub.lbi');
 			return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $res, 'result' => $result, 'id' => $id));
@@ -786,7 +795,7 @@ class platform_menus extends ecjia_platform {
 	 * 取得小程序
 	 */
 	private function get_weapplist() {
-		$data = RC_DB::table('platform_account')->where('platform','weapp')->select('appid','name')->get();
+		$data = RC_DB::table('platform_account')->where('shop_id', $_SESSION['store_id'])->where('platform', 'weapp')->select('appid', 'name')->get();
 		$list = array();
 		if (!empty($data)) {
 			foreach ($data as $row) {

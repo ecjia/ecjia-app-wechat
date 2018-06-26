@@ -3,7 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-	ecjia.admin.mass_message.init();
+	ecjia.platform.mass_message.init();
 </script>
 <!-- {/block} -->
 
