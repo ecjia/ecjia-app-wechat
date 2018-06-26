@@ -30,7 +30,7 @@
                 </h4>
             </div>
             <div class="card-body">
-            	<div><button type="button" class="ajaxmenu btn btn-light" data-url='{RC_Uri::url("wechat/platform_record/get_customer_record")}' data-value="get_record">{lang key='wechat::wechat.get_message_record'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_message_record_notice'}</span></div><br/>
+            	<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_record/get_customer_record")}' data-value="get_record">{lang key='wechat::wechat.get_message_record'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_message_record_notice'}</span></div><br/>
 			</div>
 		</div>
 	</div>

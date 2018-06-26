@@ -38,7 +38,7 @@
 	<div class="menu-input-group">
 		<div class="menu-label col-lg-3"></div>
 		<div class="menu-input col-lg-8">
-			<input type="submit" class="btn btn-info btn-save" value="保存" />
+			<input type="submit" class="btn btn-outline-primary btn-save" value="保存" />
 		</div>
 	</div>
 </div>

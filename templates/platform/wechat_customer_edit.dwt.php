@@ -28,7 +28,7 @@
                 <h4 class="card-title">
                 	{$ur_here}
 	               	{if $action_link}
-					<a class="btn btn-light plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
+					<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
 					{/if}
                 </h4>
             </div>
@@ -80,9 +80,9 @@
 	
 					<div class="modal-footer justify-content-center">
 						<!-- {if $list.id} -->
-						<input class="btn btn-light" {if $errormsg}disabled{/if} type="submit" value="{lang key='wechat::wechat.update'}" />
+						<input class="btn btn-outline-primary" {if $errormsg}disabled{/if} type="submit" value="{lang key='wechat::wechat.update'}" />
 						<!-- {else} -->
-						<input class="btn btn-light" {if $errormsg}disabled{/if} type="submit" value="{lang key='wechat::wechat.ok'}" />
+						<input class="btn btn-outline-primary" {if $errormsg}disabled{/if} type="submit" value="{lang key='wechat::wechat.ok'}" />
 						<!-- {/if} -->
 						<input type="hidden" name="id" value="{$list.id}" />
 					</div>

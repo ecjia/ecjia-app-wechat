@@ -28,7 +28,7 @@
                 <h4 class="card-title">
                 	{$ur_here}
 	               	{if $action_link}
-					<a class="btn btn-light plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
+					<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
 					{/if}
                 </h4>
             </div>
@@ -168,12 +168,12 @@
 										<label class="col-md-5 label-control text-right"></label>
 										<div class="col-md-7 controls">
 											<!-- {if $info.group_id eq 1} -->
-											<a class="ajaxremove no-underline btn btn-light m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/backlist","uid={$info.uid}&openid={$info.openid}&type=remove_out&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.remove_blacklist'}">{lang key='wechat::wechat.remove_blacklist'}</a>
+											<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/backlist","uid={$info.uid}&openid={$info.openid}&type=remove_out&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.remove_blacklist'}">{lang key='wechat::wechat.remove_blacklist'}</a>
 											<!-- {else} -->
 												<!-- {if $info.subscribe eq 0} -->
 												<a class="btn m_t14" disabled>{lang key='wechat::wechat.add_blacklist'}</a>
 												<!-- {else} -->
-												<a class="ajaxremove no-underline btn btn-light m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/backlist","uid={$info.uid}&openid={$info.openid}&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}">{lang key='wechat::wechat.add_blacklist'}</a>
+												<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/backlist","uid={$info.uid}&openid={$info.openid}&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}">{lang key='wechat::wechat.add_blacklist'}</a>
 												<!-- {/if} -->
 											<!-- {/if} -->
 										</div>
@@ -234,7 +234,7 @@
 			   	<div class="modal-footer justify-content-center">
 			   		<input type="hidden" name="openid" />
 			   		<input type="hidden" name="uid" />
-					<button type="button" class="btn btn-light set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
+					<button type="button" class="btn btn-outline-primary set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
 				</div>
 			</form>
 		</div>

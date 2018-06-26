@@ -44,7 +44,7 @@
 		   	
 			   	<div class="modal-footer justify-content-center">
 			   		<input type="hidden" name="openid" />
-					<input type="button" class="btn btn-light material_verify" {if $errormsg}disabled="disabled"{/if} value="{lang key='wechat::wechat.ok'}" />
+					<input type="button" class="btn btn-outline-primary material_verify" {if $errormsg}disabled="disabled"{/if} value="{lang key='wechat::wechat.ok'}" />
 				</div>
 			</div>
 		</div>
@@ -140,7 +140,7 @@
 					</div>
 					<div class="modal-footer justify-content-center">
 						<input type="hidden" name="content_type" value="text">
-						<input type="submit" class="btn btn-light" value="{lang key='wechat::wechat.send_msg'}" {if $errormsg}disabled="disabled"{/if}/>
+						<input type="submit" class="btn btn-outline-primary" value="{lang key='wechat::wechat.send_msg'}" {if $errormsg}disabled="disabled"{/if}/>
 					</div>
 				</form>	
             </div>

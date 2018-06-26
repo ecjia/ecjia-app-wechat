@@ -29,8 +29,8 @@
                 </h4>
             </div>
             <div class="card-body">
-				<div><button type="button" class="ajaxmenu  btn" data-url='{RC_Uri::url("wechat/platform_menus/get_menu")}'>{lang key='wechat::wechat.get_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_menu_notice'}</span></div><br/>
-				<div><button type="button" class="ajaxmenu  btn" data-url='{RC_Uri::url("wechat/platform_menus/delete_menu")}' data-msg="{lang key='wechat::wechat.clear_menu_confirm'}">{lang key='wechat::wechat.clear_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.clear_menu_notice'}</span></div><br/>
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_menus/get_menu")}'>{lang key='wechat::wechat.get_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_menu_notice'}</span></div><br/>
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_menus/delete_menu")}' data-msg="{lang key='wechat::wechat.clear_menu_confirm'}">{lang key='wechat::wechat.clear_menu'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.clear_menu_notice'}</span></div><br/>
             </div>
 		</div>
 	</div>
@@ -104,7 +104,7 @@
 		            
 		            {if $menu_list}
 		            <div class="weixin-btn-group">
-		                <div data-toggle="btn-create" class="btn btn-success m_l20" data-url='{RC_Uri::url("wechat/platform_menus/sys_menu")}' data-msg="发布成功后会覆盖原版本，且将在24小时内对所有用户生效，确认发布？">发布</div>
+		                <div data-toggle="btn-create" class="btn btn-outline-primary m_l20" data-url='{RC_Uri::url("wechat/platform_menus/sys_menu")}' data-msg="发布成功后会覆盖原版本，且将在24小时内对所有用户生效，确认发布？">发布</div>
 		            </div>
 		            {/if}
 		            

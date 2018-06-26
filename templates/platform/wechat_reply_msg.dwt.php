@@ -74,9 +74,9 @@
 						<input type="hidden" name="content_type" value="{if $subscribe['reply_type']}{$subscribe['reply_type']}{else}text{/if}">
 	                    <input type="hidden" name="id" value="{$subscribe.id}">
 	                    {if $errormsg}
-	                    <input type="submit" class="btn btn-light" disabled="disabled" value="{lang key='wechat::wechat.ok'} ">
+	                    <input type="submit" class="btn btn-outline-primary" disabled="disabled" value="{lang key='wechat::wechat.ok'} ">
 	                    {else}
-	                    <input type="submit" class="btn btn-light" value="{lang key='wechat::wechat.ok'}">
+	                    <input type="submit" class="btn btn-outline-primary" value="{lang key='wechat::wechat.ok'}">
 	                    {/if}
 					</div>
 				</form>	
@@ -108,7 +108,7 @@
 				</div>
 		   	
 			   	<div class="modal-footer justify-content-center">
-					<input type="button" class="btn btn-light material_verify" value="{lang key='wechat::wechat.ok'}" />
+					<input type="button" class="btn btn-outline-primary material_verify" value="{lang key='wechat::wechat.ok'}" />
 				</div>
 			</div>
 		</div>

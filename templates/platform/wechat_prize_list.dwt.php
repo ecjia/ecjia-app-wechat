@@ -28,7 +28,7 @@
 						<option value="mp_dzp" {if $smarty.get.type eq 'mp_dzp'}selected="selected"{/if}>{lang key='wechat::wechat.big_dial'}</option>
 						<option value="mp_ggl" {if $smarty.get.type eq 'mp_ggl'}selected="selected"{/if}>{lang key='wechat::wechat.scratch_off'}</option>
 					</select>
-					<input type="button" value="{lang key='wechat::wechat.filtrate'}" class="btn m_l5 screen-btn">
+					<input type="button" value="{lang key='wechat::wechat.filtrate'}" class="btn btn-outline-primary m_l5 screen-btn">
 				</form>
 			</div>
 			
@@ -122,7 +122,7 @@
 				</div>
 
 				<div class="modal-footer justify-content-center">
-					<input class="btn btn-light" type="submit" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+					<input class="btn btn-outline-primary" type="submit" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
                     <input type="hidden" name="wechat_type" value="{$type}">
                 	<input type="hidden" name="uid"/>
            		 	<input type="hidden" name="openid"/>

@@ -21,7 +21,7 @@
                 <h4 class="card-title">
                 	{$ur_here}
 	                {if $action_link}
-						<a class="btn btn-light plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
+						<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
 					{/if}
                 </h4>
             </div>
@@ -189,10 +189,10 @@
 						<!-- {if $id} -->
 						<input type="hidden" name="content_type" value="{$data['reply_type']}">
 		               	<input type="hidden" name="id" value="{$data.id}">
-		                <input type="submit" class="btn btn-light" value="{lang key='wechat::wechat.update'}">
+		                <input type="submit" class="btn btn-outline-primary" value="{lang key='wechat::wechat.update'}">
 						<!-- {else} -->
 						<input type="hidden" name="content_type" value="text">
-						<input type="submit" class="btn btn-light" value="{lang key='wechat::wechat.send_msg'}" {if $errormsg}disabled="disabled"{/if}/>
+						<input type="submit" class="btn btn-outline-primary" value="{lang key='wechat::wechat.send_msg'}" {if $errormsg}disabled="disabled"{/if}/>
 						<!-- {/if} -->
 					</div>
 				</form>	
@@ -224,7 +224,7 @@
 				</div>
 		   	
 			   	<div class="modal-footer justify-content-center">
-					<input type="button" class="btn btn-light material_verify" value="{lang key='wechat::wechat.ok'}" />
+					<input type="button" class="btn btn-outline-primary material_verify" value="{lang key='wechat::wechat.ok'}" />
 				</div>
 			</div>
 		</div>

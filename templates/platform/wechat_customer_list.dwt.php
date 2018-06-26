@@ -33,8 +33,8 @@
                 </h4>
             </div>
             <div class="card-body">
-				<div><button type="button" class="ajaxmenu btn" data-url='{RC_Uri::url("wechat/platform_customer/get_customer")}'>{lang key='wechat::wechat.get_customer'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_customer_notice'}</span></div><br/>
-				<div><button type="button" class="ajaxmenu btn" data-url='{RC_Uri::url("wechat/platform_customer/get_online_customer")}'>{lang key='wechat::wechat.get_online_customer'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_online_customer_notice'}</span></div>
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_customer/get_customer")}'>{lang key='wechat::wechat.get_customer'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_customer_notice'}</span></div><br/>
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_customer/get_online_customer")}'>{lang key='wechat::wechat.get_online_customer'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_online_customer_notice'}</span></div>
 			</div>
 		</div>
 	</div>
@@ -47,7 +47,7 @@
                 <h4 class="card-title">
                 <!-- {if $ur_here}{$ur_here}{/if} -->
 				{if $action_link}
-					<a class="btn btn-light plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="ft-plus"></i>{$action_link.text}</a>
+					<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="ft-plus"></i>{$action_link.text}</a>
 				{/if}
                 </h4>
             </div>

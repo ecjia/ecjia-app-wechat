@@ -28,7 +28,7 @@
                 <h4 class="card-title">
                 	{$ur_here}
 	               	{if $action_link}
-					<a class="btn btn-light plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
+					<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
 					{/if}
                 </h4>
             </div>
@@ -91,7 +91,7 @@
 														<img src="{$list.file}" alt="{lang key='wechat::wechat.img_priview'}" />
 														{/if}
 													</div>
-													<span class="btn btn-light btn-file">
+													<span class="btn btn-outline-primary btn-file">
 														<span class="fileupload-new">{lang key='wechat::wechat.browser'}</span>
 														<span class="fileupload-exists">{lang key='wechat::wechat.modify'}</span>
 														<input type='file' name='image_url' size="35"/>

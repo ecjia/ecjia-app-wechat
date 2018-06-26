@@ -38,8 +38,8 @@
                 </h4>
             </div>
             <div class="card-body">
-				<div><button type="button" class="ajaxmenu btn btn-light" data-url='{RC_Uri::url("wechat/platform_subscribe/get_usertag")}' data-value="get_usertag">{lang key='wechat::wechat.get_user_tag'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_user_tag_notice'}</span></div><br/>
-				<div><button type="button" class="ajaxmenu btn btn-light" data-url='{RC_Uri::url("wechat/platform_subscribe/get_userinfo")}' data-value="get_userinfo">{lang key='wechat::wechat.get_user_info'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_user_info_notice'}</span></div><br/>
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_subscribe/get_usertag")}' data-value="get_usertag">{lang key='wechat::wechat.get_user_tag'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_user_tag_notice'}</span></div><br/>
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_subscribe/get_userinfo")}' data-value="get_userinfo">{lang key='wechat::wechat.get_user_info'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_user_info_notice'}</span></div><br/>
 			</div>
 		</div>
 	</div>
@@ -53,16 +53,12 @@
             </div>
 			<div class="card-body">
 				<!-- {if $smarty.get.type neq 'unsubscribe' && $smarty.get.type neq 'blacklist'} -->
-				<button type="button" class="btn btn-light set-label-btn" data-url="{$get_checked}"><i class="fa fa-tag"></i> 打标签</button>
+				<button type="button" class="btn btn-outline-primary set-label-btn" data-url="{$get_checked}"><i class="fa fa-tag"></i> 打标签</button>
 				<!-- {/if} -->
 				<div class="form-inline float-right">
 					<form class="form-inline" method="post" action="{$form_action}{if $smarty.get.type}&type={$smarty.get.type}{/if}" name="search_from">
-						<div class="input-group">
-			          		<input type="text" name="keywords" value="{$smarty.get.keywords}" class="form-control" placeholder="{lang key='wechat::wechat.search_user_placeholder'}">
-			            	<div class="input-group-append">
-			            		<button type="submit" class="btn btn-light search-btn">{lang key='wechat::wechat.search'}</button>
-			             	</div>
-			        	</div>
+		          		<input type="text" name="keywords" value="{$smarty.get.keywords}" class="form-control m_r5" placeholder="{lang key='wechat::wechat.search_user_placeholder'}">
+		            	<button type="submit" class="btn btn-outline-primary search-btn">{lang key='wechat::wechat.search'}</button>
 		        	</form>
 				</div>
 			</div>
@@ -223,7 +219,7 @@
 
 				<div class="modal-footer justify-content-center">
 			   		<input type="hidden" name="id" />
-					<input type="submit" class="btn btn-light" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+					<input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
 				</div>
 			</form>
 
@@ -270,7 +266,7 @@
 
 				<div class="modal-footer justify-content-center">
 			   		<input type="hidden" name="openid" />
-					<input type="submit" class="btn btn-light" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+					<input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
 				</div>
 			</form>
 
@@ -313,7 +309,7 @@
 		   	
 			   	<div class="modal-footer justify-content-center">
 			   		<input type="hidden" name="openid" />
-					<button type="button" class="btn btn-light set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
+					<button type="button" class="btn btn-outline-primary set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
 				</div>
 			</form>
 		</div>

@@ -27,25 +27,21 @@
                 <h4 class="card-title">
                 	{$ur_here}
 	               	{if $action_link}
-					<a class="btn btn-light plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="ft-plus"></i> {$action_link.text}</a>
+					<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="ft-plus"></i> {$action_link.text}</a>
 					{/if}
                 </h4>
             </div>
             <div class="card-body">
 	            <div class="heading-elements float-left">
-					<button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown"><i class="ft-settings"></i> {lang key='wechat::wechat.batch_operate'}</button>
+					<button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"><i class="ft-settings"></i> {lang key='wechat::wechat.batch_operate'}</button>
 					<div class="dropdown-menu">
 						<a class="dropdown-item button_remove" data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url='{url path="wechat/platform_qrcode/batch"}'  data-msg="{lang key='wechat::wechat.remove_qrcode_confirm'}" data-noSelectMsg="{lang key='wechat::wechat.select_operate_qrcode'}" data-name="id" href="javascript:;"><i class="ft-trash-2"></i> {lang key='wechat::wechat.remove_qrcode'}</a>
 					</div>
 				</div>
 				<div class="form-inline float-right">
 					<form class="form-inline" method="post" action="{$search_action}" name="searchForm">
-						<div class="input-group">
-			          		<input type="text" name="keywords" value="{$listdb.filter.keywords}" class="form-control" placeholder="{lang key='wechat::wechat.qrcode_search_placeholder'}">
-			            	<div class="input-group-append">
-			            		<button type="button" class="btn btn-light search_qrcode">{lang key='wechat::wechat.search'}</button>
-			             	</div>
-			        	</div>
+		          		<input type="text" name="keywords" value="{$listdb.filter.keywords}" class="form-control m_r5" placeholder="{lang key='wechat::wechat.qrcode_search_placeholder'}">
+		            	<button type="button" class="btn btn-outline-primary search_qrcode">{lang key='wechat::wechat.search'}</button>
 		        	</form>
 				</div>
 			</div>
