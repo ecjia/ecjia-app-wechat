@@ -98,7 +98,13 @@ class wechat_platform_menu_api extends Component_Event_Api {
             )
         );
         
-        $prize_menus = ecjia_admin::make_admin_menu('17_wechat', RC_Lang::get('wechat::wechat.draw_record'), RC_Uri::url('wechat/platform_prize/init'), 29)->add_purview('wechat_prize_manage');
+        $prize_menus = ecjia_admin::make_admin_menu('17_wechat', RC_Lang::get('wechat::wechat.draw_record'), 29)->add_purview('wechat_prize_manage')->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('14_wechat', '砸金蛋', RC_Uri::url('wechat/platform_prize/init', ['type' => 'mp_zjd']), 14)->add_purview('wechat_prize_manage'),
+                ecjia_admin::make_admin_menu('15_wechat', '大转盘', RC_Uri::url('wechat/platform_prize/init', ['type' => 'mp_dzp']), 15)->add_purview('wechat_prize_manage'),
+                ecjia_admin::make_admin_menu('15_wechat', '刮刮乐', RC_Uri::url('wechat/platform_prize/init', ['type' => 'mp_ggl']), 15)->add_purview('wechat_prize_manage'),
+            )
+        );
         
 //         $tjmenus = ecjia_admin::make_admin_menu('15_content', '统计管理', '', 18)->add_submenu(
 //             array(
