@@ -61,11 +61,16 @@ class wechat_platform_menu_api extends Component_Event_Api {
         
         $custom_menu = ecjia_admin::make_admin_menu('06_wechat', RC_Lang::get('wechat::wechat.custom_menu'), RC_Uri::url('wechat/platform_menus/init'), 20)->add_purview('wechat_menus_manage');
         
+        $message_manage = ecjia_admin::make_admin_menu('15_content', '消息管理', '', 20)->add_submenu(
+            array(
+                ecjia_admin::make_admin_menu('02_wechat', RC_Lang::get('wechat::wechat.message_manage'), RC_Uri::url('wechat/platform_message/init'), 2)->add_purview('wechat_subscribe_message_manage'),
+                ecjia_admin::make_admin_menu('03_wechat', RC_Lang::get('wechat::wechat.mass_message'), RC_Uri::url('wechat/platform_mass_message/init'), 3)->add_purview('wechat_message_manage'),
+            )
+            );
+        
         $usermenus = ecjia_admin::make_admin_menu('15_content', '用户管理', '', 21)->add_submenu(
             array(
                 ecjia_admin::make_admin_menu('01_wechat', RC_Lang::get('wechat::wechat.user_manage'), RC_Uri::url('wechat/platform_subscribe/init'), 1)->add_purview('wechat_subscribe_manage'),
-                ecjia_admin::make_admin_menu('02_wechat', RC_Lang::get('wechat::wechat.message_manage'), RC_Uri::url('wechat/platform_message/init'), 2)->add_purview('wechat_subscribe_message_manage'),
-                ecjia_admin::make_admin_menu('03_wechat', RC_Lang::get('wechat::wechat.mass_message'), RC_Uri::url('wechat/platform_mass_message/init'), 3)->add_purview('wechat_message_manage'),
             )
         );
         
@@ -112,7 +117,17 @@ class wechat_platform_menu_api extends Component_Event_Api {
 //             )
 //         );
         
-        return array($menus, $extend_menus, $navmenus, $usermenus, $custom_menu, $prize_menus, $replymenus, $kefumenus, $tgmenus);
+        return array(
+            $menus, 
+            $extend_menus, 
+            $message_manage, 
+            $navmenus, 
+            $usermenus, 
+            $custom_menu, 
+            $prize_menus,
+            $replymenus, 
+            $kefumenus, 
+            $tgmenus);
     }
 }
 
