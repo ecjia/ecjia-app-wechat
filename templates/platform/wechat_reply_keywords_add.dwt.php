@@ -35,23 +35,22 @@
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_rule_name'}</label>
 								<div class="col-lg-8 controls">
 									<input class="form-control" type="text" class="w280" name="rule_name" maxlength="60" size="30" />
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 									<div class="help-block">{lang key='wechat::wechat.rule_name_max'}</div>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.lable_keyword'}</label>
 								<div class="col-lg-8 controls">
 									<input class="form-control" type="text" class="w280" name="rule_keywords" maxlength="60" size="30" />
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 									<div class="help-block">{lang key='wechat::wechat.more_keywords_split'}</div>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 									{lang key='wechat::wechat.lable_reply'}
 								</label>
 								<div class="col-lg-8 controls material-table" data-url="{url path='wechat/platform_response/get_material_list'}">
@@ -88,6 +87,7 @@
                                 		{/if}
 	                      			</div>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							<!-- {else} -->
 							
@@ -95,24 +95,23 @@
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_rule_name'}</label>
 								<div class="col-lg-8 controls">
 									<input class="form-control" type="text" class="w280" name="rule_name" maxlength="60" size="30" value="{if $id}{$data.rule_name}{/if}" />
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 									<div class="help-block">{lang key='wechat::wechat.rule_name_max'}</div>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.lable_keyword'}</label>
 								<div class="col-lg-8 controls">
 									<input class="form-control" type="text" class="w280" name="rule_keywords" maxlength="60" size="30" value="{if $id}{$data.rule_keywords_string}{/if}" />
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 									<div class="help-block">{lang key='wechat::wechat.more_keywords_split'}</div>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							
 
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">
-									<span class="input-must">{lang key='system::system.require_field'}</span>
 									{lang key='wechat::wechat.lable_reply'}
 								</label>
 								<div class="col-lg-8 controls material-table" data-url="{url path='wechat/platform_mass_message/get_material_list'}">
@@ -181,6 +180,7 @@
 			                            <!-- {/if} -->
 									</div>
 								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
 							<!-- {/if} -->
 						</div>

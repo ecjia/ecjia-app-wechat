@@ -73,8 +73,8 @@
 											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
 											<div class="col-lg-9 controls">
 												<input class='span8 form-control' type='text' name='title' value='{$list.title}'/>
-												<span class="input-must">*</span>
 											</div>
+											<span class="input-must">*</span>
 										</div>
 										<div class="form-group row">
 											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.author'}</label>
@@ -96,7 +96,6 @@
 														<span class="fileupload-exists">{lang key='wechat::wechat.modify'}</span>
 														<input type='file' name='image_url' size="35"/>
 													</span>
-													<span class="input-must">*</span>
 												</div>
 												<input type="checkbox" name="is_show" value="1" {if $list.is_show eq 1}checked="checked"{/if}/>{lang key='wechat::wechat.cover_img_centent'}
 												<!-- {if $key eq '0'} -->
@@ -105,6 +104,7 @@
 												<span class="help-block">{lang key='wechat::wechat.img_size200x200'}</span>
 												<!-- {/if} -->
 											</div>
+											<span class="input-must">*</span>
 										</div>
 										<div class="form-group row">
 											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.summary'}</label>
