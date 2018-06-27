@@ -9,13 +9,13 @@
 
 <!-- {block name="home-content"} -->
 {if $warn && $type eq 0}
-<div class="alert alert-error">
+<div class="alert alert-info">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
 </div>
 {/if}
 
 {if $errormsg}
-<div class="alert alert-error">
+<div class="alert alert-info">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 </div>
 {/if}
