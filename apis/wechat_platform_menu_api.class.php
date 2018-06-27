@@ -84,7 +84,8 @@ class wechat_platform_menu_api extends Component_Event_Api {
         
         $material_manage = ecjia_admin::make_admin_menu('15_content', '素材管理', '', 23)->add_submenu(
             array(
-                ecjia_admin::make_admin_menu('07_wechat', RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type'=>'news', 'material' => 1)), 7)->add_purview('wechat_material_manage'),
+                ecjia_admin::make_admin_menu('07_wechat', '永久素材', RC_Uri::url('wechat/platform_material/init', array('type'=>'news', 'material' => 1)), 7)->add_purview('wechat_material_manage'),
+                ecjia_admin::make_admin_menu('07_wechat', '临时素材', RC_Uri::url('wechat/platform_material/init', array('type'=>'image')), 7)->add_purview('wechat_material_manage'),
             )
         );
         
@@ -124,6 +125,7 @@ class wechat_platform_menu_api extends Component_Event_Api {
             $navmenus, 
             $usermenus, 
             $custom_menu, 
+            $material_manage,
             $prize_menus,
             $replymenus, 
             $kefumenus, 
