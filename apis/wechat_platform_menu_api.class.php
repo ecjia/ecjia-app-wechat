@@ -96,10 +96,10 @@ class wechat_platform_menu_api extends Component_Event_Api {
             )
         );
         
-        $tgmenus = ecjia_admin::make_admin_menu('15_content', '渠道管理', '', 27)->add_submenu(
+        $tgmenus = ecjia_admin::make_admin_menu('15_content', '二维码管理', '', 27)->add_submenu(
             array(
-                ecjia_admin::make_admin_menu('14_wechat', RC_Lang::get('wechat::wechat.channel_code'), RC_Uri::url('wechat/platform_qrcode/init'), 14)->add_purview('wechat_qrcode_manage'),
-                ecjia_admin::make_admin_menu('15_wechat', RC_Lang::get('wechat::wechat.sweep_recommend'), RC_Uri::url('wechat/platform_share/init'), 15)->add_purview('wechat_share_manage'),
+                ecjia_admin::make_admin_menu('14_wechat', '渠道二维码', RC_Uri::url('wechat/platform_qrcode/init'), 14)->add_purview('wechat_qrcode_manage'),
+                ecjia_admin::make_admin_menu('15_wechat', '推荐二维码', RC_Uri::url('wechat/platform_share/init'), 15)->add_purview('wechat_share_manage'),
             )
         );
         
