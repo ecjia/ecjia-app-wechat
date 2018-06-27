@@ -10,13 +10,13 @@
 <!-- {block name="home-content"} -->
 
 <!-- {if $warn && $type neq 2} -->
-<div class="alert alert-light">
+<div class="alert alert-info">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
 </div>
 <!-- {/if} -->		
 		
 <!-- {if $errormsg} -->
-<div class="alert alert-light">
+<div class="alert alert-info">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 </div>
 <!-- {/if} -->
