@@ -822,8 +822,7 @@ class platform_material extends ecjia_platform {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.voice_used'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
-		$info = $this->wm_db->find(array('id' => $id));
-		
+		$info = RC_DB::table('wechat_media')->where('id', $id)->first();
 		if (!empty($info['media_id']) && $info['is_material'] == 'material') {
 			//删除永久素材
 			$rs = $wechat->deleteMaterial($info['media_id']);
@@ -961,7 +960,7 @@ class platform_material extends ecjia_platform {
 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$data['media_id'] = $rs['media_id'];
-		$id = $this->wm_db->insert($data);
+		$id = RC_DB::table('wechat_media')->insertGetId($data);
 		
 		ecjia_admin::admin_log($title, 'add', 'video_material');
 		if ($id) {
@@ -1012,7 +1011,7 @@ class platform_material extends ecjia_platform {
 			$wechat_type = $this->platformAccount->getType();
 			$this->assign('wechat_type', $wechat_type);
 			
-			$article = $this->wm_db->where(array('id' => $_GET['id']))->find();
+			$article = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $_GET['id'])->first();
 			if (!empty($article['file'])) {
 				$article['files'] = RC_Uri::admin_url('statics/images/ecjiafile.png');
 			}
@@ -1046,7 +1045,7 @@ class platform_material extends ecjia_platform {
 		if (empty($title)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.enter_title'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-		$medias = $this->wm_db->find(array('id' => $id));
+		$medias = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
 		if (empty($medias['file'])) {
 			if (empty($_FILES['video'])) {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.upload_viedo'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -1089,14 +1088,10 @@ class platform_material extends ecjia_platform {
 			'edit_time' => RC_Time::gmtime(),
 			'size'		=> $_FILES['video']['size']
 		);
-		$info_update = $this->wm_db->where(array('id' => $id))->update($data);
+		RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
 	
 		ecjia_admin::admin_log($title, 'edit', 'video_material');
-		if ($info_update) {
-			return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/video_edit', array('id' => $id, 'material' => $material))));
-		} else {
-			return $this->showmessage(RC_Lang::get('wechat::wechat.edit_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
+		return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/video_edit', array('id' => $id, 'material' => $material))));
 	}
 	
 	/**
@@ -1137,7 +1132,7 @@ class platform_material extends ecjia_platform {
 			$disk->delete(RC_Upload::upload_path($info['file']));
 		}
 	
-		$this->wm_db->where(array('id' => $id))->delete();
+		RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->detele();
 		
 		ecjia_admin::admin_log($info['title'], 'remove', 'video_material');
 		return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -1148,6 +1143,8 @@ class platform_material extends ecjia_platform {
 	 */
 	public function edit_file_name() {
 		$this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
+		
+		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$id   = isset($_GET['id'])    ? intval($_GET['id'])   : 0;
 		$val  = isset($_GET['val'])   ? $_GET['val']          : '';
@@ -1166,14 +1163,11 @@ class platform_material extends ecjia_platform {
 			if (empty($val)) {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.enter_title'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			$update = $this->wm_db->where(array('id' => $id))->update(array('title' => $val));
+			RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('title' => $val));
+			
 			ecjia_admin::admin_log($val, 'edit', 'article_material');
 		}
-		if ($update) {
-			return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
-		} else {
-			return $this->showmessage(RC_Lang::get('wechat::wechat.edit_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
+		return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	public function search() {
@@ -1181,10 +1175,12 @@ class platform_material extends ecjia_platform {
 		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$keyword = !empty($_POST['keyword']) ? trim($_POST['keyword']) : '';
-		$arr = $this->wm_db
-            		->field('id, file')
-            		->where(array('wechat_id' => $wechat_id, 'type' => 'news', 'title' => array('like' => "%".mysql_like_quote($keyword)."%")))
-            		->select();
+		$arr = RC_DB::table('wechat_media')
+			->select('id', 'file')
+			->where('wechat_id', $wechat_id)
+			->where('type','news')
+			->where('title', 'like', "%".mysql_like_quote($keyword)."%")
+			->get();
 		
 		if (empty($arr)) {
 			$arr = array(0 => array(
@@ -1210,16 +1206,27 @@ class platform_material extends ecjia_platform {
 		$type     = isset($filter->type)      ? $filter->type : '';
 		$material = !empty($_GET['material']) ? 'material'    : '';
 		
+		$db_wechat_media = RC_DB::table('wechat_media')
+			->where('wechat_id', $wechat_id)
+			->where('is_material', $material);
+		
 		if ($type == 'image') {
-			$where = "(file is NOT NULL and (type = 'image' or type = 'news')) and wechat_id = $wechat_id";
+			$db_wechat_media
+				->where('file', '!=', '')
+				->where(function($query) {
+					$query->where('type', 'image')->orWhere('type', 'news');
+				});
+			
 		} elseif ($type == 'news') {
-			$where = "(article_id is NULL and type = '$type') and wechat_id = $wechat_id";
+			$db_wechat_media
+			->where('article_id', '')
+			->where('type', $type);
 		} else {
-			$where = "(file is NOT NULL and type = '$type') and wechat_id = $wechat_id";
+			$db_wechat_media
+				->where('file', '!=', '')
+				->where('type', $type);
 		}
-		$where .= " and is_material = '$material'";
-	
-		$list = $this->wm_db->field('id, file, title, size, add_time, type, file_name')->where($where)->select();
+		$list = $db_wechat_media->select('id', 'file', 'title', 'size', 'add_time', 'type', 'file_name')->get();
 	
 		if (!empty($list)) {
 			foreach ($list as $key => $val) {
@@ -1260,8 +1267,8 @@ class platform_material extends ecjia_platform {
 		
 		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$id = $_GET['id'];
-		$info = $this->wm_db->where(array('id' => $id, 'wechat_id' => $wechat_id))->find();
+		$id = intval($_GET['id']);
+		$info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
 		
 		$info['type'] = isset($info['type']) ? $info['type'] : '';
 		if (empty($info['file']) || $info['type'] == 'voice' || $info['type'] == 'video') {
@@ -1289,34 +1296,64 @@ class platform_material extends ecjia_platform {
 		$filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
 		$type = $filter['type'];
 		
+		$db_wechat_media = RC_DB::table('wechat_media')
+			->where('wechat_id', $wechat_id);
+		
 		$where = '';
 		if ($type == 'image') {
-			$where = "(file != '' and (type = 'image' or type = 'news')) and wechat_id = $wechat_id and thumb != ''";
+			$db_wechat_media
+				->where('file', '!=', '')
+				->where(function($query) {
+					$query->where('type', 'image')->orWhere('type', 'news')
+				->where('thumb', '!=', '');
+			});
+			
 		} elseif ($type == 'news') {
-			$where = "(type = 'news') and wechat_id = $wechat_id and media_id != '' and parent_id = 0";
+			$db_wechat_media
+				->where('type', 'news')
+				->where('media_id', '!=', '')
+				->where('parent_id', 0);
 		} else {
-			$where = "type = '$type' and wechat_id = $wechat_id";
+			$db_wechat_media->where('type', $type);
 		}
 	
 		$material = !empty($_GET['material']) ? 'material' : '';
-		$where .= " and is_material = '$material'";
+		$db_wechat_media->where('is_material', $material);
 	
-		$count = $this->wm_db->field("SUM(type='news' and parent_id = 0 and media_id != '') AS news, SUM(file != '' and (type = 'image' or type = 'news') and thumb != '') AS image, SUM(type='voice') AS voice, SUM(type='video') AS video")->where(array('wechat_id' => $wechat_id, 'is_material' => $material))->select();
-		foreach ($count as $v) {
-			if (empty($v['news']) && empty($v['image']) && empty($v['voice']) && empty($v['video'])) {
-				$v['news'] 	= 0;
-				$v['image'] = 0;
-				$v['voice'] = 0;
-				$v['video'] = 0;
+// 		$data = $this->wm_db->field("SUM(type='news' and parent_id = 0 and media_id != '') AS news, SUM(file != '' and (type = 'image' or type = 'news') and thumb != '') AS image, SUM(type='voice') AS voice, SUM(type='video') AS video")
+		
+// 			->where(array('wechat_id' => $wechat_id, 'is_material' => $material))->select();
+		
+		$data = RC_DB::table('wechat_media')->select(
+				RC_DB::raw("SUM(type='news' and parent_id = 0 and media_id != '') AS news"), 
+				RC_DB::raw("SUM(file != '' and (type = 'image' or type = 'news') and thumb != '') AS image"), 
+				RC_DB::raw("SUM(type='voice') AS voice"),
+				RC_DB::raw("SUM(type='video') AS video")
+				)
+				->where('wechat_id', $wechat_id)
+				->where('is_material', $material)
+				->get();
+		
+		if (!empty($data)) {
+			foreach ($data as $v) {
+				if (empty($v['news']) && empty($v['image']) && empty($v['voice']) && empty($v['video'])) {
+					$v['news'] 	= 0;
+					$v['image'] = 0;
+					$v['voice'] = 0;
+					$v['video'] = 0;
+				}
+				$filter['count'] = $v;
 			}
-			$filter['count'] = $v;
 		}
-		$count = $this->wm_db->where($where)->count();
+		
+// 		$count = $this->wm_db->where($where)->count();
+		$count = $db_wechat_media->count();
 	
 		$page = new ecjia_platform_page($count, 12, 5);
-		$limit = $page->limit();
+// 		$limit = $page->limit();
 
-		$data = $this->wm_db->limit($limit)->where($where)->order(array('sort' => 'asc', 'id' => 'desc'))->select();
+// 		$data = $this->wm_db->limit($limit)->where($where)->order(array('sort' => 'asc', 'id' => 'desc'))->select();
+		$data = $db_wechat_media->orderBy('sort', 'asc')->orderBy('id', 'desc')->take(12)->skip($page->start_id-1)->get();
 		
 		if (!empty($data)) {
 			foreach ($data as $key => $val) {
@@ -1343,7 +1380,8 @@ class platform_material extends ecjia_platform {
 				}
 				
 				if ($type == 'news') {
-					$datas = $this->wm_db->where(array('parent_id' => $val['id']))->order(array('id' => 'asc'))->select();
+// 					$datas = $this->wm_db->where(array('parent_id' => $val['id']))->order(array('id' => 'asc'))->select();
+					$datas = RC_DB::table('wechat_media')->where('parent_id', $val['id'])->orderBy('id', 'asc')->get();
 					if (!empty($datas)) {
 						foreach ($datas as $k => $v) {
 							if (!empty($v['file'])) {
@@ -1373,10 +1411,13 @@ class platform_material extends ecjia_platform {
 	 * 获取多图文信息
 	 */
 	private function get_article_list($id) {
+		$db_wechat_media = RC_DB::table('wechat_media');
 		if ($id) {
-			$where = "type = 'news' and parent_id = '$id' or id = '$id'";
+// 			$where = "type = 'news' and parent_id = '$id' or id = '$id'";
+			$db_wechat_media->where('type', 'news')->where('parent_id', $id)->orWhere('id', $id);
 		}
-		$data = $this->wm_db->where($where)->order(array('id' => 'asc'))->select();
+// 		$data = $this->wm_db->where($where)->order(array('id' => 'asc'))->select();
+		$data = $db_wechat_media->orderBy('id', 'asc')->get();
 		return $data;
 	}
 }
