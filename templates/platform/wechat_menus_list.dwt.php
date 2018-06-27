@@ -20,6 +20,16 @@
 </div>
 {/if}
 
+<div class="alert alert-light alert-dismissible mb-2" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">×</span>
+	</button>
+	<h4 class="alert-heading mb-2">操作提示</h4>
+	<p>微信自定义菜单最多可添加3个一级菜单、5个二级菜单。</p>
+	<p>微信自定义菜单分为关键词click，网址view两种类型。click是响应关键词指令，view则是直接跳转URL地址（填写绝对路径）。</p>
+	<p>每次修改自定义菜单后，由于微信客户端缓存，需要24小时左右微信客户端才会显示生效。测试时可以尝试重新关注微信公众号，或者清除微信缓存。</p>
+</div>
+
 <div class="row">
     <div class="col-12">
         <div class="card">

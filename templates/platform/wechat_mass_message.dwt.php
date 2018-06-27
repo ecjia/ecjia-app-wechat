@@ -20,6 +20,17 @@
     </div>
 {/if}
 
+<div class="alert alert-light alert-dismissible mb-2" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">×</span>
+	</button>
+	<h4 class="alert-heading mb-2">操作提示</h4>
+	<p>该接口暂时仅提供给已微信认证的服务号</p>
+	<p>用户每月只能接收4条群发消息，多于4条的群发将对该用户发送失败。</p>
+	<p>群发图文消息的标题上限为64个字节,群发内容字数上限为1200个字符、或600个汉字。</p>
+	<p>在返回成功时，意味着群发任务提交成功，并不意味着此时群发已经结束，所以，仍有可能在后续的发送过程中出现异常情况导致用户未收到消息，如消息有时会进行审核、服务器不稳定等。此外，群发任务一般需要较长的时间才能全部发送完毕，请耐心等待。</p>
+</div>
+
 <div class="modal fade text-left" id="add_material">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">

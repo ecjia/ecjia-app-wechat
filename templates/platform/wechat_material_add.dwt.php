@@ -20,6 +20,21 @@
 </div>
 {/if}
 
+<div class="alert alert-light alert-dismissible mb-2" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">×</span>
+	</button>
+	<h4 class="alert-heading mb-2">操作提示</h4>
+	<!-- {if $action neq 'video_add'} -->
+	<p>图文素材：分为单图文、多图文素材。支持图片，语音，视频素材。</p>
+	<p>单图文素材添加好之后，即可将多条单图文素材组合成为一条多图文素材。</p>
+	<p>★ 注意事项：单图文素材如果经过修改，则原先添加好的多图文素材需要重新组合</p>
+	<!-- {else if $action eq 'video_add'} -->
+	<p>视频素材大小: 建议2MB以下，格式：mp4</p>
+	<p>建议直接使用优酷等第三方视频网站的视频地址。优点:不占用服务器资源，支持更大、更多格式的视频素材。</p>
+	<!-- {/if} -->
+</div>
+
 <div class="row edit-page">
     <div class="col-12">
         <div class="card">
@@ -124,7 +139,7 @@
 						<div class="form-group row">
 							<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
 							<div class="col-lg-9 controls">
-								<input type="text" class="w280 form-control" name="video_title" maxlength="60" size="30" value="{$article.title}" />
+								<input type="text" class="form-control" name="video_title" maxlength="60" size="30" value="{$article.title}" />
 							</div>
 							<span class="input-must">*</span>
 						</div>
@@ -149,7 +164,7 @@
 					<div class="form-group row">
 						<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_video_intro'}</label>
 						<div class="col-lg-9 controls">
-							<textarea name="video_digest" class="w280 form-control">{$article.digest}</textarea>
+							<textarea name="video_digest" class="form-control">{$article.digest}</textarea>
 						</div>
 						{if $material eq 1}<span class="input-must">*</span>{/if}
 					</div>
