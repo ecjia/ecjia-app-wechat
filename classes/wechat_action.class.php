@@ -96,7 +96,7 @@ class wechat_action {
      * @param unknown $request
      * @return multitype:string unknown NULL
      */
-    public static function empty_reply($content, $request) {
+    public static function empty_reply($content, $message) {
         if (!is_null($content)) {
             return $content;
         }
@@ -110,17 +110,20 @@ class wechat_action {
         $data     = $wr_db->field($field)->find(array('wechat_id'=>$wechat_id,'type'=>'msg'));
         if ($data['reply_type'] == 'text') {
         	$msg = $data['content'];
-        	$content = wechat_response::Text_reply($request, $msg);
-        }else if ($data['reply_type'] == 'image') {
+        	$content = wechat_response::Text_reply($message, $msg);
+        }
+        else if ($data['reply_type'] == 'image') {
         	$msg   = $media_db->where(array('id' => $data['media_id']))->get_field('thumb');
-        	$content = wechat_response::Image_reply($request, $msg);
-        }else if ($data['reply_type'] == 'voice') {
+        	$content = wechat_response::Image_reply($message, $msg);
+        }
+        else if ($data['reply_type'] == 'voice') {
         	$msg   = $media_db->where(array('id' => $data['media_id']))->get_field('media_id');
-        	$content = wechat_response::Voice_reply($request, $msg);
-        }else if ($data['reply_type'] == 'video') {
+        	$content = wechat_response::Voice_reply($message, $msg);
+        }
+        else if ($data['reply_type'] == 'video') {
         	$field='title, digest, media_id';
         	$msg = $media_db->field($field)->find(array('id' => $data['media_id']));
-        	$content = wechat_response::Video_reply($request, $msg['media_id'], $msg['title'], $msg['digest']);
+        	$content = wechat_response::Video_reply($message, $msg['media_id'], $msg['title'], $msg['digest']);
         }
         return $content;
     }
@@ -131,7 +134,7 @@ class wechat_action {
      * @param unknown $request
      * @return unknown|multitype:string NULL
      */
-    public static function command_reply($content, $request) {
+    public static function command_reply($content, $message) {
         if (!is_null($content)) {
             return $content;
         }
@@ -140,8 +143,8 @@ class wechat_action {
         RC_Loader::load_app_class('wechat_method', 'wechat', false);
         $wechat_id = wechat_method::wechat_id();
         
-        $command = new platform_command($request, $wechat_id);
-        $content = $command->runCommand($request->getParameter('Content'));
+        $command = new platform_command($message, $wechat_id);
+        $content = $command->runCommand($message->get('Content'));
         
         return $content;
     }
@@ -152,7 +155,7 @@ class wechat_action {
      * @param unknown $request
      * @return unknown|multitype:string NULL unknown
      */
-    public static function keyword_reply($content, $request) {
+    public static function keyword_reply($content, $message) {
         if (!is_null($content)) {
             return $content;
         }
@@ -166,8 +169,8 @@ class wechat_action {
         $uuid           = trim($_GET['uuid']);
         $account        = platform_account::make($uuid);
         $wechat_id      = $account->getAccountID();
-        $rule_keywords  = $request->getParameter('content');
-        wechat_method::record_msg($request->getParameter('FromUserName'),$rule_keywords);
+        $rule_keywords  = $message->get('content');
+        wechat_method::record_msg($message->get('FromUserName'),$rule_keywords);
         $result         = $wr_viewdb->where(array('wrk.rule_keywords = '."'$rule_keywords'", 'wr.wechat_id' => $wechat_id))->field('wr.content,wr.media_id,wr.reply_type')->select();
         if(!empty($result)) {
             if (!empty($result[0]['media_id'])) {
@@ -176,32 +179,32 @@ class wechat_action {
                 if ($result[0]['reply_type'] == 'image') {
                 	$msg   = $media_db->where(array('id' => $result[0]['media_id']))->get_field('thumb');
                     $content = array(
-                        'ToUserName' 	=> $request->getParameter('FromUserName'),
-                        'FromUserName' 	=> $request->getParameter('ToUserName'),
+                        'ToUserName' 	=> $message->get('FromUserName'),
+                        'FromUserName' 	=> $message->get('ToUserName'),
                         'CreateTime' 	=> SYS_TIME,
                         'MsgType' 		=> $result[0]['reply_type'],
                         'Image' 		=> array(
                             'MediaId'	=>	$msg//通过素材管理接口上传多媒体文件，得到的id。
                         )
                     );
-                    wechat_method::record_msg($request->getParameter('FromUserName'),RC_Lang::get('wechat::wechat.image_content'), 1);
+                    wechat_method::record_msg($message->get('FromUserName'),RC_Lang::get('wechat::wechat.image_content'), 1);
                 } elseif ($result[0]['reply_type'] == 'voice') {
                 	$msg   = $media_db->where(array('id' => $result[0]['media_id']))->get_field('media_id');
                     $content = array(
-                        'ToUserName' 	=> $request->getParameter('FromUserName'),
-                        'FromUserName' 	=> $request->getParameter('ToUserName'),
+                        'ToUserName' 	=> $message->get('FromUserName'),
+                        'FromUserName' 	=> $message->get('ToUserName'),
                         'CreateTime' 	=> SYS_TIME,
                         'MsgType' 		=> $result[0]['reply_type'],
                         'Voice' 		=> array(
                             'MediaId' 	=> $msg,
                         )
                     );
-                    wechat_method::record_msg($request->getParameter('FromUserName'),RC_Lang::get('wechat::wechat.voice_content'), 1);
+                    wechat_method::record_msg($message->get('FromUserName'),RC_Lang::get('wechat::wechat.voice_content'), 1);
                 } elseif ($result[0]['reply_type'] == 'video') {
                 	$msg   = $media_db->where(array('id' => $result[0]['media_id']))->get_field('media_id');
                     $content = array(
-                        'ToUserName' 	=> $request->getParameter('FromUserName'),
-                        'FromUserName' 	=> $request->getParameter('ToUserName'),
+                        'ToUserName' 	=> $message->get('FromUserName'),
+                        'FromUserName' 	=> $message->get('ToUserName'),
                         'CreateTime' 	=> SYS_TIME,
                         'MsgType' 		=> $result[0]['reply_type'],
                         'Video' 		=> array(
@@ -210,7 +213,7 @@ class wechat_action {
                             'Description' => $mediaInfo['digest']
                         )
                     );
-                    wechat_method::record_msg($request->getParameter('FromUserName'),RC_Lang::get('wechat::wechat.video_content'), 1);
+                    wechat_method::record_msg($message->get('FromUserName'),RC_Lang::get('wechat::wechat.video_content'), 1);
                 } elseif ($result[0]['reply_type'] == 'news') {
                     // 图文素材
                     $articles = array();
@@ -237,25 +240,25 @@ class wechat_action {
                     }
                     $count = count($articles);
                     $content = array(
-                        'ToUserName' 	=> 	$request->getParameter('FromUserName'),
-                        'FromUserName' 	=> 	$request->getParameter('ToUserName'),
+                        'ToUserName' 	=> 	$message->get('FromUserName'),
+                        'FromUserName' 	=> 	$message->get('ToUserName'),
                         'CreateTime' 	=> 	SYS_TIME,
                         'MsgType' 		=> 	$result[0]['reply_type'],
                         'ArticleCount'	=>	$count,
                         'Articles'		=>	$articles
                     );
-                    wechat_method::record_msg($request->getParameter('FromUserName'),RC_Lang::get('wechat::wechat.graphic_info'), 1);
+                    wechat_method::record_msg($message->get('FromUserName'),RC_Lang::get('wechat::wechat.graphic_info'), 1);
                 }
         
             } else {
                 $content = array(
-                    'ToUserName'    => $request->getParameter('FromUserName'),
-                    'FromUserName'  => $request->getParameter('ToUserName'),
+                    'ToUserName'    => $message->get('FromUserName'),
+                    'FromUserName'  => $message->get('ToUserName'),
                     'CreateTime'    => SYS_TIME,
                     'MsgType'       => 'text',
                     'Content'       => $result[0]['content']
                 );
-                wechat_method::record_msg($request->getParameter('FromUserName'),$result[0]['content'], 1);
+                wechat_method::record_msg($message->get('FromUserName'),$result[0]['content'], 1);
             }
         } 
         return $content;
@@ -274,14 +277,14 @@ class wechat_action {
      * </Image>
      * </xml>
      */
-    public static function Image_action($request) {
+    public static function Image_action($message) {
         $content = array(
-            'ToUserName'    => $request->getParameter('FromUserName'),
-            'FromUserName'  => $request->getParameter('ToUserName'),
+            'ToUserName'    => $message->get('FromUserName'),
+            'FromUserName'  => $message->get('ToUserName'),
             'CreateTime'    => SYS_TIME,
             'MsgType'       => 'image',
             'Image'         => array(
-                'MediaId'=>$request->getParameter('MediaId')//通过素材管理接口上传多媒体文件，得到的id。
+                'MediaId' => $message->get('MediaId')//通过素材管理接口上传多媒体文件，得到的id。
             )
         );
         $response = Component_WeChat_Response::create($content);
@@ -303,14 +306,14 @@ class wechat_action {
      * </Voice>
      * </xml>
      */
-    public static function Voice_action($request) {
+    public static function Voice_action($message) {
         $content = array(
-            'ToUserName'    => $request->getParameter('FromUserName'),
-            'FromUserName'  => $request->getParameter('ToUserName'),
+            'ToUserName'    => $message->get('FromUserName'),
+            'FromUserName'  => $message->get('ToUserName'),
             'CreateTime'    => SYS_TIME,
             'MsgType'       => 'voice',
             'Voice'         => array(
-                'MediaId'=>$request->getParameter('MediaId')//通过素材管理接口上传多媒体文件，得到的id
+                'MediaId' => $message->get('MediaId')//通过素材管理接口上传多媒体文件，得到的id
             )
         );
         $response = Component_WeChat_Response::create($content);
@@ -333,14 +336,14 @@ class wechat_action {
      * </Video>
      * </xml>
      */
-    public static function Video_action($request) {
+    public static function Video_action($message) {
         $content = array(
-            'ToUserName'     => $request->getParameter('FromUserName'),
-            'FromUserName'   => $request->getParameter('ToUserName'),
+            'ToUserName'     => $message->get('FromUserName'),
+            'FromUserName'   => $message->get('ToUserName'),
             'CreateTime'     => SYS_TIME,
             'MsgType'        => 'video',
             'Video'          => array(
-                'MediaId'    =>$request->getParameter('MediaId'), //通过素材管理接口上传多媒体文件，得到的id
+                'MediaId'    =>$message->get('MediaId'), //通过素材管理接口上传多媒体文件，得到的id
                 'Title'      =>'test',
                 'Description'=>'testneirong'
             )
@@ -369,10 +372,10 @@ class wechat_action {
      * </Music>
      * </xml>
      */
-    public static function Music_action($request) {    
+    public static function Music_action($message) {    
         $content = array(
-            'ToUserName'    => $request->getParameter('FromUserName'),
-            'FromUserName'  => $request->getParameter('ToUserName'),
+            'ToUserName'    => $message->get('FromUserName'),
+            'FromUserName'  => $message->get('ToUserName'),
             'CreateTime'    => SYS_TIME,
             'MsgType'       => 'music',
             'Music'         => array(
@@ -400,13 +403,13 @@ class wechat_action {
      * <EventKey><![CDATA[EVENTKEY]]></EventKey>
      * </xml>
      */
-    public static function Click_action($request) {
+    public static function Click_action($message) {
         RC_Loader::load_app_class('platform_command', 'platform', false);
         RC_Loader::load_app_class('wechat_method', 'wechat', false);
         $wechat_id = wechat_method::wechat_id();
         
-        $command = new platform_command($request, $wechat_id);
-        $content = $command->runCommand($request->getParameter('EventKey'));
+        $command = new platform_command($message, $wechat_id);
+        $content = $command->runCommand($message->get('EventKey'));
         
         $response = Component_WeChat_Response::create($content);
         RC_Logger::getLogger('wechat')->debug('RESPONSE: ' . json_encode($response->getContent()));
@@ -441,8 +444,8 @@ class wechat_action {
      */
     public static function Articles_action($request) {
         $content = array(
-            'ToUserName'    => $request->getParameter('FromUserName'),
-            'FromUserName'  => $request->getParameter('ToUserName'),
+            'ToUserName'    => $request->get('FromUserName'),
+            'FromUserName'  => $request->get('ToUserName'),
             'CreateTime'    => SYS_TIME,
             'MsgType'       => 'news',
             'ArticleCount'  => '',
