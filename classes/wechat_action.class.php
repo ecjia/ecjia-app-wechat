@@ -44,9 +44,30 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-defined('IN_ECJIA') or exit('No permission resources.');
 
 class wechat_action {
+    /**
+     * 文本回复
+     * @param unknown $request
+     */
+    public static function Default_action($message) {
+        $content = null;
+        dd($message);
+//         RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'command_reply'), 10, 2);
+//         RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'keyword_reply'), 90, 2);
+//         RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'empty_reply'), 100, 2);
+        
+        $content = RC_Hook::apply_filters('wechat_text_response', $content, $message);
+        
+        $text = new Royalcms\Component\WeChat\Message\Text();
+        $text->content = $content;
+        
+        return $text;
+        //     	$response = Component_WeChat_Response::create($content);
+        //     	RC_Logger::getLogger('wechat')->debug('RESPONSE: ' . json_encode($response->getContent()));
+        //     	$response->send();
+    }
+    
     /**
      * 文本回复
      * @param unknown $request
@@ -60,9 +81,13 @@ class wechat_action {
     	
     	$content = RC_Hook::apply_filters('wechat_text_response', $content, $request);
     	
-    	$response = Component_WeChat_Response::create($content);
-    	RC_Logger::getLogger('wechat')->debug('RESPONSE: ' . json_encode($response->getContent()));
-    	$response->send();
+    	$text = new Royalcms\Component\WeChat\Message\Text();
+    	$text->content = $content;
+    	
+    	return $text;
+//     	$response = Component_WeChat_Response::create($content);
+//     	RC_Logger::getLogger('wechat')->debug('RESPONSE: ' . json_encode($response->getContent()));
+//     	$response->send();
     }
     
     /**

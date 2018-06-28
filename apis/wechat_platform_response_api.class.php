@@ -46,7 +46,6 @@ use Royalcms\Component\WeChat\Server\BadRequestException;
 //
 //  ---------------------------------------------------------------------------------
 //
-defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * 后台微信公众平台
@@ -63,6 +62,8 @@ class wechat_platform_response_api extends Component_Event_Api
         
         try {
             
+            RC_Package::package('app::wechat')->loadClass('wechat_action');
+            
             $uuid = $options->getUUID();
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
             
@@ -70,29 +71,29 @@ class wechat_platform_response_api extends Component_Event_Api
             $server->setMessageHandler(function ($message) {
                 switch ($message->MsgType) {
                     case 'event':
-                        return '收到事件消息';
+                        return wechat_action::Event_action($message);
                         break;
                     case 'text':
-                        return '收到文字消息';
+                        return wechat_action::Text_action($message);
                         break;
                     case 'image':
-                        return '收到图片消息';
+                        return wechat_action::Image_action($message);
                         break;
                     case 'voice':
-                        return '收到语音消息';
+                        return wechat_action::Voice_action($message);
                         break;
                     case 'video':
-                        return '收到视频消息';
+                        return wechat_action::Video_action($message);
                         break;
                     case 'location':
-                        return '收到坐标消息';
+                        return wechat_action::Location_action($message);
                         break;
                     case 'link':
-                        return '收到链接消息';
+                        return wechat_action::Link_action($message);
                         break;
                         // ... 其它消息
                     default:
-                        return '收到其它消息';
+                        return wechat_action::Default_action($message);
                         break;
                 }
                 
