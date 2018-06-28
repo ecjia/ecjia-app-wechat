@@ -95,7 +95,7 @@ class platform_response extends ecjia_platform {
 	public function reply_subscribe() {
 		$this->admin_priv('wechat_response_manage');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.auto_reply')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.attention_auto_reply')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.auto_reply'));
 		
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -324,7 +324,7 @@ class platform_response extends ecjia_platform {
 	public function reply_msg() {
 		$this->admin_priv('wechat_response_manage');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.auto_reply')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_auto_reply')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.auto_reply'));
 		
 		ecjia_screen::get_current_screen()->add_help_tab(array(

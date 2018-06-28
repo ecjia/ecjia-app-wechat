@@ -86,7 +86,13 @@ class platform_material extends ecjia_platform {
 		$this->admin_priv('wechat_material_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage')));
+		
+		$nav_here = RC_Lang::get('wechat::wechat.forever_material');
+		$material = intval($_GET['material']);
+		if ($material != 1) {
+			$nav_here = RC_Lang::get('wechat::wechat.provisional_material');
+		}
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here));
 		
 		$type = isset($_GET['type']) ? $_GET['type'] : '';
 		$form_action = '';
@@ -175,7 +181,12 @@ class platform_material extends ecjia_platform {
 		$this->admin_priv('wechat_material_add');
 		
 		$material  = !empty($_GET['material']) ? 1 : 0;
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
+		
+		$nav_here = RC_Lang::get('wechat::wechat.forever_material');
+		if ($material != 1) {
+			$nav_here = RC_Lang::get('wechat::wechat.provisional_material');
+		}
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_images')));
 		
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -833,9 +844,12 @@ class platform_material extends ecjia_platform {
 		$this->admin_priv('wechat_material_add');
 		
 		$material  = !empty($_GET['material']) ? 1 : 0;
-		
+		$nav_here = RC_Lang::get('wechat::wechat.forever_material');
+		if ($material != 1) {
+			$nav_here = RC_Lang::get('wechat::wechat.provisional_material');
+		}
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type' => 'video', 'material' => $material))));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'video', 'material' => $material))));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_video')));
 		
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -965,8 +979,13 @@ class platform_material extends ecjia_platform {
 	public function video_edit() {
 		$this->admin_priv('wechat_material_update');
 		
+		$material = !empty($_GET['material']) ? 1 : 0;
+		$nav_here = RC_Lang::get('wechat::wechat.forever_material');
+		if ($material != 1) {
+			$nav_here = RC_Lang::get('wechat::wechat.provisional_material');
+		}
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type' => 'video'))));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'video'))));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_material')));
 		
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -984,7 +1003,7 @@ class platform_material extends ecjia_platform {
 		
 		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$material = !empty($_GET['material']) ? 1 : 0;
+		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.edit_video'));
 		$this->assign('form_action', RC_Uri::url('wechat/platform_material/video_update', array('material' => $material)));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type'=>'video', 'material' => $material))));

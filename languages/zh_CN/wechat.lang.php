@@ -77,6 +77,7 @@ return array(
 	'service_record'	    => '客服会话记录',
 	
 	'channel_code'	        => '渠道二维码',
+	'channel_code_list'	    => '渠道二维码列表',
 	'sweep_recommend'	    => '推荐二维码',
 	'accredit_login'	    => '授权登录',
 	'draw_record'	        => '抽奖记录',

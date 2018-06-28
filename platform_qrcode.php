@@ -79,7 +79,7 @@ class platform_qrcode extends ecjia_platform {
 // 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		
 		RC_Script::localize_script('wechat_qrcode', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.qrcode_manage'), RC_Uri::url('wechat/platform_qrcode/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.channel_code'), RC_Uri::url('wechat/platform_qrcode/init')));
 		
 		ecjia_platform_screen::get_current_screen()->set_subject('渠道二维码');
 	}
@@ -91,9 +91,9 @@ class platform_qrcode extends ecjia_platform {
 		$this->admin_priv('wechat_qrcode_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.qrcode_manage')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.channel_code')));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_qr_code'), 'href'=> RC_Uri::url('wechat/platform_qrcode/add')));
-		$this->assign('ur_here', RC_Lang::get('wechat::wechat.qrcode_manage'));
+		$this->assign('ur_here', RC_Lang::get('wechat::wechat.channel_code_list'));
 
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
@@ -135,7 +135,7 @@ class platform_qrcode extends ecjia_platform {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_qr_code')));
 		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_qr_code'));
-		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_qrcode/init'), 'text' => RC_Lang::get('wechat::wechat.qrcode_list')));
+		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_qrcode/init'), 'text' => RC_Lang::get('wechat::wechat.channel_code_list')));
 		
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
