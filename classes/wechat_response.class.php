@@ -77,8 +77,8 @@ class wechat_response {
     		wechat_method::record_msg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询', 1);
     	}
        
-    	$text = new Royalcms\Component\WeChat\Message\Text($content);
-    	return $text;
+//     	$text = new Royalcms\Component\WeChat\Message\Text($content);
+    	return $content;
     }
     
     /**
