@@ -59,20 +59,20 @@ class wechat_response {
     	RC_Loader::load_app_class('wechat_method', 'wechat', false);
     	if(!empty($text)) {
     		$content = array(
-    		    'ToUserName'    => $message->get('FromUserName'),
-    		    'FromUserName'  => $message->get('ToUserName'),
-    				'CreateTime'    => SYS_TIME,
-    				'MsgType'       => 'text',
-    				'Content'       => $text
+//     		    'ToUserName'    => $message->get('FromUserName'),
+//     		    'FromUserName'  => $message->get('ToUserName'),
+//     				'CreateTime'    => SYS_TIME,
+//     				'MsgType'       => 'text',
+    				'content'       => $text
     		);
     		wechat_method::record_msg($message->get('FromUserName'), $text, 1);
     	}else{
     		$content = array(
-    		    'ToUserName'    => $message->get('FromUserName'),
-    		    'FromUserName'  => $message->get('ToUserName'),
-    				'CreateTime'    => SYS_TIME,
-    				'MsgType'       => 'text',
-    				'Content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
+//     		    'ToUserName'    => $message->get('FromUserName'),
+//     		    'FromUserName'  => $message->get('ToUserName'),
+//     				'CreateTime'    => SYS_TIME,
+//     				'MsgType'       => 'text',
+    				'content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
     		);
     		wechat_method::record_msg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询', 1);
     	}

@@ -81,9 +81,9 @@ class wechat_action {
     	
     	$content = RC_Hook::apply_filters('wechat_text_response', $content, $request);
     	
-    	$text = new Royalcms\Component\WeChat\Message\Text();
-    	$text->content = $content;
-    	
+    	$text = new Royalcms\Component\WeChat\Message\Text($content);
+//     	$text->content = $content;
+//     	dd($text);
     	return $text;
 //     	$response = Component_WeChat_Response::create($content);
 //     	RC_Logger::getLogger('wechat')->debug('RESPONSE: ' . json_encode($response->getContent()));
