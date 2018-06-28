@@ -83,8 +83,17 @@ class wechat_platform_hooks {
     	
         ecjia_platform::$controller->display('library/common_header_messages.lbi');
     }
+    
+    public static function ecjia_platform_dashboard_stats() {
+        
+        
+        ecjia_platform::$controller->display(
+            RC_Package::package('app::wechat')->loadTemplate('platform/library/widget_platform_dashboard_stats.lbi', true)
+            );
+    }
 }
 
 RC_Hook::add_action( 'platform_dashboard_header_links', array('wechat_platform_hooks', 'platform_dashboard_header_messages') );
+RC_Hook::add_filter( 'platform_dashboard_top', array('wechat_platform_hooks', 'ecjia_platform_dashboard_stats'), 9 );
 
 // end
