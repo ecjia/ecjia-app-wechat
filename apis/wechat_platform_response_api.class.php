@@ -1,4 +1,6 @@
 <?php
+use Royalcms\Component\WeChat\Server\BadRequestException;
+
 //
 //    ______         ______           __         __         ______
 //   /\  ___\       /\  ___\         /\_\       /\_\       /\  __ \
@@ -59,42 +61,50 @@ class wechat_platform_response_api extends Component_Event_Api
             return new ecjia_error('ecjia_platform_account_object_not_match', '参数不是Ecjia\App\Platform\Frameworks\Platform\Account对象');
         }
         
-        $uuid = $options->getUUID();
-        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-        $server = $wechat->server;
-        $server->setMessageHandler(function ($message) {
-            switch ($message->MsgType) {
-                case 'event':
-                    return '收到事件消息';
-                    break;
-                case 'text':
-                    return '收到文字消息';
-                    break;
-                case 'image':
-                    return '收到图片消息';
-                    break;
-                case 'voice':
-                    return '收到语音消息';
-                    break;
-                case 'video':
-                    return '收到视频消息';
-                    break;
-                case 'location':
-                    return '收到坐标消息';
-                    break;
-                case 'link':
-                    return '收到链接消息';
-                    break;
-                    // ... 其它消息
-                default:
-                    return '收到其它消息';
-                    break;
-            }
+        try {
             
-            // ...
-        });
+            $uuid = $options->getUUID();
+            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+            
+            $server = $wechat->server;
+            $server->setMessageHandler(function ($message) {
+                switch ($message->MsgType) {
+                    case 'event':
+                        return '收到事件消息';
+                        break;
+                    case 'text':
+                        return '收到文字消息';
+                        break;
+                    case 'image':
+                        return '收到图片消息';
+                        break;
+                    case 'voice':
+                        return '收到语音消息';
+                        break;
+                    case 'video':
+                        return '收到视频消息';
+                        break;
+                    case 'location':
+                        return '收到坐标消息';
+                        break;
+                    case 'link':
+                        return '收到链接消息';
+                        break;
+                        // ... 其它消息
+                    default:
+                        return '收到其它消息';
+                        break;
+                }
+                
+                // ...
+            });
+                
+                return $server->serve();
+            
+        } catch (Royalcms\Component\WeChat\Server\BadRequestException $e) {
+            return new ecjia_error('ecjia_platform_bad_request_exception', $e->getMessage());
+        }
         
-        return $server->serve();
         
         define('WECHAT_LOG_FILE', SITE_LOG_PATH . 'wechat_' . date('Y-m-d') . '.log');
 
