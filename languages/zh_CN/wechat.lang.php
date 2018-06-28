@@ -412,7 +412,7 @@ return array(
 	'batch_operate'				=> '批量操作',
 	'select_operate_qrcode'		=> '请先选中要删除的二维码',
 	'remove_qrcode'				=> '删除二维码',
-	'qrcode_search_placeholder'	=> '请输入有关二维码功能关键字',
+	'qrcode_search_placeholder'	=> '请输入功能关键字',
 	'application_adsense'		=> '应用场景',
 	'qrcode_type'				=> '二维码类型',
 	
