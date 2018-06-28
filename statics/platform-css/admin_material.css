@@ -355,10 +355,7 @@
 
 /*===========================ECJIAUI START===========================*/
 .mobile_news_view {
-	width: 320px;
-	min-width: 320px;
-	max-width: 320px;
-	/* float:left; */
+	width: 300px;
 	border: 1px solid #dedede;
 }
 
@@ -499,7 +496,7 @@
 }
 
 .mobile_news_edit {
-	width: calc(100% - 350px);
+	width: calc(100% - 320px);
 	float: right;
 }
 

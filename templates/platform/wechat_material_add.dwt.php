@@ -68,20 +68,20 @@
 								<h4 class="heading">{lang key='wechat::wechat.graphic'} 1</h4>
 								<fieldset>
 									<div class="form-group row">
-										<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
+										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
 										<div class="col-lg-9 controls">
 											<input class="span8 form-control" type="text" name="title" value='' />
 										</div>
 										<span class="input-must">*</span>
 									</div>
 									<div class="form-group row">
-										<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.author'}</label>
+										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.author'}</label>
 										<div class="col-lg-9 controls">
 											<input class='span8 form-control' type='text' name='author' value='' />
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.cover'}</label>
+										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.cover'}</label>
 										<div class="col-lg-9 controls">
 											<div class="fileupload fileupload-new" data-provides="fileupload">	
 												<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;">
@@ -100,34 +100,32 @@
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.summary'}</label>
+										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.summary'}</label>
 										<div class="col-lg-9 controls">
 											<textarea name="digest" cols="55" rows="6" class="span8 form-control"></textarea>
 											<span class="help-block">{lang key='wechat::wechat.optional_for54'}</span>
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.text_link'}</label>
+										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.text_link'}</label>
 										<div class="col-lg-9 controls">
 											<input name='link' class='span8 form-control' type='text' value='{t}http://{/t}' />
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_sort'}</label>
+										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_sort'}</label>
 										<div class="col-lg-9 controls">
 											<input name='sort' class='span8 form-control' type='text'/>
 										</div>
 									</div>
 									<div class="form-group row">
 										<h3 class="heading card-title col-lg-12">{lang key='wechat::wechat.main_body'}</h3>
-										<div class="row">
-											<div class="col-lg-10">
-												{ecjia:editor content='' textarea_name='content'}
-											</div>
+										<div class="col-lg-11">
+											{ecjia:editor content='' textarea_name='content'}
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-lg-1 label-control text-right"></label>
+										<label class="col-lg-2 label-control text-right"></label>
 										<div class="col-lg-9 controls">
 											<input type="submit" value="{lang key='wechat::wechat.ok'}" {if $errormsg}disabled{/if} class="btn btn-outline-primary" />
 										</div>
@@ -137,7 +135,7 @@
 						</div>
 					<!-- {else} -->
 						<div class="form-group row">
-							<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
+							<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
 							<div class="col-lg-9 controls">
 								<input type="text" class="form-control" name="video_title" maxlength="60" size="30" value="{$article.title}" />
 							</div>
@@ -146,7 +144,7 @@
 					
 						<!-- {if !$article.file} -->
 						<div class="form-group row">
-							<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_video'}</label>
+							<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_video'}</label>
 							<div class="col-lg-9 controls fileupload fileupload-new" data-provides="fileupload">
 								<span class="btn btn-outline-primary btn-file">
 									<span class="fileupload-new">{lang key='wechat::wechat.browser'}</span>
@@ -162,7 +160,7 @@
 						<!-- {/if} -->
 					
 					<div class="form-group row">
-						<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_video_intro'}</label>
+						<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_video_intro'}</label>
 						<div class="col-lg-9 controls">
 							<textarea name="video_digest" class="form-control">{$article.digest}</textarea>
 						</div>
