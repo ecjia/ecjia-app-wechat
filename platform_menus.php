@@ -250,6 +250,10 @@ class platform_menus extends ecjia_platform {
 		
 		$res = $this->fetch('library/wechat_menu_db.lbi');
 		
+		if ($type == 'miniprogram') {
+			$config_url = unserialize($data['url']);
+			$data['app_id'] = $config_url['appid'];
+		}
 		$this->assign('wechat_menus', $data);
 		
 		$result = $this->fetch('library/wechat_menu_sub.lbi');
@@ -383,6 +387,11 @@ class platform_menus extends ecjia_platform {
 		$this->assign('count', $count);
 			
 		$info = RC_DB::table('wechat_menu')->where('id', $id)->where('wechat_id', $wechat_id)->first();
+		if ($type == 'miniprogram') {
+			$config_url = unserialize($info['url']);
+			$info['app_id'] = $config_url['appid'];
+		}
+		
 		$count = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('pid', $info['id'])->count();
 		
 		$this->assign('id', $id);
@@ -660,6 +669,10 @@ class platform_menus extends ecjia_platform {
 		$this->assign('id', $id);
 		
 		$wechat_menus = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->first();
+		if ($wechat_menus['type'] == 'miniprogram') {
+			$config_url = unserialize($wechat_menus['url']);
+			$wechat_menus['app_id'] = $config_url['appid'];
+		}
 		$this->assign('wechat_menus', $wechat_menus);
 		
 		$count = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('pid', $wechat_menus['id'])->count();
@@ -728,6 +741,10 @@ class platform_menus extends ecjia_platform {
 			}
 			$count = count($listdb['menu_list']);
 			$data = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->first();
+			if ($data['type'] == 'miniprogram') {
+				$config_url = unserialize($data['url']);
+				$data['app_id'] = $config_url['appid'];
+			}
 			
 			$this->assign('menu_list', $listdb['menu_list']);
 			$this->assign('count', $count);

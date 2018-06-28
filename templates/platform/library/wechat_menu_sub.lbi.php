@@ -40,7 +40,7 @@
 	<div class="menu-input-group div-input" id="urldiv">
 		<div class="menu-label col-lg-3">外链url：</div>
 		<div class="menu-input col-lg-8">
-			<input class="form-control" type="text" name="url" id="url" value="{$wechat_menus.url}" />
+			<input class="form-control" type="text" name="url" id="url" value="{if $wechat_menus.type eq 'view'}{$wechat_menus.url}{/if}" />
 			<p class="menu-tips" style="color:#e15f63; display: none;">请设置外联url</p>
 		</div>
 	</div>
