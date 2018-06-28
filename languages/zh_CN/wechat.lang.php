@@ -77,7 +77,7 @@ return array(
 	'service_record'	    => '客服会话记录',
 	
 	'channel_code'	        => '渠道二维码',
-	'sweep_recommend'	    => '扫码引荐',
+	'sweep_recommend'	    => '推荐二维码',
 	'accredit_login'	    => '授权登录',
 	'draw_record'	        => '抽奖记录',
 	'api_request'	        => 'Api请求统计',
@@ -360,13 +360,13 @@ return array(
 	'label_new_tag_name'		=> '新标签名：',
 	'label_tag_name'			=> '标签名称：',
 	
-	//扫码引荐
-	'scan_code'					=> '扫码引荐',
-	'scan_code_list'			=> '扫码引荐列表',
+	//推荐二维码
+	'scan_code'					=> '推荐二维码',
+	'scan_code_list'			=> '推荐二维码列表',
 	'add_qr_code'				=> '添加二维码',
 	'recommended_person'		=> '推荐人是%s',
-	'add_scan_code_success'		=> '添加扫码引荐成功',
-	'remove_scan_code_success'	=> '删除扫码引荐成功',
+	'add_scan_code_success'		=> '添加推荐二维码成功',
+	'remove_scan_code_success'	=> '删除推荐二维码成功',
 	'qrcode_sort_numeric'		=> '请输入排序数值',
 	'edit_sort_success'			=> '编辑排序成功',
 	'qrcode_sort_required'		=> '二维码排序不能为空',

@@ -156,8 +156,8 @@ $LANG['please_upload']      = '请上传图片';
 $LANG['content']            = '正文';
 $LANG['link_err']           = '链接格式不正确';
 
-//扫码引荐
-$LANG['share']              = '扫码引荐';
+//推荐二维码
+$LANG['share']              = '推荐二维码';
 $LANG['share_name']         = '推荐人';
 $LANG['share_userid']       = '推荐人ID';
 $LANG['share_account']      = '现金分成';

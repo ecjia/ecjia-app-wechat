@@ -48,7 +48,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * ECJIA扫码引荐
+ * ECJIA推荐二维码
  */
 class admin_share extends ecjia_admin {
 	private $db_qrcode;
@@ -83,7 +83,7 @@ class admin_share extends ecjia_admin {
 	}
 
 	/**
-	 * 扫码引荐列表加载
+	 * 推荐二维码列表加载
 	 */
 	public function init() {
 		$this->admin_priv('wechat_share_manage');
@@ -113,7 +113,7 @@ class admin_share extends ecjia_admin {
 	}
 	
 	/**
-	 * 添加扫码引荐
+	 * 添加推荐二维码
 	 */
 	public function add() {
 		$this->admin_priv('wechat_share_add');
@@ -140,7 +140,7 @@ class admin_share extends ecjia_admin {
 	}
 	
 	/**
-	 * 添加扫码引荐处理
+	 * 添加推荐二维码处理
 	 */
 	public function insert() {
 		$this->admin_priv('wechat_share_add', ecjia::MSGTYPE_JSON);
@@ -163,7 +163,7 @@ class admin_share extends ecjia_admin {
 	}
 		
 	/**
-	 * 删除扫码引荐
+	 * 删除推荐二维码
 	 */
 	public function remove()  {
 		$this->admin_priv('wechat_share_delete', ecjia::MSGTYPE_JSON);

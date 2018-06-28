@@ -48,7 +48,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * ECJIA扫码引荐
+ * ECJIA推荐二维码
  */
 class platform_share extends ecjia_platform {
 	private $db_qrcode;
@@ -82,11 +82,11 @@ class platform_share extends ecjia_platform {
 		RC_Script::localize_script('wechat_qrcodeshare', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.scan_code'), RC_Uri::url('wechat/platform_share/init')));
 		
-		ecjia_platform_screen::get_current_screen()->set_subject('扫码引荐');
+		ecjia_platform_screen::get_current_screen()->set_subject('推荐二维码');
 	}
 
 	/**
-	 * 扫码引荐列表加载
+	 * 推荐二维码列表加载
 	 */
 	public function init() {
 		$this->admin_priv('wechat_share_manage');
@@ -116,7 +116,7 @@ class platform_share extends ecjia_platform {
 	}
 	
 	/**
-	 * 添加扫码引荐
+	 * 添加推荐二维码
 	 */
 	public function add() {
 		$this->admin_priv('wechat_share_add');
@@ -143,7 +143,7 @@ class platform_share extends ecjia_platform {
 	}
 	
 	/**
-	 * 添加扫码引荐处理
+	 * 添加推荐二维码处理
 	 */
 	public function insert() {
 		$this->admin_priv('wechat_share_add', ecjia::MSGTYPE_JSON);
@@ -166,7 +166,7 @@ class platform_share extends ecjia_platform {
 	}
 		
 	/**
-	 * 删除扫码引荐
+	 * 删除推荐二维码
 	 */
 	public function remove()  {
 		$this->admin_priv('wechat_share_delete', ecjia::MSGTYPE_JSON);
