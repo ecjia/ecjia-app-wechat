@@ -50,9 +50,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * ECJIA自定义菜单
  */
 class platform_menus extends ecjia_platform {
-	private $db_menu;
-	private $db_platform_account;
-
 	public function __construct() {
 		parent::__construct();
 		
@@ -60,8 +57,6 @@ class platform_menus extends ecjia_platform {
 		RC_Loader::load_app_func('global');
 		Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
-		$this->db_menu = RC_Loader::load_app_model('wechat_menu_model');
-		$this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
 		RC_Loader::load_app_class('platform_account', 'platform', false);
 		RC_Loader::load_app_class('wechat_method', 'wechat', false);
 
@@ -105,7 +100,7 @@ class platform_menus extends ecjia_platform {
 		} else {
 			$this->assign('warn', 'warn');
 				
-			$type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+			$type = $this->platformAccount->getType();
 			$this->assign('type', $type);
 			$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_subscribe_nonsupport'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 				
@@ -152,11 +147,11 @@ class platform_menus extends ecjia_platform {
 			$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
 		} else {
 			$this->assign('warn', 'warn');
-			$type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+			$type = $this->platformAccount->getType();
 			$this->assign('type', $type);
 			$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_subscribe_nonsupport'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 			
-			$pmenu = $this->db_menu->where(array('pid' => 0, 'wechat_id' => $wechat_id))->select();
+			$pmenu = RC_DB::table('wechat_menu')->where('pid', 0)->where('wechat_id', $wechat_id)->get();
 			$this->assign('pmenu', $pmenu);
 			
 			$wechatmenus['type'] 	= 'click';
@@ -284,27 +279,23 @@ class platform_menus extends ecjia_platform {
 		
 		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+		$type = $this->platformAccount->getType();
 		$this->assign('type', $type);
 		$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_subscribe_nonsupport'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 
 	    $id = intval($_GET['id']);
-	  	$wechatmenus = $this->db_menu->find(array('id' => $id));
+	  	$wechatmenus = RC_DB::table('wechat_menu')->where('id', $id)->where('wechat_id', $wechat_id)->first();
+	  	
 	  	if ($wechatmenus['type'] == 'miniprogram') {
 	  		$config_url = unserialize($wechatmenus['url']);
 	  		$wechatmenus['app_id'] = $config_url['appid'];
 	  	}
 		$this->assign('wechatmenus', $wechatmenus);
-	
 		
-		$where['pid'] = 0;
-		$where[] = "id <> $id";
-		$where['wechat_id'] = $wechat_id;
-		
-		$pmenu = $this->db_menu->where($where)->select();
+		$pmenu = RC_DB::table('wechat_menu')->where('pid', 0)->where('id', '!=', $id)->where('wechat_id', $wechat_id)->get();
 		$this->assign('pmenu', $pmenu);
 		
-		$child = $this->db_menu->where(array('id' => $id))->get_field('pid');
+		$child = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('pid');
 		$this->assign('child', $child);
 		
 		$weapplist = $this->get_weapplist();
@@ -508,9 +499,9 @@ class platform_menus extends ecjia_platform {
 			try {
 			    $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 			    $list = $wechat->menu->all()->toArray();
-			    $info = $this->db_menu->select();
-			    if ($info) {
-			        $this->db_menu->where(array('wechat_id' => $wechat_id))->delete();
+			    
+			    if ($list) {
+			        RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->delete();
 			    }
 			    
 			    //一级菜单处理
@@ -534,8 +525,7 @@ class platform_menus extends ecjia_platform {
 			        	$array = array('name' => $value['name'], 'status' => 1, 'type' => $value['type'], 'url' => $value['url'], 'key' => $value['key'], 'wechat_id'=> $wechat_id);
 			        }
 			        
-			        $id = $this->db_menu->insert($array);
-			        
+			        $id = RC_DB::table('wechat_menu')->insertGetId($array);
 			        
 			        //子集菜单处理
 			        if ($value['sub_button']) {
@@ -562,7 +552,7 @@ class platform_menus extends ecjia_platform {
 			                $data['key']         = $v['key'];
 			                $data['status']      = 1;
 			                $data['pid']         = $id;
-			                $this->db_menu->insert($data);
+			                RC_DB::table('wechat_menu')->insert($data);
 			            }
 			        }
 			    }
@@ -594,7 +584,8 @@ class platform_menus extends ecjia_platform {
 		        $rs = $wechat->menu->destroy();
 		        
 		        ecjia_admin::admin_log(RC_Lang::get('wechat::wechat.clear_menu'), 'setup', 'menu');
-		        $this->db_menu->where(array('id' => array('gt' => 0), 'wechat_id'=>$wechat_id))->update(array('status' => 0));
+		        RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', '>', 0)->update(array('status' => 0));
+		        
 		        return $this->showmessage(RC_Lang::get('wechat::wechat.clear_menu_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_menus/init')));
 	        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
 	             
@@ -631,17 +622,18 @@ class platform_menus extends ecjia_platform {
 	public function edit_sort() {
 		$this->admin_priv('wechat_menus_update', ecjia::MSGTYPE_JSON);
 		
+		$wechat_id = $this->platformAccount->getAccountID();
+		
 		$id    = intval($_POST['pk']);
 		$sort  = trim($_POST['value']);
-		$name = $this->db_menu->where(array('id' => $id))->get_field('name');
+		$name = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('name');
 		if (!empty($sort)) {
 			if (!is_numeric($sort)) {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.sort_numeric'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
-				if ($this->db_menu->where(array('id' => $id))->update(array('sort' => $sort))) {
-					ecjia_admin::admin_log($name, 'edit', 'menu');
-					return $this->showmessage(RC_Lang::get('wechat::wechat.edit_sort_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_menus/init')) );
-				}
+				RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('sort' => $sort));
+				ecjia_admin::admin_log($name, 'edit', 'menu');
+				return $this->showmessage(RC_Lang::get('wechat::wechat.edit_sort_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_menus/init')) );
 			}
 		} else {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.menu_sort_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -655,9 +647,11 @@ class platform_menus extends ecjia_platform {
 	public function toggle_show() {
 		$this->admin_priv('wechat_menus_update', ecjia::MSGTYPE_JSON);
 	
+		$wechat_id = $this->platformAccount->getAccountID();
+		
 		$id     = intval($_POST['id']);
 		$val    = intval($_POST['val']);
-		$this->db_menu->where(array('id' => $id))->update(array('status' => $val));
+		RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('status' => $val));
 	
 		return $this->showmessage(RC_Lang::get('wechat::wechat.switch_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_menus/init')));
 	}

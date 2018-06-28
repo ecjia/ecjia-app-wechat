@@ -50,13 +50,8 @@ defined('IN_ECJIA') or exit('No permission resources.');
  * ECJIA素材
  */
 class platform_material extends ecjia_platform {
-	private $wm_db;
-	private $db_platform_account;
-	
 	public function __construct() {
 		parent::__construct();
-		$this->wm_db = RC_Loader::load_app_model('wechat_media_model');
-		$this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
 		
 		RC_Lang::load('wechat');
 		RC_Loader::load_app_class('platform_account', 'platform', false);
@@ -72,13 +67,6 @@ class platform_material extends ecjia_platform {
 		RC_Script::enqueue_script('smoke');
 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Style::enqueue_style('chosen');
-// 		RC_Script::enqueue_script('jquery-uniform');
-// 		RC_Style::enqueue_style('uniform-aristo');
-// 		RC_Script::enqueue_script('jquery-imagesloaded');
-// 		RC_Script::enqueue_script('jquery-colorbox');
-// 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
-// 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
-
 		RC_Script::enqueue_script('jquery-dropper', RC_App::apps_url('statics/platform-js/dropper-upload/jquery.fs.dropper.js', __FILE__), array(), false, true);
 
 		RC_Script::enqueue_script('ecjia-platform-bootstrap-fileupload-js');
@@ -89,7 +77,6 @@ class platform_material extends ecjia_platform {
 		RC_Script::localize_script('admin_material', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		
 		ecjia_platform_screen::get_current_screen()->set_subject('素材管理');
-		
 	}
 
 	/**
@@ -531,7 +518,7 @@ class platform_material extends ecjia_platform {
 				$data['add_time'] = RC_Time::gmtime();
  				$id = RC_DB::table('wechat_media')->insertGetId($data);
 			}
-			$title = $this->wm_db->where(array('id' => $parent_id))->get_field('title');
+			$title = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $parent_id)->pluck('title');
 			ecjia_admin::admin_log($title, 'edit', 'article_material');
 		}
 		return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $parent_id, 'material' => 1))));
@@ -1153,7 +1140,7 @@ class platform_material extends ecjia_platform {
 			if (empty($val)) {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.enter_filename'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			$update = $this->wm_db->where(array('id' => $id))->update(array('file_name' => $val));
+			RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('file_name' => $val));
 			if ($type == 'voice') {
 				ecjia_admin::admin_log($val, 'edit', 'voice_material');
 			} elseif ($type == 'picture') {
@@ -1380,7 +1367,6 @@ class platform_material extends ecjia_platform {
 				}
 				
 				if ($type == 'news') {
-// 					$datas = $this->wm_db->where(array('parent_id' => $val['id']))->order(array('id' => 'asc'))->select();
 					$datas = RC_DB::table('wechat_media')->where('parent_id', $val['id'])->orderBy('id', 'asc')->get();
 					if (!empty($datas)) {
 						foreach ($datas as $k => $v) {
