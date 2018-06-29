@@ -57,6 +57,8 @@ class wechat_platform_menu_api extends Component_Event_Api {
 
         $extend_menus = ecjia_admin::make_admin_menu('01_wechat_extend', RC_Lang::get('wechat::wechat.extend_manage'), RC_Uri::url('platform/platform_extend/init'), 1)->add_icon('icon-puzzle')->add_purview('platform_extend_manage');
         
+        $command_menus = ecjia_admin::make_admin_menu('02_wechat_extend', '关键词命令', RC_Uri::url('platform/platform_command/init'), 2)->add_icon('ft-command')->add_purview('platform_command_manage');
+        
         $navmenus = ecjia_admin::make_admin_menu('nav-header', RC_Lang::get('wechat::wechat.weixin_notice'), '', 10);
         
         $custom_menu = ecjia_admin::make_admin_menu('06_wechat', RC_Lang::get('wechat::wechat.custom_menu'), RC_Uri::url('wechat/platform_menus/init'), 20)->add_icon('ft-menu')->add_purview('wechat_menus_manage');
@@ -119,16 +121,17 @@ class wechat_platform_menu_api extends Component_Event_Api {
 //         );
         
         return array(
-            $menus, 
-            $extend_menus, 
-            $message_manage, 
-            $navmenus, 
-            $usermenus, 
+            $menus,
+            $extend_menus,
+        	$command_menus,
+            $message_manage,
+            $navmenus,
+            $usermenus,
             $custom_menu, 
             $material_manage,
             $prize_menus,
-            $replymenus, 
-            $kefumenus, 
+            $replymenus,
+            $kefumenus,
             $tgmenus);
     }
 }
