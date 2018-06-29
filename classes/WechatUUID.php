@@ -55,9 +55,12 @@ class WechatUUID {
     
     protected $uuid;
     
-    public function __construct($uuid) {
-        $this->uuid = trim($uuid);   
-        
+    public function __construct($uuid = null) {
+        if (is_null($uuid)) {
+            $this->uuid = royalcms('request')->input('uuid');
+        } else {
+            $this->uuid = trim($uuid);   
+        }
         RC_Loader::load_app_class('platform_account', 'platform', false);
     }
     

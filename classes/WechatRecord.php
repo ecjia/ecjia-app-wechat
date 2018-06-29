@@ -3,8 +3,11 @@
 namespace Ecjia\App\Wechat;
 
 use RC_Time;
+use RC_Lang;
 use Ecjia\App\Wechat\Models\WechatUserModel;
 use Ecjia\App\Wechat\Models\WechatCustomMessageModel;
+use Royalcms\Component\WeChat\Message\Text;
+use Royalcms\Component\WeChat\Message\Image;
 
 class WechatRecord
 {
@@ -16,7 +19,8 @@ class WechatRecord
             'content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
         );
         self::replyMsg($message->get('FromUserName'), $content['content']);
-        return $content;
+        
+        return new Text($content);
     }
     
     /**
@@ -28,11 +32,12 @@ class WechatRecord
                 'content'       => $text
             );
             self::replyMsg($message->get('FromUserName'), $text);
-        } else {
-            $content = self::Default_reply($message);
+            
+            return new Text($content);
+        } 
+        else {
+            return self::Default_reply($message);
         }
-        
-        return $content;
     }
     
     /**
@@ -44,11 +49,12 @@ class WechatRecord
                 'media_id' => $file //通过素材管理接口上传多媒体文件，得到的id。
             ];
             self::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.image_content'));
-        } else {
-            $content = self::Default_reply($message);
+            
+            return new Image($content);
+        } 
+        else {
+            return self::Default_reply($message);
         }
-        
-        return $content;
     }
     
     /**

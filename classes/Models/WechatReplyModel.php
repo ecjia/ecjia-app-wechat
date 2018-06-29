@@ -24,6 +24,15 @@ class WechatReplyModel extends Model
     ];
 
     protected $guarded = [];
+    
+    
+    /**
+     * 获取博客文章的评论。
+     */
+    public function keywords()
+    {
+        return $this->hasMany('Ecjia\App\Wechat\Models\WechatRuleKeywordsModel', 'rid', 'id');
+    }
 
     
     /**
