@@ -18,7 +18,7 @@ class WechatRecord
         if (!empty($uid)) {
             $data = array(
                 'uid'  	     => $uid,
-                'msg'  	     => $keywords,
+                'msg'  	     => $content,
                 'send_time'  => RC_Time::gmtime(),
                 'iswechat'   => 0,
             );
@@ -35,7 +35,7 @@ class WechatRecord
         if (!empty($uid)) {
             $data = array(
                 'uid'  	     => $uid,
-                'msg'  	     => $keywords,
+                'msg'  	     => $content,
                 'send_time'  => RC_Time::gmtime(),
                 'iswechat'   => 1,
             );
