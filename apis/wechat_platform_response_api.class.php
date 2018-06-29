@@ -74,7 +74,7 @@ class wechat_platform_response_api extends Component_Event_Api
                         return wechat_action::Event_action($message);
                         break;
                     case 'text':
-                        return wechat_action::Text_action($message);
+                        return Ecjia\App\Wechat\WechatMessageHandler::Text_action($message);
                         break;
                     case 'image':
                         return wechat_action::Image_action($message);
