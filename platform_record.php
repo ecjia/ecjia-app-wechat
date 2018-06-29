@@ -395,10 +395,17 @@ class platform_record extends ecjia_platform {
 		$id_list = $this->db_customer_session->where(array('wechat_id' => $wechat_id))->get_field('id', true);
 		for ($j=1; $j<=5; $j++) {
 			for ($i=1; ; $i++) {
-				$info = $wechat->getMsgrecord($start_time, $end_time, $i, 50);
-				if (RC_Error::is_error($info)) {
-					return $this->showmessage(wechat_method::wechat_error($info->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 				$info = $wechat->getMsgrecord($start_time, $end_time, $i, 50);
+// 				if (RC_Error::is_error($info)) {
+// 					return $this->showmessage(wechat_method::wechat_error($info->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 				}
+				
+				try {
+					$info = $wechat->getMsgrecord($start_time, $end_time, $i, 50);
+				} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+					return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
+				
 				$arr = array();
 				if (!empty($info['recordlist'])) {
 					foreach ($info['recordlist'] as $key => $val) {
