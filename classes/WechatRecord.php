@@ -5,6 +5,7 @@ namespace Ecjia\App\Wechat;
 use RC_Time;
 use Ecjia\App\Wechat\Models\WechatUserModel;
 use Ecjia\App\Wechat\Models\WechatCustomMessageModel;
+use Ecjia\App\Wechat\Models\WechatMenuModel;
 
 class WechatRecord
 {
@@ -15,7 +16,7 @@ class WechatRecord
         $content = array(
             'content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
         );
-        self::replyMsg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询');
+        self::replyMsg($message->get('FromUserName'), $content['content']);
         return $content;
     }
     
