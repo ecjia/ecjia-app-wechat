@@ -5,7 +5,6 @@ namespace Ecjia\App\Wechat;
 use RC_Time;
 use Ecjia\App\Wechat\Models\WechatUserModel;
 use Ecjia\App\Wechat\Models\WechatCustomMessageModel;
-use Ecjia\App\Wechat\Models\WechatMenuModel;
 
 class WechatRecord
 {
