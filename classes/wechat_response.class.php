@@ -44,7 +44,8 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-defined('IN_ECJIA') or exit('No permission resources.');
+
+use Ecjia\App\Wechat\WechatRecord;
 
 /**
  * @file
@@ -56,7 +57,6 @@ class wechat_response {
      * 回复文本消息
      */
     public static function Text_reply($message, $text) {
-    	RC_Loader::load_app_class('wechat_method', 'wechat', false);
     	if(!empty($text)) {
     		$content = array(
 //     		    'ToUserName'    => $message->get('FromUserName'),
@@ -65,7 +65,7 @@ class wechat_response {
 //     				'MsgType'       => 'text',
     				'content'       => $text
     		);
-    		wechat_method::record_msg($message->get('FromUserName'), $text, 1);
+    		WechatRecord::replyMsg($message->get('FromUserName'), $text);
     	}else{
     		$content = array(
 //     		    'ToUserName'    => $message->get('FromUserName'),
@@ -74,7 +74,7 @@ class wechat_response {
 //     				'MsgType'       => 'text',
     				'content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
     		);
-    		wechat_method::record_msg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询', 1);
+    		WechatRecord::replyMsg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询');
     	}
        
 //     	$text = new Royalcms\Component\WeChat\Message\Text($content);
@@ -85,27 +85,29 @@ class wechat_response {
      * 回复图片消息
      */
     public static function Image_reply($message, $file) {
-    	RC_Loader::load_app_class('wechat_method', 'wechat', false);
     	if(!empty($file)) {
-    		$content = array(
-    		    'ToUserName'    => $message->get('FromUserName'),
-    		    'FromUserName'  => $message->get('ToUserName'),
-    				'CreateTime'    => SYS_TIME,
-    				'MsgType'       => 'image',
-    				'Image'         => array(
-    						'MediaId' => $file //通过素材管理接口上传多媒体文件，得到的id。
-    				)
-    		);
-    		wechat_method::record_msg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.image_content'), 1);
+//     		$content = array(
+//     		    'ToUserName'    => $message->get('FromUserName'),
+//     		    'FromUserName'  => $message->get('ToUserName'),
+//     				'CreateTime'    => SYS_TIME,
+//     				'MsgType'       => 'image',
+//     				'Image'         => array(
+//     						'MediaId' => $file //通过素材管理接口上传多媒体文件，得到的id。
+//     				)
+//     		);
+    		$content = [
+    		    'media_id' => $file //通过素材管理接口上传多媒体文件，得到的id。
+    		];
+    		WechatRecord::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.image_content'));
     	}else{
     		$content = array(
-    		    'ToUserName'    => $message->get('FromUserName'),
-    		    'FromUserName'  => $message->get('ToUserName'),
-    				'CreateTime'    => SYS_TIME,
-    				'MsgType'       => 'text',
-    				'Content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
+//     		    'ToUserName'    => $message->get('FromUserName'),
+//     		    'FromUserName'  => $message->get('ToUserName'),
+//     				'CreateTime'    => SYS_TIME,
+//     				'MsgType'       => 'text',
+    				'content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
     		);
-    		wechat_method::record_msg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询', 1);
+    		WechatRecord::replyMsg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询');
     	}
     	
         return $content;
@@ -115,27 +117,29 @@ class wechat_response {
      * 回复语音消息
      */
     public static function Voice_reply($message, $file) {
-    	RC_Loader::load_app_class('wechat_method', 'wechat', false);
     	if(!empty($file)) {
-    		$content = array(
-    		    'ToUserName'    => $message->get('FromUserName'),
-    		    'FromUserName'  => $message->get('ToUserName'),
-    				'CreateTime'    => SYS_TIME,
-    				'MsgType'       => 'voice',
-    				'Voice'         => array(
-    						'MediaId' => $file //通过素材管理接口上传多媒体文件，得到的id。
-    				)
-    		);
-    		wechat_method::record_msg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.voice_content'), 1);
+//     		$content = array(
+//     		    'ToUserName'    => $message->get('FromUserName'),
+//     		    'FromUserName'  => $message->get('ToUserName'),
+//     				'CreateTime'    => SYS_TIME,
+//     				'MsgType'       => 'voice',
+//     				'Voice'         => array(
+//     						'MediaId' => $file //通过素材管理接口上传多媒体文件，得到的id。
+//     				)
+//     		);
+    		$content = [
+    		    'media_id' => $file //通过素材管理接口上传多媒体文件，得到的id。
+    		];
+    		WechatRecord::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.voice_content'));
     	}else{
     		$content = array(
-    		    'ToUserName'    => $message->get('FromUserName'),
-    		    'FromUserName'  => $message->get('ToUserName'),
-    				'CreateTime'    => SYS_TIME,
-    				'MsgType'       => 'text',
-    				'Content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
+//     		    'ToUserName'    => $message->get('FromUserName'),
+//     		    'FromUserName'  => $message->get('ToUserName'),
+//     				'CreateTime'    => SYS_TIME,
+//     				'MsgType'       => 'text',
+    				'content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
     		);
-    		wechat_method::record_msg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询', 1);
+    		WechatRecord::replyMsg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询');
     	}
       
         return $content;
@@ -145,30 +149,34 @@ class wechat_response {
      * 回复视频消息
      */
     public static function Video_reply($message, $file, $title, $digest) {
-    	RC_Loader::load_app_class('wechat_method', 'wechat', false);
     	
     	if(!empty($file)) {
-    		$content = array(
-    		    'ToUserName'    => $message->get('FromUserName'),
-    		    'FromUserName'  => $message->get('ToUserName'),
-    				'CreateTime'    => SYS_TIME,
-    				'MsgType'       => 'video',
-    				'Video' => array(
-    						'MediaId'       => $file,
-    						'Title'         => $title,
-    						'Description'   => $digest
-    				)
-    		);
-    		wechat_method::record_msg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.video_content'), 1);
+//     		$content = array(
+//     		    'ToUserName'    => $message->get('FromUserName'),
+//     		    'FromUserName'  => $message->get('ToUserName'),
+//     				'CreateTime'    => SYS_TIME,
+//     				'MsgType'       => 'video',
+//     				'Video' => array(
+//     						'MediaId'       => $file,
+//     						'Title'         => $title,
+//     						'Description'   => $digest
+//     				)
+//     		);
+    		$content = [
+    		    'media_id' => $file,
+    		    'title' => $title,
+    		    'description' => $digest
+    		];
+    		WechatRecord::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.video_content'));
     	}else{
     		$content = array(
-    		    'ToUserName'    => $message->get('FromUserName'),
-    		    'FromUserName'  => $message->get('ToUserName'),
-    				'CreateTime'    => SYS_TIME,
-    				'MsgType'       => 'text',
-    				'Content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
+//     		    'ToUserName'    => $message->get('FromUserName'),
+//     		    'FromUserName'  => $message->get('ToUserName'),
+//     				'CreateTime'    => SYS_TIME,
+//     				'MsgType'       => 'text',
+    				'content'       => '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询'
     		);
-    		wechat_method::record_msg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询', 1);
+    		WechatRecord::replyMsg($message->get('FromUserName'), '抱歉，暂未找到与您关键词所匹配的信息，可以进入客服系统进行相关咨询');
     	}
     	
         return $content;
