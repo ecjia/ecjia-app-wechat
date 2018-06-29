@@ -45,6 +45,8 @@
 //  ---------------------------------------------------------------------------------
 //
 
+use Ecjia\App\Wechat\WechatRecord;
+
 class wechat_action {
     /**
      * 文本回复
@@ -110,20 +112,20 @@ class wechat_action {
         $data     = $wr_db->field($field)->find(array('wechat_id'=>$wechat_id,'type'=>'msg'));
         if ($data['reply_type'] == 'text') {
         	$msg = $data['content'];
-        	$content = wechat_response::Text_reply($message, $msg);
+        	$content = WechatRecord::Text_reply($message, $msg);
         }
         else if ($data['reply_type'] == 'image') {
         	$msg   = $media_db->where(array('id' => $data['media_id']))->get_field('thumb');
-        	$content = wechat_response::Image_reply($message, $msg);
+        	$content = WechatRecord::Image_reply($message, $msg);
         }
         else if ($data['reply_type'] == 'voice') {
         	$msg   = $media_db->where(array('id' => $data['media_id']))->get_field('media_id');
-        	$content = wechat_response::Voice_reply($message, $msg);
+        	$content = WechatRecord::Voice_reply($message, $msg);
         }
         else if ($data['reply_type'] == 'video') {
         	$field='title, digest, media_id';
         	$msg = $media_db->field($field)->find(array('id' => $data['media_id']));
-        	$content = wechat_response::Video_reply($message, $msg['media_id'], $msg['title'], $msg['digest']);
+        	$content = WechatRecord::Video_reply($message, $msg['media_id'], $msg['title'], $msg['digest']);
         }
         return $content;
     }
