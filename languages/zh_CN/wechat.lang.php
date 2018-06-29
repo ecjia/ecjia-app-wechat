@@ -538,6 +538,7 @@ return array(
     'add_accounts_again'        => '添加失败，请先添加公众号，再进行后续操作',
     'del_accounts_again'        => '删除失败，请先添加公众号，再进行后续操作',
     'rule_name_exists'          => '规则名称  %s 已存在',
+    'keyword_exists'            => '关键词  %s 已存在',
     'keyword_repeat'            => '关键词  %s 重复',
     'keyword_reply'             => '返回关键词回复',
     'add_keyword'               => '继续添加规则',

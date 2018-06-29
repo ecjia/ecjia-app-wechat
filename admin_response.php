@@ -588,7 +588,7 @@ class admin_response extends ecjia_admin {
 		if (!empty($rule_keywords_list)) {
 			foreach ($rule_keywords_list as $v) {
 				if (in_array($v['rule_keywords'], $rule_keywords, true)) {
-					return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.rule_name_exists'), $data['rule_keywords']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+					return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.keyword_exists'), $v['rule_keywords']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
 			}
 		}
