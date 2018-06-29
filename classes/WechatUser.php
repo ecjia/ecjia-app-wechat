@@ -2,6 +2,8 @@
 
 namespace Ecjia\App\Wechat;
 
+use Ecjia\App\Weapp\Models\WechatUserModel;
+
 /**
  * 微信用户类
  * @author royalwang
@@ -30,7 +32,7 @@ class WechatUser
     
     protected function findUser()
     {
-        $user = WechatUser::where('wechat_id', $this->wechat_id)->where('openid', $this->open_id)->first();
+        $user = WechatUserModel::where('wechat_id', $this->wechat_id)->where('openid', $this->open_id)->first();
         return $user;
     }
     
