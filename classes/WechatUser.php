@@ -2,7 +2,7 @@
 
 namespace Ecjia\App\Wechat;
 
-use Ecjia\App\Weapp\Models\WechatUserModel;
+use Ecjia\App\Wechat\Models\WechatUserModel;
 
 /**
  * 微信用户类
