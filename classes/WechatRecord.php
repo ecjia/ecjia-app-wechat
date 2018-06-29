@@ -8,6 +8,9 @@ use Ecjia\App\Wechat\Models\WechatUserModel;
 use Ecjia\App\Wechat\Models\WechatCustomMessageModel;
 use Royalcms\Component\WeChat\Message\Text;
 use Royalcms\Component\WeChat\Message\Image;
+use Royalcms\Component\WeChat\Message\Voice;
+use Royalcms\Component\WeChat\Message\Video;
+use Royalcms\Component\WeChat\Message\News;
 
 class WechatRecord
 {
@@ -66,11 +69,12 @@ class WechatRecord
                 'media_id' => $file //通过素材管理接口上传多媒体文件，得到的id。
             ];
             self::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.voice_content'));
-        } else {
-            $content = self::Default_reply($message);
+            
+            return new Voice($content);
+        } 
+        else {
+            return self::Default_reply($message);
         }
-        
-        return $content;
     }
     
     /**
@@ -84,12 +88,34 @@ class WechatRecord
                 'description' => $digest
             ];
             self::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.video_content'));
-        } else {
-            $content = self::Default_reply($message);
-        }
         
-        return $content;
+            return new Video($content);
+        }
+        else {
+            return self::Default_reply($message);
+        }
     }
+    
+    /**
+     * 回复图文消息
+     */
+    public static function News_reply($message, $title, $description, $url, $image) {
+        if (!empty($title) && !empty($description)) {
+            $content = [
+                'title' => $title,
+                'description' => $description,
+                'url' => $url,
+                'image' => $image,
+            ];
+            self::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.news_content'));
+        
+            return new News($content);
+        } 
+        else {
+            return self::Default_reply($message);
+        }
+    }
+    
     
     /**
      * 输入信息
