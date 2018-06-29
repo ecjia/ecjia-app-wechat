@@ -67,7 +67,7 @@ class mobile_profile extends ecjia_front {
 //     	$account     = platform_account::make($uuid);
 //     	$wechat_id   = $account->getAccountID();
     	
-    	$wechat_id = with(new WechatUUID())->getWechatID();
+    	$wechat_id = with(new Ecjia\App\Wechat\WechatUUID())->getWechatID();
     	$wechat_user = new wechat_user($wechat_id, $openid);
     	$unionid     = $wechat_user->getUnionid();
  
