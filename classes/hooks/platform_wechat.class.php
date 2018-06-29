@@ -65,6 +65,7 @@ class wechat_platform_hooks {
     	->where(RC_DB::raw('m.send_time'), '>', $start)
     	->where(RC_DB::raw('m.send_time'), '<', $end)
     	->groupBy(RC_DB::raw('m.uid'))
+    	->orderBy('id', 'desc')
     	->take(5)
     	->get();
     	
