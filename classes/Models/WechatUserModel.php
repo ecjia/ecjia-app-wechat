@@ -33,12 +33,12 @@ class WechatUserModel extends Model
         'groupid',
         'ect_uid',
         'bein_kefu',
-        'parent_id',
-        'drp_parent_id',
-        'from',
-        'subscribe_scene',
-        'qr_scene',
-        'qr_scene_str'
+//         'parent_id',
+//         'drp_parent_id',
+//         'from',
+//         'subscribe_scene',
+//         'qr_scene',
+//         'qr_scene_str'
     ];
 
     protected $guarded = [];
