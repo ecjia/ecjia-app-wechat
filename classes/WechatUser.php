@@ -57,7 +57,7 @@ class WechatUser
     /**
      * 获取ecajia用户id
      */
-    public function getUserId() 
+    public function getEcjiaUserId() 
     {
         return $this->user->ect_uid;
     }
@@ -66,8 +66,9 @@ class WechatUser
      * 设置与微信关联的ecjia用户id
      * @param integer $userid
      */
-    public function setUserId($userid) 
+    public function setEcjiaUserId($userid) 
     {
+        $this->user->ect_uid = $userid;
         return $this->user->update(array('ect_uid' => $userid));
     }
     
