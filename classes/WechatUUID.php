@@ -92,6 +92,11 @@ class WechatUUID {
         return null;
     }
     
+    public function getAccount()
+    {
+        return $this->account;
+    }
+    
     /**
      * 获取公众号添加后的wechat_Id
      * @return integer

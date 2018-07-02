@@ -22,7 +22,7 @@ class WechatUser
         $this->wechat_id    = $wechat_id;
         $this->open_id      = $openid;
         
-        $this->user  = $this->findUser();
+        $this->user  = $this->findOpenidUser();
     }
     
     public function getWechatUser() 
@@ -30,10 +30,37 @@ class WechatUser
         return $this->user;
     }
     
-    protected function findUser()
+    protected function findOpenidUser()
     {
-        $user = WechatUserModel::where('wechat_id', $this->wechat_id)->where('openid', $this->open_id)->first();
+        $user = WechatUserModel::wechat($this->wechat_id)->openid($this->open_id)->first();
         return $user;
+    }
+    
+    public function findUnionidUser($unionid)
+    {
+        $user = WechatUserModel::leftJoin('platform_account', 'wechat_user.wechat_id', '=', 'platform_account.id')
+                    ->unionid($unionid)->first();
+        return $user;
+    }
+    
+    public function getConnectUser()
+    {
+        if ($this->user->unionid) {
+            $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $this->user->unionid, 'user');
+        } else {
+            $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $this->user->openid, 'user');
+        }
+        
+        return $connect_user;
+    }
+    
+    /**
+     * 获取EcjiaUser用户数据模型
+     * @return \Royalcms\Component\Database\Eloquent\Model|\Royalcms\Component\Database\Eloquent\Collection|\Ecjia\App\User\Models\UsersModel
+     */
+    public function getEcjiaUser()
+    {
+        return \Ecjia\App\User\Models\UsersModel::find($this->getEcjiaUserId());
     }
     
     public function getUnionid() 

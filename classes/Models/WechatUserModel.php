@@ -43,6 +43,35 @@ class WechatUserModel extends Model
 
     protected $guarded = [];
 
+    /**
+     * 限制查询只包括指定用户。
+     *
+     * @return \Royalcms\Component\Database\Eloquent\Builder
+     */
+    public function scopeWechat($query, $wechat_id)
+    {
+        return $query->where('wechat_id', $wechat_id);
+    }
+    
+    /**
+     * 限制查询只包括指定用户。
+     *
+     * @return \Royalcms\Component\Database\Eloquent\Builder
+     */
+    public function scopeOpenid($query, $openid)
+    {
+        return $query->where('openid', $openid);
+    }
+    
+    /**
+     * 限制查询只包括指定用户。
+     *
+     * @return \Royalcms\Component\Database\Eloquent\Builder
+     */
+    public function scopeUnionid($query, $unionid)
+    {
+        return $query->where('unionid', $unionid);
+    }
     
     /**
      * @return mixed
