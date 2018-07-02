@@ -45,10 +45,11 @@
 //  ---------------------------------------------------------------------------------
 //
 
-defined('IN_ECJIA') or exit('No permission resources.');
+use Ecjia\App\Wechat\Controllers\EcjiaWechatUserController;
 
 
-class mobile_userbind extends ecjia_front {
+class mobile_userbind extends EcjiaWechatUserController
+{
     
     public function __construct() {
         parent::__construct();
