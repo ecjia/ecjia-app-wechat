@@ -72,7 +72,7 @@ class platform_mass_message extends ecjia_platform {
 		RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
 		
 		RC_Script::localize_script('admin_mass_message', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.mass_message')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.mass_message')));
 		
 		ecjia_platform_screen::get_current_screen()->set_subject('群发消息');
 	}
@@ -80,7 +80,7 @@ class platform_mass_message extends ecjia_platform {
 	public function init() {
 		$this->admin_priv('wechat_message_manage');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.send_message')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.send_message')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.send_message'));
 		
 		$wechat_id = $this->platformAccount->getAccountID();
@@ -295,7 +295,7 @@ class platform_mass_message extends ecjia_platform {
 	public function mass_list() {
 		$this->admin_priv('wechat_message_manage');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.send_record')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.send_record')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.send_record'));
 		
 		$wechat_id = $this->platformAccount->getAccountID();

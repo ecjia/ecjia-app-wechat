@@ -83,7 +83,7 @@ class platform_message extends ecjia_platform {
 		RC_Style::enqueue_style('admin_subscribe', RC_App::apps_url('statics/css/admin_subscribe.css', __FILE__));
 		
 		RC_Script::localize_script('platform_subscribe', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_manage'), RC_Uri::url('wechat/admin_subscribe/init')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_manage'), RC_Uri::url('wechat/admin_subscribe/init')));
 		
 		ecjia_platform_screen::get_current_screen()->set_subject('消息管理');
 	}
@@ -91,8 +91,8 @@ class platform_message extends ecjia_platform {
 	public function init() {
 		$this->admin_priv('wechat_subscribe_message_manage');
 		
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_manage')));
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_manage')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.message_manage'));
 
 		

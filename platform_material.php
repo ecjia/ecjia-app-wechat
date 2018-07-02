@@ -85,14 +85,14 @@ class platform_material extends ecjia_platform {
 	public function init() {
 		$this->admin_priv('wechat_material_manage');
 		
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
 		
 		$nav_here = RC_Lang::get('wechat::wechat.forever_material');
 		$material = intval($_GET['material']);
 		if ($material != 1) {
 			$nav_here = RC_Lang::get('wechat::wechat.provisional_material');
 		}
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here));
 		
 		$type = isset($_GET['type']) ? $_GET['type'] : '';
 		$form_action = '';
@@ -100,53 +100,53 @@ class platform_material extends ecjia_platform {
 		
 		if ($type == 'news') {
 			$action_link = array('text' => RC_Lang::get('wechat::wechat.add_images'), 'href'=> RC_Uri::url('wechat/platform_material/add'));
-			ecjia_screen::get_current_screen()->add_help_tab(array(
+			ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 				'id'		=> 'overview',
 				'title'		=> RC_Lang::get('wechat::wechat.overview'),
 				'content'	=>
 				'<p>' . RC_Lang::get('wechat::wechat.welcome_material_manage'). '</p>'
 			));
 			
-			ecjia_screen::get_current_screen()->set_help_sidebar(
+			ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 				'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 				'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E5.9B.BE.E6.96.87.E7.AE.A1.E7.90.86" target="_blank">'.RC_Lang::get('wechat::wechat.material_manage_help').'</a>') . '</p>'
 			);
 		} elseif ($type == 'image') {
 			$form_action = RC_Uri::url('wechat/platform_material/picture_insert');
-			ecjia_screen::get_current_screen()->add_help_tab(array(
+			ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 				'id'		=> 'overview',
 				'title'		=> RC_Lang::get('wechat::wechat.overview'),
 				'content'	=>
 				'<p>' . RC_Lang::get('wechat::wechat.welcome_images_manage') . '</p>'
 			));
 			
-			ecjia_screen::get_current_screen()->set_help_sidebar(
+			ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 				'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 				'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E5.9B.BE.E7.89.87.E7.AE.A1.E7.90.86" target="_blank">'.RC_Lang::get('wechat::wechat.images_manage_help').'</a>') . '</p>'
 			);
 		} elseif ($type == 'voice') {
 			$form_action = RC_Uri::url('wechat/platform_material/voice_insert');
-			ecjia_screen::get_current_screen()->add_help_tab(array(
+			ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 				'id'		=> 'overview',
 				'title'		=> RC_Lang::get('wechat::wechat.overview'),
 				'content'	=>
 				'<p>' . RC_Lang::get('wechat::wechat.welcome_voice_manage') . '</p>'
 			));
 				
-			ecjia_screen::get_current_screen()->set_help_sidebar(
+			ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 				'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 				'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E8.AF.AD.E9.9F.B3.E7.AE.A1.E7.90.86" target="_blank">'.RC_Lang::get('wechat::wechat.voice_manage_help').'</a>') . '</p>'
 			);
 		} elseif ($type == 'video') {
 			$action_link = array('text' => RC_Lang::get('wechat::wechat.add_video'), 'href'=> RC_Uri::url('wechat/platform_material/video_add'));
-			ecjia_screen::get_current_screen()->add_help_tab(array(
+			ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 				'id'		=> 'overview',
 				'title'		=> RC_Lang::get('wechat::wechat.overview'),
 				'content'	=>
 				'<p>' . RC_Lang::get('wechat::wechat.welcome_video_manage') . '</p>'
 			));
 				
-			ecjia_screen::get_current_screen()->set_help_sidebar(
+			ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 				'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 				'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E8.A7.86.E9.A2.91.E7.AE.A1.E7.90.86" target="_blank">'.RC_Lang::get('wechat::wechat.video_manage_help').'</a>') . '</p>'
 			);
@@ -186,17 +186,17 @@ class platform_material extends ecjia_platform {
 		if ($material != 1) {
 			$nav_here = RC_Lang::get('wechat::wechat.provisional_material');
 		}
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_images')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_images')));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=>
 			'<p>' . RC_Lang::get('wechat::wechat.welcome_add_images') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E6.B7.BB.E5.8A.A0.E5.9B.BE.E6.96.87" target="_blank">'.RC_Lang::get('wechat::wechat.images_meterial_help').'</a>') . '</p>'
 		);
@@ -337,17 +337,17 @@ class platform_material extends ecjia_platform {
 		
 		$material = !empty($_GET['material']) ? 1 : 0;
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_material')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_material')));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=>
 			'<p>' . RC_Lang::get('wechat::wechat.welcome_edit_material') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E7.BC.96.E8.BE.91.E5.9B.BE.E6.96.87" target="_blank">'.RC_Lang::get('wechat::wechat.edit_material_help').'</a>') . '</p>'
 		);
@@ -889,18 +889,18 @@ class platform_material extends ecjia_platform {
 		if ($material != 1) {
 			$nav_here = RC_Lang::get('wechat::wechat.provisional_material');
 		}
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'video', 'material' => $material))));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_video')));
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'video', 'material' => $material))));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_video')));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=>
 			'<p>' . RC_Lang::get('wechat::wechat.welcome_add_video') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E6.B7.BB.E5.8A.A0.E8.A7.86.E9.A2.91" target="_blank">'.RC_Lang::get('wechat::wechat.add_video_help').'</a>') . '</p>'
 		);
@@ -1029,18 +1029,18 @@ class platform_material extends ecjia_platform {
 		if ($material != 1) {
 			$nav_here = RC_Lang::get('wechat::wechat.provisional_material');
 		}
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'video'))));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_material')));
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'video'))));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_material')));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=>
 			'<p>' . RC_Lang::get('wechat::wechat.welcome_edit_video') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E7.BC.96.E8.BE.91.E8.A7.86.E9.A2.91" target="_blank">'.RC_Lang::get('wechat::wechat.edit_video_help').'</a>') . '</p>'
 		);

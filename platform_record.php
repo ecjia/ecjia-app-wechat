@@ -96,7 +96,7 @@ class platform_record extends ecjia_platform {
 // 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		
 		RC_Script::localize_script('admin_record', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_chat_record'), RC_Uri::url('wechat/platform_record/init')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_chat_record'), RC_Uri::url('wechat/platform_record/init')));
 		
 		ecjia_platform_screen::get_current_screen()->set_subject('客服会话记录');
 	}
@@ -105,8 +105,8 @@ class platform_record extends ecjia_platform {
 	public function init() {
 		$this->admin_priv('wechat_record_manage');
 		
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_chat_record')));
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_chat_record')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.customer_chat_record'));
 
 		
@@ -148,7 +148,7 @@ class platform_record extends ecjia_platform {
 			$this->assign('type', $type);
 			$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_subscribe_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 		}
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_message_record')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_message_record')));
 	
 		$uid          = !empty($_GET['uid'])          ? $_GET['uid']              : '';
 		$page         = !empty($_GET['page'])         ? intval($_GET['page'])     : 1;

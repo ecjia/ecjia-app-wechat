@@ -76,7 +76,7 @@ class platform_customer extends ecjia_platform {
 		RC_Style::enqueue_style('hint.min', RC_Uri::admin_url('statics/lib/hint_css/hint.min.css'));
 		
 		RC_Script::localize_script('wechat_customer', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('wechat/platform_customer/init')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('wechat/platform_customer/init')));
 		
 		ecjia_platform_screen::get_current_screen()->set_subject('多客服账号');
 	}
@@ -87,18 +87,18 @@ class platform_customer extends ecjia_platform {
 	public function init() {
 		$this->admin_priv('wechat_customer_manage');
 		
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer')));
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.customer_list'));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_customer'), 'href'=> RC_Uri::url('wechat/platform_customer/add')));
 	
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.customer_content') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:多客服管理#.E5.A4.9A.E5.AE.A2.E6.9C.8D" target="_blank">'. RC_Lang::get('wechat::wechat.customer_help') .'</a>') . '</p>'
 		);
@@ -124,17 +124,17 @@ class platform_customer extends ecjia_platform {
 	public function add() {
 		$this->admin_priv('wechat_customer_add');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_customer')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_customer')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_customer'));
 		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_customer/init'), 'text' => RC_Lang::get('wechat::wechat.customer_list')));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.add_customer_content') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:多客服管理#.E6.B7.BB.E5.8A.A0.E5.AE.A2.E6.9C.8D.E8.B4.A6.E5.8F.B7" target="_blank">'. RC_Lang::get('wechat::wechat.add_customer_help') .'</a>') . '</p>'
 		);
@@ -215,17 +215,17 @@ class platform_customer extends ecjia_platform {
 	public function edit() {
 		$this->admin_priv('wechat_customer_update');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_customer')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_customer')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.edit_customer'));
 		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_customer/init'), 'text' => RC_Lang::get('wechat::wechat.customer_list')));
 
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.edit_customer_content') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:多客服管理#.E7.BC.96.E8.BE.91.E5.AE.A2.E6.9C.8D.E7.8A.B6.E6.80.81" target="_blank">'. RC_Lang::get('wechat::wechat.edit_customer_help') .'</a>') . '</p>'
 		);
@@ -526,7 +526,7 @@ class platform_customer extends ecjia_platform {
 		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.customer_message'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_message')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_message')));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.customer_list'), 'href'=> RC_Uri::url('wechat/platform_customer/init')));
 		
 		$type = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('type');

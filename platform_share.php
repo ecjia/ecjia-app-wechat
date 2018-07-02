@@ -80,7 +80,7 @@ class platform_share extends ecjia_platform {
 // 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		
 		RC_Script::localize_script('wechat_qrcodeshare', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.scan_code'), RC_Uri::url('wechat/platform_share/init')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.scan_code'), RC_Uri::url('wechat/platform_share/init')));
 		
 		ecjia_platform_screen::get_current_screen()->set_subject('推荐二维码');
 	}
@@ -91,8 +91,8 @@ class platform_share extends ecjia_platform {
 	public function init() {
 		$this->admin_priv('wechat_share_manage');
 		
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.scan_code')));
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.scan_code')));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_qr_code'), 'href'=> RC_Uri::url('wechat/platform_share/add')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.scan_code_list'));
 		
@@ -121,7 +121,7 @@ class platform_share extends ecjia_platform {
 	public function add() {
 		$this->admin_priv('wechat_share_add');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_qr_code')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_qr_code')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_qr_code'));
 		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_share/init'), 'text' => RC_Lang::get('wechat::wechat.scan_code_list')));
 		

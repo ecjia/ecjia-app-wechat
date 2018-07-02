@@ -79,7 +79,7 @@ class platform_qrcode extends ecjia_platform {
 // 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		
 		RC_Script::localize_script('wechat_qrcode', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.channel_code'), RC_Uri::url('wechat/platform_qrcode/init')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.channel_code'), RC_Uri::url('wechat/platform_qrcode/init')));
 		
 		ecjia_platform_screen::get_current_screen()->set_subject('渠道二维码');
 	}
@@ -90,18 +90,18 @@ class platform_qrcode extends ecjia_platform {
 	public function init() {
 		$this->admin_priv('wechat_qrcode_manage');
 		
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.channel_code')));
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.channel_code')));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_qr_code'), 'href'=> RC_Uri::url('wechat/platform_qrcode/add')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.channel_code_list'));
 
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.qrcode_content') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:二维码管理#.E4.BA.8C.E7.BB.B4.E7.A0.81.E7.AE.A1.E7.90.86" target="_blank">'.RC_Lang::get('wechat::wechat.qrcode_help').'</a>') . '</p>'
 		);
@@ -132,18 +132,18 @@ class platform_qrcode extends ecjia_platform {
 	public function add() {
 		$this->admin_priv('wechat_qrcode_add');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_qr_code')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_qr_code')));
 		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_qr_code'));
 		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_qrcode/init'), 'text' => RC_Lang::get('wechat::wechat.channel_code_list')));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.qrcode_add_content') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:二维码管理#.E6.B7.BB.E5.8A.A0.E4.BA.8C.E7.BB.B4.E7.A0.81" target="_blank">'.RC_Lang::get('wechat::wechat.qrcode_add_help').'</a>') . '</p>'
 		);

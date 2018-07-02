@@ -69,7 +69,7 @@ class platform_menus extends ecjia_platform {
 		RC_Style::enqueue_style('menu', RC_App::apps_url('statics/platform-css/wechat_menu.css', __FILE__));
 		
 		RC_Script::localize_script('wechat_menus', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.wechat_menu'), RC_Uri::url('wechat/platform_menus/init')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.wechat_menu'), RC_Uri::url('wechat/platform_menus/init')));
 		
 		ecjia_platform_screen::get_current_screen()->set_subject('微信菜单');
 	}
@@ -77,18 +77,18 @@ class platform_menus extends ecjia_platform {
 	public function init() {
 		$this->admin_priv('wechat_menus_manage');
 	
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.wechat_menu')));
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.wechat_menu')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.wechat_menu_list'));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.add_wechat_menu'), 'href'=> RC_Uri::url('wechat/platform_menus/add')));
 	
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.wechat_menu_content') . '</p>'
 		));
 	
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:自定义菜单#.E8.87.AA.E5.AE.9A.E4.B9.89.E8.8F.9C.E5.8D.95" target="_blank">'.RC_Lang::get('wechat::wechat.wechat_menu_help').'</a>') . '</p>'
 		);
@@ -125,17 +125,17 @@ class platform_menus extends ecjia_platform {
 	public function add() {
 		$this->admin_priv('wechat_menus_add');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_wechat_menu')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_wechat_menu')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_wechat_menu'));
 		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_menus/init'), 'text' => RC_Lang::get('wechat::wechat.wechat_menu_list')));
 
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.wechat_menu_add_content') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:自定义菜单#.E6.B7.BB.E5.8A.A0.E5.BE.AE.E4.BF.A1.E8.8F.9C.E5.8D.95" target="_blank">'.RC_Lang::get('wechat::wechat.wechat_menu_add_help').'</a>') . '</p>'
 		);
@@ -261,17 +261,17 @@ class platform_menus extends ecjia_platform {
 	public function edit() {
 		$this->admin_priv('wechat_menus_update');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_wechat_menu')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_wechat_menu')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.edit_wechat_menu'));
 		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_menus/init'), 'text' => RC_Lang::get('wechat::wechat.wechat_menu_list')));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.wechat_menu_edit_content') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:自定义菜单#.E7.BC.96.E8.BE.91.E5.BE.AE.E4.BF.A1.E8.8F.9C.E5.8D.95" target="_blank">'.RC_Lang::get('wechat::wechat.wechat_menu_edit_help').'</a>') . '</p>'
 		);

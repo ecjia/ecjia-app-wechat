@@ -95,17 +95,17 @@ class platform_response extends ecjia_platform {
 	public function reply_subscribe() {
 		$this->admin_priv('wechat_response_manage');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.attention_auto_reply')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.attention_auto_reply')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.auto_reply'));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=>
 			'<p>' . RC_Lang::get('wechat::wechat.auto_reply_operation') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.lable_more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:自动回复#.E5.85.B3.E6.B3.A8.E8.87.AA.E5.8A.A8.E5.9B.9E.E5.A4.8D" target="_blank">'.RC_Lang::get('wechat::wechat.auto_reply_document').'</a>') . '</p>'
 		);
@@ -324,17 +324,17 @@ class platform_response extends ecjia_platform {
 	public function reply_msg() {
 		$this->admin_priv('wechat_response_manage');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_auto_reply')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.message_auto_reply')));
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.auto_reply'));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=>
 			'<p>' . RC_Lang::get('wechat::wechat.message_reply_operation') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.lable_more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:自动回复#.E6.B6.88.E6.81.AF.E8.87.AA.E5.8A.A8.E5.9B.9E.E5.A4.8D" target="_blank">'.RC_Lang::get('wechat::wechat.auto_reply_help').'</a>') . '</p>'
 		);
@@ -454,16 +454,16 @@ class platform_response extends ecjia_platform {
 		$this->admin_priv('wechat_response_manage');
 		
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.reply_keyword'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.reply_keyword')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.reply_keyword')));
 		
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=>
 			'<p>' . RC_Lang::get('wechat::wechat.keyword_reply_operation') . '</p>'
 		));
 		
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:关键词回复#.E5.85.B3.E9.94.AE.E8.AF.8D.E5.9B.9E.E5.A4.8D" target="_blank">'.RC_Lang::get('wechat::wechat.auto_keywords_help').'</a>') . '</p>'
 		);
@@ -487,7 +487,7 @@ class platform_response extends ecjia_platform {
 	public function reply_keywords_add() {
 		$this->admin_priv('wechat_response_add');
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.reply_keyword'), RC_Uri::url('wechat/platform_response/reply_keywords')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.reply_keyword'), RC_Uri::url('wechat/platform_response/reply_keywords')));
 		$this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_response/reply_keywords'), 'text' => RC_Lang::get('wechat::wechat.reply_keyword')));
 		
 		$this->assign('form_action', RC_Uri::url('wechat/platform_response/reply_keywords_insert'));
@@ -502,15 +502,15 @@ class platform_response extends ecjia_platform {
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		if (!empty($id)) {
 			$this->assign('ur_here', RC_Lang::get('wechat::wechat.edit_rule'));
-			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_rule')));
-			ecjia_screen::get_current_screen()->add_help_tab(array(
+			ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_rule')));
+			ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 				'id'		=> 'overview',
 				'title'		=> RC_Lang::get('wechat::wechat.overview'),
 				'content'	=>
 				'<p>' . RC_Lang::get('wechat::wechat.edit_rule_operation') . '</p>'
 			));
 			
-			ecjia_screen::get_current_screen()->set_help_sidebar(
+			ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 				'<p><strong>' . RC_Lang::get('wechat::wechat.lable_more_info') . '</strong></p>' .
 				'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:关键词回复#.E7.BC.96.E8.BE.91.E8.A7.84.E5.88.99" target="_blank">'.RC_Lang::get('wechat::wechat.edit_rule_help').'</a>') . '</p>'
 			);
@@ -520,15 +520,15 @@ class platform_response extends ecjia_platform {
 			$this->assign('data', $data);
 		} else {
 			$this->assign('ur_here', RC_Lang::get('wechat::wechat.add_rule'));
-			ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_rule')));
-			ecjia_screen::get_current_screen()->add_help_tab(array(
+			ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_rule')));
+			ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 				'id'		=> 'overview',
 				'title'		=> RC_Lang::get('wechat::wechat.overview'),
 				'content'	=>
 				'<p>' . RC_Lang::get('wechat::wechat.add_rule_operation') . '</p>'
 			));
 				
-			ecjia_screen::get_current_screen()->set_help_sidebar(
+			ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 				'<p><strong>' . RC_Lang::get('wechat::wechat.lable_more_info') . '</strong></p>' .
 				'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:关键词回复#.E6.B7.BB.E5.8A.A0.E8.A7.84.E5.88.99" target="_blank">'.RC_Lang::get('wechat::wechat.add_rule_help').'</a>') . '</p>'
 			);

@@ -96,14 +96,14 @@ class platform_subscribe extends ecjia_platform {
 	public function init() {
 		$this->admin_priv('wechat_subscribe_manage');
 
-		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.subscribe_manage')));
-		ecjia_screen::get_current_screen()->add_help_tab(array(
+		ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.subscribe_manage')));
+		ecjia_platform_screen::get_current_screen()->add_help_tab(array(
 			'id'		=> 'overview',
 			'title'		=> RC_Lang::get('wechat::wechat.overview'),
 			'content'	=> '<p>' . RC_Lang::get('wechat::wechat.subscribe_manage_content') . '</p>'
 		));
-		ecjia_screen::get_current_screen()->set_help_sidebar(
+		ecjia_platform_screen::get_current_screen()->set_help_sidebar(
 			'<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
 			'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:用户管理#.E7.94.A8.E6.88.B7.E7.AE.A1.E7.90.86" target="_blank">'. RC_Lang::get('wechat::wechat.subscribe_manage_help') .'</a>') . '</p>'
 		);
@@ -523,7 +523,7 @@ class platform_subscribe extends ecjia_platform {
 		$page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.user_message_record'));
 		
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.user_message_record')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.user_message_record')));
 		$this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.subscribe_manage'), 'href'=> RC_Uri::url('wechat/platform_subscribe/init', array('page' => $page))));
 		
 		if (is_ecjia_error($wechat_id)) {

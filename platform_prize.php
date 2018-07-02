@@ -93,7 +93,7 @@ class platform_prize extends ecjia_platform {
 		$this->admin_priv('wechat_prize_manage');
 	
 		$this->assign('ur_here', RC_Lang::get('wechat::wechat.mail_record_list'));
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.draw_record')));
+		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.draw_record')));
 		
 		
 		$wechat_id = $this->platformAccount->getAccountID();
