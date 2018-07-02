@@ -1,6 +1,4 @@
 <?php
-use Royalcms\Component\WeChat\Server\BadRequestException;
-
 //
 //    ______         ______           __         __         ______
 //   /\  ___\       /\  ___\         /\_\       /\_\       /\  __ \
@@ -46,6 +44,7 @@ use Royalcms\Component\WeChat\Server\BadRequestException;
 //
 //  ---------------------------------------------------------------------------------
 //
+use Royalcms\Component\WeChat\Server\BadRequestException;
 
 /**
  * 后台微信公众平台
@@ -68,39 +67,9 @@ class wechat_platform_response_api extends Component_Event_Api
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
             
             $server = $wechat->server;
-            $server->setMessageHandler(function ($message) {
-                switch ($message->MsgType) {
-                    case 'event':
-                        return wechat_action::Event_action($message);
-                        break;
-                    case 'text':
-                        return Ecjia\App\Wechat\WechatMessageHandler::Text_action($message);
-                        break;
-                    case 'image':
-                        return wechat_action::Image_action($message);
-                        break;
-                    case 'voice':
-                        return wechat_action::Voice_action($message);
-                        break;
-                    case 'video':
-                        return wechat_action::Video_action($message);
-                        break;
-                    case 'location':
-                        return wechat_action::Location_action($message);
-                        break;
-                    case 'link':
-                        return wechat_action::Link_action($message);
-                        break;
-                        // ... 其它消息
-                    default:
-                        return wechat_action::Default_action($message);
-                        break;
-                }
+            $server->setMessageHandler(['Ecjia\App\Wechat\WechatMessageHandler', 'getMessageHandler']);
                 
-                // ...
-            });
-                
-                return $server->serve();
+            return $server->serve();
             
         } catch (Royalcms\Component\WeChat\Server\BadRequestException $e) {
             return new ecjia_error('ecjia_platform_bad_request_exception', $e->getMessage());

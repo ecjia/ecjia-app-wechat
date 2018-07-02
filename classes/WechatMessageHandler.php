@@ -4,9 +4,45 @@ namespace Ecjia\App\Wechat;
 
 use RC_Hook;
 use Ecjia\App\Wechat\Models\WechatReplyModel;
+use wechat_action;
+
+RC_Package::package('app::wechat')->loadClass('wechat_action');
 
 class WechatMessageHandler
 {
+    
+    public static function getMessageHandler($message)
+    {
+        switch ($message->MsgType) {
+            case 'event':
+                return wechat_action::Event_action($message);
+                break;
+            case 'text':
+                return self::Text_action($message);
+                break;
+            case 'image':
+                return self::Image_action($message);
+                break;
+            case 'voice':
+                return wechat_action::Voice_action($message);
+                break;
+            case 'video':
+                return wechat_action::Video_action($message);
+                break;
+            case 'location':
+                return wechat_action::Location_action($message);
+                break;
+            case 'link':
+                return wechat_action::Link_action($message);
+                break;
+                // ... 其它消息
+            default:
+                return wechat_action::Default_action($message);
+                break;
+        }
+        
+        // ...
+    }
     
     /**
      * 文本回复
@@ -114,6 +150,16 @@ class WechatMessageHandler
             $content = WechatRecord::Text_reply($message, $content);
         }
         
+        return $content;
+    }
+    
+    /**
+     * 文本请求
+     * @param \Royalcms\Component\Support\Collection $message
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
+    public static function Image_action($message) {
+        $content = WechatRecord::Image_reply($message, $message->get('MediaId'));
         return $content;
     }
     
