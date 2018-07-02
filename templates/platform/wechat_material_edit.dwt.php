@@ -9,17 +9,16 @@
 <!-- {block name="home-content"} -->
 
 <!-- {if $errormsg} -->
-<div class="alert alert-info">
+<div class="alert alert-danger">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
 </div>
 <!-- {/if} -->
 
 {if $warn && $wechat_type eq 0}
-<div class="alert alert-info">
+<div class="alert alert-danger">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>{lang key='wechat::wechat.notice_public_not_certified'}
 </div>
 {/if}
-
 
 <div class="row edit-page">
     <div class="col-12">
