@@ -5,6 +5,7 @@ namespace Ecjia\App\Wechat;
 use RC_Hook;
 use Ecjia\App\Wechat\Models\WechatReplyModel;
 use wechat_action;
+use RC_Package;
 
 RC_Package::package('app::wechat')->loadClass('wechat_action');
 
