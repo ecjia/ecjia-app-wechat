@@ -127,7 +127,7 @@
 				</div>
 				<div class="sidebar-detached sidebar-right col-md-3">
 					<div class="card">
-						<div class="card-body" style="padding-top:0;">
+						<div style="padding-top:0;">
 			            	<h4>{lang key='wechat::wechat.user_tag_list'}
 			            		<span class="float-right">
 			            			<a class="subscribe-icon-plus" title="{lang key='wechat::wechat.add_user_tag'}">
