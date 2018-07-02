@@ -293,16 +293,20 @@ class platform_subscribe extends ecjia_platform {
 		$uuid = $this->platformAccount->getUUID();
 		$wechat = wechat_method::wechat_instance($uuid);
 		
-		
 		$wechat_id = $this->platformAccount->getAccountID();
-		
 		if (is_ecjia_error($wechat_id)) {
 			return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-		//微信端删除
-		$rs = $wechat->deleteTag($tag_id);
-		if (RC_Error::is_error($rs)) {
-			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		
+		try {
+    		//微信端删除
+    		$rs = $wechat->deleteTag($tag_id);
+    		if (RC_Error::is_error($rs)) {
+    			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		}
+		
+		} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+		    return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		//本地删除
