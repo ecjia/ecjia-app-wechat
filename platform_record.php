@@ -393,41 +393,40 @@ class platform_record extends ecjia_platform {
 
 		$p = 0;
 		$id_list = $this->db_customer_session->where(array('wechat_id' => $wechat_id))->get_field('id', true);
-		for ($j=1; $j<=5; $j++) {
-			for ($i=1; ; $i++) {
-// 				$info = $wechat->getMsgrecord($start_time, $end_time, $i, 50);
-// 				if (RC_Error::is_error($info)) {
-// 					return $this->showmessage(wechat_method::wechat_error($info->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-// 				}
-				
-				try {
+
+		try {
+			for ($j=1; $j<=5; $j++) {
+				for ($i=1; ; $i++) {
 					$info = $wechat->getMsgrecord($start_time, $end_time, $i, 50);
-				} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-					return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-				}
-				
-				$arr = array();
-				if (!empty($info['recordlist'])) {
-					foreach ($info['recordlist'] as $key => $val) {
-						$data['wechat_id'] 	= $wechat_id;
-						$data['kf_account'] = $val['worker'];
-						$data['openid'] 	= $val['openid'];
-						$data['opercode'] 	= $val['opercode'];
-						$data['text'] 		= $val['text'];
-						$data['time'] 		= $val['time']-8*3600;
-						$arr[] = $data;
+					if (is_ecjia_error($info)) {
+						return $this->showmessage(wechat_method::wechat_error($info->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 					}
-					$this->db_customer_session->batch_insert($arr);
-					$p++;
-				} else {
-					$start_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-4, date('Y')) + 28800;
-					$end_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-3, date('Y')) + 28800;
-					break;
+					$arr = array();
+					if (!empty($info['recordlist'])) {
+						foreach ($info['recordlist'] as $key => $val) {
+							$data['wechat_id'] 	= $wechat_id;
+							$data['kf_account'] = $val['worker'];
+							$data['openid'] 	= $val['openid'];
+							$data['opercode'] 	= $val['opercode'];
+							$data['text'] 		= $val['text'];
+							$data['time'] 		= $val['time']-8*3600;
+							$arr[] = $data;
+						}
+						$this->db_customer_session->batch_insert($arr);
+						$p++;
+					} else {
+						$start_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-4, date('Y')) + 28800;
+						$end_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-3, date('Y')) + 28800;
+						break;
+					}
 				}
+				$start_time = $start_time + $j * 24*3600;
+				$end_time = $end_time + $j * 24*3600;
 			}
-			$start_time = $start_time + $j * 24*3600;
-			$end_time = $end_time + $j * 24*3600;
+		} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+			return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
+
 		if ($p > 0 && !empty($id_list)) {
 			$this->db_customer_session->where(array('wechat_id' => $wechat_id, 'id' => $id_list))->delete();
 		}

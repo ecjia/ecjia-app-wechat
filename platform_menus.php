@@ -471,14 +471,17 @@ class platform_menus extends ecjia_platform {
 			$uuid = $this->platformAccount->getUUID();
 			try {
                 $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-                $rs = $wechat->menu->add($menu);
+				$rs = $wechat->menu->add($menu);
+				if (is_ecjia_error($rs)) {
+					return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				}
                 
                 ecjia_admin::admin_log(RC_Lang::get('wechat::wechat.make_menu'), 'setup', 'menu');
                 return $this->showmessage(RC_Lang::get('wechat::wechat.make_menu_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
                 
 			} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
 			    
-			    return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			    return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
 	}
@@ -499,7 +502,10 @@ class platform_menus extends ecjia_platform {
 			try {
 			    $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 			    $list = $wechat->menu->all()->toArray();
-			    
+				if (is_ecjia_error($list)) {
+					return $this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				}
+
 			    if ($list) {
 			        RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->delete();
 			    }
@@ -560,8 +566,7 @@ class platform_menus extends ecjia_platform {
 			    ecjia_admin::admin_log(RC_Lang::get('wechat::wechat.get_menu'), 'setup', 'menu');
 			    return $this->showmessage(RC_Lang::get('wechat::wechat.get_menu_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_menus/init')));
 			} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-			    
-			    return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			    return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
 	}
@@ -582,14 +587,16 @@ class platform_menus extends ecjia_platform {
 		    try {
 		        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 		        $rs = $wechat->menu->destroy();
-		        
+				if (is_ecjia_error($rs)) {
+					return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				}
+
 		        ecjia_admin::admin_log(RC_Lang::get('wechat::wechat.clear_menu'), 'setup', 'menu');
 		        RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', '>', 0)->update(array('status' => 0));
 		        
 		        return $this->showmessage(RC_Lang::get('wechat::wechat.clear_menu_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_menus/init')));
 	        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-	             
-	            return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+	            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 	        }
 		}
 	}

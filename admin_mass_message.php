@@ -183,9 +183,14 @@ class admin_mass_message extends ecjia_admin {
 				'msgtype' => $content_type,
 			);
 		}
-		$rs = $wechat->sendallMass($massmsg);
-		if (is_ecjia_error($rs)) {
-			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		
+		try {
+    		$rs = $wechat->sendallMass($massmsg);
+			if (is_ecjia_error($rs)) {
+				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+		    return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		// 数据处理
 		$msg_data['wechat_id'] 	= $wechat_id;
@@ -346,9 +351,13 @@ class admin_mass_message extends ecjia_admin {
 			$uuid = platform_account::getCurrentUUID('wechat');
 			$wechat = wechat_method::wechat_instance($uuid);
 			if (!empty($msg_id)) {
-				$rs = $wechat->deleteMass($msg_id);
-				if (is_ecjia_error($rs)) {
-					return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				try {
+					$rs = $wechat->deleteMass($msg_id);
+					if (is_ecjia_error($rs)) {
+						return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+					}
+				} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+					return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
 			}
 			$this->wechat_mass->where(array('id' => $id))->update(array('status' => '4'));
