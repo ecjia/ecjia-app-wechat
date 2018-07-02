@@ -23,7 +23,7 @@
             </div>
      		<div class="card-body">
 	   			<form class="form-inline" method="post" action="{$form_action}" name="form">
-					<select name="activity_type" class="form-control">
+					<select name="activity_type" class="select2 form-control">
 						<option value="">{lang key='wechat::wechat.select_activity_type'}</option>
 						<option value="mp_zjd" {if $smarty.get.type eq 'mp_zjd'}selected="selected"{/if}>{lang key='wechat::wechat.smash_egg'}</option>
 						<option value="mp_dzp" {if $smarty.get.type eq 'mp_dzp'}selected="selected"{/if}>{lang key='wechat::wechat.big_dial'}</option>

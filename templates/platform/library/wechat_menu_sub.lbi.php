@@ -48,7 +48,7 @@
 	<div class="menu-input-group div-input" id="weappdiv">
 		<div class="menu-label col-lg-3">选择小程序：</div>
 		<div class="menu-input col-lg-8">
-			<select class="form-control" id="weapp_appid" name="weapp_appid">
+			<select class="select2 form-control" id="weapp_appid" name="weapp_appid">
 		   		<option value='0'>请选择</option>
 		  		<!-- {foreach from=$weapplist key=key item=val} -->
 				<option value="{$key}" {if $key eq $wechat_menus.app_id}selected{/if}>{$val}</option>

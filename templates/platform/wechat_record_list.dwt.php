@@ -64,7 +64,7 @@
 				</ul>
 				
 				<div class="choost_list float-right" data-url="{$action}">
-					<select name="kf_account" class="w250 form-control">
+					<select name="kf_account" class="select2 w250 form-control">
 						<option value="-1">{lang key='wechat::wechat.all_customer'}</option>
 						<!-- {foreach from=$kf_list item=v} -->
 						<option value="{$v.kf_account}" {if $v.kf_account eq $smarty.get.kf_account}selected{/if}>{t}{$v.kf_nick}（{$v.kf_account}）{/t}</option>

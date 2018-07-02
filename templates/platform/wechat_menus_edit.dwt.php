@@ -38,7 +38,7 @@
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_parent_menu'}</label>
 								<div class="col-lg-8 controls">
-									<select name="pid" class="form-control">
+									<select name="pid" class="select2 form-control">
 										<option value="">{lang key='wechat::wechat.pls_select_menu'}</option>
 										<!-- {foreach from=$pmenu item=val} -->
 										<option value="{$val.id}" {if $val.id eq $child}selected{/if}>{$val.name}</option>
@@ -81,7 +81,7 @@
 							<div id="weappdiv" class="form-group row" >
 								<label class="col-lg-2 label-control text-right">选择小程序：</label>
 								<div class="col-lg-8 controls">
-									<select class="form-control"  id="weapp_appid" name="weapp_appid">
+									<select class="select2 form-control"  id="weapp_appid" name="weapp_appid">
 				                        <option value='0'>请选择</option>
 				                      	<!-- {foreach from=$weapplist key=key item=val} -->
 										<option value="{$key}" {if $key eq $wechatmenus.app_id}selected{/if}>{$val}</option>

@@ -38,7 +38,7 @@
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_qrcode_type'}</label>
 								<div class="col-lg-8 controls">
-									<select name="type" class="form-control">
+									<select name="type" class="select2 form-control">
 										<option value="0" {if $qrcode.type eq 0}selected="selected"{/if}>{lang key='wechat::wechat.qrcode_short'}</option>
 										<option value="1" {if $qrcode.type eq 1}selected="selected"{/if}>{lang key='wechat::wechat.qrcode_forever'}</option>
 									</select>
