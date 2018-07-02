@@ -284,89 +284,94 @@ class platform_customer extends ecjia_platform {
 		//获取原来的图片文件
 		$old_kfimgurl = $info['kf_headimgurl'];
 		
-		if ($info['status'] == 0) {
-			if ($status == 1) {
-				//微信端添加客服账号
-// 				$rs = $wechat->addKfaccount($kf_account, $nickname);
-// 				if (RC_Error::is_error($rs)) {
-// 					return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-// 				}
-				
-				try {
-					$wechat->addKfaccount($kf_account, $nickname);
-				} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-					return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-				}
-				
-				if (!empty($old_kfimgurl)) {
-					//微信端添加客服头像
-					$imgurl = RC_Upload::upload_path() . $old_kfimgurl;
-// 					$message = $wechat->uploadHeadimgKfaccount($kf_account, $imgurl);
-// 					if (RC_Error::is_error($message)) {
-// 						return $this->showmessage(wechat_method::wechat_error($message->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-// 					}
-					
-					try {
-						$wechat->uploadHeadimgKfaccount($kf_account, $imgurl);
-					} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-						return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-					}
-				}
-			}
-		} else {
-			if ($status == 0) {
-				//微信端删除客服账号
-// 				$rs = $wechat->deleteKfaccount($kf_account);
-				
-				try {
-					$wechat->deleteKfaccount($kf_account);
-				} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-					return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-				}
-				
-			} else {
-				//微信端更新客服账号
-// 				$rs = $wechat->updateKfaccount($kf_account, $nickname);
-				
-				try {
-					$wechat->updateKfaccount($kf_account, $nickname);
-				} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-					return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-				}
-			}
-// 			if (RC_Error::is_error($rs)) {
-// 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-// 			}
-		}
-		
-		if ((isset($_FILES['kf_headimgurl']['error']) && $_FILES['kf_headimgurl']['error'] == 0) || (!isset($_FILES['kf_headimgurl']['error']) && isset($_FILES['kf_headimgurl']['tmp_name'] ) &&$_FILES['kf_headimgurl']['tmp_name'] != 'none')) {
-			$upload = RC_Upload::uploader('image', array('save_path' => 'data/headimg', 'auto_sub_dirs' => false));
-			$image_info = $upload->upload($_FILES['kf_headimgurl']);
-			if (!empty($image_info)) {
-				$kf_headimgurl = $upload->get_position($image_info);
-				if ($status == 1) {
-					if ($info['status'] == 1) {
-						//微信端添加客服头像
-						$imgurl = RC_Upload::upload_path() . $kf_headimgurl;
-// 						$message = $wechat->uploadHeadimgKfaccount($kf_account, $imgurl);
-// 						if (RC_Error::is_error($message)) {
-// 							return $this->showmessage(wechat_method::wechat_error($message->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-// 						}
-						try {
-							$wechat->uploadHeadimgKfaccount($kf_account, $imgurl);
-						} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-							return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-						}
-						
-					}
-				}
-				//删除原来的图片文件
-				if (!empty($old_kfimgurl)) {
-					$upload->remove($old_kfimgurl);
-				}
-			}
-		} else {
-			$kf_headimgurl = $old_kfimgurl;
+		try {
+    		if ($info['status'] == 0) {
+    			if ($status == 1) {
+    				//微信端添加客服账号
+    // 				$rs = $wechat->addKfaccount($kf_account, $nickname);
+    // 				if (RC_Error::is_error($rs)) {
+    // 					return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    // 				}
+    				
+    				try {
+    					$wechat->addKfaccount($kf_account, $nickname);
+    				} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+    					return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    				}
+    				
+    				if (!empty($old_kfimgurl)) {
+    					//微信端添加客服头像
+    					$imgurl = RC_Upload::upload_path() . $old_kfimgurl;
+    // 					$message = $wechat->uploadHeadimgKfaccount($kf_account, $imgurl);
+    // 					if (RC_Error::is_error($message)) {
+    // 						return $this->showmessage(wechat_method::wechat_error($message->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    // 					}
+    					
+    					try {
+    						$wechat->uploadHeadimgKfaccount($kf_account, $imgurl);
+    					} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+    						return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    					}
+    				}
+    			}
+    		} else {
+    			if ($status == 0) {
+    				//微信端删除客服账号
+    // 				$rs = $wechat->deleteKfaccount($kf_account);
+    				
+    				try {
+    					$wechat->deleteKfaccount($kf_account);
+    				} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+    					return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    				}
+    				
+    			} else {
+    				//微信端更新客服账号
+    // 				$rs = $wechat->updateKfaccount($kf_account, $nickname);
+    				
+    				try {
+    					$wechat->updateKfaccount($kf_account, $nickname);
+    				} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+    					return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    				}
+    			}
+    // 			if (RC_Error::is_error($rs)) {
+    // 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    // 			}
+    		}
+    		
+    		if ((isset($_FILES['kf_headimgurl']['error']) && $_FILES['kf_headimgurl']['error'] == 0) || (!isset($_FILES['kf_headimgurl']['error']) && isset($_FILES['kf_headimgurl']['tmp_name'] ) &&$_FILES['kf_headimgurl']['tmp_name'] != 'none')) {
+    			$upload = RC_Upload::uploader('image', array('save_path' => 'data/headimg', 'auto_sub_dirs' => false));
+    			$image_info = $upload->upload($_FILES['kf_headimgurl']);
+    			if (!empty($image_info)) {
+    				$kf_headimgurl = $upload->get_position($image_info);
+    				if ($status == 1) {
+    					if ($info['status'] == 1) {
+    						//微信端添加客服头像
+    						$imgurl = RC_Upload::upload_path() . $kf_headimgurl;
+    // 						$message = $wechat->uploadHeadimgKfaccount($kf_account, $imgurl);
+    // 						if (RC_Error::is_error($message)) {
+    // 							return $this->showmessage(wechat_method::wechat_error($message->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    // 						}
+    						try {
+    							$wechat->uploadHeadimgKfaccount($kf_account, $imgurl);
+    						} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+    							return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    						}
+    						
+    					}
+    				}
+    				//删除原来的图片文件
+    				if (!empty($old_kfimgurl)) {
+    					$upload->remove($old_kfimgurl);
+    				}
+    			}
+    		} else {
+    			$kf_headimgurl = $old_kfimgurl;
+    		}
+    		
+		} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+		    return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		$data = array(
