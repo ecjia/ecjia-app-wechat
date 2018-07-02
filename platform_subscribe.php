@@ -256,12 +256,17 @@ class platform_subscribe extends ecjia_platform {
 				return $this->showmessage(RC_Lang::get('wechat::wechat.tag_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			
-			//微信端添加
-			$rs = $wechat->addTag($name);
-			if (RC_Error::is_error($rs)) {
-				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			try {
+    			//微信端添加
+    			$rs = $wechat->addTag($name);
+    			if (RC_Error::is_error($rs)) {
+    				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    			}
+    			$tag_id = $rs['tag']['id'];
+			
+			} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+			    return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			$tag_id = $rs['tag']['id'];
 			
 			//本地添加
 			$data = array('name' => $name, 'wechat_id' => $wechat_id, 'tag_id' => $tag_id);
