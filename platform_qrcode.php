@@ -261,17 +261,14 @@ class platform_qrcode extends ecjia_platform {
 			RC_Loader::load_app_class('wechat_method', 'wechat', false);
 			$wechat = wechat_method::wechat_instance($uuid);
 			// 获取二维码ticket
-// 			$ticket = $wechat->getQrcodeTicket($data);
-// 			if (RC_Error::is_error($ticket)) {
-// 				return $this->showmessage(wechat_method::wechat_error($ticket->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-// 			}
-
 			try {
 				$ticket = $wechat->getQrcodeTicket($data);
+				if (is_ecjia_error($ticket)) {
+					return $this->showmessage(wechat_method::wechat_error($ticket->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				}
 			} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-				return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
-			
 			
 			$data['ticket'] = $ticket['ticket'];
 			$data['expire_seconds'] = $ticket['expire_seconds'];

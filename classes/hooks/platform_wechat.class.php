@@ -86,8 +86,42 @@ class wechat_platform_hooks {
     }
     
     public static function ecjia_platform_dashboard_stats() {
-        
-        
+    	$platformAccount = new Account(session('uuid'));
+    	$wechat_id = $platformAccount->getAccountID();
+    	
+    	$start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+    	$end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')+1, date('Y'));
+    	//新消息数量
+    	$new_msg = RC_DB::table('wechat_custom_message as m')
+	    	->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+	    	->select('m.id')
+	    	->where(RC_DB::raw('wu.subscribe'), 1)
+	    	->where(RC_DB::raw('m.iswechat'), 0)
+	    	->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
+	    	->where(RC_DB::raw('m.send_time'), '>', $start)
+	    	->where(RC_DB::raw('m.send_time'), '<', $end)
+	    	->count();
+    	
+    	$start_time = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+    	//新增人数
+    	$new_user = RC_DB::table('wechat_user')
+    		->where('subscribe', 1)
+    		->where('wechat_id', $wechat_id)
+    		->where('subscribe_time', '>', $start_time)->count();
+    	
+    	//总用户数
+    	$user_count = RC_DB::table('wechat_user')
+    		->where('subscribe', 1)
+    		->where('wechat_id', $wechat_id)
+    		->count();
+    	
+    	$count = array(
+    		'new_msg' => $new_msg,
+    		'new_user' => $new_user,
+    		'user_count' => $user_count
+    	);
+    	ecjia_platform::$controller->assign('count', $count);
+    	
         ecjia_platform::$controller->display(
             RC_Package::package('app::wechat')->loadTemplate('platform/library/widget_platform_dashboard_stats.lbi', true)
     	);
