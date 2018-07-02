@@ -195,7 +195,7 @@ class admin_prize extends ecjia_admin {
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		$rs = $wechat->sendCustomMessage($msg);
-		if (RC_Error::is_error($rs)) {
+		if (is_ecjia_error($rs)) {
 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		// 添加数据

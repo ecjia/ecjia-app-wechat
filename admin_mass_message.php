@@ -184,7 +184,7 @@ class admin_mass_message extends ecjia_admin {
 			);
 		}
 		$rs = $wechat->sendallMass($massmsg);
-		if (RC_Error::is_error($rs)) {
+		if (is_ecjia_error($rs)) {
 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		// 数据处理
@@ -347,7 +347,7 @@ class admin_mass_message extends ecjia_admin {
 			$wechat = wechat_method::wechat_instance($uuid);
 			if (!empty($msg_id)) {
 				$rs = $wechat->deleteMass($msg_id);
-				if (RC_Error::is_error($rs)) {
+				if (is_ecjia_error($rs)) {
 					return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
 			}

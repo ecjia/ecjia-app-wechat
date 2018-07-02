@@ -201,7 +201,7 @@ class admin_customer extends ecjia_admin {
 		if ($status == 1) {
 			//微信端添加客服账号
 			$rs = $wechat->addKfaccount($kf_account, $nickname);
-			if (RC_Error::is_error($rs)) {
+			if (is_ecjia_error($rs)) {
 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
@@ -293,7 +293,7 @@ class admin_customer extends ecjia_admin {
 			if ($status == 1) {
 				//微信端添加客服账号
 				$rs = $wechat->addKfaccount($kf_account, $nickname);
-				if (RC_Error::is_error($rs)) {
+				if (is_ecjia_error($rs)) {
 					return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
 				if (!empty($old_kfimgurl)) {
@@ -313,7 +313,7 @@ class admin_customer extends ecjia_admin {
 				//微信端更新客服账号
 				$rs = $wechat->updateKfaccount($kf_account, $nickname);
 			}
-			if (RC_Error::is_error($rs)) {
+			if (is_ecjia_error($rs)) {
 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
@@ -367,7 +367,7 @@ class admin_customer extends ecjia_admin {
 		if ($info['status'] == 1) {
 			//微信端删除客服账号
 			$rs = $wechat->deleteKfaccount($info['kf_account']);
-			if (RC_Error::is_error($rs)) {
+			if (is_ecjia_error($rs)) {
 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
@@ -463,7 +463,7 @@ class admin_customer extends ecjia_admin {
 			$rs = $wechat->deleteKfaccount($info['kf_account']);
 			ecjia_admin::admin_log($info['kf_account'], 'stop', 'customer');
 		}
-		if (RC_Error::is_error($rs)) {
+		if (is_ecjia_error($rs)) {
 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
@@ -495,7 +495,7 @@ class admin_customer extends ecjia_admin {
 		if ($info['status'] == 1) {
 			//微信端更新客服账号
 			$rs = $wechat->updateKfaccount($info['kf_account'], $data['kf_nick']);
-			if (RC_Error::is_error($rs)) {
+			if (is_ecjia_error($rs)) {
 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
@@ -536,7 +536,7 @@ class admin_customer extends ecjia_admin {
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 		$rs = $wechat->inviteKfaccount($kf_account, $kf_wx);
-		if (RC_Error::is_error($rs)) {
+		if (is_ecjia_error($rs)) {
 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$this->load_kf_list();

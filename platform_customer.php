@@ -191,7 +191,7 @@ class platform_customer extends ecjia_platform {
 		if ($status == 1) {
 			//微信端添加客服账号
 // 			$rs = $wechat->addKfaccount($kf_account, $nickname);
-// 			if (RC_Error::is_error($rs)) {
+// 			if (is_ecjia_error($rs)) {
 // 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 // 			}
 			
@@ -289,7 +289,7 @@ class platform_customer extends ecjia_platform {
     			if ($status == 1) {
     				//微信端添加客服账号
     // 				$rs = $wechat->addKfaccount($kf_account, $nickname);
-    // 				if (RC_Error::is_error($rs)) {
+    // 				if (is_ecjia_error($rs)) {
     // 					return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     // 				}
     				
@@ -335,7 +335,7 @@ class platform_customer extends ecjia_platform {
     					return $this->showmessage(Ecjia\App\Wechat\ErrorCodes::getError($e->getCode()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     				}
     			}
-    // 			if (RC_Error::is_error($rs)) {
+    // 			if (is_ecjia_error($rs)) {
     // 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     // 			}
     		}
@@ -399,7 +399,7 @@ class platform_customer extends ecjia_platform {
 		if ($info['status'] == 1) {
 			//微信端删除客服账号
 // 			$rs = $wechat->deleteKfaccount($info['kf_account']);
-// 			if (RC_Error::is_error($rs)) {
+// 			if (is_ecjia_error($rs)) {
 // 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 // 			}
 			try {
@@ -520,7 +520,7 @@ class platform_customer extends ecjia_platform {
 			
 			ecjia_admin::admin_log($info['kf_account'], 'stop', 'customer');
 		}
-// 		if (RC_Error::is_error($rs)) {
+// 		if (is_ecjia_error($rs)) {
 // 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 // 		}
 		
@@ -552,7 +552,7 @@ class platform_customer extends ecjia_platform {
 		if ($info['status'] == 1) {
 			//微信端更新客服账号
 // 			$rs = $wechat->updateKfaccount($info['kf_account'], $data['kf_nick']);
-// 			if (RC_Error::is_error($rs)) {
+// 			if (is_ecjia_error($rs)) {
 // 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 // 			}
 
@@ -599,7 +599,7 @@ class platform_customer extends ecjia_platform {
 		$wechat = wechat_method::wechat_instance($uuid);
 		
 // 		$rs = $wechat->inviteKfaccount($kf_account, $kf_wx);
-// 		if (RC_Error::is_error($rs)) {
+// 		if (is_ecjia_error($rs)) {
 // 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 // 		}
 		

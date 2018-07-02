@@ -228,7 +228,7 @@ class admin_subscribe extends ecjia_admin {
 			$tag_id = $this->wechat_tag->where(array('id' => $id))->get_field('tag_id');
 			//微信端更新
 			$rs = $wechat->setTag($tag_id, $name);
-			if (RC_Error::is_error($rs)) {
+			if (is_ecjia_error($rs)) {
 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			
@@ -257,7 +257,7 @@ class admin_subscribe extends ecjia_admin {
 			
 			//微信端添加
 			$rs = $wechat->addTag($name);
-			if (RC_Error::is_error($rs)) {
+			if (is_ecjia_error($rs)) {
 				return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			$tag_id = $rs['tag']['id'];
@@ -295,7 +295,7 @@ class admin_subscribe extends ecjia_admin {
 		}
 		//微信端删除
 		$rs = $wechat->deleteTag($tag_id);
-		if (RC_Error::is_error($rs)) {
+		if (is_ecjia_error($rs)) {
 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
@@ -620,7 +620,7 @@ class admin_subscribe extends ecjia_admin {
 		);
 		
 		$rs = $wechat->sendCustomMessage($msg);
-		if (RC_Error::is_error($rs)) {
+		if (is_ecjia_error($rs)) {
 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		// 添加数据
@@ -656,7 +656,7 @@ class admin_subscribe extends ecjia_admin {
 		$info = $this->wechat_user_db->find(array('openid' => $openid));
 		//微信端更新
 		$rs = $wechat->setUserRemark($openid, $remark);
-		if (RC_Error::is_error($rs)) {
+		if (is_ecjia_error($rs)) {
 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		$data = array('remark' => $remark);
@@ -703,7 +703,7 @@ class admin_subscribe extends ecjia_admin {
 		
 		//微信端更新
 		$rs = $wechat->setUserGroup($openid, $data['group_id']);
-		if (RC_Error::is_error($rs)) {
+		if (is_ecjia_error($rs)) {
 			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		ecjia_admin::admin_log($sn, 'setup', 'users_info');
@@ -802,7 +802,7 @@ class admin_subscribe extends ecjia_admin {
 			if (!empty($tag_id)) {
 				foreach ($tag_id as $v) {
 					$rs = $wechat->setBatchTag($openids_no_tag['openid'], $v);
-					if (RC_Error::is_error($rs)) {
+					if (is_ecjia_error($rs)) {
 						return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 					}
 					foreach ($openids_no_tag['uid'] as $val) {
@@ -817,7 +817,7 @@ class admin_subscribe extends ecjia_admin {
 			foreach ($openids_tag as $k => $v) {
 				foreach ($v as $val) {
 					$rs = $wechat->setBatchunTag($val['openid'], $val['tagid']);
-					if (RC_Error::is_error($rs)) {
+					if (is_ecjia_error($rs)) {
 						return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 					}
 				}
@@ -832,7 +832,7 @@ class admin_subscribe extends ecjia_admin {
 			if (!empty($tag_id)) {
 				foreach ($tag_id as $v) {
 					$rs = $wechat->setBatchTag($openid_unique, $v);
-					if (RC_Error::is_error($rs)) {
+					if (is_ecjia_error($rs)) {
 						return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 					}
 					foreach ($new_uid as $val) {
