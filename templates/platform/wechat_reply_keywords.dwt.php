@@ -128,7 +128,7 @@
 							</td>
 							<td>
 								{assign var=edit_url value=RC_Uri::url('wechat/platform_response/reply_keywords_add',"id={$item.id}")}
-								<a class="data-pjax no-underline" href="{$edit_url}" title="{lang key='system::system.edit'}"><i class="ft-edit"></i></a>
+								<a class="data-pjax no-underline" href="{$edit_url}" title="{lang key='system::system.edit'}"><i class="ft-edit"></i></a>&nbsp;
 								<a class="ajaxremove no-underline" data-toggle="ajaxremove" data-msg="{t}您确定要删除规则[{$item.rule_name}]吗？{/t}" href='{RC_Uri::url("wechat/platform_response/remove_rule","id={$item.id}")}' title="{lang key='wechat::wechat.remove'}"><i class="ft-trash-2"></i></a>
 							</td>
 						</tr>
