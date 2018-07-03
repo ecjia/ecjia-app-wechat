@@ -216,8 +216,7 @@ class WechatMessageHandler
      */
     public static function Video_action($message) 
     {
-        $content = WechatRecord::Video_reply($message, $message->get('MediaId'), 'test', 'testcontent');
-        return $content;
+        return WechatRecord::Text_reply($message, '视频消息已经收到');
     }
     
     /**
