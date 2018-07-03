@@ -1,22 +1,26 @@
 <?php
 
-namespace Ecjia\App\Wechat;
+namespace Ecjia\App\Wechat\Handlers;
 
 use RC_Hook;
 use Ecjia\App\Wechat\Models\WechatReplyModel;
-use wechat_action;
-use RC_Package;
-
-RC_Package::package('app::wechat')->loadClass('wechat_action');
+use Ecjia\App\Wechat\WechatRecord;
+use Ecjia\App\Wechat\WechatUUID;
+use Ecjia\App\Wechat\WechatMediaReply;
+use Ecjia\App\Wechat\WechatCommand;
 
 class WechatMessageHandler
 {
-    
+    /**
+     * 消息请求
+     * @param \Royalcms\Component\Support\Collection $message
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
     public static function getMessageHandler($message)
     {
         switch ($message->MsgType) {
             case 'event':
-                return self::Event_action($message);
+                return WechatEventHandler::Event_action($message);
                 break;
                 
                 //回复文本消息
@@ -72,43 +76,6 @@ class WechatMessageHandler
         return self::Text_action($message);
     }
     
-    /**
-     * 事件消息
-     * @param \Royalcms\Component\Support\Collection $message
-     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
-     */
-    public static function Event_action($message)
-    {
-        switch ($message->Event) {
-            case 'subscribe':
-                # code...
-                break;
-                
-            case 'unsubscribe':
-                
-                break;
-                
-            case 'SCAN':
-                
-                break;
-                
-            case 'CLICK':
-                
-                break;
-                
-            case 'VIEW':
-                
-                break;
-                
-            case 'LOCATION':
-                
-                break;
-                
-            default:
-                # code...
-                break;
-        }
-    }
     
     /**
      * 文本请求
@@ -284,13 +251,5 @@ class WechatMessageHandler
         return WechatRecord::Text_reply($message, '链接消息已经收到');
     }
     
-    /**
-     * 上报地理位置事件
-     * @param \Royalcms\Component\Support\Collection $message
-     */
-    public static function ReportLocation_action($message)
-    {
-        
-    }
     
 }
