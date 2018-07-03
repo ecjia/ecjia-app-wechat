@@ -18,6 +18,9 @@ class WechatMessageHandler
      */
     public static function getMessageHandler($message)
     {
+        //微信请求日志
+        \RC_Logger::getLogger('wechat')->info(json_encode($message->all()));
+        
         switch ($message->MsgType) {
             case 'event':
                 return WechatEventHandler::Event_action($message);
