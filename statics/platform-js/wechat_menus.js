@@ -116,6 +116,7 @@
 						$this.parent('.menu-sub-item').addClass('current');
 					}
 					$('.weixin-menu-right-content').html(data.data);
+					$("select").not(".noselect").select2();
 					app.wechat_menus_edit.init();
 					app.wechat_menus_list.init();
 				});
@@ -188,6 +189,7 @@
                             	ecjia.platform.showmessage(data);
                             	$('#weixin-menu').html(data.data);
                             	$('.weixin-menu-right-content').html(data.result);
+                            	$("select").not(".noselect").select2();
 								app.wechat_menus_edit.init();
 								app.wechat_menus_list.init();
                             }
