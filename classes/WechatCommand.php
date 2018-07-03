@@ -26,10 +26,9 @@ class WechatCommand
         $model = PlatformCommandModel::where('account_id', $this->wechat_id)->where('cmd_word', $cmd)->first();
         
         if (!empty($model) && $model->ext_code) {
-//             $handler = new platform_factory($row['ext_code'], array('parameter' => $this->request->getParameters(), 'sub_code' => $row['sub_code']));
-            // @todo 插件子命令查询
             $extend_handle = with(new PlatformPlugin)->channel($model->ext_code);
             $extend_handle->setMessage($this->message);
+            $extend_handle->setSubCodeCommand($model->sub_code);
             return $extend_handle->eventReply();
         } else {
             return null;

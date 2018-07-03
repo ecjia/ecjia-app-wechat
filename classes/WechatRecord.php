@@ -107,7 +107,7 @@ class WechatRecord
      * @param \Royalcms\Component\Support\Collection $message
      */
     public static function News_reply($message, $title, $description, $url, $image) {
-        if (!empty($title) && !empty($description)) {
+        if (!empty($title)) {
             $content = [
                 'title' => $title,
                 'description' => $description,
