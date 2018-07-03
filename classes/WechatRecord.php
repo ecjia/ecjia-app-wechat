@@ -11,11 +11,13 @@ use Royalcms\Component\WeChat\Message\Image;
 use Royalcms\Component\WeChat\Message\Voice;
 use Royalcms\Component\WeChat\Message\Video;
 use Royalcms\Component\WeChat\Message\News;
+use Royalcms\Component\WeChat\Message\Music;
 
 class WechatRecord
 {
     /**
      * 回复文本消息
+     * @param \Royalcms\Component\Support\Collection $message
      */
     public static function Default_reply($message) {
         $content = array(
@@ -28,6 +30,7 @@ class WechatRecord
     
     /**
      * 回复文本消息
+     * @param \Royalcms\Component\Support\Collection $message
      */
     public static function Text_reply($message, $text) {
         if (!empty($text)) {
@@ -45,6 +48,7 @@ class WechatRecord
     
     /**
      * 回复图片消息
+     * @param \Royalcms\Component\Support\Collection $message
      */
     public static function Image_reply($message, $file) {
         if (!empty($file)) {
@@ -62,6 +66,7 @@ class WechatRecord
     
     /**
      * 回复语音消息
+     * @param \Royalcms\Component\Support\Collection $message
      */
     public static function Voice_reply($message, $file) {
         if (!empty($file)) {
@@ -79,6 +84,7 @@ class WechatRecord
     
     /**
      * 回复视频消息
+     * @param \Royalcms\Component\Support\Collection $message
      */
     public static function Video_reply($message, $file, $title, $digest) {
         if (!empty($file)) {
@@ -98,6 +104,7 @@ class WechatRecord
     
     /**
      * 回复图文消息
+     * @param \Royalcms\Component\Support\Collection $message
      */
     public static function News_reply($message, $title, $description, $url, $image) {
         if (!empty($title) && !empty($description)) {
@@ -116,6 +123,48 @@ class WechatRecord
         }
     }
     
+    /**
+     * 回复多图文消息
+     * @param \Royalcms\Component\WeChat\Message\News $news
+     */
+    public static function MultiNews_reply(/*...*/$news)
+    {
+        $args = func_get_args();
+        
+        if (count($args) > 8) {
+            $news = array_slice($args, 0, 8);
+        }
+        
+        return $news;
+    }
+    
+    /**
+     * 回复音乐消息
+     * @param string $message
+     * @param string $title
+     * @param string $description
+     * @param string $url
+     * @param string $hq_url 高质量音乐链接，WIFI环境优先使用该链接播放音乐
+     * @param string $thumb_media_id 缩略图的媒体id，通过素材管理接口上传多媒体文件，得到的id
+     * @return \Royalcms\Component\WeChat\Message\Music|\Royalcms\Component\WeChat\Message\Text
+     */
+    public static function Music_reply($message, $title, $description, $url, $hq_url, $thumb_media_id) {
+        if (!empty($title) && !empty($description)) {
+            $content = [
+                'title' => $title,
+                'description' => $description,
+                'url' => $url,
+                'hq_url' => $hq_url, 
+                'thumb_media_id' => $thumb_media_id, 
+            ];
+            self::replyMsg($message->get('FromUserName'), '音乐消息');
+            
+            return new Music($content);
+        }
+        else {
+            return self::Default_reply($message);
+        }
+    }
     
     /**
      * 输入信息

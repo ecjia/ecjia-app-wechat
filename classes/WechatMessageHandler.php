@@ -16,29 +16,46 @@ class WechatMessageHandler
     {
         switch ($message->MsgType) {
             case 'event':
-                return wechat_action::Event_action($message);
+                return self::Event_action($message);
                 break;
+                
+                //回复文本消息
             case 'text':
                 return self::Text_action($message);
                 break;
+                
+                //回复图片消息
             case 'image':
                 return self::Image_action($message);
                 break;
+                
+                //回复语音消息
             case 'voice':
-                return wechat_action::Voice_action($message);
+                return self::Voice_action($message);
                 break;
+                
+                //回复视频消息
             case 'video':
-                return wechat_action::Video_action($message);
+                return self::Video_action($message);
                 break;
+                
+            case 'music':
+                return self::Music_action($message);
+                break;
+                
+                //普通消息-地理位置
             case 'location':
-                return wechat_action::Location_action($message);
+                return self::Location_action($message);
                 break;
+                
+                //普通消息-链接
             case 'link':
-                return wechat_action::Link_action($message);
+                return self::Link_action($message);
                 break;
+                
                 // ... 其它消息
             default:
-                return wechat_action::Default_action($message);
+                return self::Default_action($message);
                 break;
         }
         
@@ -50,8 +67,47 @@ class WechatMessageHandler
      * @param \Royalcms\Component\Support\Collection $message
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage
      */
-    public static function Default_action($message) {
+    public static function Default_action($message) 
+    {
         return self::Text_action($message);
+    }
+    
+    /**
+     * 事件消息
+     * @param \Royalcms\Component\Support\Collection $message
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
+    public static function Event_action($message)
+    {
+        switch ($message->Event) {
+            case 'subscribe':
+                # code...
+                break;
+                
+            case 'unsubscribe':
+                
+                break;
+                
+            case 'SCAN':
+                
+                break;
+                
+            case 'CLICK':
+                
+                break;
+                
+            case 'VIEW':
+                
+                break;
+                
+            case 'LOCATION':
+                
+                break;
+                
+            default:
+                # code...
+                break;
+        }
     }
     
     /**
@@ -59,7 +115,8 @@ class WechatMessageHandler
      * @param \Royalcms\Component\Support\Collection $message
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage
      */
-    public static function Text_action($message) {
+    public static function Text_action($message) 
+    {
         
         RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'command_reply'), 10, 2);
         RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'keyword_reply'), 90, 2);
@@ -77,7 +134,8 @@ class WechatMessageHandler
      * @param \Royalcms\Component\Support\Collection $message
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage 
      */
-    public static function empty_reply($content, $message) {
+    public static function empty_reply($content, $message) 
+    {
         if (!is_null($content)) {
             return $content;
         }
@@ -138,7 +196,8 @@ class WechatMessageHandler
      * @param \Royalcms\Component\Support\Collection $message
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage
      */
-    public static function command_reply($content, $message) {
+    public static function command_reply($content, $message) 
+    {
         if (!is_null($content)) {
             return $content;
         }
@@ -155,13 +214,83 @@ class WechatMessageHandler
     }
     
     /**
-     * 文本请求
+     * 图片请求
      * @param \Royalcms\Component\Support\Collection $message
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage
      */
-    public static function Image_action($message) {
+    public static function Image_action($message) 
+    {
         $content = WechatRecord::Image_reply($message, $message->get('MediaId'));
         return $content;
+    }
+    
+    /**
+     * 语音请求
+     * @param \Royalcms\Component\Support\Collection $message
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
+    public static function Voice_action($message) 
+    {
+        $content = WechatRecord::Voice_reply($message, $message->get('MediaId'));
+        return $content;
+    }
+    
+    /**
+     * 视频请求
+     * @param \Royalcms\Component\Support\Collection $message
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
+    public static function Video_action($message) 
+    {
+        $content = WechatRecord::Video_reply($message, $message->get('MediaId'), 'test', 'testcontent');
+        return $content;
+    }
+    
+    /**
+     * 音乐请求
+     * @param \Royalcms\Component\Support\Collection $message
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
+    public static function Music_action($message) 
+    {
+        $content = WechatRecord::Music_reply($message, 'test', 'testcontent', '', '', '');
+        return $content;
+    }
+    
+    /**
+     * 普通消息-小视频
+     * @param \Royalcms\Component\Support\Collection $message
+     */
+    public static function Shortvideo_action($message)
+    {
+        return WechatRecord::Text_reply($message, '小视频消息已经收到');
+    }
+    
+    /**
+     * 普通消息-地理位置
+     * @param \Royalcms\Component\Support\Collection $message
+     */
+    public static function Location_action($message)
+    {
+        return WechatRecord::Text_reply($message, '地理位置已经收到');
+    }
+    
+    /**
+     * 普通消息-链接
+     * @param \Royalcms\Component\Support\Collection $message
+     */
+    public static function Link_action($message)
+    {
+        return WechatRecord::Text_reply($message, '链接消息已经收到');
+    }
+    
+    /**
+     * 上报地理位置事件
+     * @param \Royalcms\Component\Support\Collection $message
+     */
+    public static function ReportLocation_action($message)
+    {
+        
     }
     
 }
