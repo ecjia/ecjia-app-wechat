@@ -89,25 +89,25 @@ class wechat_platform_response_api extends Component_Event_Api
         $wechat = new Component_WeChat_WeChat($config);
         
         $wechat
-            //回复文本消息
-            ->on('Text', array('wechat_action', 'Text_action'))
-            //回复图片消息
-            ->on('Image', array('wechat_action', 'Image_action'))
-            //回复语音消息
-            ->on('Voice', array('wechat_action', 'Voice_action'))
-            //回复视频消息
-            ->on('Video', array('wechat_action', 'Video_action'))
-            //回复音乐消息
-            ->on('Music', array('wechat_action', 'Music_action'))
-            //回复图文消息
-            ->on('Articles', array('wechat_action', 'Articles_action'))
+//             //回复文本消息
+//             ->on('Text', array('wechat_action', 'Text_action'))
+//             //回复图片消息
+//             ->on('Image', array('wechat_action', 'Image_action'))
+//             //回复语音消息
+//             ->on('Voice', array('wechat_action', 'Voice_action'))
+//             //回复视频消息
+//             ->on('Video', array('wechat_action', 'Video_action'))
+//             //回复音乐消息
+//             ->on('Music', array('wechat_action', 'Music_action'))
+//             //回复图文消息
+//             ->on('Articles', array('wechat_action', 'Articles_action'))
             
-            //普通消息-小视频
-            ->on('Shortvideo', array('wechat_action', 'Shortvideo_action'))
-            //普通消息-地理位置
-            ->on('Location', array('wechat_action', 'Location_action'))
-            //普通消息-链接
-            ->on('Link', array('wechat_action', 'Link_action'))
+//             //普通消息-小视频
+//             ->on('Shortvideo', array('wechat_action', 'Shortvideo_action'))
+//             //普通消息-地理位置
+//             ->on('Location', array('wechat_action', 'Location_action'))
+//             //普通消息-链接
+//             ->on('Link', array('wechat_action', 'Link_action'))
             //上报地理位置事件
             ->on('ReportLocation', array('wechat_action', 'ReportLocation_action'))
             //关注时
