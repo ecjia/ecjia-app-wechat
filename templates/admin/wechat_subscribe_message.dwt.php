@@ -140,13 +140,6 @@
 								</div>
 							</div>
 							
-							<div class="control-group control-group-small formSep">
-								<label class="label-title">{lang key='wechat::wechat.label_bind_user'}</label>
-								<div class="controls l_h30">
-									<span class="p_l10">{if $info['user_name']}{$info['user_name']}{else}{lang key='wechat::wechat.not_bind_yet'}{/if}</span>
-								</div>
-							</div>
-							
 							<div class="control-group control-group-small">
 								<label class="label-title"></label>
 								<div class="controls">
