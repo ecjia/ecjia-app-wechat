@@ -57,6 +57,10 @@ class WechatMessageHandler
                 return self::Link_action($message);
                 break;
                 
+            case 'transfer_customer_service':
+                
+                break;
+                
                 // ... 其它消息
             default:
                 return self::Default_action($message);
@@ -85,9 +89,9 @@ class WechatMessageHandler
     public static function Text_action($message) 
     {
         
-        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'command_reply'), 10, 2);
-        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'keyword_reply'), 90, 2);
-        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'empty_reply'), 100, 2);
+        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Command_reply'), 10, 2);
+        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Keyword_reply'), 90, 2);
+        RC_Hook::add_filter('wechat_text_response', array(__CLASS__, 'Empty_reply'), 100, 2);
         
         $response = RC_Hook::apply_filters('wechat_text_response', null, $message);
         
@@ -101,7 +105,7 @@ class WechatMessageHandler
      * @param \Royalcms\Component\Support\Collection $message
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage 
      */
-    public static function empty_reply($content, $message) 
+    public static function Empty_reply($content, $message) 
     {
         if (!is_null($content)) {
             return $content;
@@ -129,7 +133,7 @@ class WechatMessageHandler
      * @param \Royalcms\Component\Support\Collection $message
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage
      */
-    public static function keyword_reply($content, $message) {
+    public static function Keyword_reply($content, $message) {
         if (!is_null($content)) {
             return $content;
         }
@@ -163,7 +167,7 @@ class WechatMessageHandler
      * @param \Royalcms\Component\Support\Collection $message
      * @return \Royalcms\Component\WeChat\Message\AbstractMessage
      */
-    public static function command_reply($content, $message) 
+    public static function Command_reply($content, $message) 
     {
         if (!is_null($content)) {
             return $content;
