@@ -158,13 +158,6 @@
 									</div>
 									
 									<div class="form-group row">
-										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.label_bind_user'}</label>
-										<div class="col-md-7 controls">
-											<span class="p_l10">{if $info['user_name']}{$info['user_name']}{else}{lang key='wechat::wechat.not_bind_yet'}{/if}</span>
-										</div>
-									</div>
-									
-									<div class="form-group row">
 										<label class="col-md-5 label-control text-right"></label>
 										<div class="col-md-7 controls">
 											<!-- {if $info.group_id eq 1} -->
