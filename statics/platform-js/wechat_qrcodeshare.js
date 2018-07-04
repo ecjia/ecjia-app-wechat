@@ -14,7 +14,12 @@
 					e.preventDefault();
 					var url = $(this).attr('href');
 					$.get(url, function(data){
-						ecjia.platform.showmessage(data);
+						if (data.state == 'error') {
+							ecjia.platform.showmessage(data);
+						}
+						var img = '<img style="-webkit-user-select: none;" src='+ data.url +'>';
+						$('#show_qrcode').find('.modal-body').html(img);
+						$('#show_qrcode').modal('show');
 					}, 'json');
 				});	
 			}

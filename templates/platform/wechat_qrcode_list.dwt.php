@@ -122,4 +122,20 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="show_qrcode">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">渠道二维码</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- {/block} -->

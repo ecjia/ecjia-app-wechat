@@ -278,7 +278,7 @@ class platform_qrcode extends ecjia_platform {
 			$qrcode_url = $qrcode['qrcode_url'];
 		}
 		ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $qrcode['function']), 'setup', 'qrcode');
-		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $qrcode_url));
+		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => $qrcode_url));
 	}
 	
 	/**
