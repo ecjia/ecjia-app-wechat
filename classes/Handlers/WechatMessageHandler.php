@@ -23,7 +23,7 @@ class WechatMessageHandler
         
         switch ($message->MsgType) {
             case 'event':
-                return WechatEventHandler::Event_action($message);
+                return WechatEventHandler::getEventHandler($message);
                 break;
                 
                 //回复文本消息
@@ -120,7 +120,7 @@ class WechatMessageHandler
                                 ->where('wechat_id', $wechat_id)->where('type', 'msg')->first();
                                 
         if ( ! empty($data)) {
-            if ($data->reply_type) {
+            if ($data->reply_type == 'text') {
                 $content = WechatRecord::Text_reply($message, $data['content']);
             } else {
                 $content = with(new WechatMediaReply($wechat_id, $data->media_id))->replyContent($message);

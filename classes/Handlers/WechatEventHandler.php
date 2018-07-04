@@ -252,7 +252,7 @@ class WechatEventHandler
      */
     public static function Subscribe_event($message)
     {
-        
+        return with(new WechatSubscribeHandler($message))->subscribe();
     }
     
     /**
@@ -261,7 +261,7 @@ class WechatEventHandler
      */
     public static function Unsubscribe_event($message)
     {
-        
+        return with(new WechatSubscribeHandler($message))->unsubscribe();
     }
     
     /**
