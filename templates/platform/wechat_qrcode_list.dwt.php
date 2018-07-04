@@ -42,6 +42,20 @@
 					{/if}
                 </h4>
             </div>
+            
+            <div class="col-lg-12">
+	            <ul class="nav nav-pills float-left">
+					<li class="nav-item">
+						<a class="nav-link data-pjax {if $smarty.get.type eq ''}active{/if}" href='{url path="wechat/platform_qrcode/init"}{if $listdb.filter.keywords}&keywords={$listdb.filter.keywords}{/if}'>
+						永久二维码<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$listdb.count.forever}</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link data-pjax {if $smarty.get.type eq '0'}active{/if}" href='{url path="wechat/platform_qrcode/init" args="type=0{if $listdb.filter.keywords}&keywords={$listdb.filter.keywords}{/if}"}'>
+						临时二维码<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$listdb.count.temporary}</span></a>
+					</li>
+				</ul>
+			</div>
+					
             <div class="card-body">
 	            <div class="heading-elements float-left">
 					<button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"><i class="ft-settings"></i> {lang key='wechat::wechat.batch_operate'}</button>

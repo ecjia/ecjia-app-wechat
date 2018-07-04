@@ -70,13 +70,7 @@ class platform_qrcode extends ecjia_platform {
 		RC_Script::enqueue_script('jquery-validate');
 		RC_Script::enqueue_script('jquery-form');
 		RC_Script::enqueue_script('smoke');
-// 		RC_Style::enqueue_style('chosen');
-// 		RC_Style::enqueue_style('uniform-aristo');
-// 		RC_Script::enqueue_script('jquery-uniform');
-// 		RC_Script::enqueue_script('jquery-chosen');
 		RC_Script::enqueue_script('wechat_qrcode', RC_App::apps_url('statics/platform-js/wechat_qrcode.js', __FILE__), array(), false, true);
-// 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js') );
-// 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 		
 		RC_Script::localize_script('wechat_qrcode', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.channel_code'), RC_Uri::url('wechat/platform_qrcode/init')));
@@ -337,26 +331,39 @@ class platform_qrcode extends ecjia_platform {
 		
 		$wechat_id = $this->platformAccount->getAccountID();
 		
-		$db_qrcode = RC_Loader::load_app_model('wechat_qrcode_model');
+		$db_qrcode = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('username', null);
 		
 		$filter = array ();
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
-
+		$filter['type'] = isset($_GET['type']) ? intval($_GET['type']) : '';
+		
 		if ($filter['keywords']) {
-			$where[]= "function LIKE '%" . mysql_like_quote($filter['keywords']) . "%'";
+			$db_qrcode->where('function', 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
 		}
-		$where[] ="wechat_id = '" .$wechat_id. "' and username is null";
-		$count = $db_qrcode->where($where)->count();
-		$page = new ecjia_platform_page($count,10, 5);
+		$type_count = $db_qrcode->select(
+				RC_DB::raw('SUM(IF(type = 1, 1, 0)) as forever'),
+				RC_DB::raw('SUM(IF(type = 0, 1, 0)) as temporary'))->first();		if (empty($type_count['forever'])) {
+			$type_count['forever'] = 0;
+		}
+		if (empty($type_count['temporary'])) {
+			$type_count['temporary'] = 0;
+		}
+		
+		if ($filter['type'] === 0) {
+			$db_qrcode->where('type', 0);
+		}
+		
+		if ($filter['type'] === '') {
+			$db_qrcode->where('type', 1);
+		}
+		
+		$count = $db_qrcode->select('*')->count();
+		$page = new ecjia_platform_page($count, 10, 5);
 	
 		$arr = array ();
-		$data = $db_qrcode->where($where)->order('sort asc')->limit($page->limit())->select();
-		if (isset($data)) {
-			foreach ($data as $rows) {
-				$arr [] = $rows;
-			}
-		}
-		return array ('qrcode_list' => $arr, 'filter'=>$filter, 'page' => $page->show(5), 'desc' => $page->page_desc());
+		$data = $db_qrcode->orderBy('sort', 'asc')->take(10)->skip($page->start_id-1)->get();
+		
+		return array ('qrcode_list' => $data, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'count' => $type_count);
 	}
 }
 
