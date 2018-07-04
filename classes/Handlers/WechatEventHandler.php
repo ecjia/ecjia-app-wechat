@@ -270,7 +270,7 @@ class WechatEventHandler
      */
     public static function Scan_event($message)
     {
-        
+        return with(new WechatScanHandler($message))->scan();
     }
     
     /**

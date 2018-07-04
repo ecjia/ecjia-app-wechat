@@ -471,182 +471,182 @@ class wechat_action {
 //         $response->send();
 //     }
     
-    /**
-     * 关注公众号
-     * @param unknown $request
-     */
-    public static function Subscribe_action($request) {  
-    	$wechatuser_db = RC_Loader::load_app_model('wechat_user_model', 'wechat');
+//     /**
+//      * 关注公众号
+//      * @param unknown $request
+//      */
+//     public static function Subscribe_action($request) {  
+//     	$wechatuser_db = RC_Loader::load_app_model('wechat_user_model', 'wechat');
     	
-    	RC_Loader::load_app_class('wechat_method', 'wechat', false);
-    	RC_Loader::load_app_class('platform_account', 'platform', false);
+//     	RC_Loader::load_app_class('wechat_method', 'wechat', false);
+//     	RC_Loader::load_app_class('platform_account', 'platform', false);
     
-    	$uuid   = trim($_GET['uuid']);
-    	$wechat = wechat_method::wechat_instance($uuid);
+//     	$uuid   = trim($_GET['uuid']);
+//     	$wechat = wechat_method::wechat_instance($uuid);
     	
-    	$openid = $request->getParameter('FromUserName');
-    	$info   = $wechat->getUserInfo($openid);
-    	if (empty($info)) {
-    		$info = array();
-    	}
+//     	$openid = $request->getParameter('FromUserName');
+//     	$info   = $wechat->getUserInfo($openid);
+//     	if (empty($info)) {
+//     		$info = array();
+//     	}
 
-    	$account   = platform_account::make($uuid);
-    	$wechat_id = $account->getAccountID();
+//     	$account   = platform_account::make($uuid);
+//     	$wechat_id = $account->getAccountID();
     	
-    	if (isset($info['unionid']) && $info['unionid']) {
-    	    //查看有没有在手机或网站上使用微信登录
-    	    $connect_user = RC_Api::api('connect', 'connect_user', array('connect_code' => 'sns_wechat', 'open_id' => $info['unionid']));
-    	    if ($connect_user) {
-    	        $ect_uid = $connect_user->getUserId();
-    	    } else {
-    	        //查看公众号unionid是否绑定
-    	        $ect_uid = $wechatuser_db->where(array('unionid' => $info['unionid']))->get_field('ect_uid');
-    	    }
-    	} else {
-    	    $ect_uid = 0;
-    	}
+//     	if (isset($info['unionid']) && $info['unionid']) {
+//     	    //查看有没有在手机或网站上使用微信登录
+//     	    $connect_user = RC_Api::api('connect', 'connect_user', array('connect_code' => 'sns_wechat', 'open_id' => $info['unionid']));
+//     	    if ($connect_user) {
+//     	        $ect_uid = $connect_user->getUserId();
+//     	    } else {
+//     	        //查看公众号unionid是否绑定
+//     	        $ect_uid = $wechatuser_db->where(array('unionid' => $info['unionid']))->get_field('ect_uid');
+//     	    }
+//     	} else {
+//     	    $ect_uid = 0;
+//     	}
 
-    	$count = $wechatuser_db->where(array('wechat_id' => $wechat_id, 'openid' => $openid))->count();
-    	if ($count > 0) {
-    	    //曾经关注过,再次关注
-    	    $data['group_id']             = isset($info['groupid']) ? $info['groupid'] : $wechat->getUserGroup($openid);
-    	    $data['subscribe']            = 1;
-    	    $data['nickname']             = $info['nickname'];
-    	    $data['sex']                  = $info['sex'];
-    	    $data['city']                 = $info['city'];
-    	    $data['country']              = $info['country'];
-    	    $data['province']             = $info['province'];
-    	    $data['language']             = $info['language'];
-    	    $data['headimgurl']           = $info['headimgurl'];
-    	    $data['subscribe_time']       = $info['subscribe_time'];
-    	    $data['remark']               = $info['remark'];
-    	    $data['unionid']              = isset($info['unionid']) ? $info['unionid'] : '';
-    	    $data['ect_uid']              = $ect_uid ? $ect_uid : 0;
+//     	$count = $wechatuser_db->where(array('wechat_id' => $wechat_id, 'openid' => $openid))->count();
+//     	if ($count > 0) {
+//     	    //曾经关注过,再次关注
+//     	    $data['group_id']             = isset($info['groupid']) ? $info['groupid'] : $wechat->getUserGroup($openid);
+//     	    $data['subscribe']            = 1;
+//     	    $data['nickname']             = $info['nickname'];
+//     	    $data['sex']                  = $info['sex'];
+//     	    $data['city']                 = $info['city'];
+//     	    $data['country']              = $info['country'];
+//     	    $data['province']             = $info['province'];
+//     	    $data['language']             = $info['language'];
+//     	    $data['headimgurl']           = $info['headimgurl'];
+//     	    $data['subscribe_time']       = $info['subscribe_time'];
+//     	    $data['remark']               = $info['remark'];
+//     	    $data['unionid']              = isset($info['unionid']) ? $info['unionid'] : '';
+//     	    $data['ect_uid']              = $ect_uid ? $ect_uid : 0;
     	    
-    	    $wechatuser_db->where(array('wechat_id' => $wechat_id, 'openid' => $openid))->update($data);
-    	} else { 
-    	    $data['wechat_id']        = $wechat_id;
-    	    $data['group_id']         = isset($info['groupid']) ? $info['groupid'] : $wechat->getUserGroup($openid);
-    	    $data['subscribe']        = 1;
-    	    $data['openid']           = $openid;
-    	    $data['nickname']         = $info['nickname'];
-    	    $data['sex']              = $info['sex'];
-    	    $data['city']             = $info['city'];
-    	    $data['country']          = $info['country'];
-    	    $data['province']         = $info['province'];
-    	    $data['language']         = $info['language'];
-    	    $data['headimgurl']       = $info['headimgurl'];
-    	    $data['subscribe_time']   = $info['subscribe_time'];
-    	    $data['remark']           = $info['remark'];
-    	    $data['unionid']          = isset($info['unionid']) ? $info['unionid'] : '';
-    	    $data['ect_uid']          = $ect_uid ? $ect_uid : 0;
+//     	    $wechatuser_db->where(array('wechat_id' => $wechat_id, 'openid' => $openid))->update($data);
+//     	} else { 
+//     	    $data['wechat_id']        = $wechat_id;
+//     	    $data['group_id']         = isset($info['groupid']) ? $info['groupid'] : $wechat->getUserGroup($openid);
+//     	    $data['subscribe']        = 1;
+//     	    $data['openid']           = $openid;
+//     	    $data['nickname']         = $info['nickname'];
+//     	    $data['sex']              = $info['sex'];
+//     	    $data['city']             = $info['city'];
+//     	    $data['country']          = $info['country'];
+//     	    $data['province']         = $info['province'];
+//     	    $data['language']         = $info['language'];
+//     	    $data['headimgurl']       = $info['headimgurl'];
+//     	    $data['subscribe_time']   = $info['subscribe_time'];
+//     	    $data['remark']           = $info['remark'];
+//     	    $data['unionid']          = isset($info['unionid']) ? $info['unionid'] : '';
+//     	    $data['ect_uid']          = $ect_uid ? $ect_uid : 0;
     	    
-    	    $wechatuser_db->insert($data);
-    	}
+//     	    $wechatuser_db->insert($data);
+//     	}
 
-    	//给关注用户进行问候
-    	$wr_db = RC_Loader::load_app_model('wechat_reply_model', 'wechat');
-    	$field = 'reply_type,content,media_id';
-    	$replymsg = $wr_db->field($field)->find(array('wechat_id'=>$wechat_id,'type'=>'subscribe'));
-    	$media_db = RC_Loader::load_app_model('wechat_media_model', 'wechat');
-    	if ($replymsg['reply_type'] == 'text') {
-    		if(!empty($replymsg['content'])){
-    			$content = array(
-    					'ToUserName'   => $request->getParameter('FromUserName'),
-    					'FromUserName' => $request->getParameter('ToUserName'),
-    					'CreateTime'   => SYS_TIME,
-    					'MsgType'      => 'text',
-    					'Content'      => $replymsg['content']
-    			);
-    			wechat_method::record_msg($openid, $replymsg['content'], 1);
-    		}else{
-    			$content = array(
-    					'ToUserName'   => $request->getParameter('FromUserName'),
-    					'FromUserName' => $request->getParameter('ToUserName'),
-    					'CreateTime'   => SYS_TIME,
-    					'MsgType'      => 'text',
-    					'Content'      => '感谢您的关注'
-    			);
-    			wechat_method::record_msg($openid, '感谢您的关注', 1);
-    		}
-    	} else if ($replymsg['reply_type'] == 'image') {
-    		if(!empty($replymsg['media_id'])){
-    			$thumb   = $media_db->where(array('id' => $replymsg['media_id']))->get_field('thumb');
-    			$content = array(
-    					'ToUserName'    => $request->getParameter('FromUserName'),
-    					'FromUserName'  => $request->getParameter('ToUserName'),
-    					'CreateTime'    => SYS_TIME,
-    					'MsgType'       => 'image',
-    					'Image'         => array(
-    							'MediaId' => $thumb //通过素材管理接口上传多媒体文件，得到的id。
-    					)
-    			);
-    			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.image_content'), 1);
-    		}else{
-    			$content = array(
-    					'ToUserName'   => $request->getParameter('FromUserName'),
-    					'FromUserName' => $request->getParameter('ToUserName'),
-    					'CreateTime'   => SYS_TIME,
-    					'MsgType'      => 'text',
-    					'Content'      => '感谢您的关注'
-    			);
-    			wechat_method::record_msg($openid, '感谢您的关注', 1);
-    		}
-    	}else if ($replymsg['reply_type'] == 'voice') {
-    		if(!empty($replymsg['media_id'])){
-    			$media_id = $media_db->where(array('id' => $replymsg['media_id']))->get_field('media_id');
-    			$content = array(
-    					'ToUserName'    => $request->getParameter('FromUserName'),
-    					'FromUserName'  => $request->getParameter('ToUserName'),
-    					'CreateTime'    => SYS_TIME,
-    					'MsgType'       => 'voice',
-    					'Voice'         => array(
-    							'MediaId' 	=> $media_id, //通过素材管理接口上传多媒体文件，得到的id。
-    					)
-    			);
-    			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.voice_content'), 1);
-    		}else{
-    			$content = array(
-    					'ToUserName'   => $request->getParameter('FromUserName'),
-    					'FromUserName' => $request->getParameter('ToUserName'),
-    					'CreateTime'   => SYS_TIME,
-    					'MsgType'      => 'text',
-    					'Content'      => '感谢您的关注'
-    			);
-    			wechat_method::record_msg($openid, '感谢您的关注', 1);
-    		}
-    	}else if ($replymsg['reply_type'] == 'video') {
-    		if(!empty($replymsg['media_id'])){
-    			$field='title, digest, media_id';
-    			$mediaInfo = $media_db->field($field)->find(array('id' => $replymsg['media_id']));
-    			$content = array(
-    					'ToUserName'    => $request->getParameter('FromUserName'),
-    					'FromUserName'  => $request->getParameter('ToUserName'),
-    					'CreateTime'    => SYS_TIME,
-    					'MsgType'       => 'video',
-    					'Video'         => array(
-    							'MediaId' 	     => $media_id, //通过素材管理接口上传多媒体文件，得到的id。
-    							'Title' 	     => $mediaInfo['title'],
-    							'Description'    => $mediaInfo['digest']
-    					)
-    			);
-    			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.video_content'), 1);
-    		}else{
-    			$content = array(
-    					'ToUserName'   => $request->getParameter('FromUserName'),
-    					'FromUserName' => $request->getParameter('ToUserName'),
-    					'CreateTime'   => SYS_TIME,
-    					'MsgType'      => 'text',
-    					'Content'      => '感谢您的关注'
-    			);
-    			wechat_method::record_msg($openid, '感谢您的关注', 1);
-    		}
-    	}
+//     	//给关注用户进行问候
+//     	$wr_db = RC_Loader::load_app_model('wechat_reply_model', 'wechat');
+//     	$field = 'reply_type,content,media_id';
+//     	$replymsg = $wr_db->field($field)->find(array('wechat_id'=>$wechat_id,'type'=>'subscribe'));
+//     	$media_db = RC_Loader::load_app_model('wechat_media_model', 'wechat');
+//     	if ($replymsg['reply_type'] == 'text') {
+//     		if(!empty($replymsg['content'])){
+//     			$content = array(
+//     					'ToUserName'   => $request->getParameter('FromUserName'),
+//     					'FromUserName' => $request->getParameter('ToUserName'),
+//     					'CreateTime'   => SYS_TIME,
+//     					'MsgType'      => 'text',
+//     					'Content'      => $replymsg['content']
+//     			);
+//     			wechat_method::record_msg($openid, $replymsg['content'], 1);
+//     		}else{
+//     			$content = array(
+//     					'ToUserName'   => $request->getParameter('FromUserName'),
+//     					'FromUserName' => $request->getParameter('ToUserName'),
+//     					'CreateTime'   => SYS_TIME,
+//     					'MsgType'      => 'text',
+//     					'Content'      => '感谢您的关注'
+//     			);
+//     			wechat_method::record_msg($openid, '感谢您的关注', 1);
+//     		}
+//     	} else if ($replymsg['reply_type'] == 'image') {
+//     		if(!empty($replymsg['media_id'])){
+//     			$thumb   = $media_db->where(array('id' => $replymsg['media_id']))->get_field('thumb');
+//     			$content = array(
+//     					'ToUserName'    => $request->getParameter('FromUserName'),
+//     					'FromUserName'  => $request->getParameter('ToUserName'),
+//     					'CreateTime'    => SYS_TIME,
+//     					'MsgType'       => 'image',
+//     					'Image'         => array(
+//     							'MediaId' => $thumb //通过素材管理接口上传多媒体文件，得到的id。
+//     					)
+//     			);
+//     			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.image_content'), 1);
+//     		}else{
+//     			$content = array(
+//     					'ToUserName'   => $request->getParameter('FromUserName'),
+//     					'FromUserName' => $request->getParameter('ToUserName'),
+//     					'CreateTime'   => SYS_TIME,
+//     					'MsgType'      => 'text',
+//     					'Content'      => '感谢您的关注'
+//     			);
+//     			wechat_method::record_msg($openid, '感谢您的关注', 1);
+//     		}
+//     	}else if ($replymsg['reply_type'] == 'voice') {
+//     		if(!empty($replymsg['media_id'])){
+//     			$media_id = $media_db->where(array('id' => $replymsg['media_id']))->get_field('media_id');
+//     			$content = array(
+//     					'ToUserName'    => $request->getParameter('FromUserName'),
+//     					'FromUserName'  => $request->getParameter('ToUserName'),
+//     					'CreateTime'    => SYS_TIME,
+//     					'MsgType'       => 'voice',
+//     					'Voice'         => array(
+//     							'MediaId' 	=> $media_id, //通过素材管理接口上传多媒体文件，得到的id。
+//     					)
+//     			);
+//     			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.voice_content'), 1);
+//     		}else{
+//     			$content = array(
+//     					'ToUserName'   => $request->getParameter('FromUserName'),
+//     					'FromUserName' => $request->getParameter('ToUserName'),
+//     					'CreateTime'   => SYS_TIME,
+//     					'MsgType'      => 'text',
+//     					'Content'      => '感谢您的关注'
+//     			);
+//     			wechat_method::record_msg($openid, '感谢您的关注', 1);
+//     		}
+//     	}else if ($replymsg['reply_type'] == 'video') {
+//     		if(!empty($replymsg['media_id'])){
+//     			$field='title, digest, media_id';
+//     			$mediaInfo = $media_db->field($field)->find(array('id' => $replymsg['media_id']));
+//     			$content = array(
+//     					'ToUserName'    => $request->getParameter('FromUserName'),
+//     					'FromUserName'  => $request->getParameter('ToUserName'),
+//     					'CreateTime'    => SYS_TIME,
+//     					'MsgType'       => 'video',
+//     					'Video'         => array(
+//     							'MediaId' 	     => $media_id, //通过素材管理接口上传多媒体文件，得到的id。
+//     							'Title' 	     => $mediaInfo['title'],
+//     							'Description'    => $mediaInfo['digest']
+//     					)
+//     			);
+//     			wechat_method::record_msg($openid, RC_Lang::get('wechat::wechat.video_content'), 1);
+//     		}else{
+//     			$content = array(
+//     					'ToUserName'   => $request->getParameter('FromUserName'),
+//     					'FromUserName' => $request->getParameter('ToUserName'),
+//     					'CreateTime'   => SYS_TIME,
+//     					'MsgType'      => 'text',
+//     					'Content'      => '感谢您的关注'
+//     			);
+//     			wechat_method::record_msg($openid, '感谢您的关注', 1);
+//     		}
+//     	}
 
-    	$response = Component_WeChat_Response::create($content);
-    	RC_Logger::getLogger('pay')->debug('RESPONSE: ' . json_encode($response->getContent()));
-    	$response->send();
-    }
+//     	$response = Component_WeChat_Response::create($content);
+//     	RC_Logger::getLogger('pay')->debug('RESPONSE: ' . json_encode($response->getContent()));
+//     	$response->send();
+//     }
     
     
     /**
@@ -690,23 +690,23 @@ class wechat_action {
     	$wechatuser_db->insert($data);
     }
     
-	/**
-	 * 取消关注时
-	 * @param unknown $request
-	 */
-	public static function Unsubscribe_action($request) {
-		$wechatuser_db = RC_Loader::load_app_model('wechat_user_model', 'wechat');
-		RC_Loader::load_app_class('platform_account', 'platform', false);
+// 	/**
+// 	 * 取消关注时
+// 	 * @param unknown $request
+// 	 */
+// 	public static function Unsubscribe_action($request) {
+// 		$wechatuser_db = RC_Loader::load_app_model('wechat_user_model', 'wechat');
+// 		RC_Loader::load_app_class('platform_account', 'platform', false);
 		
-		$uuid      = trim($_GET['uuid']);
-		$account   = platform_account::make($uuid);
-		$wechat_id = $account->getAccountID();
-		$openid    = $request->getParameter('FromUserName');
-		$rs        = $wechatuser_db->where(array('openid' => $openid,'wechat_id' => $wechat_id))->count();
-		if ($rs > 0) {
-			$wechatuser_db->where(array('openid' => $openid,'wechat_id' => $wechat_id))->update(array('subscribe' => 0));
-		}
-	}
+// 		$uuid      = trim($_GET['uuid']);
+// 		$account   = platform_account::make($uuid);
+// 		$wechat_id = $account->getAccountID();
+// 		$openid    = $request->getParameter('FromUserName');
+// 		$rs        = $wechatuser_db->where(array('openid' => $openid,'wechat_id' => $wechat_id))->count();
+// 		if ($rs > 0) {
+// 			$wechatuser_db->where(array('openid' => $openid,'wechat_id' => $wechat_id))->update(array('subscribe' => 0));
+// 		}
+// 	}
 	
 	
 // 	/**

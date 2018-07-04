@@ -36,9 +36,9 @@ class WechatUserModel extends Model
 //         'parent_id',
 //         'drp_parent_id',
 //         'from',
-//         'subscribe_scene',
-//         'qr_scene',
-//         'qr_scene_str'
+        'subscribe_scene',
+        'qr_scene',
+        'qr_scene_str'
     ];
 
     protected $guarded = [];
