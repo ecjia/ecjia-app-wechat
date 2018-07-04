@@ -66,9 +66,12 @@ class mobile_userbind extends EcjiaWechatUserController
     public function init() {
     	$openid = trim($_GET['openid']);
     	$uuid   = trim($_GET['uuid']);
-    	$account = platform_account::make($uuid);
-    	$wechat_id = $account->getAccountID();
-    	$wechat_user = new wechat_user($wechat_id, $openid);
+//     	$account = platform_account::make($uuid);
+//     	$wechat_id = $account->getAccountID();
+//     	$wechat_user = new wechat_user($wechat_id, $openid);
+    	
+    	$wechat_id = with(new Ecjia\App\Wechat\WechatUUID())->getWechatID();
+    	$wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
     	$unionid     = $wechat_user->getUnionid();
     	$data['wechat_image'] 	 = $wechat_user->getImage();
     	$data['wechat_nickname'] = $wechat_user->getNickname();
@@ -92,9 +95,12 @@ class mobile_userbind extends EcjiaWechatUserController
     	$openid = trim($_GET['openid']);
     	$uuid   = trim($_GET['uuid']);
     	
-    	$account     = platform_account::make($uuid);
-    	$wechat_id   = $account->getAccountID();
-    	$wechat_user = new wechat_user($wechat_id, $openid);
+//     	$account     = platform_account::make($uuid);
+//     	$wechat_id   = $account->getAccountID();
+//     	$wechat_user = new wechat_user($wechat_id, $openid);
+    	
+    	$wechat_id = with(new Ecjia\App\Wechat\WechatUUID())->getWechatID();
+    	$wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
     	$username    = $wechat_user->getNickname();
     	$unionid     = $wechat_user->getUnionid();
     	$sex         = $wechat_user->sex();
@@ -147,9 +153,12 @@ class mobile_userbind extends EcjiaWechatUserController
     	$mobile  	= trim($_POST['mobile']);
     	$password   = trim($_POST['password']);
     	
-    	$account   = platform_account::make($uuid);
-    	$wechat_id = $account->getAccountID();
-    	$wechat_user = new wechat_user($wechat_id, $openid);
+//     	$account   = platform_account::make($uuid);
+//     	$wechat_id = $account->getAccountID();
+//     	$wechat_user = new wechat_user($wechat_id, $openid);
+    	
+    	$wechat_id = with(new Ecjia\App\Wechat\WechatUUID())->getWechatID();
+    	$wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
     	$unionid     = $wechat_user->getUnionid();
     	$user_profile = $wechat_user->getWechatUser();
     	

@@ -55,7 +55,6 @@ class mobile_profile extends EcjiaWechatUserController
         parent::__construct();
         
         RC_Loader::load_app_class('platform_account', 'platform', false);
-        RC_Loader::load_app_class('wechat_user', 'wechat', false);
         
         $this->assign('front_url', RC_App::apps_url('statics/front', __FILE__));
         $this->assign('system_statics_url', RC_Uri::admin_url('statics'));      
