@@ -69,6 +69,9 @@ class WechatSubscribeHandler
                 $userModel->group_id        = $userinfo->get('groupid');
                 $userModel->unionid         = $userinfo->get('unionid');
                 $userModel->ect_uid         = $ecjia_userid;
+                $userModel->subscribe_scene = $userinfo->get('subscribe_scene');
+                $userModel->qr_scene        = $userinfo->get('qr_scene');
+                $userModel->qr_scene_str    = $userinfo->get('qr_scene_str');
                 
                 $userModel->save();
             } 
@@ -90,6 +93,9 @@ class WechatSubscribeHandler
                     'remark'            => $userinfo->get('remark'),
                     'unionid'           => $userinfo->get('unionid'),
                     'ect_uid'           => $ecjia_userid,
+                    'subscribe_scene'   => $userinfo->get('subscribe_scene'),
+                    'qr_scene'          => $userinfo->get('qr_scene'),
+                    'qr_scene_str'      => $userinfo->get('qr_scene_str'),
                 ]);
             }
             
