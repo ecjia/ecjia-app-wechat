@@ -43,12 +43,16 @@ class WechatUser
         return $user;
     }
     
-    public function getConnectUser()
+    public function getConnectUser($unionid = null)
     {
-        if ($this->user->unionid) {
-            $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $this->user->unionid, 'user');
+        if (is_null($unionid)) {
+            if ($this->user->unionid) {
+                $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $this->user->unionid, 'user');
+            } else {
+                $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $this->user->openid, 'user');
+            }
         } else {
-            $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $this->user->openid, 'user');
+            $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
         }
         
         return $connect_user;
