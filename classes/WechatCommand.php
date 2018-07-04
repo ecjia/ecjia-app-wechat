@@ -11,10 +11,14 @@ class WechatCommand
     
     protected $wechat_id;
     
-    public function __construct($message, $wechat_id)
+    protected $wechat_uuid;
+    
+    public function __construct($message, WechatUUID $wechat_uuid)
     {
+        $this->wechat_uuid = $wechat_uuid;
+        
         $this->message = $message;
-        $this->wechat_id = $wechat_id;
+        $this->wechat_id = $wechat_uuid->getWechatID();
     }
     
     /**
@@ -27,9 +31,22 @@ class WechatCommand
         
         if (!empty($model) && $model->ext_code) {
             $extend_handle = with(new PlatformPlugin)->channel($model->ext_code);
-            $extend_handle->setMessage($this->message);
-            $extend_handle->setSubCodeCommand($model->sub_code);
-            return $extend_handle->eventReply();
+            
+            if ($this->wechat_uuid->getAccount()->getStoreId() > 0 && $extend_handle->hasSupportTypeMerchant()) {
+                $extend_handle->setMessage($this->message);
+                $extend_handle->setSubCodeCommand($model->sub_code);
+                $extend_handle->setStoreId($this->wechat_uuid->getAccount()->getStoreId());
+                return $extend_handle->eventReply();
+            }
+            else if ($this->wechat_uuid->getAccount()->getStoreId() === 0 && $extend_handle->hasSupportTypeAdmin()) {
+                $extend_handle->setMessage($this->message);
+                $extend_handle->setSubCodeCommand($model->sub_code);
+                $extend_handle->setStoreId($this->wechat_uuid->getAccount()->getStoreId());
+                return $extend_handle->eventReply();
+            }
+            else {
+                return null;
+            }
         } else {
             return null;
         }

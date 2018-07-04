@@ -176,9 +176,7 @@ class WechatMessageHandler
             return $content;
         }
         
-        $wechat_id = with(new WechatUUID())->getWechatID();
-        
-        $content = with(new WechatCommand($message, $wechat_id))->runCommand($message->get('Content'));
+        $content = with(new WechatCommand($message, new WechatUUID()))->runCommand($message->get('Content'));
         
         if (is_string($content)) {
             $content = WechatRecord::Text_reply($message, $content);
