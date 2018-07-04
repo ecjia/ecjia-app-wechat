@@ -8,6 +8,7 @@ use Ecjia\App\Wechat\WechatRecord;
 use Ecjia\App\Wechat\WechatUUID;
 use Ecjia\App\Wechat\WechatMediaReply;
 use Ecjia\App\Wechat\WechatCommand;
+use Ecjia\App\Wechat\Models\WechatMassHistoryModel;
 
 class WechatEventHandler
 {
@@ -274,11 +275,19 @@ class WechatEventHandler
     }
     
     /**
-     * 群发发送成功
+     * 群发发送成功之后推送的事件
      * @param \Royalcms\Component\Support\Collection $message
      */
     public static function MassSendJobFinish_event($message)
     {
+        $data = [
+            'status'        => $message->get('status'),
+            'totalcount'    => $message->get('totalcount'),
+            'filtercount'   => $message->get('filtercount'),
+            'sentcount'     => $message->get('sentcount'),
+            'errorcount'    => $message->get('errorcount'),
+        ];
         
+        WechatMassHistoryModel::where('msg_id', $message->get('msgid'))->update($data);
     }
 }
