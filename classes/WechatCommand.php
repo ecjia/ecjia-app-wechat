@@ -36,12 +36,14 @@ class WechatCommand
                 $extend_handle->setMessage($this->message);
                 $extend_handle->setSubCodeCommand($model->sub_code);
                 $extend_handle->setStoreId($this->wechat_uuid->getAccount()->getStoreId());
+                $extend_handle->setStoreType(\Ecjia\App\Platform\Plugin\PlatformAbstract::TypeMerchant);
                 return $extend_handle->eventReply();
             }
             else if ($this->wechat_uuid->getAccount()->getStoreId() === 0 && $extend_handle->hasSupportTypeAdmin()) {
                 $extend_handle->setMessage($this->message);
                 $extend_handle->setSubCodeCommand($model->sub_code);
                 $extend_handle->setStoreId($this->wechat_uuid->getAccount()->getStoreId());
+                $extend_handle->setStoreType(\Ecjia\App\Platform\Plugin\PlatformAbstract::TypeAdmin);
                 return $extend_handle->eventReply();
             }
             else {
