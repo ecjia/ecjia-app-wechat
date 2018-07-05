@@ -243,13 +243,26 @@ class platform_menus extends ecjia_platform {
 		$this->assign('id', $id);
 		$this->assign('pid', $pid);
 		
-		$res = $this->fetch('library/wechat_menu_db.lbi');
+		$res = $this->fetch('library/wechat_menu_menu.lbi');
 		
 		if ($type == 'miniprogram') {
 			$config_url = unserialize($data['url']);
 			$data['app_id'] = $config_url['appid'];
 		}
 		$this->assign('wechat_menus', $data);
+		
+		$platform = $this->platformAccount->getPlatform();
+		$cmd_word_list = RC_DB::table('platform_command')->where('account_id', $wechat_id)->where('platform', $platform)->lists('cmd_word');
+		$rule_keywords_list = RC_DB::table('wechat_rule_keywords as wrk')
+		->leftJoin('wechat_reply as wr', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
+		->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+		->lists(RC_DB::raw('wrk.rule_keywords'));
+		
+		$key_list = array(
+			'回复关键词' => $rule_keywords_list,
+			'插件关键词' => $cmd_word_list
+		);
+		$this->assign('key_list', $key_list);
 		
 		$result = $this->fetch('library/wechat_menu_sub.lbi');
 		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $res, 'result' => $result));
@@ -392,11 +405,24 @@ class platform_menus extends ecjia_platform {
 		$weapplist = $this->get_weapplist();
 		$this->assign('weapplist', $weapplist);
 		
-		$res = $this->fetch('library/wechat_menu_db.lbi');
+		$res = $this->fetch('library/wechat_menu_menu.lbi');
 		
 		if ($wechat_menus['pid'] == 0 && $count != 0) {
-			$result = $this->fetch('library/wechat_menu.lbi');
+			$result = $this->fetch('library/wechat_menu_second.lbi');
 		} else {
+			$platform = $this->platformAccount->getPlatform();
+			$cmd_word_list = RC_DB::table('platform_command')->where('account_id', $wechat_id)->where('platform', $platform)->lists('cmd_word');
+			$rule_keywords_list = RC_DB::table('wechat_rule_keywords as wrk')
+			->leftJoin('wechat_reply as wr', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
+			->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+			->lists(RC_DB::raw('wrk.rule_keywords'));
+			
+			$key_list = array(
+				'回复关键词' => $rule_keywords_list,
+				'插件关键词' => $cmd_word_list
+			);
+			$this->assign('key_list', $key_list);
+			
 			$result = $this->fetch('library/wechat_menu_sub.lbi');
 		}
 		
@@ -682,11 +708,22 @@ class platform_menus extends ecjia_platform {
 		$this->assign('weapplist', $weapplist);
 		
 		if ($count != 0) {
-			$data = $this->fetch('library/wechat_menu.lbi');
+			$data = $this->fetch('library/wechat_menu_second.lbi');
 		} else {
+			$platform = $this->platformAccount->getPlatform();
+		 	$cmd_word_list = RC_DB::table('platform_command')->where('account_id', $wechat_id)->where('platform', $platform)->lists('cmd_word');
+			$rule_keywords_list = RC_DB::table('wechat_rule_keywords as wrk')
+				->leftJoin('wechat_reply as wr', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
+				->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+				->lists(RC_DB::raw('wrk.rule_keywords'));
+
+			$key_list = array(
+				'回复关键词' => $rule_keywords_list,
+				'插件关键词' => $cmd_word_list
+			);
+			$this->assign('key_list', $key_list);
 			$data = $this->fetch('library/wechat_menu_sub.lbi');
-		}		
-		
+		}
 		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data));
 	}
 	
@@ -757,7 +794,21 @@ class platform_menus extends ecjia_platform {
 			$weapplist = $this->get_weapplist();
 			$this->assign('weapplist', $weapplist);
 			
-			$res = $this->fetch('library/wechat_menu_db.lbi');
+			$res = $this->fetch('library/wechat_menu_menu.lbi');
+			
+			$platform = $this->platformAccount->getPlatform();
+			$cmd_word_list = RC_DB::table('platform_command')->where('account_id', $wechat_id)->where('platform', $platform)->lists('cmd_word');
+			$rule_keywords_list = RC_DB::table('wechat_rule_keywords as wrk')
+			->leftJoin('wechat_reply as wr', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
+			->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+			->lists(RC_DB::raw('wrk.rule_keywords'));
+			
+			$key_list = array(
+				'回复关键词' => $rule_keywords_list,
+				'插件关键词' => $cmd_word_list
+			);
+			$this->assign('key_list', $key_list);
+			
 			$result = $this->fetch('library/wechat_menu_sub.lbi');
 			return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $res, 'result' => $result, 'id' => $id));
 		}

@@ -30,7 +30,16 @@
 	<div class="menu-input-group div-input" id="keydiv">
 		<div class="menu-label col-lg-3">菜单关键词：</div>
 		<div class="menu-input col-lg-8">
-			<input class="form-control" type="text" name="key" id="key" value="{$wechat_menus.key}" />
+			<select class="select2 form-control" id="key" name="key">
+		   		<!-- {foreach from=$key_list key=key item=val} -->
+				<optgroup label="{$key}">
+					<!-- {foreach from=$val item=v} -->
+					<option {if $wechat_menus.key eq $v}selected{/if} value="{$v}">{$v}</option>
+					<!-- {/foreach} -->
+				</optgroup>
+				<!-- {/foreach} -->
+			</select>
+			
 			<p class="menu-tips hide" style="color:#e15f63" v-show="menuNameBounds">
 				请设置菜单关键词
 			</p>
