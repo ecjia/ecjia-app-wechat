@@ -20,7 +20,7 @@
 	</button>
 	<h4 class="alert-heading mb-2">操作提示</h4>
 	<p>自动回复的类型 共分三种：关注自动回复、消息自动回复、关键词自动回复。回复内容可以设置为文字，图片，语音，视频。文本消息回复内容可以直接填写，长度限制1024字节（大约200字，含标点以及其他特殊字符），其他素材需要先在素材管理中添加。</p>
-	<p>一、关注自动回复：即用户关注微信公众号自动回复的消息（包含重新关注）。例如：欢迎关注微信公众号！</p>
+	<p>三、关注自动回复：即用户关注微信公众号自动回复的消息（包含重新关注）。例如：欢迎关注微信公众号！</p>
 	<p>★ 关注自动回复，不支持图文消息素材。</p>
 </div>
 
@@ -32,11 +32,11 @@
             </div>
             <div class="card-body">
             	<ul class="nav nav-tabs">
-					<li class="nav-item">
-						<a class="nav-link data-pjax active" href='{url path="wechat/platform_response/reply_subscribe"}'>{lang key='wechat::wechat.attention_auto_reply'}</a>
+            		<li class="nav-item">
+						<a class="nav-link data-pjax" href='{url path="wechat/platform_response/reply_msg"}'>{lang key='wechat::wechat.message_auto_reply'}</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link data-pjax" href='{url path="wechat/platform_response/reply_msg"}'>{lang key='wechat::wechat.message_auto_reply'}</a>
+						<a class="nav-link data-pjax active" href='{url path="wechat/platform_response/reply_subscribe"}'>{lang key='wechat::wechat.attention_auto_reply'}</a>
 					</li>
 				</ul>
 				

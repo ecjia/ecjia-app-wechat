@@ -32,11 +32,11 @@
             </div>
             <div class="card-body">
             	<ul class="nav nav-tabs">
-					<li class="nav-item">
-						<a class="nav-link data-pjax" href='{url path="wechat/platform_response/reply_subscribe"}'>{lang key='wechat::wechat.attention_auto_reply'}</a>
+            		<li class="nav-item">
+						<a class="nav-link data-pjax active" href='{url path="wechat/platform_response/reply_msg"}'>{lang key='wechat::wechat.message_auto_reply'}</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link data-pjax active" href='{url path="wechat/platform_response/reply_msg"}'>{lang key='wechat::wechat.message_auto_reply'}</a>
+						<a class="nav-link data-pjax" href='{url path="wechat/platform_response/reply_subscribe"}'>{lang key='wechat::wechat.attention_auto_reply'}</a>
 					</li>
 				</ul>
 				
