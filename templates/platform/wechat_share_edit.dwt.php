@@ -55,7 +55,7 @@
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_expire_seconds'}</label>
 								<div class="col-lg-8 controls">
 									<input type="text" name="expire_seconds" id="expire_seconds" class="form-control"/>
-									<span class="help-block">{lang key='wechat::wechat.label_expire_seconds_help'}</span>
+									<div class="help-block">该二维码有效时间，以天为单位。 最大不超过30天，此字段如果不填，则默认有效期为30秒。</div>
 								</div>
 							</div>
 							

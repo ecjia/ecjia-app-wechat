@@ -80,7 +80,6 @@
 								<label for="customCheck"></label>
 							</th>
 							<th class="w250">{lang key='wechat::wechat.application_adsense'}</th>
-							<th class="w200">{lang key='wechat::wechat.qrcode_type'}</th>
 							<th class="w200">{lang key='wechat::wechat.function'}</th>
 							<th class="w150">{lang key='wechat::wechat.status'}</th>
 							<th class="w100">{lang key='wechat::wechat.sort'}</th>
@@ -100,9 +99,6 @@
 						      		<a class="ajaxwechat" href="{$view_url}">{lang key='wechat::wechat.get_qrcode'}</a>&nbsp;|&nbsp;
 						      		<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_qrcode_confirm'}" href='{RC_Uri::url("wechat/platform_qrcode/remove","id={$val.id}")}'>{lang key='system::system.drop'}</a>
 							    </div>
-							</td>
-							<td>
-								{if $val.type eq 0}{lang key='wechat::wechat.qrcode_short'}{else}{lang key='wechat::wechat.qrcode_forever'}{/if}
 							</td>
 							<td>
 								{$val.function}

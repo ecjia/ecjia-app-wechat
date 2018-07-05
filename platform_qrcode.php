@@ -170,7 +170,7 @@ class platform_qrcode extends ecjia_platform {
 		$wechat_id = $this->platformAccount->getAccountID();
 		
 		$type 			= isset($_POST['type']) 			? intval($_POST['type']) 			: 0;
-		$expire_seconds = isset($_POST['expire_seconds']) 	? intval($_POST['expire_seconds']) 	: 0;
+		$expire_seconds = !empty($_POST['expire_seconds']) 	? intval($_POST['expire_seconds']) * 86400 : 30;
 		$functions 		= isset($_POST['functions']) 		? $_POST['functions'] 				: '';
 		$scene_id 		= isset($_POST['scene_id']) 		? intval($_POST['scene_id']) 		: 0;
 		$status 		= isset($_POST['status']) 			? intval($_POST['status']) 			: 0;

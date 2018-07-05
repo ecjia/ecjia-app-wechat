@@ -155,7 +155,7 @@ class platform_share extends ecjia_platform {
 			'wechat_id'			=>	$wechat_id,
 			'username'			=>	trim($_POST['username']),
 			'scene_id'			=>	intval($_POST['scene_id']),
-	  		'expire_seconds'	=>	intval($_POST['expire_seconds']),
+	  		'expire_seconds'	=>	!empty($_POST['expire_seconds']) ? intval($_POST['expire_seconds']) * 86400 : 30,
 			'function'			=>	$_POST['functions'],
 			'sort'  			=>	intval($_POST['sort'])
 		);
