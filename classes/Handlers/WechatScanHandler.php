@@ -3,6 +3,13 @@
 namespace Ecjia\App\Wechat\Handlers;
 
 use Ecjia\App\Wechat\WechatUUID;
+use Ecjia\App\Wechat\WechatRecord;
+use Ecjia\App\Wechat\WechatCommand;
+use Ecjia\App\Wechat\Models\WechatQrcodeModel;
+use Ecjia\App\Wechat\Models\WechatReplyModel;
+use Ecjia\App\Wechat\Models\WechatMediaReply;
+use RC_Time;
+use RC_Hook;
 
 class WechatScanHandler
 {
@@ -44,9 +51,97 @@ class WechatScanHandler
      */
     public function getScanEventHandler()
     {
-        
-        
-        
+        $time = RC_Time::gmtime();
+        $wechatUUID = new WechatUUID();
+        $wechat_id = $wechatUUID->getWechatID();
+
+        $model = WechatQrcodeModel::where('status', 1)
+            ->where('endtime', '>', $time)
+            ->where('wechat_id', $wechat_id)
+            ->where('scene_id', $this->eventKey)
+            ->orderBy('sort', 'ASC')
+            ->first();
+
+        if (! empty($model) ) {
+            $model->scan_num = $model->scan_num + 1;
+            $model->save();
+
+            $function = $model->function;
+
+            RC_Hook::add_filter('wechat_scan_response', array(__CLASS__, 'Command_reply'), 10, 4);
+            RC_Hook::add_filter('wechat_scan_response', array(__CLASS__, 'Keyword_reply'), 90, 4);
+
+            $response = RC_Hook::apply_filters('wechat_scan_response', null, $this->message, $function, $wechatUUID);
+
+            return $response;
+        }
     }
-    
+
+
+    /**
+     * 命令回复
+     * @param \Royalcms\Component\WeChat\Message\AbstractMessage $content
+     * @param \Royalcms\Component\Support\Collection $message
+     * @param string $function
+     * @param \Ecjia\App\Wechat\WechatUUID $wechatUUID
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
+    public static function Command_reply($content, $message, $function, $wechatUUID)
+    {
+        if (!is_null($content)) {
+            return $content;
+        }
+
+        $content = with(new WechatCommand($message, $wechatUUID))->runCommand($function);
+
+        //内容为空，返回null
+        if (empty($content)) {
+            return null;
+        }
+
+        if (is_string($content)) {
+            $content = WechatRecord::Text_reply($message, $content);
+        }
+
+        return $content;
+    }
+
+
+    /**
+     * 关键字回复
+     * @param \Royalcms\Component\WeChat\Message\AbstractMessage $content
+     * @param \Royalcms\Component\Support\Collection $message
+     * @param string $function
+     * @param \Ecjia\App\Wechat\WechatUUID $wechatUUID
+     * @return \Royalcms\Component\WeChat\Message\AbstractMessage
+     */
+    public static function Keyword_reply($content, $message, $function, $wechatUUID) {
+        if (!is_null($content)) {
+            return $content;
+        }
+
+        $wechat_id = $wechatUUID->getWechatID();
+        $rule_keywords  = $function;
+
+        //用户输入信息记录
+        WechatRecord::inputMsg($message->get('FromUserName'), $rule_keywords);
+
+        $model = WechatReplyModel::leftJoin('wechat_rule_keywords', 'wechat_rule_keywords.rid', '=', 'wechat_reply.id')
+            ->select('wechat_reply.content', 'wechat_reply.media_id', 'wechat_reply.reply_type')
+            ->where('wechat_reply.wechat_id', $wechat_id)
+            ->where('wechat_rule_keywords.rule_keywords', $rule_keywords)->first();
+
+        if (! empty($model)) {
+            if ($model->media_id) {
+                $content = with(new WechatMediaReply($wechat_id, $model->media_id))->replyContent($message);
+            } else {
+                $content = WechatRecord::Text_reply($message, $model->content);
+            }
+
+            return $content;
+        }
+
+        //内容为空，返回null
+        return null;
+    }
 }
