@@ -256,11 +256,13 @@ class platform_menus extends ecjia_platform {
 		$rule_keywords_list = RC_DB::table('wechat_rule_keywords as wrk')
 		->leftJoin('wechat_reply as wr', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
 		->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+		->limit(50)
+		->orderBy(RC_DB::raw('wrk.id'), 'desc')
 		->lists(RC_DB::raw('wrk.rule_keywords'));
 		
 		$key_list = array(
-			'回复关键词' => $rule_keywords_list,
-			'插件关键词' => $cmd_word_list
+			'插件关键词' => $cmd_word_list,
+			'回复关键词' => $rule_keywords_list
 		);
 		$this->assign('key_list', $key_list);
 		
@@ -415,11 +417,13 @@ class platform_menus extends ecjia_platform {
 			$rule_keywords_list = RC_DB::table('wechat_rule_keywords as wrk')
 			->leftJoin('wechat_reply as wr', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
 			->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+			->limit(50)
+			->orderBy(RC_DB::raw('wrk.id'), 'desc')
 			->lists(RC_DB::raw('wrk.rule_keywords'));
 			
 			$key_list = array(
-				'回复关键词' => $rule_keywords_list,
-				'插件关键词' => $cmd_word_list
+				'插件关键词' => $cmd_word_list,
+				'回复关键词' => $rule_keywords_list
 			);
 			$this->assign('key_list', $key_list);
 			
@@ -715,11 +719,13 @@ class platform_menus extends ecjia_platform {
 			$rule_keywords_list = RC_DB::table('wechat_rule_keywords as wrk')
 				->leftJoin('wechat_reply as wr', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
 				->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+				->limit(50)
+				->orderBy(RC_DB::raw('wrk.id'), 'desc')
 				->lists(RC_DB::raw('wrk.rule_keywords'));
 
 			$key_list = array(
-				'回复关键词' => $rule_keywords_list,
-				'插件关键词' => $cmd_word_list
+				'插件关键词' => $cmd_word_list,
+				'回复关键词' => $rule_keywords_list
 			);
 			$this->assign('key_list', $key_list);
 			$data = $this->fetch('library/wechat_menu_sub.lbi');
@@ -801,11 +807,13 @@ class platform_menus extends ecjia_platform {
 			$rule_keywords_list = RC_DB::table('wechat_rule_keywords as wrk')
 			->leftJoin('wechat_reply as wr', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
 			->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+			->limit(50)
+			->orderBy(RC_DB::raw('wrk.id'), 'desc')
 			->lists(RC_DB::raw('wrk.rule_keywords'));
 			
 			$key_list = array(
-				'回复关键词' => $rule_keywords_list,
-				'插件关键词' => $cmd_word_list
+				'插件关键词' => $cmd_word_list,
+				'回复关键词' => $rule_keywords_list
 			);
 			$this->assign('key_list', $key_list);
 			
