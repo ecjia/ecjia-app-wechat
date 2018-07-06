@@ -282,7 +282,7 @@ class platform_qrcode extends ecjia_platform {
 			$data['ticket'] = $ticket['ticket'];
 			$data['expire_seconds'] = $ticket['expire_seconds'];
 			if($qrcode['type'] == 0) {
-				$data['endtime'] = time() + $ticket['expire_seconds'];
+				$data['endtime'] = RC_Time::gmtime() + $ticket['expire_seconds'];
 			}
 			// 二维码地址
 			$data['qrcode_url'] = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".$data['ticket'];
