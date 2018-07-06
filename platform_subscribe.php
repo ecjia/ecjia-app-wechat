@@ -56,7 +56,6 @@ class platform_subscribe extends ecjia_platform {
 	private $wechat_user_tag;
 	private $wechat_tag;
 	private $custom_message_viewdb;
-	private $db_platform_account;
 	
 	public function __construct() {
 		parent::__construct();
@@ -70,7 +69,6 @@ class platform_subscribe extends ecjia_platform {
 		$this->wechat_user_tag = RC_Loader::load_app_model('wechat_user_tag_model');
 		$this->wechat_tag = RC_Loader::load_app_model('wechat_tag_model');
 		$this->custom_message_viewdb = RC_Loader::load_app_model('wechat_custom_message_viewmodel');
-		$this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
 		
 		RC_Loader::load_app_class('platform_account', 'platform', false);
 		RC_Loader::load_app_class('wechat_method', 'wechat', false);
@@ -187,12 +185,11 @@ class platform_subscribe extends ecjia_platform {
 			}
 			
 			//取消关注用户数量
-			$where = array('wechat_id' => $wechat_id, 'subscribe' => 0, 'group_id' => 0);
-			$num = $this->wechat_user_db->where($where)->count();
+			$num = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('subscribe', 0)->where('group_id', 0)->count();
 			$this->assign('num', $num);
 			
 			//获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
-			$types = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+			$types = $this->platformAccount->getType();
 			$this->assign('type', $types);
 			$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$types)));
 		}
@@ -313,8 +310,7 @@ class platform_subscribe extends ecjia_platform {
 		
 		//记录日志
 		ecjia_admin::admin_log($name, 'remove', 'users_tag');
-		$this->wechat_user_db->where(array('group_id' => $tag_id))->update(array('group_id' => 0));
-		
+		RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('group_id', $tag_id)->update(array('group_id' => 0));
 		if ($delete){
 			return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 		} else {
@@ -395,7 +391,7 @@ class platform_subscribe extends ecjia_platform {
 			
 		}
 		
-		$user_list = $this->wechat_user_db->where(array('wechat_id' => $wechat_id))->get_field('openid', true);
+		$user_list = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->lists('openid');
 		if (empty($user_list)) {
 			$user_list = array();
 		}
@@ -413,11 +409,11 @@ class platform_subscribe extends ecjia_platform {
 					'wechat_id' => $wechat_id,
 					'openid' . db_create_in($unsubscribe_list)
 				);
-				$this->wechat_user_db->where($where)->update(array('subscribe' => 0));
+				RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->whereRaw('openid' . db_create_in($unsubscribe_list))->update(array('subscribe' => 0));
 				
 				//删除取消关注用户的标签
-				$uid_list = $this->wechat_user_db->where($where)->get_field('uid', true);
-				$this->wechat_user_tag->where(array('userid' => $uid_list))->delete();
+				$uid_list = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->whereRaw('openid' . db_create_in($unsubscribe_list))->lists('uid');
+				RC_DB::table('wechat_user_tag')->whereIn('userid', $uid_list)->delete();
 			}
 		}
 		
@@ -454,11 +450,11 @@ class platform_subscribe extends ecjia_platform {
 		        foreach ($info2['user_info_list'] as $key => $v) {
 		            $info2['user_info_list'][$key]['wechat_id'] = $wechat_id;
 		            $info2['user_info_list'][$key]['headimgurl'] = is_ssl() && !empty($v['headimgurl']) ? str_replace('http://', 'https://', $v['headimgurl']) : $v['headimgurl'];
-		            $uid = $this->wechat_user_db->insert($info2['user_info_list'][$key]);
+		            $uid = RC_DB::table('wechat_user')->insertGetId($info2['user_info_list'][$key]);
 		            if (!empty($v['tagid_list'])) {
 		                foreach ($v['tagid_list'] as $val) {
 		                    if (!empty($val)) {
-		                        $this->wechat_user_tag->insert(array('userid' => $uid, 'tagid' => $val));
+		                        RC_DB::table('wechat_user_tag')->insert(array('userid' => $uid, 'tagid' => $val));
 		                    }
 		                }
 		            }
@@ -532,7 +528,7 @@ class platform_subscribe extends ecjia_platform {
 		 	$this->assign('warn', 'warn');
 		 	
 		 	//获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
-		 	$type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+		 	$type = $this->platformAccount->getType();
 		 	$this->assign('type', $type);
 		 	$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 		 	
@@ -755,7 +751,7 @@ class platform_subscribe extends ecjia_platform {
 		
 		
 		$wechat_id = $this->platformAccount->getAccountID();
-		$platform_name = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('name');
+		$platform_name = $this->platformAccount->getPlatformName();
 		
 		$uid     = !empty($_GET['uid'])     ? intval($_GET['uid'])     : 0;
 		$last_id = !empty($_GET['last_id']) ? intval($_GET['last_id']) : 0;
