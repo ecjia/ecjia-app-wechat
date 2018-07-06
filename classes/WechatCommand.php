@@ -26,6 +26,8 @@ class WechatCommand
      * @param string $cmd
      */
     public function runCommand($cmd) {
+        list($cmd, $keyword) = explode(' ', $cmd);
+
         //查询$cmd命令是哪个插件的
         $model = PlatformCommandModel::where('account_id', $this->wechat_id)->where('cmd_word', $cmd)->first();
         
@@ -37,6 +39,7 @@ class WechatCommand
                 $extend_handle->setSubCodeCommand($model->sub_code);
                 $extend_handle->setStoreId($this->wechat_uuid->getAccount()->getStoreId());
                 $extend_handle->setStoreType(\Ecjia\App\Platform\Plugin\PlatformAbstract::TypeMerchant);
+                $extend_handle->setKeyword($keyword);
                 return $extend_handle->eventReply();
             }
             else if ($this->wechat_uuid->getAccount()->getStoreId() === 0 && $extend_handle->hasSupportTypeAdmin()) {
@@ -44,6 +47,7 @@ class WechatCommand
                 $extend_handle->setSubCodeCommand($model->sub_code);
                 $extend_handle->setStoreId($this->wechat_uuid->getAccount()->getStoreId());
                 $extend_handle->setStoreType(\Ecjia\App\Platform\Plugin\PlatformAbstract::TypeAdmin);
+                $extend_handle->setKeyword($keyword);
                 return $extend_handle->eventReply();
             }
             else {
