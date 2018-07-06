@@ -98,6 +98,15 @@ class WechatSubscribeHandler
                     'qr_scene_str'      => $userinfo->get('qr_scene_str'),
                 ]);
             }
+
+            //如果关注时，有扫码事件，跳转到相应事件处理
+            if ($this->message->get('EventKey')) {
+                $content = with(new WechatScanHandler($this->message))->getScanEventHandler();
+                if (! empty($content)) {
+                    return $content;
+                }
+            }
+
             
             $defaultReply = '感谢您的关注';
             
