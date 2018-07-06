@@ -93,10 +93,13 @@
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_mass_type'}</label>
 								<div class="col-lg-8 controls">
-									<select name="mass_type" class="w130 f_l select2 form-control">
-										<option value="all">{lang key='wechat::wechat.all_user'}</option>
-										<option value="by_group">{lang key='wechat::wechat.by_group'}</option>
-					                </select>
+									<div class="select_type f_l">
+										<select name="mass_type" class="w130 select2 form-control">
+											<option value="all">{lang key='wechat::wechat.all_user'}</option>
+											<option value="by_group">{lang key='wechat::wechat.by_group'}</option>
+						                </select>
+					                </div>
+					                
 					                <div class="by_group d-none m_l10 f_l">
 										<select name="tag_id" class="select2 w130 form-control">
 						                    <!-- {foreach from=$list item=val} -->
