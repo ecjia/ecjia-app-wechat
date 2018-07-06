@@ -468,6 +468,7 @@ return array(
 		'qrcode_scene_id_required'	=> '请填写推荐人ID',
 		'qrcode_funcions_required'	=> '请填写功能',
 		'application_adsense_required' => '请填写应用场景',
+		'qrcode_funcions_empty'	   => '请选择或填写关键词',
 		
 		'select_material'       => '请先选择素材！',
 		'unfind_any_recode' 	=> '没有找到任何记录',

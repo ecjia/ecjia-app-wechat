@@ -65,7 +65,33 @@
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">功能关键词：</label>
 								<div class="col-lg-8 controls">
-									<input type="text" name="functions" id="function" class="form-control"/>
+									<input type="radio" id="keywords_0" name="keywords" checked value="0" /><label for="keywords_0">选择关键词</label>
+									<input type="radio" id="keywords_1" name="keywords" value="1" /><label for="keywords_1">自定义关键词</label>
+								</div>
+							</div>
+							
+							<div class="form-group row" id="choose_function">
+								<label class="col-lg-2 label-control text-right"></label>
+								<div class="col-lg-8 controls">
+									<select class="select2 form-control" id="functions" name="functions">
+										<option value="">请选择关键词...</option>
+								   		<!-- {foreach from=$key_list key=key item=val} -->
+										<optgroup label="{$key}">
+											<!-- {foreach from=$val item=v} -->
+											<option value="{$v}">{$v}</option>
+											<!-- {/foreach} -->
+										</optgroup>
+										<!-- {/foreach} -->
+									</select>
+									<div class="help-block">该二维码的功能关键词</div>
+								</div>
+								<span class="input-must">{lang key='system::system.require_field'}</span>
+							</div>
+							
+							<div class="form-group row d-none" id="input_function">
+								<label class="col-lg-2 label-control text-right"></label>
+								<div class="col-lg-8 controls">
+									<input type="text" name="" id="function" class="form-control"/>
 									<div class="help-block">该二维码的功能关键词</div>
 								</div>
 								<span class="input-must">{lang key='system::system.require_field'}</span>

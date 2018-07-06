@@ -35,6 +35,7 @@
 	app.wechat_qrcode_edit = {
 			init : function() {
 				app.wechat_qrcode_edit.submit_form();
+				app.wechat_qrcode_edit.checked();
 			},
 			submit_form : function(formobj) {
 				var $form = $("form[name='theForm']");
@@ -44,7 +45,7 @@
 						scene_id : { required : true }
 					},
 					messages : {
-						functions : { required : js_lang.qrcode_funcions_required },
+						functions : { required : js_lang.qrcode_funcions_empty },
 						scene_id : { required : js_lang.application_adsense_required }
 					},
 					submitHandler : function() {
@@ -59,6 +60,20 @@
 				}
 				var options = $.extend(ecjia.platform.defaultOptions.validate, option);
 				$form.validate(options);
+			},
+			
+			checked: function() {
+				$('input[name="keywords"]').off('click').on('click', function(){
+					var $this = $(this),
+						val = $this.val();
+					if (val == 1) {
+						$('#input_function').removeClass('d-none').find('input').attr('name', 'functions');
+						$('#choose_function').addClass('d-none').find('select').attr('name', '');
+					} else {
+						$('#input_function').addClass('d-none').find('input').attr('name', '');
+						$('#choose_function').removeClass('d-none').find('select').attr('name', 'functions');
+					}
+				});
 			}
 		};
 	

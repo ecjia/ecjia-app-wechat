@@ -156,6 +156,21 @@ class platform_qrcode extends ecjia_platform {
 			$this->assign('form_action', RC_Uri::url('wechat/platform_qrcode/insert'));
 		}
 		
+		$platform = $this->platformAccount->getPlatform();
+		$cmd_word_list = RC_DB::table('platform_command')->where('account_id', $wechat_id)->where('platform', $platform)->lists('cmd_word');
+		$rule_keywords_list = RC_DB::table('wechat_rule_keywords as wrk')
+		->leftJoin('wechat_reply as wr', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
+		->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+		->limit(50)
+		->orderBy(RC_DB::raw('wrk.id'), 'desc')
+		->lists(RC_DB::raw('wrk.rule_keywords'));
+			
+		$key_list = array(
+			'插件关键词' => $cmd_word_list,
+			'回复关键词' => $rule_keywords_list
+		);
+		$this->assign('key_list', $key_list);
+		
 		$this->assign_lang();
 		$this->display('wechat_qrcode_edit.dwt');
 	}
