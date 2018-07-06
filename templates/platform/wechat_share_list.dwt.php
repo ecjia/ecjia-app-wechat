@@ -48,8 +48,9 @@
 							<th class="w150">{lang key='wechat::wechat.recommended_person'}</th>
 							<th class="w100">{lang key='wechat::wechat.cash_into'}</th>
 							<th class="w100">{lang key='wechat::wechat.scan_num'}</th>
-							<th class="w150">过期时间</th>
-							<th class="w200">{lang key='wechat::wechat.function'}</th>
+							<th class="w200">过期时间</th>
+							<th class="w100">扫码次数</th>
+							<th class="w150">{lang key='wechat::wechat.function'}</th>
 							<th class="w100">{lang key='wechat::wechat.sort'}</th>
 						</tr>
 					</thead>
@@ -76,6 +77,7 @@
 							<td>
 								{$val.function}
 							</td>
+							<td>{$val.scan_num}</td>
 							<td><span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('wechat/platform_share/edit_sort')}" data-name="sort" data-pk="{$val.id}"  data-title="{lang key='wechat::wechat.edit_qrcode_sort'}">{$val.sort}</span></td>
 						</tr>
 						<!--  {foreachelse} -->

@@ -79,9 +79,10 @@
 								<input type="checkbox" data-toggle="selectall" data-children=".checkbox" id="customCheck"/>
 								<label for="customCheck"></label>
 							</th>
-							<th class="w250">{lang key='wechat::wechat.application_adsense'}</th>
-							<th class="w200">{lang key='wechat::wechat.function'}</th>
-							<th class="w150">过期时间</th>
+							<th class="w200">{lang key='wechat::wechat.application_adsense'}</th>
+							<th class="w150">{lang key='wechat::wechat.function'}</th>
+							<th class="w200">过期时间</th>
+							<th class="w100">扫码次数</th>
 							<th class="w150">{lang key='wechat::wechat.status'}</th>
 							<th class="w100">{lang key='wechat::wechat.sort'}</th>
 						</tr>
@@ -107,6 +108,7 @@
 							<td>
 								{RC_Time::local_date('Y-m-d H:i', $val.endtime)}
 							</td>
+							<td>{$val.scan_num}</td>
 							<td>
                                 <i class="{if $val.status eq 1}fa fa-check{else}fa fa-times{/if} cursor_pointer" data-trigger="toggleState" data-url="{RC_Uri::url('wechat/platform_qrcode/toggle_show')}" data-id="{$val.id}" ></i>
 							</td>
