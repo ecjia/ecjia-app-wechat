@@ -26,7 +26,7 @@ class WechatCommand
      * @param string $cmd
      */
     public function runCommand($cmd) {
-        list($cmd, $keyword) = expload(' ', $cmd);
+        list($cmd, $keyword) = explode(' ', $cmd);
 
         //查询$cmd命令是哪个插件的
         $model = PlatformCommandModel::where('account_id', $this->wechat_id)->where('cmd_word', $cmd)->first();
