@@ -81,6 +81,7 @@
 							</th>
 							<th class="w250">{lang key='wechat::wechat.application_adsense'}</th>
 							<th class="w200">{lang key='wechat::wechat.function'}</th>
+							<th class="w150">过期时间</th>
 							<th class="w150">{lang key='wechat::wechat.status'}</th>
 							<th class="w100">{lang key='wechat::wechat.sort'}</th>
 						</tr>
@@ -102,6 +103,9 @@
 							</td>
 							<td>
 								{$val.function}
+							</td>
+							<td>
+								{RC_Time::local_date('Y-m-d H:i', $val.endtime)}
 							</td>
 							<td>
                                 <i class="{if $val.status eq 1}fa fa-check{else}fa fa-times{/if} cursor_pointer" data-trigger="toggleState" data-url="{RC_Uri::url('wechat/platform_qrcode/toggle_show')}" data-id="{$val.id}" ></i>

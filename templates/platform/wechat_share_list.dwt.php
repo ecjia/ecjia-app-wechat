@@ -48,7 +48,7 @@
 							<th class="w150">{lang key='wechat::wechat.recommended_person'}</th>
 							<th class="w100">{lang key='wechat::wechat.cash_into'}</th>
 							<th class="w100">{lang key='wechat::wechat.scan_num'}</th>
-							<th class="w150">{lang key='wechat::wechat.expire_seconds'}</th>
+							<th class="w150">过期时间</th>
 							<th class="w200">{lang key='wechat::wechat.function'}</th>
 							<th class="w100">{lang key='wechat::wechat.sort'}</th>
 						</tr>
@@ -71,7 +71,7 @@
 								{$val['scan_num']}
 							</td>
 							<td>
-								{$val['expire_seconds']}
+								{RC_Time::local_date('Y-m-d H:i', $val.endtime)}
 							</td>
 							<td>
 								{$val.function}
