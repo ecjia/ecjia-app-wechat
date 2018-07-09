@@ -1393,10 +1393,6 @@ class platform_material extends ecjia_platform
         $material = !empty($_GET['material']) ? 'material' : '';
         $db_wechat_media->where('is_material', $material);
 
-//         $data = $this->wm_db->field("SUM(type='news' and parent_id = 0 and media_id != '') AS news, SUM(file != '' and (type = 'image' or type = 'news') and thumb != '') AS image, SUM(type='voice') AS voice, SUM(type='video') AS video")
-
-//             ->where(array('wechat_id' => $wechat_id, 'is_material' => $material))->select();
-
         $data = RC_DB::table('wechat_media')->select(
             RC_DB::raw("SUM(type='news' and parent_id = 0 and media_id != '') AS news"),
             RC_DB::raw("SUM(file != '' and (type = 'image' or type = 'news') and thumb != '') AS image"),
@@ -1419,13 +1415,8 @@ class platform_material extends ecjia_platform
             }
         }
 
-//         $count = $this->wm_db->where($where)->count();
         $count = $db_wechat_media->count();
-
         $page = new ecjia_platform_page($count, 12, 5);
-//         $limit = $page->limit();
-
-//         $data = $this->wm_db->limit($limit)->where($where)->order(array('sort' => 'asc', 'id' => 'desc'))->select();
         $data = $db_wechat_media->orderBy('sort', 'asc')->orderBy('id', 'desc')->take(12)->skip($page->start_id - 1)->get();
 
         if (!empty($data)) {
@@ -1486,10 +1477,8 @@ class platform_material extends ecjia_platform
     {
         $db_wechat_media = RC_DB::table('wechat_media');
         if ($id) {
-//             $where = "type = 'news' and parent_id = '$id' or id = '$id'";
             $db_wechat_media->where('type', 'news')->where('parent_id', $id)->orWhere('id', $id);
         }
-//         $data = $this->wm_db->where($where)->order(array('id' => 'asc'))->select();
         $data = $db_wechat_media->orderBy('id', 'asc')->get();
         return $data;
     }

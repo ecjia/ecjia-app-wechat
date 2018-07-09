@@ -52,9 +52,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class platform_qrcode extends ecjia_platform
 {
-    private $db_qrcode;
-    private $db_platform_account;
-
     public function __construct()
     {
         parent::__construct();
@@ -62,9 +59,6 @@ class platform_qrcode extends ecjia_platform
         RC_Lang::load('wechat');
         RC_Loader::load_app_func('global');
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
-
-        $this->db_qrcode = RC_Loader::load_app_model('wechat_qrcode_model');
-        $this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
 
         RC_Loader::load_app_class('platform_account', 'platform', false);
 
@@ -109,8 +103,10 @@ class platform_qrcode extends ecjia_platform
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
         } else {
             $this->assign('warn', 'warn');
-            $type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+
+            $type = $this->platformAccount->getType();
             $this->assign('type', $type);
+
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
 
             $listdb = $this->get_qrcodelist();
@@ -151,10 +147,11 @@ class platform_qrcode extends ecjia_platform
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
         } else {
             $this->assign('warn', 'warn');
-            $type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
-            $this->assign('type', $type);
-            $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
 
+            $type = $this->platformAccount->getType();
+            $this->assign('type', $type);
+
+            $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
             $this->assign('form_action', RC_Uri::url('wechat/platform_qrcode/insert'));
         }
 
@@ -202,7 +199,7 @@ class platform_qrcode extends ecjia_platform
             'status' => $status,
             'sort' => $sort,
         );
-        $this->db_qrcode->insert($data);
+        RC_DB::table('wechat_qrcode')->insert($data);
 
         ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $functions), 'add', 'qrcode');
         return $this->showmessage(RC_Lang::get('wechat::wechat.add_qrcode_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
@@ -215,10 +212,11 @@ class platform_qrcode extends ecjia_platform
     {
         $this->admin_priv('wechat_qrcode_delete', ecjia::MSGTYPE_JSON);
 
+        $wechat_id = $this->platformAccount->getAccountID();
         $id = intval($_GET['id']);
-        $function = $this->db_qrcode->where(array('id' => $id))->get_field('function');
 
-        $this->db_qrcode->where(array('id' => $id))->delete();
+        $function = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('function');
+        RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
 
         ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $function), 'remove', 'qrcode');
         return $this->showmessage(RC_Lang::get('wechat::wechat.remove_qrcode_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
@@ -231,9 +229,11 @@ class platform_qrcode extends ecjia_platform
     {
         $this->admin_priv('wechat_qrcode_delete', ecjia::MSGTYPE_JSON);
 
-        $info = $this->db_qrcode->in(array('id' => $_POST['id']))->select();
+        $wechat_id = $this->platformAccount->getAccountID();
+        $id_list = !empty($_POST['id']) ? explode(',', $_POST['id']) : [];
 
-        $success = $this->db_qrcode->in(array('id' => $_POST['id']))->delete();
+        $info = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->whereIn('id', $id_list)->get();
+        RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->whereIn('id', $id_list)->delete();
 
         foreach ($info as $v) {
             ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $v['function']), 'batch_remove', 'qrcode');
@@ -248,13 +248,17 @@ class platform_qrcode extends ecjia_platform
     {
         $this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
 
-        $this->admin_priv('wechat_subscribe_manage');
-
         $uuid = $this->platformAccount->getUUID();
+        $wechat_id = $this->platformAccount->getAccountID();
 
-        $id = $_GET['id'];
-        $field = 'type, scene_id, expire_seconds, qrcode_url, status, function';
-        $qrcode = $this->db_qrcode->field($field)->find(array('id' => $id));
+        $id = intval($_GET['id']);
+
+        $qrcode = RC_DB::table('wechat_qrcode')
+            ->select('type', 'scene_id', 'expire_seconds', 'qrcode_url', 'status', 'function')
+            ->where('wechat_id', $wechat_id)
+            ->where('id', $id)
+            ->first();
+
         if ($qrcode['status'] == 0) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.pls_restart'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -291,7 +295,8 @@ class platform_qrcode extends ecjia_platform
             }
             // 二维码地址
             $data['qrcode_url'] = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" . $data['ticket'];
-            $this->db_qrcode->where(array('id' => $id))->update($data);
+            RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
+
             $qrcode_url = $data['qrcode_url'];
 
         } else {
@@ -308,11 +313,12 @@ class platform_qrcode extends ecjia_platform
     {
         $this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
 
+        $wechat_id = $this->platformAccount->getAccountID();
         $id = intval($_POST['id']);
         $val = intval($_POST['val']);
 
-        $function = $this->db_qrcode->where(array('id' => $id))->get_field('function');
-        $this->db_qrcode->where(array('id' => $id))->update(array('status' => $val));
+        $function = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('function');
+        RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('status' => $val));
 
         if ($val == 1) {
             ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.open_function_is'), $function), 'setup', 'qrcode');
@@ -329,17 +335,18 @@ class platform_qrcode extends ecjia_platform
     {
         $this->admin_priv('wechat_qrcode_update', ecjia::MSGTYPE_JSON);
 
+        $wechat_id = $this->platformAccount->getAccountID();
         $id = intval($_POST['pk']);
         $sort = trim($_POST['value']);
-        $function = $this->db_qrcode->where(array('id' => $id))->get_field('function');
+        $function = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('function');
+
         if (!empty($sort)) {
             if (!is_numeric($sort)) {
                 return $this->showmessage(RC_Lang::get('wechat::wechat.qrcode_sort_numeric'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             } else {
-                if ($this->db_qrcode->where(array('id' => $id))->update(array('sort' => $sort))) {
-                    ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $function), 'edit', 'qrcode');
-                    return $this->showmessage(RC_Lang::get('wechat::wechat.edit_sort_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_qrcode/init')));
-                }
+                RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('sort' => $sort));
+                ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $function), 'edit', 'qrcode');
+                return $this->showmessage(RC_Lang::get('wechat::wechat.edit_sort_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_qrcode/init')));
             }
         } else {
             return $this->showmessage(RC_Lang::get('wechat::wechat.qrcode_sort_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -354,16 +361,16 @@ class platform_qrcode extends ecjia_platform
 
         $wechat_id = $this->platformAccount->getAccountID();
 
-        $db_qrcode = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('username', null);
+        $db = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('username', null);
 
         $filter = array();
         $filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
         $filter['type'] = isset($_GET['type']) ? intval($_GET['type']) : '';
 
         if ($filter['keywords']) {
-            $db_qrcode->where('function', 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
+            $db->where('function', 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
         }
-        $type_count = $db_qrcode->select(
+        $type_count = $db->select(
             RC_DB::raw('SUM(IF(type = 1, 1, 0)) as forever'),
             RC_DB::raw('SUM(IF(type = 0, 1, 0)) as temporary'))->first();
         if (empty($type_count['forever'])) {
@@ -374,18 +381,18 @@ class platform_qrcode extends ecjia_platform
         }
 
         if ($filter['type'] === 0) {
-            $db_qrcode->where('type', 0);
+            $db->where('type', 0);
         }
 
         if ($filter['type'] === '') {
-            $db_qrcode->where('type', 1);
+            $db->where('type', 1);
         }
 
-        $count = $db_qrcode->select('*')->count();
+        $count = $db->select('*')->count();
         $page = new ecjia_platform_page($count, 10, 5);
 
         $arr = array();
-        $data = $db_qrcode->orderBy('sort', 'asc')->take(10)->skip($page->start_id - 1)->get();
+        $data = $db->orderBy('sort', 'asc')->take(10)->skip($page->start_id - 1)->get();
 
         return array('qrcode_list' => $data, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'count' => $type_count);
     }

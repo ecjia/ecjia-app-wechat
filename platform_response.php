@@ -52,20 +52,11 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class platform_response extends ecjia_platform
 {
-    private $wm_db;
-    private $wr_db;
-    private $wrk_db;
-    private $wr_viewdb;
-
     public function __construct()
     {
         parent::__construct();
 
         RC_Lang::load('wechat');
-        $this->wm_db = RC_Loader::load_app_model('wechat_media_model');
-        $this->wr_db = RC_Loader::load_app_model('wechat_reply_model');
-        $this->wrk_db = RC_Loader::load_app_model('wechat_rule_keywords_model');
-        $this->wr_viewdb = RC_Loader::load_app_model('wechat_reply_viewmodel');
 
         RC_Loader::load_app_class('platform_account', 'platform', false);
         RC_Loader::load_app_func('global');
@@ -115,14 +106,17 @@ class platform_response extends ecjia_platform
         $this->assign('add_material_action', RC_Uri::url('wechat/platform_response/add_material'));
 
         //自动回复数据
-
         $wechat_id = $this->platformAccount->getAccountID();
         if (is_ecjia_error($wechat_id)) {
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
         } else {
-            $subscribe = $this->wr_db->where(array('type' => 'subscribe', 'wechat_id' => $wechat_id))->find();
+            $subscribe = RC_DB::table('wechat_reply')->where('type', 'subscribe')->where('wechat_id', $wechat_id)->first();
             if (!empty($subscribe['media_id'])) {
-                $subscribe['media'] = $this->wm_db->field('file, type, file_name')->where(array('id' => $subscribe['media_id']))->find();
+                $subscribe['media'] = RC_DB::table('wechat_media')
+                	->select('file', 'type', 'file_name')
+                	->where('wechat_id', $wechat_id)
+                	->where('id', $subscribe['media_id'])
+                	->first();
             }
             if (!empty($subscribe)) {
                 foreach ($subscribe as $key => $val) {
@@ -161,7 +155,6 @@ class platform_response extends ecjia_platform
         }
 
         $wechat_id = $this->platformAccount->getAccountID();
-
         $data = array(
             'wechat_id' => $wechat_id,
             'media_id' => $media_id,
@@ -173,11 +166,11 @@ class platform_response extends ecjia_platform
             $this->admin_priv('wechat_response_add', ecjia::MSGTYPE_JSON);
 
 			//添加
-            $id = $this->wr_db->insert($data);
+            $id = RC_DB::table('wechat_reply')->insertGetId($data);
 
-            $media_id = $this->wr_db->where(array('id' => $id))->get_field('media_id');
-            $file = $this->wm_db->where(array('id' => $media_id))->get_field('file');
-
+            $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
+            $file = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $media_id)->pluck('file');
+            
             if ($reply_type == 'text') {
                 ecjia_admin::admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'add', 'reply_subscribe');
             } elseif ($reply_type == 'image') {
@@ -194,12 +187,11 @@ class platform_response extends ecjia_platform
             }
         } else {
             $this->admin_priv('wechat_response_update', ecjia::MSGTYPE_JSON);
-
             //更新
-            $update = $this->wr_db->where(array('id' => $id))->update($data);
+            RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
 
-            $media_id = $this->wr_db->where(array('id' => $id))->get_field('media_id');
-            $file = $this->wm_db->where(array('id' => $media_id))->get_field('file');
+            $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
+            $file = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $media_id)->pluck('file');
 
             if ($reply_type == 'text') {
                 ecjia_admin::admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'edit', 'reply_subscribe');
@@ -221,7 +213,6 @@ class platform_response extends ecjia_platform
 
     public function get_material_list()
     {
-
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
@@ -231,15 +222,16 @@ class platform_response extends ecjia_platform
             $filter = (object) $filter;
             $type = $filter->type;
 
+            $where = '';
             if ($type == 'image') {
-                $where[] = "(file is NOT NULL and (type = 'image' or type = 'news')) and wechat_id = $wechat_id and thumb != ''";
+                $where = "(file is NOT NULL and (type = 'image' or type = 'news')) and wechat_id = $wechat_id and thumb != ''";
             } elseif ($type == 'news') {
-                $where[] = "type = '$type' and parent_id = 0 and wechat_id = $wechat_id and media_id != ''";
+                $where = "type = '$type' and parent_id = 0 and wechat_id = $wechat_id and media_id != ''";
             } else {
-                $where[] = "(file is NOT NULL and type = '$type') and wechat_id = $wechat_id";
+                $where = "(file is NOT NULL and type = '$type') and wechat_id = $wechat_id";
             }
-
-            $list = $this->wm_db->where($where)->select();
+            $list = RC_DB::table('wechat_media')->select('*')->whereRaw($where)->get();
+            
             if (!empty($list)) {
                 foreach ($list as $key => $val) {
                     if ($val['type'] == 'news') {
@@ -287,12 +279,13 @@ class platform_response extends ecjia_platform
 
     public function get_material_info()
     {
+    	$wechat_id = $this->platformAccount->getAccountID();
         $filter = $_GET['JSON'];
         $filter = (object) $filter;
         $id = $filter->id;
         $type = $filter->type;
 
-        $info = $this->wm_db->where(array('id' => $id))->find();
+        $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
         if (empty($info['file']) || $info['type'] == 'voice' || $info['type'] == 'video') {
             if (empty($info['file'])) {
                 $info['file'] = RC_Uri::admin_url('statics/images/nopic.png');
@@ -314,7 +307,7 @@ class platform_response extends ecjia_platform
             $info['content'] = $content;
         }
 
-        $is_articles = $this->wm_db->where(array('parent_id' => $id))->count();
+        $is_articles = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $id)->count();
         if ($type == 'news' && $is_articles != 0) {
             $info = $this->get_article_list($id, $info['type']);
         }
@@ -347,15 +340,14 @@ class platform_response extends ecjia_platform
         $this->assign('add_material_action', RC_Uri::url('wechat/platform_response/add_material'));
 
         //自动回复数据
-
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
         } else {
-            $subscribe = $this->wr_db->where(array('type' => "msg", 'wechat_id' => $wechat_id))->find();
+            $subscribe = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'msg')->first();
             if (!empty($subscribe['media_id'])) {
-                $subscribe['media'] = $this->wm_db->field('file, type, file_name')->where(array('id' => $subscribe['media_id']))->find();
+                $subscribe['media'] = RC_DB::table('wechat_media')->select('file', 'type', 'file_name')->where('wechat_id', $wechat_id)->where('id', $subscribe['media_id'])->first();
             }
             if (!empty($subscribe)) {
                 foreach ($subscribe as $key => $val) {
@@ -399,12 +391,11 @@ class platform_response extends ecjia_platform
         );
         if (empty($id)) {
             $this->admin_priv('wechat_response_add', ecjia::MSGTYPE_JSON);
-
             //添加
-            $id = $this->wr_db->insert($data);
+            $id = RC_DB::table('wechat_reply')->insertGetId($data);
 
-            $media_id = $this->wr_db->where(array('id' => $id))->get_field('media_id');
-            $info = $this->wm_db->where(array('id' => $media_id))->field('file,type')->find();
+            $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
+            $info = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
                 ecjia_admin::admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'add', 'reply_msg');
@@ -426,10 +417,10 @@ class platform_response extends ecjia_platform
             $this->admin_priv('wechat_response_update', ecjia::MSGTYPE_JSON);
 
             //更新
-            $update = $this->wr_db->where(array('id' => $id))->update($data);
+            RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
 
-            $media_id = $this->wr_db->where(array('id' => $id))->get_field('media_id');
-            $info = $this->wm_db->where(array('id' => $media_id))->field('file,type')->find();
+            $media_id = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('media_id');
+            $info = RC_DB::table('wechat_media')->select('file', 'type')->where('wechat_id', $wechat_id)->where('id', $media_id)->first();
 
             if (!empty($content)) {
                 ecjia_admin::admin_log($content . '，' . RC_Lang::get('wechat::wechat.reply_type_character'), 'edit', 'reply_msg');
@@ -581,19 +572,24 @@ class platform_response extends ecjia_platform
         $data['type'] = 'keywords';
 
         if (!empty($id)) {
-            $is_only = $this->wr_db->where(array('id' => array('neq' => $id), 'rule_name' => $data['rule_name'], 'wechat_id' => $wechat_id))->count();
+            $is_only = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', '!=', $id)->where('rule_name', $data['rule_name'])->count();
             if ($is_only != 0) {
                 return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.rule_name_exists'), $data['rule_name']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         } else {
-            $is_only = $this->wr_db->where(array('rule_name' => $data['rule_name'], 'wechat_id' => $wechat_id))->count();
+            $is_only = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('rule_name', $data['rule_name'])->count();
             if ($is_only != 0) {
                 return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.rule_name_exists'), $data['rule_name']), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
         // 编辑关键词
         $rule_keywords = explode(',', $rule_keywords);
-        $rule_keywords_list = $this->wr_viewdb->where(array('wr.wechat_id' => $wechat_id, 'wr.id' => array('neq' => $id)))->field('wrk.rule_keywords')->select();
+        $rule_keywords_list = RC_DB::table('wechat_replay as wr')
+        	->leftJoin('wechat_rule_keywords as wrk', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
+        	->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
+        	->where(RC_DB::raw('wr.id'), '!=', $id)
+        	->select(RC_DB::raw('wrk.rule_keywords'))
+        	->get();
 
         if (!empty($rule_keywords_list)) {
             foreach ($rule_keywords_list as $v) {
@@ -613,22 +609,23 @@ class platform_response extends ecjia_platform
             $this->admin_priv('wechat_response_update', ecjia::MSGTYPE_JSON);
             $this->admin_priv('wechat_response_delete', ecjia::MSGTYPE_JSON);
 
-            $update = $this->wr_db->where(array('id' => $id))->update($data);
-            $this->wrk_db->where(array('rid' => $id))->delete();
+            $update = 1;
+            RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
+            RC_DB::table('wechat_rule_keywords')->where('rid', $id)->delete();
 
             ecjia_admin::admin_log($data['rule_name'], 'edit', 'reply_keywords_rule');
         } else {
             $this->admin_priv('wechat_response_add', ecjia::MSGTYPE_JSON);
 
             $data['add_time'] = RC_Time::gmtime();
-            $id = $this->wr_db->insert($data);
+            $id = RC_DB::table('wechat_reply')->insertGetId($data);
 
             ecjia_admin::admin_log($data['rule_name'], 'add', 'reply_keywords_rule');
         }
         foreach ($rule_keywords as $val) {
             $kdata['rid'] = $id;
             $kdata['rule_keywords'] = $val;
-            $this->wrk_db->insert($kdata);
+            RC_DB::table('wechat_rule_keywords')->insert($data);
         }
 
         $update = isset($update) ? $update : '';
@@ -656,30 +653,25 @@ class platform_response extends ecjia_platform
 
         $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
         //获取该公众号下的id数组
-        $id_list = $this->wr_db->where(array('wechat_id' => $wechat_id, 'type' => 'keywords'))->get_field('id', true);
-        $rule_name = $this->wr_db->where(array('id' => $id))->get_field('rule_name');
+        $id_list = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'keywords')->lists('id');
+        $rule_name = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('rule_name');
         //获取该条规则的关键词
-        $rule_keywords = $this->wrk_db->where(array('rid' => $id))->get_field('rule_keywords', true);
-        $where = array(
-            'rule_keywords' . db_create_in($rule_keywords),
-            'rid' . db_create_in($id_list),
-        );
+        $rule_keywords = RC_DB::table('wechat_rule_keywords')->where('rid', $id)->lists('rule_keywords');
 
-        $rule_delete = $this->wr_db->where(array('id' => $id))->delete();
-        $rule_keywords_delete = $this->wrk_db->where($where)->delete();
-        foreach ($id_list as $v) {
-            $count = $this->wrk_db->where(array('rid' => $v))->count();
-            if ($count == 0) {
-                $this->wr_db->where(array('id' => $v, 'type' => 'keywords'))->delete();
-            }
+        RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
+        RC_DB::table('wechat_rule_keywords')->whereRaw('rule_keywords' . db_create_in($rule_keywords))->whereRaw('rid' . db_create_in($id_list))->delete();
+        
+        if (!empty($id_list)) {
+	        foreach ($id_list as $v) {
+	            $count = RC_DB::table('wechat_rule_keywords')->where('rid', $v)->count();
+	            if ($count == 0) {
+	                RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $v)->where('type', 'keywords')->delete();
+	            }
+	        }
         }
         ecjia_admin::admin_log($rule_name, 'remove', 'reply_keywords_rule');
 
-        if ($rule_keywords_delete && $rule_delete) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
-        } else {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.remove_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
+		return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**
@@ -687,26 +679,25 @@ class platform_response extends ecjia_platform
      */
     private function get_rule_list()
     {
-
         $wechat_id = $this->platformAccount->getAccountID();
 
+        $db = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'keywords');
         $search_keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
-        $where = "type = 'keywords' and wechat_id = '$wechat_id'";
 
         if ($search_keywords != '') {
-            $rid_list = $this->wrk_db->where(array('rule_keywords' => array('like' => "%" . mysql_like_quote($search_keywords) . "%")))->get_field('rid', true);
-            $where .= 'and id' . db_create_in($rid_list);
+            $rid_list = RC_DB::table('wechat_rule_keywords')->where('rule_keywords', 'like', "%" . mysql_like_quote($search_keywords) . "%")->lists('rid');
+            $db->whereRaw('id' . db_create_in($rid_list));
         }
-        $count = $this->wr_db->where($where)->count();
+        
+        $count = $db->count();
         $page = new ecjia_page($count, 10, 5);
-
-        $list = $this->wr_db->field('id, rule_name, content, media_id, reply_type')->where($where)->limit($page->limit())->order(array('add_time' => 'desc'))->select();
-
+        $list = $db->select('id', 'rule_name', 'content', 'media_id', 'reply_type')->take(10)->skip($page->start_id-1)->orderBy('add_time', 'desc')->get();
+        
         if (!empty($list)) {
             foreach ($list as $key => $val) {
                 // 内容不是文本
                 if (!empty($val['media_id'])) {
-                    $media = $this->wm_db->where(array('id' => $val['media_id']))->find();
+                    $media = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $val['media_id'])->first();
 
                     if (!empty($media)) {
                         $media['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $media['add_time']);
@@ -722,11 +713,11 @@ class platform_response extends ecjia_platform
                     }
                     $media_id = $val['media_id'];
 
-                    $is_articles = $this->wm_db->where(array('parent_id' => $media_id))->count();
+                    $is_articles = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $media_id)->count();
 
                     if ($val['reply_type'] == 'news' && $is_articles != 0) {
-                        $where1 = "id = '$media_id' or parent_id = '$media_id'";
-                        $info = $this->wm_db->where($where1)->order(array('id' => 'asc'))->select();
+                        $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $media_id)->orWhere('parent_id', $media_id)->orderBy('id', 'asc')->get();
+                        
                         foreach ($info as $k => $v) {
                             if (!empty($v['file'])) {
                                 $list[$key]['medias'][$k]['title'] = strip_tags(html_out($v['title']));
@@ -747,7 +738,7 @@ class platform_response extends ecjia_platform
                         $list[$key]['media'] = $media;
                     }
                 }
-                $keywords = $this->wrk_db->where(array('rid' => $val['id']))->order('id asc')->get_field('rule_keywords', true);
+                $keywords = RC_DB::table('wechat_rule_keywords')->where('rid', $val['id'])->orderBy('id', 'asc')->lists('rule_keywords');
                 $list[$key]['rule_keywords'] = $keywords;
             }
         }
@@ -759,15 +750,16 @@ class platform_response extends ecjia_platform
      */
     private function get_rule_info($id)
     {
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	$db = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id);
         if ($id) {
-            $where['id'] = $id;
+            $db->where('id', $id);
         }
-        $where['type'] = "keywords";
-        $list = $this->wr_db->where($where)->order(array('add_time' => 'desc'))->find();
-
+		$list = $db->where('type', 'keywords')->orderBy('add_time', 'desc')->first();
+		
         // 内容不是文本
         if (!empty($list['media_id'])) {
-            $media = $this->wm_db->where(array('id' => $list['media_id']))->find();
+            $media = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $list['media_id'])->first();
             if (!empty($media)) {
                 if ($media['type'] == 'voice' || $media['type'] == 'video') {
                     // $media['file'] = RC_Uri::admin_url('statics/images/nopic.png');
@@ -794,11 +786,11 @@ class platform_response extends ecjia_platform
                 }
             }
             $media_id = $list['media_id'];
-            $is_articles = $this->wm_db->where(array('parent_id' => $media_id))->count();
+            $is_articles = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $media_id)->count();
 
             if ($is_articles != 0 && $list['reply_type'] == 'news') {
-                $where1 = "id = '$media_id' or parent_id = '$media_id'";
-                $info = $this->wm_db->where($where1)->order(array('id' => 'asc'))->select();
+                $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $media_id)->orWhere('parent_id', $media_id)->orderBy('id', 'asc')->get();
+                
                 foreach ($info as $k => $v) {
                     if (!empty($v['file'])) {
                         $list['medias'][$k]['title'] = strip_tags(html_out($v['title']));
@@ -813,7 +805,7 @@ class platform_response extends ecjia_platform
             }
         }
         if (!empty($list['id'])) {
-            $keywords = $this->wrk_db->field('rule_keywords')->where('rid = ' . $list['id'])->order('id asc')->select();
+            $keywords = RC_DB::table('wechat_rule_keywords')->select('rule_keywords')->where('rid', $list['id'])->orderBy('id', 'asc')->get();
         }
 
         $list['rule_keywords'] = $keywords;
@@ -836,11 +828,11 @@ class platform_response extends ecjia_platform
     {
         $filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
 
-        $where[] = "type = '$type'";
+        $db = RC_DB::table('wechat_media')->where('type', $type);
         if ($id) {
-            $where[] .= "parent_id = '$id' or id = '$id'";
+            $db->where('parent_id', $id)->orWhere('id', $id);
         }
-        $data = $this->wm_db->where($where)->order(array('id' => 'asc'))->select();
+        $data = $db->orderBy('id', 'asc')->get();
         $article['id'] = $id;
 
         if (!empty($data)) {

@@ -52,15 +52,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class platform_record extends ecjia_platform
 {
-    private $wu_viewdb;
-    private $wechat_user_db;
-    private $wechat_tag;
-    private $customer_session_viewdb;
-    private $db_platform_account;
-    private $db_customer_session;
-    private $wechat_customer;
-    private $wechat_user_tag;
-
     public function __construct()
     {
         parent::__construct();
@@ -68,16 +59,6 @@ class platform_record extends ecjia_platform
         RC_Lang::load('wechat');
         RC_Loader::load_app_func('global');
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
-
-        $this->wu_viewdb = RC_Loader::load_app_model('wechat_user_viewmodel');
-        $this->wechat_user_db = RC_Loader::load_app_model('wechat_user_model');
-        $this->wechat_tag = RC_Loader::load_app_model('wechat_tag_model');
-        $this->wechat_customer = RC_Loader::load_app_model('wechat_customer_model');
-        $this->wechat_user_tag = RC_Loader::load_app_model('wechat_user_tag_model');
-
-        $this->customer_session_viewdb = RC_Loader::load_app_model('wechat_customer_session_viewmodel');
-        $this->db_customer_session = RC_Loader::load_app_model('wechat_customer_session_model');
-        $this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
 
         RC_Loader::load_app_class('platform_account', 'platform', false);
         RC_Loader::load_app_class('wechat_method', 'wechat', false);
@@ -87,12 +68,12 @@ class platform_record extends ecjia_platform
         RC_Script::enqueue_script('jquery-form');
         RC_Script::enqueue_script('smoke');
         RC_Style::enqueue_style('uniform-aristo');
-		RC_Script::enqueue_script('bootstrap-placeholder');
-		
+        RC_Script::enqueue_script('bootstrap-placeholder');
+
         RC_Script::enqueue_script('admin_record', RC_App::apps_url('statics/platform-js/admin_record.js', __FILE__));
         RC_Style::enqueue_style('admin_subscribe', RC_App::apps_url('statics/css/admin_subscribe.css', __FILE__));
-		RC_Script::localize_script('admin_record', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-		
+        RC_Script::localize_script('admin_record', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_chat_record'), RC_Uri::url('wechat/platform_record/init')));
         ecjia_platform_screen::get_current_screen()->set_subject('客服会话记录');
     }
@@ -113,13 +94,13 @@ class platform_record extends ecjia_platform
         } else {
             $this->assign('warn', 'warn');
             $this->assign('action', RC_Uri::url('wechat/platform_record/init'));
-            $kf_list = $this->wechat_customer->where(array('wechat_id' => $wechat_id))->order(array('id' => 'asc'))->field('id, kf_nick, kf_account')->select();
+            $kf_list = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->orderBy('id', 'asc')->select('id', 'kf_nick', 'kf_account')->get();
             $this->assign('kf_list', $kf_list);
 
             $list = $this->get_record_list();
             $this->assign('list', $list);
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
-            $types = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+            $types = $this->platformAccount->getType();
             $this->assign('type', $types);
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
@@ -140,8 +121,9 @@ class platform_record extends ecjia_platform
         } else {
             $this->assign('warn', 'warn');
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
-            $type = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+            $type = $this->platformAccount->getType();
             $this->assign('type', $type);
+            
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_subscribe_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
         }
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer_message_record')));
@@ -160,19 +142,24 @@ class platform_record extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.pls_select_user'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
 
-        $info = $this->wu_viewdb->join('users')->field('u.*, us.user_name')->where(array('u.uid' => $uid, 'u.wechat_id' => $wechat_id))->find();
-
+		$info = RC_DB::table('wechat_user as u')
+                ->leftJoin('users as us', RC_DB::raw('us.user_id'), '=', RC_DB::raw('u.ect_uid'))
+                ->select(RC_DB::raw('u.*'), RC_DB::raw('us.user_name'))
+                ->where(RC_DB::raw('u.uid'), $uid)
+                ->where(RC_DB::raw('u.wechat_id'), $wechat_id)
+                ->first();
+		
         if ($info['subscribe_time']) {
             $info['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['subscribe_time'] - 8 * 3600);
         }
-        $info['platform_name'] = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('name');
-
+        $info['platform_name'] = $this->platformAccount->getAccountName();
         $this->assign('info', $info);
         $message = $this->get_message_list();
         $this->assign('message', $message);
 
         //最后发送时间
-        $last_send_time = $this->customer_session_viewdb->join(null)->where(array('openid' => $info['openid'], 'opercode' => 2002))->order(array('cs.id' => 'desc'))->limit(1)->get_field('time');
+        $last_send_time = RC_DB::table('wechat_customer_session')->where('openid', $info['openid'])->where('opercode', 2002)->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->take(1)->pluck('time');
+        
         $time = RC_Time::gmtime();
         if ($time - $last_send_time > 48 * 3600) {
             $this->assign('disabled', '1');
@@ -184,14 +171,10 @@ class platform_record extends ecjia_platform
     //获取消息列表
     public function get_record_list()
     {
-        $customer_session_viewdb = RC_Loader::load_app_model('wechat_customer_session_viewmodel');
-        $db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
-        $wechat_user_db = RC_Loader::load_app_model('wechat_user_model');
-
         $wechat_id = $this->platformAccount->getAccountID();
-        $platform_name = $db_platform_account->where(array('id' => $wechat_id))->get_field('name');
+        $platform_name = $this->platformAccount->getAccountName();
 
-        $openid_list = $wechat_user_db->where(array('wechat_id' => $wechat_id))->get_field('openid', true);
+        $openid_list = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->lists('openid');
         $where = 'cs.opercode = 2003 and cs.wechat_id =' . $wechat_id;
 
         $filter['kf_account'] = !empty($_GET['kf_account']) ? $_GET['kf_account'] : '';
@@ -244,16 +227,57 @@ class platform_record extends ecjia_platform
         }
         $where .= ' and cs.time > ' . $start_date . ' and cs.time < ' . $end_date;
 
-        $filter['last_five_days'] = count($customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('max(cs.id) as id')->where($where1)->group('cs.openid')->select());
-        $filter['today'] = count($customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('max(cs.id) as id')->where($where2)->group('cs.openid')->select());
-        $filter['yesterday'] = count($customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('max(cs.id) as id')->where($where3)->group('cs.openid')->select());
-        $filter['the_day_before_yesterday'] = count($customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('max(cs.id) as id')->where($where4)->group('cs.openid')->select());
-        $filter['earlier'] = count($customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('max(cs.id) as id')->where($where5)->group('cs.openid')->select());
+        $filter['last_five_days'] = count(RC_DB::table('wechat_customer_session as cs')
+        			->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cs.openid'))
+        			->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cs.kf_account'))
+        			->select(RC_DB::raw('max(cs.id) as id'))
+        			->whereRaw($where1)
+        			->groupBy(RC_DB::raw('cs.openid'))
+        			->get()
+        		);
+        $filter['today'] = count(RC_DB::table('wechat_customer_session as cs')
+        		->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cs.openid'))
+        		->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cs.kf_account'))
+        		->select(RC_DB::raw('max(cs.id) as id'))
+        		->whereRaw($where2)
+        		->groupBy(RC_DB::raw('cs.openid'))
+        		->get()
+        );
+        $filter['yesterday'] = count(RC_DB::table('wechat_customer_session as cs')
+        		->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cs.openid'))
+        		->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cs.kf_account'))
+        		->select(RC_DB::raw('max(cs.id) as id'))
+        		->whereRaw($where3)
+        		->groupBy(RC_DB::raw('cs.openid'))
+        		->get()
+        );
+        $filter['the_day_before_yesterday'] = count(RC_DB::table('wechat_customer_session as cs')
+        		->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cs.openid'))
+        		->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cs.kf_account'))
+        		->select(RC_DB::raw('max(cs.id) as id'))
+        		->whereRaw($where4)
+        		->groupBy(RC_DB::raw('cs.openid'))
+        		->get()
+        );
+        $filter['earlier'] = count(RC_DB::table('wechat_customer_session as cs')
+        		->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cs.openid'))
+        		->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cs.kf_account'))
+        		->select(RC_DB::raw('max(cs.id) as id'))
+        		->whereRaw($where5)
+        		->groupBy(RC_DB::raw('cs.openid'))
+        		->get()
+        );
 
-        $total = $customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('max(cs.id) as id')->where($where)->group('cs.openid')->select();
+        $total = RC_DB::table('wechat_customer_session as cs')
+        		->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cs.openid'))
+        		->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cs.kf_account'))
+        		->select(RC_DB::raw('max(cs.id) as id'))
+        		->whereRaw($where)
+        		->groupBy(RC_DB::raw('cs.openid'))
+        		->get();
+        
         $count = count($total);
         $page = new ecjia_platform_page($count, 10, 5);
-        // $list = $customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('max(cs.id) as id, wu.*')->where($where)->group('cs.openid')->limit($page->limit())->order(array('cs.time' => 'desc'))->select();
 
         $list = RC_DB::table('wechat_customer_session as cs')
             ->leftJoin('wechat_user as wu', function ($join_w) {
@@ -275,7 +299,8 @@ class platform_record extends ecjia_platform
         $row = array();
         if (!empty($list)) {
             foreach ($list as $key => $val) {
-                $info = $customer_session_viewdb->join(null)->find(array('cs.id' => $val['id']));
+                $info = RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->where('id', $val['id'])->first();
+                
                 $list[$key]['time'] = RC_Time::local_date(ecjia::config('time_format'), $info['time']);
                 $list[$key]['text'] = $info['text'];
                 $list[$key]['openid'] = $info['openid'];
@@ -302,28 +327,32 @@ class platform_record extends ecjia_platform
     //获取用户客服消息列表
     public function get_message_list()
     {
-        $customer_session_viewdb = RC_Loader::load_app_model('wechat_customer_session_viewmodel');
-
         $wechat_id = $this->platformAccount->getAccountID();
-        $platform_name = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('name');
+        $platform_name = $this->platformAccount->getAccountName();
 
         $uid = !empty($_GET['uid']) ? $_GET['uid'] : '';
         $last_id = !empty($_GET['last_id']) ? intval($_GET['last_id']) : 0;
         $chat_id = !empty($_GET['chat_id']) ? $_GET['chat_id'] : 0;
 
-        $openid = $this->wechat_user_db->where(array('uid' => $uid))->get_field('openid');
-
+		$openid = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('uid', $uid)->pluck('openid');
         if (!empty($last_id)) {
             $where = "cs.openid = '" . $chat_id . "' AND cs.id <" . $last_id;
         } else {
             $where = "cs.openid = '" . $openid . "' ";
         }
 
-        $count = $customer_session_viewdb->join(null)->where($where)->count();
+        $count = RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->whereRaw($where)->count();
         $page = new ecjia_platform_page($count, 10, 5);
-        $limit = $page->limit();
-        $list = $customer_session_viewdb->join(array('wechat_user', 'wechat_customer'))->field('cs.*, c.kf_nick, wu.nickname')->where($where)->order(array('cs.time' => 'desc'))->limit($limit)->select();
-
+		$list = RC_DB::table('wechat_customer_session as cs')
+        		->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cs.openid'))
+        		->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cs.kf_account'))
+        		->select(RC_DB::raw('cs.*'), RC_DB::raw('c.kf_nick'), RC_DB::raw('wu.nickname'))
+        		->whereRaw($where)
+        		->orderBy(RC_DB::raw('cs.time'), 'desc')
+        		->take(10)
+        		->skip($page->start_id-1)
+        		->get();
+        
         if (!empty($list)) {
             foreach ($list as $key => $val) {
                 $list[$key]['time'] = RC_Time::local_date(ecjia::config('time_format'), $val['time']);
@@ -360,11 +389,17 @@ class platform_record extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $uid = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
-        $info = $this->wu_viewdb->join(array('users'))->field('u.*, us.user_name')->find(array('u.uid' => $uid, 'u.wechat_id' => $wechat_id));
+        $info = RC_DB::table('wechat_user as u')
+                ->leftJoin('users as us', RC_DB::raw('us.user_id'), '=', RC_DB::raw('u.ect_uid'))
+                ->select(RC_DB::raw('u.*'), RC_DB::raw('us.user_name'))
+                ->where(RC_DB::raw('u.uid'), $uid)
+                ->where(RC_DB::raw('u.wechat_id'), $wechat_id)
+                ->first();
+        
         if ($info['subscribe_time']) {
             $info['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['subscribe_time'] - 8 * 3600);
-            $tag_list = $this->wechat_user_tag->where(array('userid' => $info['uid']))->get_field('tagid', true);
-            $name_list = $this->wechat_tag->where(array('tag_id' => $tag_list, 'wechat_id' => $wechat_id))->order(array('tag_id' => 'desc'))->get_field('name', true);
+            $tag_list = RC_DB::table('wechat_user_tag')->where('userid', $info['uid'])->lists('tagid');
+            $name_list = RC_DB::table('wechat_tag')->whereIn('tag_id', $tag_list)->where('wechat_id', $wechat_id)->orderBy('tag_id', 'desc')->lists('name');
             if (!empty($name_list)) {
                 $info['tag_name'] = implode('，', $name_list);
             } else {
@@ -383,7 +418,6 @@ class platform_record extends ecjia_platform
         $wechat = wechat_method::wechat_instance($uuid);
 
         $wechat_id = $this->platformAccount->getAccountID();
-
         if (is_ecjia_error($wechat_id)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -392,8 +426,8 @@ class platform_record extends ecjia_platform
         $end_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 3, date('Y')) + 28800;
 
         $p = 0;
-        $id_list = $this->db_customer_session->where(array('wechat_id' => $wechat_id))->get_field('id', true);
-
+		$id_list = RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->lists('id');
+        
         try {
             for ($j = 1; $j <= 5; $j++) {
                 for ($i = 1;; $i++) {
@@ -412,7 +446,7 @@ class platform_record extends ecjia_platform
                             $data['time'] = $val['time'] - 8 * 3600;
                             $arr[] = $data;
                         }
-                        $this->db_customer_session->batch_insert($arr);
+                        RC_DB::table('wechat_customer_session')->insert($arr);
                         $p++;
                     } else {
                         $start_time = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y')) + 28800;
@@ -428,7 +462,7 @@ class platform_record extends ecjia_platform
         }
 
         if ($p > 0 && !empty($id_list)) {
-            $this->db_customer_session->where(array('wechat_id' => $wechat_id, 'id' => $id_list))->delete();
+            RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->whereIn('id', $id_list)->delete();
         }
         return $this->showmessage(RC_Lang::get('wechat::wechat.get_message_record_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
     }
