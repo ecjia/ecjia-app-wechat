@@ -47,134 +47,136 @@
 use Ecjia\App\Platform\Frameworks\Platform\Account;
 
 defined('IN_ECJIA') or exit('No permission resources.');
-class wechat_platform_hooks {
-    
-    public static function platform_dashboard_header_messages() {
-    	$platformAccount = new Account(session('uuid'));
-    	$wechat_id = $platformAccount->getAccountID();
-    	
-    	$start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-    	$end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')+1, date('Y'));
-    	 
-    	$list = RC_DB::table('wechat_custom_message as m')
-    	->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
-    	->selectRaw('max(m.id) as id, wu.uid, wu.nickname, wu.headimgurl')
-    	->where(RC_DB::raw('wu.subscribe'), 1)
-    	->where(RC_DB::raw('m.iswechat'), 0)
-    	->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
-    	->where(RC_DB::raw('m.send_time'), '>', $start)
-    	->where(RC_DB::raw('m.send_time'), '<', $end)
-    	->groupBy(RC_DB::raw('m.uid'))
-    	->orderBy('id', 'desc')
-    	->take(5)
-    	->get();
-    	
-    	if (!empty($list)) {
-    		foreach ($list as $key => $val) {
-    			$info = RC_DB::table('wechat_custom_message')->where('id', $val['id'])->first();
-    			$list[$key]['send_time']	= RC_Time::local_date(ecjia::config('time_format'), $info['send_time']);
-    			$list[$key]['msg'] 		 	= $info['msg'];
-    			$list[$key]['uid'] 		 	= $info['uid'];
-    		}
-    	}
-    	ecjia_platform::$controller->assign('list', $list);
-    	 
-    	$count = count($list);
-    	ecjia_platform::$controller->assign('count', $count);
-    	
+class wechat_platform_hooks
+{
+
+    public static function platform_dashboard_header_messages()
+    {
+        $platformAccount = new Account(session('uuid'));
+        $wechat_id = $platformAccount->getAccountID();
+
+        $start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        $end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+
+        $list = RC_DB::table('wechat_custom_message as m')
+            ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+            ->selectRaw('max(m.id) as id, wu.uid, wu.nickname, wu.headimgurl')
+            ->where(RC_DB::raw('wu.subscribe'), 1)
+            ->where(RC_DB::raw('m.iswechat'), 0)
+            ->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
+            ->where(RC_DB::raw('m.send_time'), '>', $start)
+            ->where(RC_DB::raw('m.send_time'), '<', $end)
+            ->groupBy(RC_DB::raw('m.uid'))
+            ->orderBy('id', 'desc')
+            ->take(5)
+            ->get();
+
+        if (!empty($list)) {
+            foreach ($list as $key => $val) {
+                $info = RC_DB::table('wechat_custom_message')->where('id', $val['id'])->first();
+                $list[$key]['send_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['send_time']);
+                $list[$key]['msg'] = $info['msg'];
+                $list[$key]['uid'] = $info['uid'];
+            }
+        }
+        ecjia_platform::$controller->assign('list', $list);
+
+        $count = count($list);
+        ecjia_platform::$controller->assign('count', $count);
+
         ecjia_platform::$controller->display('library/common_header_messages.lbi');
     }
-    
-    public static function ecjia_platform_dashboard_stats() {
-    	$platformAccount = new Account(session('uuid'));
-    	$wechat_id = $platformAccount->getAccountID();
-    	
-    	$start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-    	$end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')+1, date('Y'));
-    	//新消息数量
-    	$new_msg = RC_DB::table('wechat_custom_message as m')
-	    	->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
-	    	->select('m.id')
-	    	->where(RC_DB::raw('wu.subscribe'), 1)
-	    	->where(RC_DB::raw('m.iswechat'), 0)
-	    	->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
-	    	->where(RC_DB::raw('m.send_time'), '>', $start)
-	    	->where(RC_DB::raw('m.send_time'), '<', $end)
-	    	->count();
-    	
-    	$start_time = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-    	//新增人数
-    	$new_user = RC_DB::table('wechat_user')
-    		->where('subscribe', 1)
-    		->where('wechat_id', $wechat_id)
-    		->where('subscribe_time', '>', $start_time)->count();
-    	
-    	//总用户数
-    	$user_count = RC_DB::table('wechat_user')
-    		->where('subscribe', 1)
-    		->where('wechat_id', $wechat_id)
-    		->count();
-    	
-    	$count = array(
-    		'new_msg' => $new_msg,
-    		'new_user' => $new_user,
-    		'user_count' => $user_count
-    	);
-    	ecjia_platform::$controller->assign('count', $count);
-    	
+
+    public static function ecjia_platform_dashboard_stats()
+    {
+        $platformAccount = new Account(session('uuid'));
+        $wechat_id = $platformAccount->getAccountID();
+
+        $start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        $end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+        //新消息数量
+        $new_msg = RC_DB::table('wechat_custom_message as m')
+            ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+            ->select('m.id')
+            ->where(RC_DB::raw('wu.subscribe'), 1)
+            ->where(RC_DB::raw('m.iswechat'), 0)
+            ->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
+            ->where(RC_DB::raw('m.send_time'), '>', $start)
+            ->where(RC_DB::raw('m.send_time'), '<', $end)
+            ->count();
+
+        $start_time = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        //新增人数
+        $new_user = RC_DB::table('wechat_user')
+            ->where('subscribe', 1)
+            ->where('wechat_id', $wechat_id)
+            ->where('subscribe_time', '>', $start_time)->count();
+
+        //总用户数
+        $user_count = RC_DB::table('wechat_user')
+            ->where('subscribe', 1)
+            ->where('wechat_id', $wechat_id)
+            ->count();
+
+        $count = array(
+            'new_msg' => $new_msg,
+            'new_user' => $new_user,
+            'user_count' => $user_count,
+        );
+        ecjia_platform::$controller->assign('count', $count);
+
         ecjia_platform::$controller->display(
             RC_Package::package('app::wechat')->loadTemplate('platform/library/widget_platform_dashboard_stats.lbi', true)
-    	);
+        );
     }
-    
-    
-    public static function ecjia_platform_dashboard_msg_stats() {
-    	$platformAccount = new Account(session('uuid'));
-    	$wechat_id = $platformAccount->getAccountID();
-    	 
-    	$start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')-4, date('Y'));
-    	$end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d')+1, date('Y'));
-    	
-    	$list = RC_DB::table('wechat_custom_message as m')
-	    	->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
-	    	->selectRaw('max(m.id) as id, wu.uid, wu.nickname, wu.headimgurl')
-	    	->where(RC_DB::raw('wu.subscribe'), 1)
-	    	->where(RC_DB::raw('m.iswechat'), 0)
-	    	->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
-	    	->where(RC_DB::raw('m.send_time'), '>', $start)
-	    	->where(RC_DB::raw('m.send_time'), '<', $end)
-	    	->groupBy(RC_DB::raw('m.uid'))
-	    	->orderBy('id', 'desc')
-	    	->get();
-    	 
-    	$arr = [];
-    	if (!empty($list)) {
-    		foreach ($list as $key => $val) {
-    			$info = RC_DB::table('wechat_custom_message')->where('id', $val['id'])->first();
-    			$list[$key]['msg'] 		 	= $info['msg'];
-    			$list[$key]['uid'] 		 	= $info['uid'];
-    			$list[$key]['send_time']	= RC_Time::local_date('Y-m-d', $info['send_time']);
-    			$list[$key]['send_time_detail']	= RC_Time::local_date('H:i:s', $info['send_time']);
-    			$list[$key]['send_time_formated']	= RC_Time::local_date('Y年m月d日', $info['send_time']);
-    		}
-    		foreach ($list as $k => $v) {
-    			$arr[$v['send_time']][] = $v;
-    		}
-    	}
-    	ecjia_platform::$controller->assign('arr', $arr);
-    	
-    	if (!empty($arr)) {
-    		ecjia_platform::$controller->display(
-    			RC_Package::package('app::wechat')->loadTemplate('platform/library/widget_platform_dashboard_msg_stats.lbi', true)
-    		);
-    	}
+
+    public static function ecjia_platform_dashboard_msg_stats()
+    {
+        $platformAccount = new Account(session('uuid'));
+        $wechat_id = $platformAccount->getAccountID();
+
+        $start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
+        $end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+
+        $list = RC_DB::table('wechat_custom_message as m')
+            ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+            ->selectRaw('max(m.id) as id, wu.uid, wu.nickname, wu.headimgurl')
+            ->where(RC_DB::raw('wu.subscribe'), 1)
+            ->where(RC_DB::raw('m.iswechat'), 0)
+            ->where(RC_DB::raw('wu.wechat_id'), $wechat_id)
+            ->where(RC_DB::raw('m.send_time'), '>', $start)
+            ->where(RC_DB::raw('m.send_time'), '<', $end)
+            ->groupBy(RC_DB::raw('m.uid'))
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $arr = [];
+        if (!empty($list)) {
+            foreach ($list as $key => $val) {
+                $info = RC_DB::table('wechat_custom_message')->where('id', $val['id'])->first();
+                $list[$key]['msg'] = $info['msg'];
+                $list[$key]['uid'] = $info['uid'];
+                $list[$key]['send_time'] = RC_Time::local_date('Y-m-d', $info['send_time']);
+                $list[$key]['send_time_detail'] = RC_Time::local_date('H:i:s', $info['send_time']);
+                $list[$key]['send_time_formated'] = RC_Time::local_date('Y年m月d日', $info['send_time']);
+            }
+            foreach ($list as $k => $v) {
+                $arr[$v['send_time']][] = $v;
+            }
+        }
+        ecjia_platform::$controller->assign('arr', $arr);
+
+        if (!empty($arr)) {
+            ecjia_platform::$controller->display(
+                RC_Package::package('app::wechat')->loadTemplate('platform/library/widget_platform_dashboard_msg_stats.lbi', true)
+            );
+        }
     }
-    
+
 }
 
-RC_Hook::add_action( 'platform_dashboard_header_links', array('wechat_platform_hooks', 'platform_dashboard_header_messages') );
-RC_Hook::add_filter( 'platform_dashboard_top', array('wechat_platform_hooks', 'ecjia_platform_dashboard_stats'), 9 );
-RC_Hook::add_filter( 'platform_dashboard_center', array('wechat_platform_hooks', 'ecjia_platform_dashboard_msg_stats'), 10 );
-
+RC_Hook::add_action('platform_dashboard_header_links', array('wechat_platform_hooks', 'platform_dashboard_header_messages'));
+RC_Hook::add_filter('platform_dashboard_top', array('wechat_platform_hooks', 'ecjia_platform_dashboard_stats'), 9);
+RC_Hook::add_filter('platform_dashboard_center', array('wechat_platform_hooks', 'ecjia_platform_dashboard_msg_stats'), 10);
 
 // end

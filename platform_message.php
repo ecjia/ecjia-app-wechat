@@ -51,11 +51,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 class platform_message extends ecjia_platform
 {
-    private $db_platform_account;
-    private $wu_viewdb;
-    private $wechat_user_tag;
-    private $wechat_tag;
-
     public function __construct()
     {
         parent::__construct();
@@ -63,11 +58,6 @@ class platform_message extends ecjia_platform
         RC_Lang::load('wechat');
         RC_Loader::load_app_func('global');
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
-
-        $this->db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
-        $this->wu_viewdb = RC_Loader::load_app_model('wechat_user_viewmodel');
-        $this->wechat_user_tag = RC_Loader::load_app_model('wechat_user_tag_model');
-        $this->wechat_tag = RC_Loader::load_app_model('wechat_tag_model');
 
         RC_Loader::load_app_class('platform_account', 'platform', false);
         RC_Loader::load_app_class('wechat_method', 'wechat', false);
@@ -107,7 +97,8 @@ class platform_message extends ecjia_platform
             $this->assign('list', $list);
 
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
-            $types = $this->db_platform_account->where(array('id' => $wechat_id))->get_field('type');
+            $types = $this->platformAccount->getType();
+            
             $this->assign('type', $types);
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
@@ -120,7 +111,6 @@ class platform_message extends ecjia_platform
     public function get_message_list()
     {
         $custom_message_viewdb = RC_Loader::load_app_model('wechat_custom_message_viewmodel');
-        $db_platform_account = RC_Loader::load_app_model('platform_account_model', 'platform');
         $wechat_user_db = RC_Loader::load_app_model('wechat_user_model');
 
         $wechat_id = $this->platformAccount->getAccountID();
@@ -176,7 +166,6 @@ class platform_message extends ecjia_platform
 
         $count = count($custom_message_viewdb->join('wechat_user')->field('max(m.id) as id')->where($where)->group('m.uid')->select());
         $page = new ecjia_platform_page($count, 10, 5);
-        // $list  = $custom_message_viewdb->join('wechat_user')->field('max(m.id) as id, wu.uid, wu.nickname, wu.headimgurl')->where($where)->group('m.uid')->limit($page->limit())->select();
 
         $list = RC_DB::table('wechat_custom_message as m')
             ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
@@ -206,11 +195,18 @@ class platform_message extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $uid = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
-        $info = $this->wu_viewdb->join(array('users'))->field('u.*, us.user_name')->find(array('u.uid' => $uid, 'u.wechat_id' => $wechat_id));
+        $info = RC_DB::table('wechat_user as u')
+                ->leftJoin('users as us', RC_DB::raw('us.user_id'), '=', RC_DB::raw('u.ect_uid'))
+                ->select(RC_DB::raw('u.*'), RC_DB::raw('us.user_name'))
+                ->where(RC_DB::raw('u.uid'), $uid)
+                ->where(RC_DB::raw('u.wechat_id'), $wechat_id)
+                ->first();
+        
         if ($info['subscribe_time']) {
             $info['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['subscribe_time'] - 8 * 3600);
-            $tag_list = $this->wechat_user_tag->where(array('userid' => $info['uid']))->get_field('tagid', true);
-            $name_list = $this->wechat_tag->where(array('tag_id' => $tag_list, 'wechat_id' => $wechat_id))->order(array('tag_id' => 'desc'))->get_field('name', true);
+            $tag_list = RC_DB::table('wechat_user_tag')->where('userid', $info['uid'])->lists('tagid');
+            $name_list = RC_DB::table('wechat_tag')->whereIn('tag_id', $tag_list)->where('wechat_id', $wechat_id)->orderBy('tag_id', 'desc')->lists('name');
+            
             if (!empty($name_list)) {
                 $info['tag_name'] = implode('，', $name_list);
             } else {
