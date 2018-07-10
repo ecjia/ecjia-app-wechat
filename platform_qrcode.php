@@ -189,27 +189,43 @@ class platform_qrcode extends ecjia_platform
         $type = isset($_POST['type']) ? intval($_POST['type']) : 0;
         $expire_seconds = !empty($_POST['expire_seconds']) ? intval($_POST['expire_seconds']) * 86400 : 30;
         $functions = isset($_POST['functions']) ? $_POST['functions'] : '';
-        $scene_id = isset($_POST['scene_id']) ? (is_numeric($_POST['scene_id']) ? $_POST['scene_id'] : 0) : 0;
+
+        $scene_id = $_POST['scene_id'];
+
         $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
         $sort = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
         $default_type = intval($_POST['default_type']);
 
         if ($type == 0) {
-            if ($scene_id < 100001) {
-                return $this->showmessage('临时二维码场景值不能小于100001', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
-            if ($scene_id > 4294967295) {
-                return $this->showmessage('临时二维码场景值不能大于4294967295', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            if (is_numeric($scene_id)) {
+                if ($scene_id < 100001) {
+                    return $this->showmessage('临时二维码为整型类型时场景值不能小于100001', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                }
+                if ($scene_id > 4294967295) {
+                    return $this->showmessage('临时二维码为整型类型时场景值不能大于4294967295', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                }
             }
         }
         if ($type == 1) {
-            if ($scene_id < 1) {
-                return $this->showmessage('永久二维码场景值不能小于1', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
-            if ($scene_id > 100000) {
-                return $this->showmessage('永久二维码场景值不能大于100000', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            if (is_numeric($scene_id)) {
+                if ($scene_id < 1) {
+                    return $this->showmessage('永久二维码为整型类型时场景值不能小于1', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                }
+                if ($scene_id > 100000) {
+                    return $this->showmessage('永久二维码为整型类型时场景值不能大于100000', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                }
             }
         }
+
+        if (is_string($scene_id)) {
+            if (mb_strlen($scene_id) < 1) {
+                return $this->showmessage('临时二维码为字符串类型时长度不能小于1', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+            if (mb_strlen($scene_id) > 64) {
+                return $this->showmessage('临时二维码为字符串类型时长度不能大于64', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+        }
+
         $data = array(
             'wechat_id' => $wechat_id,
             'type' => $type,
@@ -286,29 +302,19 @@ class platform_qrcode extends ecjia_platform
         }
 
         if (empty($qrcode['qrcode_url'])) {
-            if ($qrcode['type'] == 0) {
-                $data = array(
-                    'expire_seconds' => $qrcode['expire_seconds'],
-                    'action_name' => 'QR_SCENE',
-                    'action_info' => array('scene' => (array('scene_id' => $qrcode['scene_id']))),
-                );
-            } else {
-                $data = array(
-                    'action_name' => 'QR_LIMIT_SCENE',
-                    'action_info' => array('scene' => (array('scene_id' => $qrcode['scene_id']))),
-                );
-            }
-            RC_Loader::load_app_class('wechat_method', 'wechat', false);
-            $wechat = wechat_method::wechat_instance($uuid);
-            // 获取二维码ticket
-            try {
-                $ticket = $wechat->getQrcodeTicket($data);
-                if (is_ecjia_error($ticket)) {
-                    return $this->showmessage(wechat_method::wechat_error($ticket->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                }
+        	// 获取二维码ticket
+        	try {
+	            if ($qrcode['type'] == 0) {
+	            	$ticket = with(new Ecjia\App\Wechat\WechatQrcode())->temporary($qrcode['scene_id']);
+	            } else {
+	            	$ticket = with(new Ecjia\App\Wechat\WechatQrcode())->forever($qrcode['scene_id']);
+	            }
+	            if (is_ecjia_error($ticket)) {
+	            	return $this->showmessage(wechat_method::wechat_error($ticket->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+	            }
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
+            	return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }   
 
             $data['ticket'] = $ticket['ticket'];
             $data['expire_seconds'] = $ticket['expire_seconds'];
