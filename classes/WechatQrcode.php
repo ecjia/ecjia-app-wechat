@@ -84,6 +84,7 @@ class WechatQrcode
                 'status' => 1,
                 'wechat_id' => $wechat_id,
                 'endtime' => RC_Time::gmtime(),
+                'expire_seconds' => 0,
 
                 'ticket' => $ticket['ticket'],
                 'expire_seconds' => $ticket['expire_seconds'],

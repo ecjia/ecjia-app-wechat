@@ -56,7 +56,6 @@ class WechatScanHandler
         $wechat_id = $wechatUUID->getWechatID();
 
         $model = WechatQrcodeModel::where('status', 1)
-            ->where('endtime', '>', $time)
             ->where('wechat_id', $wechat_id)
             ->where('scene_id', $this->eventKey)
             ->orderBy('sort', 'ASC')
@@ -66,14 +65,20 @@ class WechatScanHandler
             $model->scan_num = $model->scan_num + 1;
             $model->save();
 
-            $function = $model->function;
+            if ((intval($model->type) === 0 && $model->endtime > $time) ||
+                (intvale($model->type) === 1)
+            ) {
+                $function = $model->function;
 
-            RC_Hook::add_filter('wechat_scan_response', array(__CLASS__, 'Command_reply'), 10, 4);
-            RC_Hook::add_filter('wechat_scan_response', array(__CLASS__, 'Keyword_reply'), 90, 4);
+                RC_Hook::add_filter('wechat_scan_response', array(__CLASS__, 'Command_reply'), 10, 4);
+                RC_Hook::add_filter('wechat_scan_response', array(__CLASS__, 'Keyword_reply'), 90, 4);
 
-            $response = RC_Hook::apply_filters('wechat_scan_response', null, $this->message, $function, $wechatUUID);
+                $response = RC_Hook::apply_filters('wechat_scan_response', null, $this->message, $function, $wechatUUID);
 
-            return $response;
+                return $response;
+            }
+
+            return null;
         }
     }
 
