@@ -1275,7 +1275,7 @@ class platform_material extends ecjia_platform
         $filter = $_GET['JSON'];
         $filter = (object) $filter;
         $type = isset($filter->type) ? $filter->type : '';
-        $material = !empty($_GET['material']) ? 'material' : '';
+        $material = !empty($_GET['material']) ? 'material' : null;
 
         $db_wechat_media = RC_DB::table('wechat_media')
             ->where('wechat_id', $wechat_id)
@@ -1390,7 +1390,7 @@ class platform_material extends ecjia_platform
             $db_wechat_media->where('type', $type);
         }
 
-        $material = !empty($_GET['material']) ? 'material' : '';
+        $material = !empty($_GET['material']) ? 'material' : null;
         $db_wechat_media->where('is_material', $material);
 
         $data = RC_DB::table('wechat_media')->select(
