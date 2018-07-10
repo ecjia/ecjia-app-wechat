@@ -23,11 +23,11 @@ class WechatQrcode
     /**
      * 临时二维码
      */
-    public function temporary($sceneValue, $expireDays = 1)
+    public function temporary($sceneValue, $expireSeconds = 86400)
     {
         $qrcode = $this->wechat_uuid->getWechatInstance()->qrcode;
         
-        $result = $qrcode->temporary($sceneValue, $expireDays * 24 * 3600);
+        $result = $qrcode->temporary($sceneValue, $expireSeconds);
         
         return $result;
     }
