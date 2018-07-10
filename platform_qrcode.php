@@ -309,9 +309,6 @@ class platform_qrcode extends ecjia_platform
 	            } else {
 	            	$ticket = with(new Ecjia\App\Wechat\WechatQrcode())->forever($qrcode['scene_id']);
 	            }
-	            if (is_ecjia_error($ticket)) {
-	            	return $this->showmessage(wechat_method::wechat_error($ticket->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-	            }
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             	return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }   
