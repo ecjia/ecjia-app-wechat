@@ -170,6 +170,9 @@ class platform_qrcode extends ecjia_platform
         );
         $this->assign('key_list', $key_list);
 
+        $default_type = isset($_GET['type']) ? intval($_GET['type']) : 1;
+        $this->assign('default_type', $default_type);
+
         $this->assign_lang();
         $this->display('wechat_qrcode_edit.dwt');
     }
@@ -186,10 +189,27 @@ class platform_qrcode extends ecjia_platform
         $type = isset($_POST['type']) ? intval($_POST['type']) : 0;
         $expire_seconds = !empty($_POST['expire_seconds']) ? intval($_POST['expire_seconds']) * 86400 : 30;
         $functions = isset($_POST['functions']) ? $_POST['functions'] : '';
-        $scene_id = isset($_POST['scene_id']) ? intval($_POST['scene_id']) : 0;
+        $scene_id = isset($_POST['scene_id']) ? (is_numeric($_POST['scene_id']) ? $_POST['scene_id'] : 0) : 0;
         $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
         $sort = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
+        $default_type = intval($_POST['default_type']);
 
+        if ($type == 0) {
+            if ($scene_id < 100001) {
+                return $this->showmessage('临时二维码场景值不能小于100001', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+            if ($scene_id > 4294967295) {
+                return $this->showmessage('临时二维码场景值不能大于4294967295', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+        }
+        if ($type == 1) {
+            if ($scene_id < 1) {
+                return $this->showmessage('永久二维码场景值不能小于1', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+            if ($scene_id > 100000) {
+                return $this->showmessage('永久二维码场景值不能大于100000', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+        }
         $data = array(
             'wechat_id' => $wechat_id,
             'type' => $type,
@@ -202,7 +222,7 @@ class platform_qrcode extends ecjia_platform
         RC_DB::table('wechat_qrcode')->insert($data);
 
         ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $functions), 'add', 'qrcode');
-        return $this->showmessage(RC_Lang::get('wechat::wechat.add_qrcode_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
+        return $this->showmessage(RC_Lang::get('wechat::wechat.add_qrcode_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init', array('type' => $default_type))));
     }
 
     /**
@@ -235,10 +255,12 @@ class platform_qrcode extends ecjia_platform
         $info = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->whereIn('id', $id_list)->get();
         RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->whereIn('id', $id_list)->delete();
 
+        $default_type = isset($_GET['type']) ? intval($_GET['type']) : 1;
+
         foreach ($info as $v) {
             ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.function_is'), $v['function']), 'batch_remove', 'qrcode');
         }
-        return $this->showmessage(RC_Lang::get('wechat::wechat.batch_operate_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
+        return $this->showmessage(RC_Lang::get('wechat::wechat.batch_operate_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init', array('type' => $default_type))));
     }
 
     /**
@@ -365,7 +387,7 @@ class platform_qrcode extends ecjia_platform
 
         $filter = array();
         $filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
-        $filter['type'] = isset($_GET['type']) ? intval($_GET['type']) : '';
+        $filter['type'] = isset($_GET['type']) ? intval($_GET['type']) : 1;
 
         if ($filter['keywords']) {
             $db->where('function', 'like', '%' . mysql_like_quote($filter['keywords']) . '%');
@@ -380,12 +402,8 @@ class platform_qrcode extends ecjia_platform
             $type_count['temporary'] = 0;
         }
 
-        if ($filter['type'] === 0) {
-            $db->where('type', 0);
-        }
-
-        if ($filter['type'] === '') {
-            $db->where('type', 1);
+        if ($filter['type']) {
+            $db->where('type', $filter['type']);
         }
 
         $count = $db->select('*')->count();

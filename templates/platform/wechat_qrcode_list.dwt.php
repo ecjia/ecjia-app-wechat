@@ -28,7 +28,7 @@
 	<p>渠道二维码。可生成临时二维码或永久二维码 用于线下某些场景展示，让用户扫描关注，效果类似关注微信公众号。</p>
 	<p>临时二维码，是有过期时间的，最长可以设置为在二维码生成后的30天（即2592000秒）后过期，但能够生成较多数量。临时二维码主要用于帐号绑定等不要求二维码永久保存的业务场景。</p>
 	<p>永久二维码，是无过期时间的，但数量较少（目前为最多10万个）。永久二维码主要用于适用于帐号绑定、用户来源统计等场景。</p>
-	<p>应用场景值ID，临时二维码时为32位非0整型(100001-4294967295)，永久二维码时最大值为100000（目前参数只支持1--100000），请从小大到依次填写。</p>
+	<p>应用场景值ID，临时二维码时为32位非0整型（100001-4294967295），永久二维码时最大值为100000（目前参数只支持1--100000），请从小大到依次填写。</p>
 </div>
 
 <div class="row">
@@ -38,7 +38,7 @@
                 <h4 class="card-title">
                 	{$ur_here}
 	               	{if $action_link}
-					<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="ft-plus"></i> {$action_link.text}</a>
+					<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}{if isset($smarty.get.type)}&type={$smarty.get.type}{/if}" id="sticky_a"><i class="ft-plus"></i> {$action_link.text}</a>
 					{/if}
                 </h4>
             </div>
@@ -46,7 +46,7 @@
             <div class="col-lg-12">
 	            <ul class="nav nav-pills float-left">
 					<li class="nav-item">
-						<a class="nav-link data-pjax {if $smarty.get.type eq ''}active{/if}" href='{url path="wechat/platform_qrcode/init"}{if $listdb.filter.keywords}&keywords={$listdb.filter.keywords}{/if}'>
+						<a class="nav-link data-pjax {if $smarty.get.type eq '' || $smarty.get.type eq '1'}active{/if}" href='{url path="wechat/platform_qrcode/init"}&type=1{if $listdb.filter.keywords}&keywords={$listdb.filter.keywords}{/if}'>
 						永久二维码<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$listdb.count.forever}</span></a>
 					</li>
 					<li class="nav-item">
@@ -60,7 +60,7 @@
 	            <div class="heading-elements float-left">
 					<button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"><i class="ft-settings"></i> {lang key='wechat::wechat.batch_operate'}</button>
 					<div class="dropdown-menu">
-						<a class="dropdown-item button_remove" data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url='{url path="wechat/platform_qrcode/batch"}'  data-msg="{lang key='wechat::wechat.remove_qrcode_confirm'}" data-noSelectMsg="{lang key='wechat::wechat.select_operate_qrcode'}" data-name="id" href="javascript:;"><i class="ft-trash-2"></i> {lang key='wechat::wechat.remove_qrcode'}</a>
+						<a class="dropdown-item button_remove" data-toggle="ecjiabatch" data-idClass=".checkbox:checked" data-url='{url path="wechat/platform_qrcode/batch"}{if isset($smarty.get.type)}&type={$smarty.get.type}{/if}'  data-msg="{lang key='wechat::wechat.remove_qrcode_confirm'}" data-noSelectMsg="{lang key='wechat::wechat.select_operate_qrcode'}" data-name="id" href="javascript:;"><i class="ft-trash-2"></i> {lang key='wechat::wechat.remove_qrcode'}</a>
 					</div>
 				</div>
 				<div class="form-inline float-right">
