@@ -67,7 +67,7 @@ class mobile_qrcode extends EcjiaWechatUserController
 
     	$qrcode = new \Ecjia\App\Wechat\WechatQrcode($uuid);
         $url = $qrcode->getUserQrcodeUrl($openid);
-
+        dd($url);
         // test
         return $this->displayContent(file_get_contents($url), 'image/png');
 
