@@ -59,15 +59,21 @@ class mobile_qrcode extends EcjiaWechatUserController
         $this->assign('system_statics_url', RC_Uri::admin_url('statics'));
       
     }
-    
-    
+
+    /**
+     * 只有认证的服务号才能获取推广二维码
+     * @return mixed
+     */
     public function init() {
     	$openid = trim($_GET['openid']);
     	$uuid   = trim($_GET['uuid']);
 
     	$qrcode = new \Ecjia\App\Wechat\WechatQrcode($uuid);
         $url = $qrcode->getUserQrcodeUrl($openid);
-        dd($url);
+        if (is_ecjia_error($url)) {
+            //返回错误
+        }
+
         // test
         return $this->displayContent(file_get_contents($url), 'image/png');
 
