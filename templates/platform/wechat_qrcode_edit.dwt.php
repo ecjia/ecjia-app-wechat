@@ -116,6 +116,7 @@
 					</div>
 	
 					<div class="modal-footer justify-content-center">
+						<input type="hidden" name="default_type" value="{$default_type}" />
 						{if $errormsg || ($type_error && $type neq 2)}
 						<input type="submit" name="submit" value="{lang key='wechat::wechat.ok'}" class="btn btn-outline-primary" disabled="disabled" />	
 						{else}
