@@ -145,7 +145,7 @@ class platform_subscribe extends ecjia_platform
                 $where .= " and u.subscribe = 0 and u.group_id = 0";
             }
             //用户列表
-            $total = RC_DB::table('wechat_user')->whereRaw($where)->count();
+            $total = RC_DB::table('wechat_user as u')->whereRaw($where)->count();
             $page = new ecjia_platform_page($total, 10, 5);
 
             $list = RC_DB::table('wechat_user as u')
@@ -161,7 +161,11 @@ class platform_subscribe extends ecjia_platform
                     //假如不是黑名单
                     if ($v['group_id'] != 1) {
                         $tag_list = RC_DB::table('wechat_user_tag')->where('userid', $v['uid'])->lists('tagid');
-                        $name_list = RC_DB::table('wechat_tag')->whereIn('tag_id', $tag_list)->where('wechat_id', $wechat_id)->orderBy('tag_id', 'desc')->lists('name');
+                        $db_wechat_tag = RC_DB::table('wechat_tag');
+                        $name_list = [];
+                        if (!empty($tag_list)) {
+                            $name_list = $db_wechat_tag->whereIn('tag_id', $tag_list)->where('wechat_id', $wechat_id)->orderBy('tag_id', 'desc')->lists('name');
+                        }
                         if (!empty($name_list)) {
                             $list[$k]['tag_name'] = implode('，', $name_list);
                         }
@@ -331,10 +335,7 @@ class platform_subscribe extends ecjia_platform
         $this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
-
         $wechat_id = $this->platformAccount->getAccountID();
-
-//         $wechat = wechat_method::wechat_instance($uuid);
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
         if (is_ecjia_error($wechat_id)) {
@@ -443,6 +444,10 @@ class platform_subscribe extends ecjia_platform
                 foreach ($info2['user_info_list'] as $key => $v) {
                     $info2['user_info_list'][$key]['wechat_id'] = $wechat_id;
                     $info2['user_info_list'][$key]['headimgurl'] = is_ssl() && !empty($v['headimgurl']) ? str_replace('http://', 'https://', $v['headimgurl']) : $v['headimgurl'];
+                    $info2['user_info_list'][$key]['group_id'] = $v['groupid'];
+                    unset($info2['user_info_list'][$key]['groupid']);
+                    unset($info2['user_info_list'][$key]['tagid_list']);
+
                     $uid = RC_DB::table('wechat_user')->insertGetId($info2['user_info_list'][$key]);
                     if (!empty($v['tagid_list'])) {
                         foreach ($v['tagid_list'] as $val) {
@@ -471,6 +476,11 @@ class platform_subscribe extends ecjia_platform
                     $info3['user_info_list'][$key]['headimgurl'] = is_ssl() && !empty($v['headimgurl']) ? str_replace('http://', 'https://', $v['headimgurl']) : $v['headimgurl'];
                     $where['wechat_id'] = $wechat_id;
                     $where['openid'] = $v['openid'];
+
+                    $info3['user_info_list'][$key]['group_id'] = $v['groupid'];
+                    unset($info3['user_info_list'][$key]['groupid']);
+                    unset($info3['user_info_list'][$key]['tagid_list']);
+
                     RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('openid', $v['openid'])->update($info3['user_info_list'][$key]);
 
                     $uid = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('openid', $v['openid'])->pluck('uid');

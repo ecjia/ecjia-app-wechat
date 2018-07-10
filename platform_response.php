@@ -584,7 +584,7 @@ class platform_response extends ecjia_platform
         }
         // 编辑关键词
         $rule_keywords = explode(',', $rule_keywords);
-        $rule_keywords_list = RC_DB::table('wechat_replay as wr')
+        $rule_keywords_list = RC_DB::table('wechat_reply as wr')
         	->leftJoin('wechat_rule_keywords as wrk', RC_DB::raw('wrk.rid'), '=', RC_DB::raw('wr.id'))
         	->where(RC_DB::raw('wr.wechat_id'), $wechat_id)
         	->where(RC_DB::raw('wr.id'), '!=', $id)
@@ -625,7 +625,7 @@ class platform_response extends ecjia_platform
         foreach ($rule_keywords as $val) {
             $kdata['rid'] = $id;
             $kdata['rule_keywords'] = $val;
-            RC_DB::table('wechat_rule_keywords')->insert($data);
+            RC_DB::table('wechat_rule_keywords')->insert($kdata);
         }
 
         $update = isset($update) ? $update : '';
