@@ -18,9 +18,9 @@ class WechatQrcode
     
     protected $wechat_uuid;
     
-    public function __construct()
+    public function __construct($uuid = null)
     {
-        $this->wechat_uuid = new WechatUUID();
+        $this->wechat_uuid = new WechatUUID($uuid);
     }
     
     /**
