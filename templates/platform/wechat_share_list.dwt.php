@@ -26,8 +26,7 @@
 	</button>
 	<h4 class="alert-heading mb-2">操作提示</h4>
 	<p>推荐二维码：即管理员可以使用网站已有会员生成带推荐功能的二维码（默认永久二维码），让新用户扫码关注，即与推荐人形成上下级关系。</p>
-	<p>推荐二维码的扫描量为新用户首次扫码量，即每注册一个新用户算一次。</p>
-	<p>需要开启网站推荐注册分成功能使用。</p>
+	<p>添加用户推荐二维码，需要开通插件"mp_qrcode"后，通过公众号里菜单或输入命令"qrcode"获取每个用户的推荐码。</p>
 </div>
 
 <div class="row">
@@ -36,9 +35,6 @@
 			<div class="card-header">
                 <h4 class="card-title">
                 	{$ur_here}
-	               	{if $action_link}
-					<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="ft-plus"></i> {$action_link.text}</a>
-					{/if}
                 </h4>
             </div>
             <div class="col-md-12">
@@ -46,12 +42,9 @@
 					<thead>
 						<tr>
 							<th class="w150">{lang key='wechat::wechat.recommended_person'}</th>
-							<th class="w100">{lang key='wechat::wechat.cash_into'}</th>
-							<th class="w100">{lang key='wechat::wechat.scan_num'}</th>
-							<th class="w200">过期时间</th>
-							<th class="w100">扫码次数</th>
 							<th class="w150">{lang key='wechat::wechat.function'}</th>
-							<th class="w100">{lang key='wechat::wechat.sort'}</th>
+							<th class="w100">扫码次数</th>
+							<th class="w100">创建时间</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -66,7 +59,7 @@
 							    </div>
 							</td>
 							<td>
-								0
+								{$val.function}
 							</td>
 							<td>
 								{$val['scan_num']}
@@ -74,11 +67,6 @@
 							<td>
 								{RC_Time::local_date('Y-m-d H:i', $val.endtime)}
 							</td>
-							<td>
-								{$val.function}
-							</td>
-							<td>{$val.scan_num}</td>
-							<td><span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('wechat/platform_share/edit_sort')}" data-name="sort" data-pk="{$val.id}"  data-title="{lang key='wechat::wechat.edit_qrcode_sort'}">{$val.sort}</span></td>
 						</tr>
 						<!--  {foreachelse} -->
 						<tr><td class="no-records" colspan="6">{lang key='system::system.no_records'}</td></tr>

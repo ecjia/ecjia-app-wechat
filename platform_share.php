@@ -109,56 +109,6 @@ class platform_share extends ecjia_platform
     }
 
     /**
-     * 添加推荐二维码
-     */
-    public function add()
-    {
-        $this->admin_priv('wechat_share_add');
-
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_qr_code')));
-        $this->assign('ur_here', RC_Lang::get('wechat::wechat.add_qr_code'));
-        $this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_share/init'), 'text' => RC_Lang::get('wechat::wechat.scan_code_list')));
-
-        $wechat_id = $this->platformAccount->getAccountID();
-        if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
-        } else {
-            $this->assign('warn', 'warn');
-            $type = $this->platformAccount->getType();
-            
-            $this->assign('type', $type);
-            $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
-
-            $this->assign('form_action', RC_Uri::url('wechat/platform_share/insert'));
-        }
-
-        $this->assign_lang();
-        $this->display('wechat_share_edit.dwt');
-    }
-
-    /**
-     * 添加推荐二维码处理
-     */
-    public function insert()
-    {
-        $this->admin_priv('wechat_share_add', ecjia::MSGTYPE_JSON);
-        
-        $wechat_id = $this->platformAccount->getAccountID();
-        $data = array(
-            'wechat_id' => $wechat_id,
-            'username' => trim($_POST['username']),
-            'scene_id' => intval($_POST['scene_id']),
-            'expire_seconds' => !empty($_POST['expire_seconds']) ? intval($_POST['expire_seconds']) * 86400 : 30,
-            'function' => $_POST['functions'],
-            'sort' => intval($_POST['sort']),
-        );
-        RC_DB::table('wechat_qrcode')->insert($data);
-
-        ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.recommended_person'), $_POST['username']), 'add', 'share');
-        return $this->showmessage(RC_Lang::get('wechat::wechat.add_scan_code_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_share/init')));
-    }
-
-    /**
      * 删除推荐二维码
      */
     public function remove()
@@ -173,32 +123,6 @@ class platform_share extends ecjia_platform
         ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.recommended_person'), $username), 'remove', 'share');
 
         return $this->showmessage(RC_Lang::get('wechat::wechat.remove_scan_code_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_share/init')));
-    }
-
-    /**
-     * 手动排序
-     */
-    public function edit_sort()
-    {
-        $this->admin_priv('wechat_share_update', ecjia::MSGTYPE_JSON);
-
-        $wechat_id = $this->platformAccount->getAccountID();
-        $id = intval($_POST['pk']);
-        $sort = trim($_POST['value']);
-        
-        $username = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('username');
-        if (!empty($sort)) {
-            if (!is_numeric($sort)) {
-                return $this->showmessage(RC_Lang::get('wechat::wechat.qrcode_sort_numeric'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            } else {
-            	RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('sort' => $sort));
-            	
-				ecjia_admin::admin_log(sprintf(RC_Lang::get('wechat::wechat.recommended_person'), $username), 'edit', 'share');
-      			return $this->showmessage(RC_Lang::get('wechat::wechat.edit_sort_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_share/init')));
-            }
-        } else {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.qrcode_sort_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
     }
 
     /**
