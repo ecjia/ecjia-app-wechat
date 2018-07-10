@@ -72,6 +72,11 @@ class WechatScanHandler
             ) {
                 $function = $model->function;
 
+                //如果自定义功能为空，直接返回交与后续逻辑处理
+                if (empty($function)) {
+                    return null;
+                }
+
                 RC_Hook::add_filter('wechat_scan_response', array(__CLASS__, 'Command_reply'), 10, 4);
                 RC_Hook::add_filter('wechat_scan_response', array(__CLASS__, 'Keyword_reply'), 90, 4);
 
