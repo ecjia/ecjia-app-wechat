@@ -68,7 +68,7 @@ class WechatScanHandler
             //临时二维码，并且未过期
             //永久二维码，不需要判断过期时间
             if ((intval($model->type) === 0 && $model->endtime > $time) ||
-                (intvale($model->type) === 1)
+                (intval($model->type) === 1)
             ) {
                 $function = $model->function;
 
