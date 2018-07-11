@@ -33,10 +33,9 @@
 		<span aria-hidden="true">×</span>
 	</button>
 	<h4 class="alert-heading mb-2">操作提示</h4>
-	<p>用户管理：显示已经关注微信公众号的用户信息，未关注的不显示。</p>
+	<p>粉丝管理：显示已经关注微信公众号的用户信息，未关注的不显示。</p>
 	<p>1.搜索功能支持通过用户昵称、省、市搜索。</p>
-	<p>2.标签管理,一个公众号，最多可以创建100个标签。每个公众号可以为用户打上最多20个标签。</p>
-	<p>3.发送客服消息，可以单独发送微信消息给微信用户（只有48小时内和公众号有过互动的粉丝才能接收到信息，否则会发送失败）应用场景 例如，通知用户中奖领取奖品等事宜。</p>
+	<p>2.发送客服消息，可以单独发送微信消息给微信用户（只有48小时内和公众号有过互动的粉丝才能接收到信息，否则会发送失败）应用场景 例如，通知用户中奖领取奖品等事宜。</p>
 	<p>★ 注意事项：在对用户进行发送消息，打标签等操作之前，请及时点击获取用户信息按钮，以便同步微信公众号平台的用户分组（标签）与数量。</p>
 </div>
 
@@ -75,7 +74,7 @@
 			</div>
 			
             <div class="col-md-12">
-                <div class="content-detached content-left col-md-9">
+                <div class="content-detached content-left col-md-12">
 					<table class="table table-hide-edit">
 						<thead>
 							<tr>
@@ -124,165 +123,10 @@
 						</tbody>
 					</table>						
 				</div>
-				<div class="sidebar-detached sidebar-right col-md-3">
-					<div class="card">
-						<div style="padding-top:0;">
-			            	<h4>{lang key='wechat::wechat.user_tag_list'}
-			            		<span class="float-right">
-			            			<a class="subscribe-icon-plus" title="{lang key='wechat::wechat.add_user_tag'}">
-			            				<i class="ft-plus"></i>
-			            			</a>
-			            		</span>
-			            	</h4>
-							<div class="media-list list-group">
-								<div class="list-group-item list-group-item-action media {if $smarty.get.type eq 'all'}active{/if}">
-									<a class="media-link" href="{url path="wechat/platform_subscribe/init" args="&type=all"}">
-										<span class="media-body">
-											<span class="{if $smarty.get.type eq 'all'}white{/if}">{lang key='wechat::wechat.all_user'}</span>
-											<span class="badge badge-primary badge-pill">{$tag_arr.all}</span>
-										</span>
-									</a>
-								</div>
-
-								<!-- {if $tag_arr || $num} -->
-									<!-- {if $tag_arr} -->
-										<!-- {foreach from=$tag_arr.item item=val} -->
-											<div class="list-group-item list-group-item-action media {if $val.id eq $smarty.get.id}active{/if}">
-												<a class="{if $val.id eq $smarty.get.id}white{/if}" href='{url path="wechat/platform_subscribe/init" args="id={$val.id}&tag_id={$val.tag_id}&type=blacklist{if $val.tag_id neq 1}&type=subscribed{/if}"}'>
-													{$val.name}
-													<span class="badge badge-primary badge-pill">{$val.count}</span>
-												</a>
-												{if $val['tag_id'] != 0  && $val['tag_id'] != 1 && $val['tag_id'] != 2}
-													<span class="float-right">
-														<a class="subscribe-icon-edit {if $val.id eq $smarty.get.id}white{/if}" title="{lang key='wechat::wechat.edit_user_tag'}" data-name="{$val.name}" value="{$val.id}"><i class="ft-edit f_s15"></i></a>
-														<a class="ajaxremove no-underline {if $val.id eq $smarty.get.id}white{/if}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_tag_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/remove","id={$val.id}&tag_id={$val.tag_id}")}' title="{lang key='wechat::wechat.remove_user_tag'}"><i class="ft-trash-2 f_s15 m_l5"></i></a>
-													</span>
-												{/if}
-											</div>
-										<!-- {/foreach} -->
-									<!-- {/if} -->
-									
-									<!-- {if $num} -->
-										<div class="list-group-item list-group-item-action media {if $smarty.get.type eq 'unsubscribe' && !$smarty.get.tag_id}active{/if}">
-											<a class="{if $smarty.get.type eq 'unsubscribe' && !$smarty.get.tag_id}white{/if}" href='{url path="wechat/platform_subscribe/init" args="type=unsubscribe"}'>
-												{lang key='wechat::wechat.cancel_subscribe'}
-												<span class="badge badge-primary badge-pill">{$num}</span>
-											</a>
-										</div>
-									<!-- {/if} -->
-								<!-- {/if} -->
-							</div>
-				        </div>
-					</div>
-				</div>
             </div>
             <!-- {$list.page} -->
         </div>
     </div>
-</div>
-
-
-<div class="modal fade text-left" id="edit_tag">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="modal-title">{lang key='wechat::wechat.edit_user_tag'}</h3>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				  <span aria-hidden="true">×</span>
-				</button>
-			</div>
-
-			<!-- {if $errormsg} -->
-			    <div class="alert alert-danger">
-		            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
-		        </div>
-			<!-- {/if} -->
-			
-			<!-- {if $warn} -->
-				<!-- {if $type eq 0} -->
-				<div class="alert alert-danger">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-				</div>
-				<!-- {/if} -->
-			<!-- {/if} -->
-
-			<form class="form" method="post" name="edit_tag" action="{url path='wechat/platform_subscribe/edit_tag'}">
-				<div class="card-body">
-					<div class="form-body">
-
-						<div class="form-group row">
-							<label class="col-md-3 label-control old_tag_name text-right">{lang key='wechat::wechat.label_old_tag_name'}</label>
-							<div class="col-md-8">
-								<span class="old_tag"></span>
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label class="col-md-3 label-control old_tag_name text-right">{lang key='wechat::wechat.label_old_tag_name'}</label>
-							<div class="col-md-8 controls">
-								<input class="form-control" type="text" name="new_tag" autocomplete="off"/>
-							</div>
-							<div class="col-md-1"><span class="input-must">*</span></div>
-						</div>
-						
-					</div>
-				</div>
-
-				<div class="modal-footer justify-content-center">
-			   		<input type="hidden" name="id" />
-					<input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
-				</div>
-			</form>
-
-		</div>
-	</div>
-</div>
-	
-<div class="modal fade text-left" id="add_tag">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="modal-title">{lang key='wechat::wechat.add_user_tag'}</h3>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				  <span aria-hidden="true">×</span>
-				</button>
-			</div>
-
-			<!-- {if $errormsg} -->
-			    <div class="alert alert-danger">
-		            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
-		        </div>
-			<!-- {/if} -->
-			
-			<!-- {if $warn} -->
-				<!-- {if $type eq 0} -->
-				<div class="alert alert-danger">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-				</div>
-				<!-- {/if} -->
-			<!-- {/if} -->
-
-			<form class="form" method="post" name="add_tag" action="{url path='wechat/platform_subscribe/edit_tag'}">
-				<div class="card-body">
-					<div class="form-body">
-						<div class="form-group row">
-							<label class="col-md-3 label-control new_tag_name text-right">{lang key='wechat::wechat.label_tag_name'}</label>
-							<div class="col-md-8 controls">
-								<input class="form-control" type="text" name="new_tag" autocomplete="off"/>
-							</div>
-							<div class="col-md-1"><span class="input-must">*</span></div>
-						</div>
-					</div>
-				</div>
-
-				<div class="modal-footer justify-content-center">
-			   		<input type="hidden" name="openid" />
-					<input type="submit" class="btn btn-outline-primary" {if $errormsg}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
-				</div>
-			</form>
-
-		</div>
-	</div>
 </div>
 
 <div class="modal fade text-left" id="set_label">

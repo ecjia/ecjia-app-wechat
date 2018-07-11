@@ -72,7 +72,6 @@ class mobile_qrcode extends EcjiaWechatUserController
         if (is_ecjia_error($url)) {
             //返回错误
         }
-
         // test
         // return $this->displayContent(file_get_contents($url), 'image/png');
         // $this->displayAppTemplate('wechat', 'front/qrcode.dwt');
@@ -81,6 +80,19 @@ class mobile_qrcode extends EcjiaWechatUserController
         $this->assign('user_info', $user_info);
         
         $this->assign('url', $url);
+        
+        $db = RC_DB::table('wechat_user as w')
+        	->leftJoin('wechat_user as u', RC_DB::raw('w.uid'), '=', RC_DB::raw('u.popularize_uid'))
+        	->where(RC_DB::raw('w.popularize_uid'), $user_info['uid']);
+        $count = $db->count();
+        $user_list = $db
+        	->select(RC_DB::raw('w.*'))
+        	->orderBy(RC_DB::raw('w.subscribe_time'), 'desc')
+        	->take(20)
+        	->get();
+        
+        $this->assign('count', $count);
+        $this->assign('user_list', $user_list);
         
         $this->display(
             RC_Package::package('app::wechat')->loadTemplate('front/qrcode.dwt', true)

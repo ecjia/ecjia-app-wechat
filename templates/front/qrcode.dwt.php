@@ -27,10 +27,10 @@
 	            		</div>
 	            	</div>
 	            	<div class="pn_index_invite">
-	            		<dl>我邀请的人数：<span>{count($user_list)}</span>人</dl>
+	            		<dl>我邀请的人数：<span>{$count}</span>人</dl>
 	            		<div class="invite_content">
 	            			<!-- {foreach from=$user_list item=val} -->
-		            		<dt><dd><span>{$val.add_time}</span><span class="right">{$val.nick_name}</span></dd><dt>
+		            		<dt><dd><span>{date('Y-m-d H:i:s', $val.subscribe_time)}</span><div class="right">{$val.nickname}</div></dd><dt>
 		            		<!-- {foreachelse} -->
 		            		<div class="t_c">暂无邀请</div>
 		            		<!-- {/foreach} -->

@@ -48,7 +48,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * ECJIA用户管理
+ * ECJIA粉丝管理
  */
 class admin_subscribe extends ecjia_admin {
 	private $wu_viewdb;

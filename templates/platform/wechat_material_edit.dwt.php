@@ -31,7 +31,7 @@
 					{/if}
                 </h4>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-22">
 				<form method="post" class="form-horizontal" action="{$form_action}" name="theForm" enctype="multipart/form-data">
 					<!-- {if $article.articles}-->
 						<div class="f_l">
@@ -69,20 +69,20 @@
 									<h4 class="heading">{lang key='wechat::wechat.graphic'} {$key+1}</h4>
 									<fieldset>
 										<div class="form-group row">
-											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
+											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
 											<div class="col-lg-9 controls">
 												<input class='span8 form-control' type='text' name='title' value='{$list.title}'/>
 											</div>
 											<span class="input-must">*</span>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.author'}</label>
+											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.author'}</label>
 											<div class="col-lg-9 controls">
 												<input class='span8 form-control' type='text' name='author' value='{$list.author}'/>
 											</div>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.cover'}</label>
+											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.cover'}</label>
 											<div class="col-lg-9 controls">
 												<div class="fileupload {if $list.file}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">	
 													<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;">
@@ -106,21 +106,21 @@
 											<span class="input-must">*</span>
 										</div>
 										<div class="form-group row">
-											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.summary'}</label>
+											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.summary'}</label>
 											<div class="col-lg-9 controls">
 												<textarea name="digest" cols="55" rows="6" class="span8 form-control">{$list.digest}</textarea>
 											</div>
 										</div>
 										
 										<div class="form-group row">
-											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.text_link'}</label>
+											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.text_link'}</label>
 											<div class="col-lg-9 controls">
 												<input name='link' class='span8 form-control' type='text' value='{$list.link}'/>
 											</div>
 										</div>
 										
 										<div class="form-group row sort_form">
-											<label class="col-lg-1 label-control text-right">{lang key='wechat::wechat.label_sort'}</label>
+											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_sort'}</label>
 											<div class="col-lg-9 controls">
 												<input name='sort' class='span8 form-control' type='text' value='{$list.sort}'/>
 											</div>
@@ -130,15 +130,13 @@
 											<h3 class="heading card-title col-lg-12">
 											{lang key='wechat::wechat.main_body'}
 											</h3>
-											<div class="row">
-												<div class="col-lg-10">
-													{ecjia:editor content=$list.content textarea_name='content' is_teeny=0}
-												</div>
+											<div class="col-lg-11">
+												{ecjia:editor content=$list.content textarea_name='content' is_teeny=0}
 											</div>
 										</div>
 										
 										<div class="form-group row">
-											<label class="col-lg-1 label-control text-right"></label>
+											<label class="col-lg-2 label-control text-right"></label>
 											<div class="col-lg-9 controls">
 												<input type="hidden" name="id" value="{$list.id}">
 												<input type="hidden" name="index">
