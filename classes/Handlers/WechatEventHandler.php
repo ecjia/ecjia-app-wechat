@@ -9,6 +9,7 @@ use Ecjia\App\Wechat\WechatUUID;
 use Ecjia\App\Wechat\WechatMediaReply;
 use Ecjia\App\Wechat\WechatCommand;
 use Ecjia\App\Wechat\Models\WechatMassHistoryModel;
+use Ecjia\App\Wechat\Models\WechatUserModel;
 
 class WechatEventHandler
 {
@@ -235,7 +236,17 @@ class WechatEventHandler
      */
     public static function Location_Select_event($message)
     {
-        
+        $openid = $message->get('FromUserName');
+
+        $data = [
+            'location_latitude' => $message->get('Latitude'),
+            'location_longitude' => $message->get('Longitude'),
+            'location_precision' => $message->get('Precision'),
+            'location_updatetime' => \RC_Time::gmtime(),
+        ];
+
+        WechatUserModel::where('openid', $openid)->update($data);
+
     }
     
     /**
