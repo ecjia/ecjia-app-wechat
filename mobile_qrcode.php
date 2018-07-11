@@ -79,7 +79,7 @@ class mobile_qrcode extends EcjiaWechatUserController
         $this->assign('url', $url);
         
         $type = $qrcode->getWechatUUID()->getAccount()->getTypeCode();
-        if ($type != 'service ') {
+        if ($type != 'service') {
         	return $this->displayContent('推广二维码仅支持服务号类型的公众号');
         }
         
