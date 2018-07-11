@@ -52,6 +52,8 @@ class WechatSubscribeHandler
             } else {
                 $ecjia_userid = 0;
             }
+
+            $uid = $this->getPopularizeUid($userinfo);
             
             //曾经关注过，再次关注，更新资料
             $userModel = $wechat_user->getWechatUser();
@@ -69,10 +71,23 @@ class WechatSubscribeHandler
                 $userModel->group_id        = $userinfo->get('groupid');
                 $userModel->unionid         = $userinfo->get('unionid');
                 $userModel->ect_uid         = $ecjia_userid;
-                $userModel->subscribe_scene = $userinfo->get('subscribe_scene');
-                $userModel->qr_scene        = $userinfo->get('qr_scene');
-                $userModel->qr_scene_str    = $userinfo->get('qr_scene_str');
-                
+
+                if ($userinfo->get('subscribe_scene')) {
+                    $userModel->subscribe_scene = $userinfo->get('subscribe_scene');
+                }
+
+                if ($userinfo->get('qr_scene')) {
+                    $userModel->qr_scene        = $userinfo->get('qr_scene');
+                }
+
+                if ($userinfo->get('qr_scene_str')) {
+                    $userModel->qr_scene_str    = $userinfo->get('qr_scene_str');
+                }
+
+                if (! $usrModel->popularize_uid && $uid) {
+                    $userModel->popularize_uid = $uid;
+                }
+
                 $userModel->save();
             } 
             //新关注用户，插入资料
@@ -96,6 +111,7 @@ class WechatSubscribeHandler
                     'subscribe_scene'   => $userinfo->get('subscribe_scene'),
                     'qr_scene'          => $userinfo->get('qr_scene'),
                     'qr_scene_str'      => $userinfo->get('qr_scene_str'),
+                    'popularize_uid'    => $uid,
                 ]);
             }
 
@@ -131,6 +147,27 @@ class WechatSubscribeHandler
             return $content;
         }
         
+    }
+
+    /**
+     * 获取用户的推广者微信的UID，不是ECJia User的UID
+     * @param $userinfo
+     * @return int | null
+     */
+    protected function getPopularizeUid($userinfo)
+    {
+        if ($userinfo->get('subscribe_scene') == 'ADD_SCENE_QR_CODE'
+            && strlen($userinfo->get('qr_scene_str')) == 28) {
+            $open_id = $userinfo->get('qr_scene_str');
+            $popularize_user = new WechatUser($wechat_id, $open_id);
+            $userModel = $popularize_user->getWechatUser();
+            if (! empty($userModel)) {
+                return $userModel->uid;
+            }
+
+            return null;
+        }
+
     }
     
     /**
