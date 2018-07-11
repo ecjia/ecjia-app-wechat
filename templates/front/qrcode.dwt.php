@@ -10,7 +10,9 @@
 	</head>
 	<body>
 		<div id="app" class="wrapper">
-            <div class="pn_index" style="background-image: url({$front_url}/images/qrcode_back.png);">
+			<div>
+	            <div class="pn_index" style="background-image: url({$front_url}/images/qrcode_back.png);">
+	            </div>
             </div>
         </div>
 	</body>

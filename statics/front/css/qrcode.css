@@ -40,7 +40,6 @@ a,a:visited {
 }
 
 body {
-	margin: 0 auto;
 	min-width: 320px;
 	max-width: 540px;
 	background: #fff;
@@ -48,7 +47,24 @@ body {
 	font-family: -apple-system,Helvetica,sans-serif;
 	line-height: 1.5;
 	color: #666;
-	-webkit-text-size-adjust: 100%!important
+	-webkit-text-size-adjust: 100%!important;
+	
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: column;
+    flex-flow: column;
+    min-height: 100vh;
+	
+	margin: 0;
+}
+
+.wrapper {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
 }
 
 html {
