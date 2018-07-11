@@ -98,7 +98,7 @@ html {
 }
 
 .pn_index_title {
-    width: 12.75rem;
+    width: 15rem;
     height: 2.5rem;
     padding-top: 7rem;
     margin: 0 auto;
@@ -118,15 +118,15 @@ html {
 }
 
 .pn_index_redpacket {
-	width: 10rem;
-    height: 10rem;
+	width: 11rem;
+    height: 11rem;
     padding-top: .5rem;
     margin: 0 auto;
 }
 
 .pn_index_redpacket img {
-	width: 10rem;
-    height: 10rem;
+	width: 11rem;
+    height: 11rem;
 	border-radius: 4px;
 }
 
@@ -159,7 +159,7 @@ html {
 	width: 15rem;
 	background-color: #F9E6BC;
     border-radius: 4px;
-	margin-top: 1rem;
+	margin-top: .5rem;
 	color: #bd793f;
 	line-height: 1.5rem;
 	height: 10rem;
