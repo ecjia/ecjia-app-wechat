@@ -90,9 +90,102 @@ html {
 
 .pn_index {
 	width: 100%;
-	min-height: 100vh;
+	min-height: 120vh;
 	background-position: 0 0;
 	background-repeat: no-repeat;
 	background-size: 100% auto;
-	background-color: #fca24a;
+	background-color: #FE7704;
+}
+
+.pn_index_title {
+    width: 12.75rem;
+    height: 2.5rem;
+    padding-top: 7rem;
+    margin: 0 auto;
+    line-height: 2.5rem;
+}
+
+.pn_index_title img {
+	width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
+
+.pn_index_title span {
+	margin-left: .5rem;
+    color: #FE7704;
+    font-size: 16px;
+}
+
+.pn_index_redpacket {
+	width: 10rem;
+    height: 10rem;
+    padding-top: .5rem;
+    margin: 0 auto;
+}
+
+.pn_index_redpacket img {
+	width: 10rem;
+    height: 10rem;
+	border-radius: 4px;
+}
+
+.pn_index_redpacket_cover {
+	padding-top: .5rem;
+    margin: 0 auto;
+	width: 75%;
+}
+
+.pn_index_redpacket_cover img {
+	margin: 0 auto;
+	width: 100%;
+	height: 55px;
+}
+
+.cover_content {
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row;
+    flex-flow: row;
+	justify-content: space-between;
+	color: #FE7704;
+}
+
+.pn_index_invite {
+    margin: 0 auto;
+	width: 15rem;
+	background-color: #F9E6BC;
+    border-radius: 4px;
+	margin-top: 1rem;
+	color: #bd793f;
+	line-height: 1.5rem;
+	height: 10rem;
+}
+
+.pn_index_invite dl {
+	border-bottom: 1px solid #f3dba7;
+    padding: .2rem .5rem;
+}
+
+.right {
+	float: right;
+}
+
+.invite_content {
+    height: 8rem;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 .5rem;
+}
+
+.invite_content dd {
+	margin: .1rem 0;
+}
+
+.invite_content .t_c {
+	text-align: center;
+    line-height: 8rem;
 }

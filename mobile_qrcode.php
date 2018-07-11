@@ -76,7 +76,12 @@ class mobile_qrcode extends EcjiaWechatUserController
         // test
         // return $this->displayContent(file_get_contents($url), 'image/png');
         // $this->displayAppTemplate('wechat', 'front/qrcode.dwt');
-
+		
+        $user_info = RC_DB::table('wechat_user')->where('openid', $openid)->first();
+        $this->assign('user_info', $user_info);
+        
+        $this->assign('url', $url);
+        
         $this->display(
             RC_Package::package('app::wechat')->loadTemplate('front/qrcode.dwt', true)
         );
