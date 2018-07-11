@@ -62,7 +62,19 @@
 							<div class="form-group row">
 								<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_kf_headimgurl'}</label>
 								<div class="col-lg-8 controls">
-									<input type='file' name='kf_headimgurl' size="35"/>
+									<div class="fileupload {if $list.kf_headimgurl}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">	
+										<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;">
+											{if $list.kf_headimgurl}
+											<img src="{$list.kf_headimgurl}" alt="{lang key='wechat::wechat.img_priview'}" />
+											{/if}
+										</div>
+										<span class="btn btn-outline-primary btn-file">
+											<span class="fileupload-new">{lang key='wechat::wechat.browser'}</span>
+											<span class="fileupload-exists">{lang key='wechat::wechat.modify'}</span>
+											<input type='file' name='kf_headimgurl' size="35"/>
+										</span>
+										<a class="btn btn-danger {if !$list.kf_headimgurl}fileupload-exists{else}fileupload-new{/if}" {if !$list.kf_headimgurl}data-dismiss="fileupload" href="javascript:;"{/if}>{lang key='system::system.drop'}</a>
+									</div>
 								</div>
 							</div>
 							<!-- {/if} -->
@@ -80,9 +92,9 @@
 	
 					<div class="modal-footer justify-content-center">
 						<!-- {if $list.id} -->
-						<input class="btn btn-outline-primary" {if $errormsg}disabled{/if} type="submit" value="{lang key='wechat::wechat.update'}" />
+						<input class="btn btn-outline-primary" {if $errormsg || ($warn && $type neq 2)}disabled{/if} type="submit" value="{lang key='wechat::wechat.update'}" />
 						<!-- {else} -->
-						<input class="btn btn-outline-primary" {if $errormsg}disabled{/if} type="submit" value="{lang key='wechat::wechat.ok'}" />
+						<input class="btn btn-outline-primary" {if $errormsg || ($warn && $type neq 2)}disabled{/if} type="submit" value="{lang key='wechat::wechat.ok'}" />
 						<!-- {/if} -->
 						<input type="hidden" name="id" value="{$list.id}" />
 					</div>

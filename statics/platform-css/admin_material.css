@@ -484,7 +484,7 @@
 
 .mobile_news_main .show_image {
 	height: 160px;
-	width: 320px;
+	width: 300px;
 	position: absolute;
 	top: 0;
 	z-index: 9;
@@ -492,7 +492,7 @@
 
 .mobile_news_main .show_image img {
 	height: 160px;
-	width: 320px;
+	width: 300px;
 }
 
 .mobile_news_edit {

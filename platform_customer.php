@@ -74,6 +74,9 @@ class platform_customer extends ecjia_platform
         RC_Style::enqueue_style('admin_customer', RC_App::apps_url('statics/css/admin_customer.css', __FILE__));
         RC_Style::enqueue_style('hint.min', RC_Uri::admin_url('statics/lib/hint_css/hint.min.css'));
 
+        RC_Script::enqueue_script('ecjia-platform-bootstrap-fileupload-js');
+        RC_Style::enqueue_style('ecjia-platform-bootstrap-fileupload-css');
+        
         RC_Script::localize_script('wechat_customer', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('wechat/platform_customer/init')));
 
@@ -233,6 +236,11 @@ class platform_customer extends ecjia_platform
         );
         $wechat_id = $this->platformAccount->getAccountID();
 
+        if (is_ecjia_error($wechat_id)) {
+        	$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
+        } else {
+        	$this->assign('warn', 'warn');
+        }
         $type = $this->platformAccount->getType();
 
         $this->assign('type', $type);
