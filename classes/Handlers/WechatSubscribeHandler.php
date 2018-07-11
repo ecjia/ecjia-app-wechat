@@ -53,7 +53,7 @@ class WechatSubscribeHandler
                 $ecjia_userid = 0;
             }
 
-            $uid = $this->getPopularizeUid($userinfo);
+            $uid = $this->getPopularizeUid($wechat_id, $userinfo);
             
             //曾经关注过，再次关注，更新资料
             $userModel = $wechat_user->getWechatUser();
@@ -154,7 +154,7 @@ class WechatSubscribeHandler
      * @param $userinfo
      * @return int | null
      */
-    protected function getPopularizeUid($userinfo)
+    protected function getPopularizeUid($wechat_id, $userinfo)
     {
         if ($userinfo->get('subscribe_scene') == 'ADD_SCENE_QR_CODE'
             && strlen($userinfo->get('qr_scene_str')) == 28) {
