@@ -66,20 +66,25 @@ class mobile_qrcode extends EcjiaWechatUserController
     {
         $openid = trim($_GET['openid']);
         $uuid = trim($_GET['uuid']);
+        
+        if (empty($openid) || empty($uuid)) {
+        	return $this->displayContent('openid或uuid参数不能为空');
+        }
 
         $qrcode = new \Ecjia\App\Wechat\WechatQrcode($uuid);
         $url = $qrcode->getUserQrcodeUrl($openid);
         if (is_ecjia_error($url)) {
-            //返回错误
+            return $this->displayContent($url->get_error_code());
         }
-        // test
-        // return $this->displayContent(file_get_contents($url), 'image/png');
-        // $this->displayAppTemplate('wechat', 'front/qrcode.dwt');
-		
+        $this->assign('url', $url);
+        
+        $type = $qrcode->getWechatUUID()->getAccount()->getTypeCode();
+        if ($type != 'service ') {
+        	return $this->displayContent('推广二维码仅支持服务号类型的公众号');
+        }
+        
         $user_info = RC_DB::table('wechat_user')->where('openid', $openid)->first();
         $this->assign('user_info', $user_info);
-        
-        $this->assign('url', $url);
         
         $db = RC_DB::table('wechat_user as w')
         	->leftJoin('wechat_user as u', RC_DB::raw('w.uid'), '=', RC_DB::raw('u.popularize_uid'))
