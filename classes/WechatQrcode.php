@@ -22,7 +22,14 @@ class WechatQrcode
     {
         $this->wechat_uuid = new WechatUUID($uuid);
     }
-    
+
+
+    public function getWechatUUID()
+    {
+        return $this->wechat_uuid;
+    }
+
+
     /**
      * 临时二维码
      */
