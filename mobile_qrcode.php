@@ -83,6 +83,9 @@ class mobile_qrcode extends EcjiaWechatUserController
         	return $this->displayContent('推广二维码仅支持服务号类型的公众号');
         }
         
+        $name = $qrcode->getWechatUUID()->getAccount()->getAccountName();
+        $this->assign('name', $name);
+        
         $user_info = RC_DB::table('wechat_user')->where('openid', $openid)->first();
         $this->assign('user_info', $user_info);
         

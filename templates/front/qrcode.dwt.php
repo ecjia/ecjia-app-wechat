@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10,IE=11"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<head lang="zh-CN">
-		<title>二维码推广</title>
+		<title>{$name}公众号扫码关注</title>
 		<link rel="stylesheet" type="text/css" href="{$front_url}/css/qrcode.css" />
 	</head>
 	<body>
