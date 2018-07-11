@@ -47,38 +47,39 @@
 
 use Ecjia\App\Wechat\Controllers\EcjiaWechatUserController;
 
-
 class mobile_qrcode extends EcjiaWechatUserController
 {
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         parent::__construct();
-        
 
         $this->assign('front_url', RC_App::apps_url('statics/front', __FILE__));
         $this->assign('system_statics_url', RC_Uri::admin_url('statics'));
-      
     }
 
     /**
      * 只有认证的服务号才能获取推广二维码
      * @return mixed
      */
-    public function init() {
-    	$openid = trim($_GET['openid']);
-    	$uuid   = trim($_GET['uuid']);
+    public function init()
+    {
+        $openid = trim($_GET['openid']);
+        $uuid = trim($_GET['uuid']);
 
-    	$qrcode = new \Ecjia\App\Wechat\WechatQrcode($uuid);
+        $qrcode = new \Ecjia\App\Wechat\WechatQrcode($uuid);
         $url = $qrcode->getUserQrcodeUrl($openid);
         if (is_ecjia_error($url)) {
             //返回错误
         }
 
         // test
-        return $this->displayContent(file_get_contents($url), 'image/png');
+        // return $this->displayContent(file_get_contents($url), 'image/png');
+        // $this->displayAppTemplate('wechat', 'front/qrcode.dwt');
 
-        $this->displayAppTemplate('wechat', 'front/qrcode.dwt');
+        $this->display(
+            RC_Package::package('app::wechat')->loadTemplate('front/qrcode.dwt', true)
+        );
     }
-
 
 }

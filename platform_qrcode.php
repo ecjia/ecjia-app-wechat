@@ -302,16 +302,16 @@ class platform_qrcode extends ecjia_platform
         }
 
         if (empty($qrcode['qrcode_url'])) {
-        	// 获取二维码ticket
-        	try {
-	            if ($qrcode['type'] == 0) {
-	            	$ticket = with(new Ecjia\App\Wechat\WechatQrcode())->temporary($qrcode['scene_id']);
-	            } else {
-	            	$ticket = with(new Ecjia\App\Wechat\WechatQrcode())->forever($qrcode['scene_id']);
-	            }
+            // 获取二维码ticket
+            try {
+                if ($qrcode['type'] == 0) {
+                    $ticket = with(new Ecjia\App\Wechat\WechatQrcode())->temporary($qrcode['scene_id']);
+                } else {
+                    $ticket = with(new Ecjia\App\Wechat\WechatQrcode())->forever($qrcode['scene_id']);
+                }
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            	return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }   
+                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
 
             $data['ticket'] = $ticket['ticket'];
             $data['expire_seconds'] = $ticket['expire_seconds'];
