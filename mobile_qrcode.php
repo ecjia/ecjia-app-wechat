@@ -81,11 +81,17 @@ class mobile_qrcode extends EcjiaWechatUserController
         
         $this->assign('url', $url);
         
-        $user_list = RC_DB::table('wechat_user as w')
+        $db = RC_DB::table('wechat_user as w')
         	->leftJoin('wechat_user as u', RC_DB::raw('w.uid'), '=', RC_DB::raw('u.popularize_uid'))
+        	->where(RC_DB::raw('w.popularize_uid'), $user_info['uid']);
+        $count = $db->count();
+        $user_list = $db
         	->select(RC_DB::raw('w.*'))
-        	->where(RC_DB::raw('w.popularize_uid'), $user_info['uid'])
+        	->orderBy(RC_DB::raw('w.subscribe_time'), 'desc')
+        	->take(20)
         	->get();
+        
+        $this->assign('count', $count);
         $this->assign('user_list', $user_list);
         
         $this->display(
