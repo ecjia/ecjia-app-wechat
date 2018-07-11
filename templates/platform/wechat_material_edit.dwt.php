@@ -140,7 +140,7 @@
 											<div class="col-lg-9 controls">
 												<input type="hidden" name="id" value="{$list.id}">
 												<input type="hidden" name="index">
-												<input type="submit" value="{lang key='wechat::wechat.update'}" class="btn btn-lighr"/>
+												<input type="submit" value="{lang key='wechat::wechat.update'}" class="btn btn-outline-primary"/>
 											</div>
 										</div>
 									</fieldset>
