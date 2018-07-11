@@ -172,6 +172,10 @@ html {
 
 .right {
 	float: right;
+    max-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .invite_content {
