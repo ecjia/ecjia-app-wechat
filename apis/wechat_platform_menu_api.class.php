@@ -70,9 +70,10 @@ class wechat_platform_menu_api extends Component_Event_Api {
             )
             );
         
-        $usermenus = ecjia_admin::make_admin_menu('15_content', '用户管理', '', 21)->add_icon('icon-user')->add_submenu(
+        $usermenus = ecjia_admin::make_admin_menu('15_content', '粉丝管理', '', 21)->add_icon('icon-user')->add_submenu(
             array(
                 ecjia_admin::make_admin_menu('01_wechat', RC_Lang::get('wechat::wechat.user_manage'), RC_Uri::url('wechat/platform_subscribe/init'), 1)->add_purview('wechat_subscribe_manage'),
+         		ecjia_admin::make_admin_menu('02_wechat', '标签管理', RC_Uri::url('wechat/platform_subscribe/tag'), 2)->add_purview('wechat_subscribe_manage'),
             )
         );
         

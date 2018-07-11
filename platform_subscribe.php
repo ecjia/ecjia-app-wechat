@@ -48,7 +48,7 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * ECJIA用户管理
+ * ECJIA粉丝管理
  */
 class platform_subscribe extends ecjia_platform
 {
@@ -76,7 +76,7 @@ class platform_subscribe extends ecjia_platform
         RC_Script::localize_script('platform_subscribe', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 		
 		ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.subscribe_manage'), RC_Uri::url('wechat/platform_subscribe/init')));
-        ecjia_platform_screen::get_current_screen()->set_subject('用户管理');
+        ecjia_platform_screen::get_current_screen()->set_subject('粉丝管理');
     }
 
     public function init()
@@ -237,7 +237,7 @@ class platform_subscribe extends ecjia_platform
 
                 //记录日志
                 ecjia_admin::admin_log($name, 'edit', 'users_tag');
-                return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/init')));
+                return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/tag')));
             } else {
                 $this->admin_priv('wechat_subscribe_add', ecjia::MSGTYPE_JSON);
 
@@ -264,7 +264,7 @@ class platform_subscribe extends ecjia_platform
                 //记录日志
                 ecjia_admin::admin_log($name, 'add', 'users_tag');
                 if ($id) {
-                    return $this->showmessage(RC_Lang::get('wechat::wechat.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/init')));
+                    return $this->showmessage(RC_Lang::get('wechat::wechat.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/tag')));
                 } else {
                     return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
@@ -928,6 +928,38 @@ class platform_subscribe extends ecjia_platform
         return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $tag_arr));
     }
 
+    public function tag()
+    {
+    	$this->admin_priv('wechat_subscribe_manage');
+    	
+    	ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+    	ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('标签管理'));
+    	
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	
+    	$count = RC_DB::table('wechat_tag')->where('wechat_id', $wechat_id)->count();
+    	$page = new ecjia_platform_page($count, 10, 5);
+    	$data = RC_DB::table('wechat_tag')->select('id', 'tag_id', 'name', 'count')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->take(10)->skip($page->start_id-1)->get();
+    	
+    	$list = array('item' => $data, 'page' => $page->show(5), 'desc' => $page->page_desc());
+    	$this->assign('list', $list);
+    	
+    	$this->assign('ur_here', '标签管理');
+    	$this->assign('action_link', array('text' => '添加标签', 'href' => 'javascript:;'));
+    	
+    	if (is_ecjia_error($wechat_id)) {
+    		$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
+    	} else {
+    		$this->assign('warn', 'warn');
+    	
+    		//获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
+    		$types = $this->platformAccount->getType();
+    		$this->assign('type', $types);
+    		$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
+    	}
+    	
+    	$this->display('wechat_subscribe_tag.dwt');
+    }
     //获取用户标签
     private function get_user_tags()
     {

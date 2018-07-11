@@ -65,7 +65,7 @@ return array(
 		
 	/*API*/
 	'weixin_notice'	        => '微信公众平台',
-	'user_manage'	        => '用户管理',
+	'user_manage'	        => '粉丝管理',
 	'message_manage'	    => '消息管理',
 	'remind_set'	        => '提醒设置',
 	
@@ -304,10 +304,10 @@ return array(
 	'label_message_topic'		=> '消息主题：',
 	'label_message_content'		=> '消息内容：',
 	
-	//用户管理
-	'subscribe_manage'			=> '用户管理',
-	'subscribe_manage_content' 	=> '欢迎访问ECJia智能后台用户管理页面，当前公众号的所有用户都会显示在此列表中。',
-	'subscribe_manage_help'		=> '关于用户管理帮助文档',
+	//粉丝管理
+	'subscribe_manage'			=> '粉丝管理',
+	'subscribe_manage_content' 	=> '欢迎访问ECJia智能后台粉丝管理页面，当前公众号的所有用户都会显示在此列表中。',
+	'subscribe_manage_help'		=> '关于粉丝管理帮助文档',
 	'tag_name_required'			=> '请输入标签名称',
 	'tag_name_exist'			=> '该标签名字已存在，请重新输入',
 	'up_tag_info'				=> '最多只能创建100个标签',
@@ -336,7 +336,7 @@ return array(
 	'remove_blacklist_confirm'	=> '您确定要将该用户移出黑名单吗？',
 	
 	'unionid_error_info'		=> '无法获取unionid字段，若需获取该字段，请将公众号绑定到微信开放平台帐号。',
-	'user_manage_synchro'		=> '用户管理同步操作',
+	'user_manage_synchro'		=> '粉丝管理同步操作',
 	'get_user_tag_notice'		=> '通过点击该按钮可以获取微信端用户标签到本地。',
 	'get_user_info_notice'		=> '通过点击该按钮可以获取微信端用户信息到本地。',
 	'set_tag'					=> '打标签',
