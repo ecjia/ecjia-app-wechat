@@ -42,7 +42,7 @@
                 <h4 class="card-title">
                 	{$ur_here}
 	               	{if $action_link}
-					<a class="btn btn-outline-primary plus_or_reply data-pjax float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
+					<a class="btn btn-outline-primary plus_or_reply float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
 					{/if}
                 </h4>
             </div>
