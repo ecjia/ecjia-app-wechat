@@ -548,6 +548,7 @@ return array(
     'picture'                   => '图片',
     'voice'                     => '语音',
     'video'                     => '视频',
+    'thumb'                     => '缩略图',
     'input_keyword'             => '请输入关键字',
     'rule_name'                 => '规则名称',
     'keyword'                   => '关键字',

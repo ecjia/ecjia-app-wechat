@@ -20,26 +20,17 @@
 </div>
 {/if}
 
+<!-- {if ecjia_screen::get_current_screen()->get_help_sidebar()} -->
 {if $smarty.get.type}
 <div class="alert alert-light alert-dismissible mb-2" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">×</span>
 	</button>
 	<h4 class="alert-heading mb-2">操作提示</h4>
-	<!-- {if $smarty.get.type eq 'news'} -->
-	<p>图文素材：分为单图文、多图文素材。支持图片，语音，视频素材。</p>
-	<p>单图文素材添加好之后，即可将多条单图文素材组合成为一条多图文素材。</p>
-	<p>★ 注意事项：单图文素材如果经过修改，则原先添加好的多图文素材需要重新组合。</p>
-	<!-- {else if $smarty.get.type eq 'image'} -->
-	<p>图片大小: 不超过1M, 格式: jpg。</p>
-	<!-- {else if $smarty.get.type eq 'voice'} -->
-	<p>语音素材大小: 不超过2M, 长度: 不超过60s, 格式: mp3, amr。</p>
-	<!-- {else if $smarty.get.type eq 'video'} -->
-	<p>视频素材大小: 建议2MB以下，格式：mp4。</p>
-	<p>建议直接使用优酷等第三方视频网站的视频地址。优点:不占用服务器资源，支持更大、更多格式的视频素材。</p>
-	<!-- {/if} -->
+	<!-- {ecjia_screen::get_current_screen()->get_help_sidebar()} -->
 </div>
 {/if}
+<!-- {/if} -->
 
 <div class="row">
     <div class="col-12">
@@ -79,6 +70,10 @@
 						<a class="nav-link data-pjax {if $smarty.get.type eq 'video'}active{/if}" href='{url path="wechat/platform_material/init" args="type=video{if $smarty.get.material}&material=1{/if}"}'>
 						{lang key='wechat::wechat.video'}<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{if $lists.filter.count.video}{$lists.filter.count.video}{else}0{/if}</span></a>
 					</li>
+                    <li class="nav-item">
+                        <a class="nav-link data-pjax {if $smarty.get.type eq 'thumb'}active{/if}" href='{url path="wechat/platform_material/init" args="type=thumb{if $smarty.get.material}&material=1{/if}"}'>
+                            {lang key='wechat::wechat.thumb'}<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{if $lists.filter.count.thumb}{$lists.filter.count.thumb}{else}0{/if}</span></a>
+                    </li>
 				</ul>
 				<!-- {if $action_link} -->
 				<a class="btn btn-outline-primary plus_or_reply float-right" id="sticky_a" href='{$action_link.href}{if $smarty.get.material}&material=1{/if}'><i class="ft-plus"></i>{$action_link.text}</a>
