@@ -80,6 +80,8 @@
 											<input class='span8 form-control' type='text' name='author' value='' />
 										</div>
 									</div>
+									
+									<!-- 
 									<div class="form-group row">
 										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.cover'}</label>
 										<div class="col-lg-9 controls">
@@ -99,6 +101,22 @@
 											<span class="help-block">{lang key='wechat::wechat.img_size900x500'}</span>
 										</div>
 									</div>
+									 -->
+									
+									<div class="form-group row">
+										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.cover'}</label>
+										<div class="col-lg-9 controls">
+											<div class="fileupload fileupload-exists" data-provides="fileupload">	
+												<a class="btn btn-outline-primary choose_material" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/get_material_array')}&material=1" data-type="image">从图片库选择</a>
+												<input type="hidden" name="cover_url" size="35"/>
+											</div>
+											<span class="input-must">*</span>
+								
+											<input type="checkbox" name="is_show" value="1" id="is_show_1"/><label for="is_show_1"></label>{lang key='wechat::wechat.cover_img_centent'}
+											<span class="help-block">{lang key='wechat::wechat.img_size900x500'}</span>
+										</div>
+									</div>
+									
 									<div class="form-group row">
 										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.summary'}</label>
 										<div class="col-lg-9 controls">
@@ -181,4 +199,39 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="choose_material">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">选择图片</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
+			</div>
+			
+			<!-- {if $errormsg || ($warn && $wechat_type eq 0)} -->
+				<div class="card-body">
+				    <div class="alert alert-danger">
+			            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+			        </div>
+					<!-- {if $warn && $wechat_type eq 0} -->
+					<div class="alert alert-danger">
+						<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+					</div>
+					<!-- {/if} -->
+				</div>
+			<!-- {/if} -->
+
+			<form class="form" method="post" name="edit_tag" action="">
+				<div class="inner_main">
+				</div>
+				<div class="modal-footer justify-content-center">
+					<input type="button" class="btn btn-outline-primary js-btn" {if $errormsg || ($warn && $wechat_type eq 0)}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <!-- {/block} -->

@@ -261,6 +261,8 @@
 			} else {
 				$('.create_news').show();
 			}
+			
+			app.material_edit.choose_material();
 		},
 		
 		clone : function () {
@@ -556,6 +558,52 @@
 				}
 			});
 		},
+		
+		choose_material: function () {
+			$('.choose_material').off('click').on('click', function() {
+				var $this = $(this);
+					url = $this.attr('data-url'),
+					type = $this.attr('data-type'),
+					material = $this.attr('data-material');
+				
+					var info = {
+						type: type
+					}
+					
+				$.post(url, info, function(data) {
+					$('.inner_main').html(data.data);
+					$('#choose_material').modal('show');
+					app.material_edit.img_item_click();
+				})
+			});
+			
+			$('.js-btn').off('click').on('click', function() {
+				var $this = $('.img_item_bd.selected'),
+					url = $this.find('.pic').attr('data-src'),
+					src = $this.find('.pic').attr('src');
+				if ($this.length != 0) {
+					$('input[name="cover_url"]').val(url);
+					$('.show_cover').remove();
+					var html = '<div class="fileupload-preview fileupload-exists thumbnail m_r10 show_cover" style="width: 50px; height: 50px; line-height: 50px;"><img src="'+ src +'"></div>';
+					$('.choose_material').before(html);
+				}
+				$('#choose_material').modal('hide');
+			});
+		},
+		
+		img_item_click: function() {
+			$('.img_item').off('click').on('click', function() {
+				var $this = $(this),
+					child = $this.children('.img_item_bd');
+
+				if (child.hasClass('selected')) {
+					child.removeClass('selected');
+					return false;
+				}
+				child.addClass('selected');
+				$this.siblings('li').children('.img_item_bd').removeClass('selected');
+			});
+		}
 	};
 })(ecjia.platform, jQuery);
 

@@ -519,3 +519,110 @@
 	height: 101px;
 }
 /*===========================ECJIAUI END===========================*/
+
+.inner_main {
+	position: relative;
+	height: 350px;
+	overflow-x: hidden;
+	padding: 1.5rem;
+}
+
+.inner_main ul, .inner_main li {
+	list-style: none;
+}
+
+.inner_main ul {
+	-webkit-padding-start: 0;
+	margin-right: -20px;
+}
+
+.inner_main li {
+	float: left;
+	text-align: center;
+	position: relative;
+	margin-right: 20px;
+	margin-bottom: 10px;
+}
+
+.inner_main li:nth-child(5n) {
+	margin-right: 0;
+}
+
+.inner_main ul .pic_box {
+	height: 117px;
+	position: relative;
+	overflow: hidden;
+}
+
+.inner_main ul .pic {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	-ms-transform: translate(-50%,-50%);
+	-webkit-transform: translate(-50%,-50%);
+	-o-transform: translate(-50%,-50%);
+	-moz-transform: translate(-50%,-50%);
+	display: block;
+	border-bottom: 1px solid #e7e7eb;
+	height: 117px;
+}
+
+.inner_main ul .img_item_bd {
+	margin: 0;
+	border: 1px solid #e7e7eb;
+	width: 135px;
+	display: inline-block;
+	text-align: left;
+	cursor: pointer;
+}
+
+.inner_main ul .lbl_content {
+	display: block;
+	padding: 0 9px;
+	height: 32px;
+	line-height: 32px;
+	text-align: left;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.img_item_bd .selected_mask {
+    display: none;
+}
+
+.img_item_bd.selected .selected_mask {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.img_item_bd.selected .selected_mask_inner {
+    height: 118px;
+    -moz-opacity: .6;
+    -khtml-opacity: .6;
+    opacity: .6;
+    background-color: #000;
+    filter: alpha(opacity=60);
+}
+
+.img_item_bd.selected .selected_mask_icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: transparent url(../images/icon_card_selected3a7b38.png) no-repeat 0 0;
+    width: 137px;
+    height: 117px;
+    vertical-align: middle;
+    display: inline-block;
+    background-position: 50% 50%;
+}
+
+.empty_material {
+	line-height: 290px;
+    text-align: center;
+}
