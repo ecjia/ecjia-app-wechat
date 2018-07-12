@@ -103,55 +103,36 @@ class platform_material extends ecjia_platform
 
         if ($type == 'news') {
             $action_link = array('text' => RC_Lang::get('wechat::wechat.add_images'), 'href' => RC_Uri::url('wechat/platform_material/add'));
-            ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-                'id' => 'overview',
-                'title' => RC_Lang::get('wechat::wechat.overview'),
-                'content' =>
-                '<p>' . RC_Lang::get('wechat::wechat.welcome_material_manage') . '</p>',
-            ));
 
             ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-                '<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
-                '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E5.9B.BE.E6.96.87.E7.AE.A1.E7.90.86" target="_blank">' . RC_Lang::get('wechat::wechat.material_manage_help') . '</a>') . '</p>'
+                '<p>图文素材：分为单图文、多图文素材。支持图片，语音，视频，缩略图素材。</p>' .
+                '<p>单图文素材添加好之后，即可将多条单图文素材组合成为一条多图文素材。</p>' .
+                '<p>★ 注意事项：单图文素材如果经过修改，则原先添加好的多图文素材需要重新组合。</p>'
             );
         } elseif ($type == 'image') {
             $form_action = RC_Uri::url('wechat/platform_material/picture_insert');
-            ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-                'id' => 'overview',
-                'title' => RC_Lang::get('wechat::wechat.overview'),
-                'content' =>
-                '<p>' . RC_Lang::get('wechat::wechat.welcome_images_manage') . '</p>',
-            ));
 
             ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-                '<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
-                '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E5.9B.BE.E7.89.87.E7.AE.A1.E7.90.86" target="_blank">' . RC_Lang::get('wechat::wechat.images_manage_help') . '</a>') . '</p>'
+                '<p>图片（image）素材大小: 2M，支持PNG\JPEG\JPG\GIF格式。</p>'
             );
         } elseif ($type == 'voice') {
             $form_action = RC_Uri::url('wechat/platform_material/voice_insert');
-            ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-                'id' => 'overview',
-                'title' => RC_Lang::get('wechat::wechat.overview'),
-                'content' =>
-                '<p>' . RC_Lang::get('wechat::wechat.welcome_voice_manage') . '</p>',
-            ));
 
             ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-                '<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
-                '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E8.AF.AD.E9.9F.B3.E7.AE.A1.E7.90.86" target="_blank">' . RC_Lang::get('wechat::wechat.voice_manage_help') . '</a>') . '</p>'
+                '<p>语音（voice）素材大小：2M，播放长度不超过60s，支持AMR\MP3格式。</p>'
             );
         } elseif ($type == 'video') {
             $action_link = array('text' => RC_Lang::get('wechat::wechat.add_video'), 'href' => RC_Uri::url('wechat/platform_material/video_add'));
-            ecjia_platform_screen::get_current_screen()->add_help_tab(array(
-                'id' => 'overview',
-                'title' => RC_Lang::get('wechat::wechat.overview'),
-                'content' =>
-                '<p>' . RC_Lang::get('wechat::wechat.welcome_video_manage') . '</p>',
-            ));
 
             ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-                '<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
-                '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E8.A7.86.E9.A2.91.E7.AE.A1.E7.90.86" target="_blank">' . RC_Lang::get('wechat::wechat.video_manage_help') . '</a>') . '</p>'
+                '<p>视频（video）素材大小：10MB，支持MP4格式。</p>' .
+                '<p>建议直接使用优酷等第三方视频网站的视频地址。优点:不占用服务器资源，支持更大、更多格式的视频素材。</p>'
+            );
+        } elseif ($type == 'thumb') {
+            $action_link = array('text' => RC_Lang::get('wechat::wechat.add_video'), 'href'=> RC_Uri::url('wechat/platform_material/thumb_add'));
+
+            ecjia_screen::get_current_screen()->set_help_sidebar(
+                '<p>缩略图（thumb）素材大小：64KB，支持JPG格式。</p>'
             );
         }
 
