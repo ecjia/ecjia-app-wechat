@@ -82,10 +82,11 @@
 									<input type="checkbox" data-toggle="selectall" data-children=".checkbox" id="customCheck"/>
 									<label for="customCheck"></label>
 								</th>
-								<th class="w80">{lang key='wechat::wechat.headimg_url'}</th>
+								<th class="w100">{lang key='wechat::wechat.headimg_url'}</th>
 								<th class="w150">{lang key='wechat::wechat.nickname'}</th>
 								<th class="w100">{lang key='wechat::wechat.province'}</th>
-								<th class="w80">{lang key='wechat::wechat.subscribe_time'}</th>
+								<th class="w100">{lang key='wechat::wechat.bind_user'}</th>
+								<th class="w180">{lang key='wechat::wechat.subscribe_time'}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -115,6 +116,7 @@
 									</div>
 								</td>
 								<td>{$val['province']} - {$val['city']}</td>
+								<td>{if $val['user_name']}{$val.user_name}{else}未绑定{/if}</td>
 								<td>{RC_Time::local_date('Y-m-d H:i:s', ($val['subscribe_time']-8*3600))}</td>
 							</tr>
 							<!--  {foreachelse} -->

@@ -248,7 +248,7 @@ class platform_material extends ecjia_platform
         $is_show = !empty($_POST['is_show']) ? intval($_POST['is_show']) : 0;
         $digest = !empty($_POST['digest']) ? $_POST['digest'] : '';
         $link = !empty($_POST['link']) ? trim($_POST['link']) : '';
-        $content = !empty($_POST['content']) ? $_POST['content'] : '';
+        $content = !empty($_POST['content']) ? stripslashes($_POST['content']) : '';
         $sort = !empty($_POST['sort']) ? intval($_POST['sort']) : 0;
 
         if (empty($title)) {
@@ -418,7 +418,7 @@ class platform_material extends ecjia_platform
         $is_show = !empty($_POST['is_show']) ? intval($_POST['is_show']) : 0;
         $digest = !empty($_POST['digest']) ? $_POST['digest'] : '';
         $link = !empty($_POST['link']) ? trim($_POST['link']) : '';
-        $content = !empty($_POST['content']) ? $_POST['content'] : '';
+        $content = !empty($_POST['content']) ? stripslashes($_POST['content']) : '';
         $sort = !empty($_POST['sort']) ? intval($_POST['sort']) : 0;
         $id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
 
