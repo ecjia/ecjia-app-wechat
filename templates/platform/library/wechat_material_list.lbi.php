@@ -14,5 +14,5 @@
 	<!-- {/foreach} -->
 </ul>
 {else}
-	<div class="empty_material">暂无图片素材</div>
+	<div class="empty_material">暂无缩略图</div>
 {/if}

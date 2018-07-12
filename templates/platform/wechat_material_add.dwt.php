@@ -107,7 +107,7 @@
 										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.cover'}</label>
 										<div class="col-lg-9 controls">
 											<div class="fileupload fileupload-exists" data-provides="fileupload">	
-												<a class="btn btn-outline-primary choose_material" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/get_material_array')}&material=1" data-type="image">从图片库选择</a>
+												<a class="btn btn-outline-primary choose_material" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/get_material_array')}&material=1" data-type="thumb">从素材库选择</a>
 												<input type="hidden" name="cover_url" size="35"/>
 											</div>
 											<span class="input-must">*</span>
@@ -204,7 +204,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title">选择图片</h3>
+				<h3 class="modal-title">选择缩略图</h3>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				  <span aria-hidden="true">×</span>
 				</button>
