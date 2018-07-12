@@ -150,12 +150,13 @@ class platform_subscribe extends ecjia_platform
 
             $list = RC_DB::table('wechat_user as u')
                 ->leftJoin('users as us', RC_DB::raw('us.user_id'), '=', RC_DB::raw('u.ect_uid'))
+                ->select(RC_DB::raw('u.*'), RC_DB::raw('us.user_name'))
                 ->whereRaw($where)
                 ->orderBy(RC_DB::raw('u.subscribe_time'), 'desc')
                 ->take(10)
                 ->skip($page->start_id - 1)
                 ->get();
-
+            
             if (!empty($list)) {
                 foreach ($list as $k => $v) {
                     //假如不是黑名单
