@@ -361,6 +361,7 @@ class platform_material extends ecjia_platform
             '<p><strong>' . RC_Lang::get('wechat::wechat.more_info') . '</strong></p>' .
             '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:素材管理#.E7.BC.96.E8.BE.91.E5.9B.BE.E6.96.87" target="_blank">' . RC_Lang::get('wechat::wechat.edit_material_help') . '</a>') . '</p>'
         );
+        ecjia_platform_screen::get_current_screen()->set_sidebar_display(false);
 
         $wechat_id = $this->platformAccount->getAccountID();
 
