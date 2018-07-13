@@ -136,7 +136,13 @@ class platform_material extends ecjia_platform
             );
         }
 
-        $this->assign('ur_here', RC_Lang::get('wechat::wechat.material_manage'));
+        if ($material) {
+            $ur_here = '永久素材管理';
+        } else {
+            $ur_here = '临时素材管理';
+        }
+        
+        $this->assign('ur_here', $ur_here);
         $this->assign('action_link', $action_link);
         $this->assign('form_action', $form_action);
 

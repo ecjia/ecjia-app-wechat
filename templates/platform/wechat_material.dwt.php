@@ -36,16 +36,7 @@
 			<div class="card-header">
                 <h4 class="card-title">{$ur_here}</h4>
             </div>
-            <div class="card-body">
-            	<ul class="nav nav-tabs">
-					<li class="nav-item">
-						<a class="nav-link data-pjax {if $smarty.get.material eq 1}active{/if}" href="{url path='wechat/platform_material/init' args='type=news&material=1'}">{lang key='wechat::wechat.forever_material'}</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link data-pjax {if !$smarty.get.material}active{/if}" href="{url path='wechat/platform_material/init' args='type=image'}">{lang key='wechat::wechat.provisional_material'}</a>
-					</li>
-				</ul>
-			</div>
+
 			<div class="card-body">
 				<ul class="nav nav-pills float-left">
 					<!-- {if $smarty.get.material eq 1} -->
