@@ -806,7 +806,7 @@ class platform_material extends ecjia_platform
 
         $upload = RC_Upload::uploader('file', array('save_path' => 'data/material/thumb', 'auto_sub_dirs' => false));
         $upload->allowed_type(['jpg']);
-        $upload->allowed_mime(['image/jpg']);
+        $upload->allowed_mime(['image/jpeg']);
         $upload->allowed_size('65536');
         if (!$upload->check_upload_file($_FILES['img_url'])) {
             return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
