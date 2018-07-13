@@ -103,7 +103,6 @@ class platform_message extends ecjia_platform
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
 
-        $this->assign_lang();
         $this->display('wechat_message_list.dwt');
     }
 

@@ -118,7 +118,6 @@ class platform_menus extends ecjia_platform
         $this->assign('del_url', RC_Uri::url('wechat/platform_menus/remove'));
         $this->assign('check_url', RC_Uri::url('wechat/platform_menus/check'));
 
-        $this->assign_lang();
         $this->display('wechat_menus_list.dwt');
     }
 
@@ -167,7 +166,6 @@ class platform_menus extends ecjia_platform
             $this->assign('form_action', RC_Uri::url('wechat/platform_menus/insert'));
         }
 
-        $this->assign_lang();
         $this->display('wechat_menus_edit.dwt');
     }
 
@@ -309,7 +307,6 @@ class platform_menus extends ecjia_platform
 
         $this->assign('form_action', RC_Uri::url('wechat/platform_menus/update'));
 
-        $this->assign_lang();
         $this->display('wechat_menus_edit.dwt');
     }
 

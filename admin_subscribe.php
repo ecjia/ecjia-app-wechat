@@ -196,7 +196,6 @@ class admin_subscribe extends ecjia_admin {
 			$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$types)));
 		}
 	
-		$this->assign_lang();
 		$this->display('wechat_subscribe_list.dwt');
 	}
 	
@@ -590,7 +589,6 @@ class admin_subscribe extends ecjia_admin {
 		 		$this->assign('disabled', '1');
 		 	}
 		}
-		$this->assign_lang();
 		$this->display('wechat_subscribe_message.dwt');
 	}
 	

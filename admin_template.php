@@ -108,7 +108,6 @@ class admin_template extends ecjia_admin {
 		$this->assign('form_action', RC_Uri::url('wechat/admin_template/insert'));
 		$this->assign('action', 'insert');
 		
-		$this->assign_lang();
 		$this->display('message_template_info.dwt');
 	}
 	

@@ -120,7 +120,6 @@ class admin_menus extends ecjia_admin {
 			$this->assign('listdb', $listdb);
 		}
 		
-		$this->assign_lang();
 		$this->display('wechat_menus_list.dwt');
 	}
 	
@@ -169,7 +168,6 @@ class admin_menus extends ecjia_admin {
 			$this->assign('form_action', RC_Uri::url('wechat/admin_menus/insert'));
 		}
 		
-		$this->assign_lang();
 		$this->display('wechat_menus_edit.dwt');
 	}
 	
@@ -290,7 +288,6 @@ class admin_menus extends ecjia_admin {
 		
 		$this->assign('form_action', RC_Uri::url('wechat/admin_menus/update'));
 	
-		$this->assign_lang();
 		$this->display('wechat_menus_edit.dwt');
 	}
 	

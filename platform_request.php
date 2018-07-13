@@ -131,7 +131,6 @@ class platform_request extends ecjia_platform
             $this->assign('list', $limits);
         }
 
-        $this->assign_lang();
         $this->display('wechat_request_list.dwt');
     }
 

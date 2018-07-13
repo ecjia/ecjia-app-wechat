@@ -108,7 +108,6 @@ class admin_share extends ecjia_admin {
 			$this->assign('listdb', $listdb);
 		}
 		
-		$this->assign_lang();
 		$this->display('wechat_share_list.dwt');
 	}
 	
@@ -135,7 +134,6 @@ class admin_share extends ecjia_admin {
 			$this->assign('form_action', RC_Uri::url('wechat/admin_share/insert'));
 		}
 		
-		$this->assign_lang();
 		$this->display('wechat_share_edit.dwt');
 	}
 	

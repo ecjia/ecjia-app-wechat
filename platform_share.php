@@ -104,7 +104,6 @@ class platform_share extends ecjia_platform
             $this->assign('listdb', $listdb);
         }
 
-        $this->assign_lang();
         $this->display('wechat_share_list.dwt');
     }
 
