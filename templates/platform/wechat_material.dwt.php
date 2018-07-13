@@ -21,7 +21,6 @@
 {/if}
 
 <!-- {if ecjia_screen::get_current_screen()->get_help_sidebar()} -->
-{if $smarty.get.type}
 <div class="alert alert-light alert-dismissible mb-2" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">×</span>
@@ -29,7 +28,6 @@
 	<h4 class="alert-heading mb-2">操作提示</h4>
 	<!-- {ecjia_screen::get_current_screen()->get_help_sidebar()} -->
 </div>
-{/if}
 <!-- {/if} -->
 
 <div class="row">

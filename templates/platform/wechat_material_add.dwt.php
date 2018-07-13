@@ -20,20 +20,15 @@
 </div>
 {/if}
 
+<!-- {if ecjia_screen::get_current_screen()->get_help_sidebar()} -->
 <div class="alert alert-light alert-dismissible mb-2" role="alert">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">×</span>
 	</button>
 	<h4 class="alert-heading mb-2">操作提示</h4>
-	<!-- {if $action neq 'video_add'} -->
-	<p>图文素材：分为单图文、多图文素材。支持图片，语音，视频素材。</p>
-	<p>单图文素材添加好之后，即可将多条单图文素材组合成为一条多图文素材。</p>
-	<p>★ 注意事项：单图文素材如果经过修改，则原先添加好的多图文素材需要重新组合</p>
-	<!-- {else if $action eq 'video_add'} -->
-	<p>视频素材大小: 建议2MB以下，格式：mp4</p>
-	<p>建议直接使用优酷等第三方视频网站的视频地址。优点:不占用服务器资源，支持更大、更多格式的视频素材。</p>
-	<!-- {/if} -->
+    <!-- {ecjia_screen::get_current_screen()->get_help_sidebar()} -->
 </div>
+<!-- {/if} -->
 
 <div class="row edit-page">
     <div class="col-12">
