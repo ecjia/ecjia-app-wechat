@@ -146,6 +146,7 @@ class platform_material extends ecjia_platform
         $this->assign('wechat_type', $wechat_type);
 
         $lists = $this->get_all_material();
+//        dd($lists);
         $this->assign('lists', $lists);
 
         $this->display('wechat_material.dwt');
@@ -1634,17 +1635,18 @@ class platform_material extends ecjia_platform
 
             if (empty($item->file)) {
 
+                $item->file = RC_Uri::admin_url('statics/images/nopic.png');
+
+            } else {
+
                 if ($item->type == 'voice') {
                     $item->file = RC_App::apps_url('statics/images/voice.png', __FILE__);
                 } elseif ($item->type == 'video') {
                     $item->file = RC_App::apps_url('statics/images/video.png', __FILE__);
                 } else {
-                    $item->file = RC_Uri::admin_url('statics/images/nopic.png');
+                    $item->file = RC_Upload::upload_url($item->file);
                 }
 
-            } else {
-
-                $item->file = RC_Upload::upload_url($item->file);
             }
 
             $content = !empty($item->digest) ? strip_tags(html_out($item->digest)) : strip_tags(html_out($item->content));
@@ -1668,19 +1670,13 @@ class platform_material extends ecjia_platform
 
                         if (empty($item->file)) {
 
-                            if ($item->type == 'voice') {
-                                $item->file = RC_App::apps_url('statics/images/voice.png', __FILE__);
-                            } elseif ($item->type == 'video') {
-                                $item->file = RC_App::apps_url('statics/images/video.png', __FILE__);
-                            } else {
-                                $item->file = RC_Uri::admin_url('statics/images/nopic.png');
-                            }
+                            $item->file = RC_Uri::admin_url('statics/images/nopic.png');
 
                         } else {
 
                             $item->file = RC_Upload::upload_url($item->file);
-                        }
 
+                        }
 
                         return [
                             'id'        => $item->id,
