@@ -1020,7 +1020,6 @@ class platform_subscribe extends ecjia_platform
         $this->display('wechat_unsubscribe_list.dwt');
     }
 
-
     //获取用户标签
     private function get_user_tags()
     {
