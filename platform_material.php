@@ -146,7 +146,6 @@ class platform_material extends ecjia_platform
         $this->assign('wechat_type', $wechat_type);
 
         $lists = $this->get_all_material();
-        dd($lists);
         $this->assign('lists', $lists);
 
         $this->display('wechat_material.dwt');
@@ -1695,7 +1694,7 @@ class platform_material extends ecjia_platform
                     $newItem['articles'] = $newSubNews->all();
 
                 }
-                
+
             }
 
             return $newItem;
