@@ -1759,7 +1759,7 @@ class platform_material extends ecjia_platform
 //        }
 
 
-        $arr = array('item' => $newData, 'desc' => $page->page_desc(), 'page' => $page->show(5), 'filter' => $filter);
+        $arr = array('item' => $newData->all(), 'desc' => $page->page_desc(), 'page' => $page->show(5), 'filter' => $filter);
         return $arr;
     }
 
