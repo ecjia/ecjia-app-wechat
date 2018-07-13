@@ -6,6 +6,23 @@ use Royalcms\Component\Database\Eloquent\Model;
 
 /**
  * Class WechatMedia
+ * @property wechat_id
+ * @property title
+ * @property command
+ * @property author
+ * @property is_show
+ * @property digest
+ * @property content
+ * @property link
+ * @property file
+ * @property size
+ * @property file_name
+ * @property thumb
+ * @property add_time
+ * @property edit_time
+ * @property type
+ * @property article_id
+ * @property sort
  */
 class WechatMediaModel extends Model
 {
@@ -35,6 +52,13 @@ class WechatMediaModel extends Model
 
     protected $guarded = [];
 
-    
+
+    /**
+     * 获取素材的子图文。
+     */
+    public function subNews()
+    {
+        return $this->hasMany('Ecjia\App\Wechat\Models\WechatMediaModel', 'parent_id', 'id');
+    }
 
 }
