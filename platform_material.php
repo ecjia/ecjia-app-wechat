@@ -129,7 +129,7 @@ class platform_material extends ecjia_platform
                 '<p>建议直接使用优酷等第三方视频网站的视频地址。优点:不占用服务器资源，支持更大、更多格式的视频素材。</p>'
             );
         } elseif ($type == 'thumb') {
-            $action_link = array('text' => RC_Lang::get('wechat::wechat.add_video'), 'href'=> RC_Uri::url('wechat/platform_material/thumb_add'));
+            $form_action = RC_Uri::url('wechat/platform_material/thumb_insert');
 
             ecjia_screen::get_current_screen()->set_help_sidebar(
                 '<p>缩略图（thumb）素材大小：64KB，支持JPG格式。</p>'
@@ -140,21 +140,14 @@ class platform_material extends ecjia_platform
         $this->assign('action_link', $action_link);
         $this->assign('form_action', $form_action);
 
-        $wechat_id = $this->platformAccount->getAccountID();
+        $this->assign('warn', 'warn');
 
-        if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.operate_before_pub'));
-        } else {
-            $this->assign('warn', 'warn');
+        $wechat_type = $this->platformAccount->getType();
+        $this->assign('wechat_type', $wechat_type);
 
-            $wechat_type = $this->platformAccount->getType();
-            $this->assign('wechat_type', $wechat_type);
+        $lists = $this->get_all_material();
+        $this->assign('lists', $lists);
 
-            $lists = $this->get_all_material();
-            $this->assign('lists', $lists);
-        }
-
-        $this->assign_lang();
         $this->display('wechat_material.dwt');
     }
 
