@@ -9,7 +9,7 @@
                         <div class="ecj-thumbnail">
                             <div class="centered">
                                 <a target="__blank" href="{$val.file}" title="{$val.title}">
-                                    <img data-original="{$val.file}" src="{$val.file}" alt="" />
+                                    <img data-original="{$val.thumb}" src="{$val.thumb}" alt="" />
                                 </a>
                             </div>
                         </div>

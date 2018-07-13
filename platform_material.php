@@ -1640,9 +1640,9 @@ class platform_material extends ecjia_platform
             } else {
 
                 if ($item->type == 'voice') {
-                    $item->file = RC_App::apps_url('statics/images/voice.png', __FILE__);
+                    $item->thumb = RC_App::apps_url('statics/images/voice.png', __FILE__);
                 } elseif ($item->type == 'video') {
-                    $item->file = RC_App::apps_url('statics/images/video.png', __FILE__);
+                    $item->thumb = RC_App::apps_url('statics/images/video.png', __FILE__);
                 } else {
                     $item->file = RC_Upload::upload_url($item->file);
                 }
