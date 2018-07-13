@@ -1581,110 +1581,185 @@ class platform_material extends ecjia_platform
      */
     private function get_all_material()
     {
+        $material = !empty($_GET['material']) ? 'material' : null;
 
         $wechat_id = $this->platformAccount->getAccountID();
 
-        $filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
-        $type = $filter['type'];
-
-        $db_wechat_media = RC_DB::table('wechat_media')
-            ->where('wechat_id', $wechat_id);
-
-        $where = '';
-        if ($type == 'image') {
-            $db_wechat_media
-                ->where('file', '!=', '')
-                ->where(function ($query) {
-                    $query->where('type', 'image')->orWhere('type', 'news')
-                        ->where('thumb', '!=', '');
-                });
-
-        } elseif ($type == 'news') {
-            $db_wechat_media
-                ->where('type', 'news')
-                ->where('media_id', '!=', '')
-                ->where('parent_id', 0);
+        if ($material) {
+            $type = $this->request->query('type', 'news');
         } else {
-            $db_wechat_media->where('type', $type);
+            $type = $this->request->query('type', 'image');
         }
 
-        $material = !empty($_GET['material']) ? 'material' : null;
-        $db_wechat_media->where('is_material', $material);
+        $filter['type'] = $type;
 
-        $data = RC_DB::table('wechat_media')->select(
-            RC_DB::raw("SUM(type='news' and parent_id = 0 and media_id != '') AS news"),
-            RC_DB::raw("SUM(file != '' and (type = 'image' or type = 'news') and thumb != '') AS image"),
-            RC_DB::raw("SUM(type='voice') AS voice"),
-            RC_DB::raw("SUM(type='video') AS video")
-        )
-            ->where('wechat_id', $wechat_id)
+//        $filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
+//        $type = $filter['type'];
+
+        $wechat_media_model = Ecjia\App\Wechat\Models\WechatMediaModel::where('wechat_id', $wechat_id);
+
+
+        if ($type == 'image') {
+            $wechat_media_model->where('type', 'image');
+        } elseif ($type == 'news') {
+            $wechat_media_model->where('type', 'news')->where('parent_id', 0);
+        } else {
+            $wechat_media_model->where('type', $type);
+        }
+
+        $wechat_media_model->where('is_material', $material);
+
+        $sumdata = Ecjia\App\Wechat\Models\WechatMediaModel::select(
+            RC_DB::raw("SUM(type = 'news' and parent_id = 0) AS news"),
+            RC_DB::raw("SUM(type = 'image') AS image"),
+            RC_DB::raw("SUM(type = 'voice') AS voice"),
+            RC_DB::raw("SUM(type = 'video') AS video"),
+            RC_DB::raw("SUM(type = 'thumb') AS thumb")
+        )->where('wechat_id', $wechat_id)
             ->where('is_material', $material)
-            ->get();
-
-        if (!empty($data)) {
-            foreach ($data as $v) {
-                if (empty($v['news']) && empty($v['image']) && empty($v['voice']) && empty($v['video'])) {
-                    $v['news'] = 0;
-                    $v['image'] = 0;
-                    $v['voice'] = 0;
-                    $v['video'] = 0;
-                }
-                $filter['count'] = $v;
-            }
+            ->first();
+        if (!empty($sumdata)) {
+            $filter['count'] = $sumdata->toArray();
         }
 
-        $count = $db_wechat_media->count();
+//        dd($sumdata);
+
+        $count = $sumdata->$type;
         $page = new ecjia_platform_page($count, 12, 5);
-        $data = $db_wechat_media->orderBy('sort', 'asc')->orderBy('id', 'desc')->take(12)->skip($page->start_id - 1)->get();
+        $data = $wechat_media_model->orderBy('sort', 'asc')->orderBy('id', 'desc')->take(12)->skip($page->start_id - 1)->get();
+//        dd($data);
 
-        if (!empty($data)) {
-            foreach ($data as $key => $val) {
-                if (isset($val['add_time'])) {
-                    $data[$key]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $val['add_time']);
-                }
+        $newData = $data->map(function($item) {
+            $item->add_time = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $item->add_time);
 
-                if (empty($val['file']) || $val['type'] == 'voice' || $val['type'] == 'video') {
-                    if (empty($val['file'])) {
-                        $data[$key]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
-                    } elseif ($val['type'] == 'voice') {
-                        $data[$key]['file'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
-                    } elseif ($val['type'] == 'video') {
-                        $data[$key]['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
-                    }
+            if (empty($item->file)) {
+
+                if ($item->type == 'voice') {
+                    $item->file = RC_App::apps_url('statics/images/voice.png', __FILE__);
+                } elseif ($item->type == 'video') {
+                    $item->file = RC_App::apps_url('statics/images/video.png', __FILE__);
                 } else {
-                    $data[$key]['file'] = RC_Upload::upload_url($val['file']);
-                }
-                $content = !empty($val['digest']) ? strip_tags(html_out($val['digest'])) : strip_tags(html_out($val['content']));
-                if (strlen($content) > 100) {
-                    $data[$key]['content'] = msubstr($content, 100);
-                } else {
-                    $data[$key]['content'] = $content;
+                    $item->file = RC_Uri::admin_url('statics/images/nopic.png');
                 }
 
-                if ($type == 'news') {
-                    $datas = RC_DB::table('wechat_media')->where('parent_id', $val['id'])->orderBy('id', 'asc')->get();
-                    if (!empty($datas)) {
-                        foreach ($datas as $k => $v) {
-                            if (!empty($v['file'])) {
-                                $data[$key]['articles'][$k]['file'] = RC_Upload::upload_url($v['file']);
-                            } else {
-                                if (empty($val['file'])) {
-                                    $data[$key]['articles'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
-                                } elseif ($val['type'] == 'voice') {
-                                    $data[$key]['articles'][$k]['file'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
-                                } elseif ($val['type'] == 'video') {
-                                    $data[$key]['articles'][$k]['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
-                                }
-                            }
-                            $data[$key]['articles'][$k]['id'] = $v['id'];
-                            $data[$key]['articles'][$k]['title'] = $v['title'];
-                            $data[$key]['articles'][$k]['file_name'] = $v['file_name'];
-                        }
-                    }
-                }
+            } else {
+
+                $item->file = RC_Upload::upload_url($item->file);
             }
-        }
-        $arr = array('item' => $data, 'desc' => $page->page_desc(), 'page' => $page->show(5), 'filter' => $filter);
+
+            $content = !empty($item->digest) ? strip_tags(html_out($item->digest)) : strip_tags(html_out($item->content));
+
+            if (strlen($content) > 100) {
+                $item->content = msubstr($content, 100);
+            } else {
+                $item->content = $content;
+            }
+
+
+            $newItem = $item->toArray();
+
+
+            if ($item->type == 'news') {
+
+                $subNews = $item->subNews;
+
+                if ( ! $subNews->isEmpty()) {
+                    $newSubNews = $subNews->map(function($item) {
+
+                        if (empty($item->file)) {
+
+                            if ($item->type == 'voice') {
+                                $item->file = RC_App::apps_url('statics/images/voice.png', __FILE__);
+                            } elseif ($item->type == 'video') {
+                                $item->file = RC_App::apps_url('statics/images/video.png', __FILE__);
+                            } else {
+                                $item->file = RC_Uri::admin_url('statics/images/nopic.png');
+                            }
+
+                        } else {
+
+                            $item->file = RC_Upload::upload_url($item->file);
+                        }
+
+
+                        return [
+                            'id'        => $item->id,
+                            'title'     => $item->title,
+                            'file'      => $item->file,
+                            'file_name' => $item->file_name,
+                        ];
+
+                    });
+
+                    $newItem['articles'] = $newSubNews->all();
+
+                }
+
+
+
+
+                return $newItem;
+
+//                if ($item->id == 8)
+//                dd($newSubNews);
+            }
+
+
+        });
+
+//        dd($newData->all());
+
+
+//        if (!empty($data)) {
+//            foreach ($data as $key => $val) {
+//                if (isset($val['add_time'])) {
+//                    $data[$key]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $val['add_time']);
+//                }
+//
+//                if (empty($val['file']) || $val['type'] == 'voice' || $val['type'] == 'video') {
+//                    if (empty($val['file'])) {
+//                        $data[$key]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+//                    } elseif ($val['type'] == 'voice') {
+//                        $data[$key]['file'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
+//                    } elseif ($val['type'] == 'video') {
+//                        $data[$key]['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
+//                    }
+//                } else {
+//                    $data[$key]['file'] = RC_Upload::upload_url($val['file']);
+//                }
+//                $content = !empty($val['digest']) ? strip_tags(html_out($val['digest'])) : strip_tags(html_out($val['content']));
+//                if (strlen($content) > 100) {
+//                    $data[$key]['content'] = msubstr($content, 100);
+//                } else {
+//                    $data[$key]['content'] = $content;
+//                }
+//
+//                if ($type == 'news') {
+//                    $datas = RC_DB::table('wechat_media')->where('parent_id', $val['id'])->orderBy('id', 'asc')->get();
+//                    if (!empty($datas)) {
+//                        foreach ($datas as $k => $v) {
+//                            if (!empty($v['file'])) {
+//                                $data[$key]['articles'][$k]['file'] = RC_Upload::upload_url($v['file']);
+//                            } else {
+//                                if (empty($val['file'])) {
+//                                    $data[$key]['articles'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+//                                } elseif ($val['type'] == 'voice') {
+//                                    $data[$key]['articles'][$k]['file'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
+//                                } elseif ($val['type'] == 'video') {
+//                                    $data[$key]['articles'][$k]['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
+//                                }
+//                            }
+//                            $data[$key]['articles'][$k]['id'] = $v['id'];
+//                            $data[$key]['articles'][$k]['title'] = $v['title'];
+//                            $data[$key]['articles'][$k]['file_name'] = $v['file_name'];
+//                        }
+//                    }
+//                }
+//            }
+//        }
+
+
+        $arr = array('item' => $newData, 'desc' => $page->page_desc(), 'page' => $page->show(5), 'filter' => $filter);
         return $arr;
     }
 
