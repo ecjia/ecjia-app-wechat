@@ -197,7 +197,6 @@ class platform_material extends ecjia_platform
             $this->assign('material', $material);
         }
 
-        $this->assign_lang();
         $this->display('wechat_material_add.dwt');
     }
 
@@ -372,7 +371,6 @@ class platform_material extends ecjia_platform
             }
             $this->assign('article', $article);
         }
-        $this->assign_lang();
         $this->display('wechat_material_edit.dwt');
     }
 

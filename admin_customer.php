@@ -122,7 +122,6 @@ class admin_customer extends ecjia_admin {
 			$this->assign('list', $list);
 		}
 		
-		$this->assign_lang();
 		$this->display('wechat_customer_list.dwt');
 	}
 	
@@ -162,7 +161,6 @@ class admin_customer extends ecjia_admin {
 			$this->assign('form_action', RC_Uri::url('wechat/admin_customer/insert'));
 		}
 
-		$this->assign_lang();
 		$this->display('wechat_customer_edit.dwt');
 	}
 	
@@ -261,7 +259,6 @@ class admin_customer extends ecjia_admin {
 		$this->assign('list', $list);
 		$this->assign('form_action', RC_Uri::url('wechat/admin_customer/update'));
 	
-		$this->assign_lang();
 		$this->display('wechat_customer_edit.dwt');
 	}
 	
@@ -546,7 +543,6 @@ class admin_customer extends ecjia_admin {
 		$this->assign('type', $type);
 		$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$type)));
 		
-		$this->assign_lang();
 		$this->display('wechat_customer_message.dwt');
 	}
 	

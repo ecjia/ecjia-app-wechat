@@ -173,7 +173,6 @@ class admin_material extends ecjia_admin {
 			$this->assign('lists', $lists);
 		}
 		
-		$this->assign_lang();
 		$this->display('wechat_material.dwt');
 	}
 	
@@ -217,7 +216,6 @@ class admin_material extends ecjia_admin {
 			$this->assign('material', $material);
 		}
 		
-		$this->assign_lang();
 		$this->display('wechat_material_add.dwt');
 	}
 	
@@ -384,7 +382,6 @@ class admin_material extends ecjia_admin {
 			}
 			$this->assign('article', $article);
 		}
-		$this->assign_lang();
 		$this->display('wechat_material_edit.dwt');
 	}
 	
@@ -931,7 +928,6 @@ class admin_material extends ecjia_admin {
 			
 			$this->assign('material', $material);
 		}
-		$this->assign_lang();
 		$this->display('wechat_material_add.dwt');
 	}
 	
@@ -1070,7 +1066,6 @@ class admin_material extends ecjia_admin {
 			}
 			$this->assign('article', $article);
 		}
-		$this->assign_lang();
 		$this->display('wechat_material_add.dwt');
 	}
 	

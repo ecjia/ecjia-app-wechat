@@ -105,7 +105,6 @@ class platform_record extends ecjia_platform
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
 
-        $this->assign_lang();
         $this->display('wechat_record_list.dwt');
     }
 
@@ -164,7 +163,6 @@ class platform_record extends ecjia_platform
         if ($time - $last_send_time > 48 * 3600) {
             $this->assign('disabled', '1');
         }
-        $this->assign_lang();
         $this->display('wechat_record_message.dwt');
     }
 

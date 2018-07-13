@@ -99,7 +99,6 @@ class platform_mass_message extends ecjia_platform
             $this->assign('form_action', RC_Uri::url('wechat/platform_mass_message/mass_message'));
         }
 
-        $this->assign_lang();
         $this->display('wechat_mass_message.dwt');
     }
 
@@ -316,7 +315,6 @@ class platform_mass_message extends ecjia_platform
             $list = $this->get_mass_history_list();
             $this->assign('list', $list);
         }
-        $this->assign_lang();
         $this->display('wechat_mass_list.dwt');
     }
 

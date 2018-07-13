@@ -81,7 +81,6 @@ class admin_features extends ecjia_admin {
 		$listdb = $this->get_featureslist();
 		$this->assign('listdb', $listdb);
 		
-		$this->assign_lang();
 		$this->display('features_list.dwt');
 	}
 	

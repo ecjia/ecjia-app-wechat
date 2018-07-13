@@ -119,7 +119,6 @@ class platform_customer extends ecjia_platform
             $this->assign('list', $list);
         }
 
-        $this->assign_lang();
         $this->display('wechat_customer_list.dwt');
     }
 
@@ -156,7 +155,6 @@ class platform_customer extends ecjia_platform
             $this->assign('form_action', RC_Uri::url('wechat/platform_customer/insert'));
         }
 
-        $this->assign_lang();
         $this->display('wechat_customer_edit.dwt');
     }
 
@@ -261,7 +259,6 @@ class platform_customer extends ecjia_platform
         $this->assign('list', $list);
         $this->assign('form_action', RC_Uri::url('wechat/platform_customer/update'));
 
-        $this->assign_lang();
         $this->display('wechat_customer_edit.dwt');
     }
 
@@ -550,7 +547,6 @@ class platform_customer extends ecjia_platform
         $this->assign('type', $type);
         $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
 
-        $this->assign_lang();
         $this->display('wechat_customer_message.dwt');
     }
 

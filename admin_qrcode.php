@@ -120,7 +120,6 @@ class admin_qrcode extends ecjia_admin {
 			$this->assign('search_action', RC_Uri::url('wechat/admin_qrcode/init'));
 		}
 
-		$this->assign_lang();
 		$this->display('wechat_qrcode_list.dwt');
 	}
 	
@@ -160,7 +159,6 @@ class admin_qrcode extends ecjia_admin {
 			$this->assign('form_action', RC_Uri::url('wechat/admin_qrcode/insert'));
 		}
 		
-		$this->assign_lang();
 		$this->display('wechat_qrcode_edit.dwt');
 	}
 	
