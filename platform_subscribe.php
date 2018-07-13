@@ -968,9 +968,9 @@ class platform_subscribe extends ecjia_platform
         $this->admin_priv('wechat_subscribe_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('取消关注列表'));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('取消关注'));
 
-        $this->assign('ur_here', '取消关注列表');
+        $this->assign('ur_here', '取消关注');
         $this->assign('form_action', RC_Uri::url('wechat/platform_subscribe/cancel_list'));
 
         $wechat_id = $this->platformAccount->getAccountID();
