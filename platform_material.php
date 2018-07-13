@@ -736,13 +736,14 @@ class platform_material extends ecjia_platform
         $model = Ecjia\App\Wechat\Models\WechatMediaModel::where('wechat_id', $wechat_id)->where('id', $id)->where('type', 'image')->first();
         try {
 
-            $uuid = $this->platformAccount->getUUID();
-            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-
             if (! empty($model)) {
 
                 if ($model->is_material == 'material' && ($model->media_id || $model->thumb)) {
-                    $rs = $wechat->delete($model->media_id);
+
+                    $uuid = $this->platformAccount->getUUID();
+                    $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+
+                    $rs = $wechat->material->delete($model->media_id);
 
                     //删除本地图片
                     $disk = RC_Storage::disk();
@@ -759,7 +760,11 @@ class platform_material extends ecjia_platform
 
             return $this->showmessage('素材ID未找到', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 
-        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+        }
+        catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        catch (\Error $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
