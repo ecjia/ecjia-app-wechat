@@ -619,8 +619,7 @@ class platform_customer extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            die();
+            return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $uuid = $this->platformAccount->getUUID();
@@ -630,8 +629,7 @@ class platform_customer extends ecjia_platform
         try {
             $list = $wechat->getKflist();
             if (is_ecjia_error($list)) {
-                $this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                die();
+                return $this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
