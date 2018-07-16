@@ -397,7 +397,11 @@ class platform_record extends ecjia_platform
         if ($info['subscribe_time']) {
             $info['subscribe_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['subscribe_time'] - 8 * 3600);
             $tag_list = RC_DB::table('wechat_user_tag')->where('userid', $info['uid'])->lists('tagid');
-            $name_list = RC_DB::table('wechat_tag')->whereIn('tag_id', $tag_list)->where('wechat_id', $wechat_id)->orderBy('tag_id', 'desc')->lists('name');
+            $name_list = [];
+            $db_wechat_tag = RC_DB::table('wechat_tag');
+            if (!empty($tag_list)) {
+            	$name_list = $db_wechat_tag->whereIn('tag_id', $tag_list)->where('wechat_id', $wechat_id)->orderBy('tag_id', 'desc')->lists('name');
+            }
             if (!empty($name_list)) {
                 $info['tag_name'] = implode('，', $name_list);
             } else {
