@@ -91,10 +91,13 @@ class platform_material extends ecjia_platform
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
 
         $nav_here = RC_Lang::get('wechat::wechat.forever_material');
-        $material = intval($_GET['material']);
+
+        $material = $this->request->input('material') ? 1 : 0;
+
         if ($material != 1) {
             $nav_here = RC_Lang::get('wechat::wechat.provisional_material');
         }
+
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here));
 
         $type = isset($_GET['type']) ? $_GET['type'] : '';
@@ -112,15 +115,29 @@ class platform_material extends ecjia_platform
         } elseif ($type == 'image') {
             $form_action = RC_Uri::url('wechat/platform_material/picture_insert');
 
-            ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-                '<p>图片（image）素材大小: 2M，支持PNG\JPEG\JPG\GIF格式。</p>'
-            );
+            if ($material) {
+                ecjia_platform_screen::get_current_screen()->set_help_sidebar(
+                    '<p>图片（image）素材大小: 2M，支持BMP/PNG/JPEG/JPG/GIF格式。</p>'
+                );
+            } else {
+                ecjia_platform_screen::get_current_screen()->set_help_sidebar(
+                    '<p>图片（image）素材大小: 2M，支持PNG/JPEG/JPG/GIF格式。</p>'
+                );
+            }
+
         } elseif ($type == 'voice') {
             $form_action = RC_Uri::url('wechat/platform_material/voice_insert');
 
-            ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-                '<p>语音（voice）素材大小：2M，播放长度不超过60s，支持AMR\MP3格式。</p>'
-            );
+            if ($material) {
+                ecjia_platform_screen::get_current_screen()->set_help_sidebar(
+                    '<p>语音（voice）素材大小：2M，播放长度不超过60s，mp3/wma/wav/amr格式。</p>'
+                );
+            } else {
+                ecjia_platform_screen::get_current_screen()->set_help_sidebar(
+                    '<p>语音（voice）素材大小：2M，播放长度不超过60s，支持AMR/MP3格式。</p>'
+                );
+            }
+
         } elseif ($type == 'video') {
             $action_link = array('text' => RC_Lang::get('wechat::wechat.add_video'), 'href' => RC_Uri::url('wechat/platform_material/video_add'));
 
