@@ -31,6 +31,21 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                	{lang key='wechat::wechat.user_manage_synchro'}
+                </h4>
+            </div>
+            <div class="card-body">
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_subscribe/get_usertag")}' data-value="get_usertag">{lang key='wechat::wechat.get_user_tag'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_user_tag_notice'}</span></div><br/>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
 			<div class="card-header">
 				<h4 class="card-title">
                 	{$ur_here}
