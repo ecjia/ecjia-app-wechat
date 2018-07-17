@@ -1544,7 +1544,7 @@ class platform_material extends ecjia_platform
     		->where('file', '!=', '')
     		->where('type', $type);
     	}
-    	$list = $db_wechat_media->select('id', 'file', 'title', 'size', 'add_time', 'type', 'file_name', 'media_url', 'thumb')->get();
+    	$list = $db_wechat_media->select('id', 'file', 'title', 'size', 'add_time', 'type', 'file_name', 'media_url', 'media_id')->get();
     	
     	if (!empty($list)) {
     		foreach ($list as $key => $val) {
@@ -1560,22 +1560,6 @@ class platform_material extends ecjia_platform
     			} else {
     				$list[$key]['file'] = RC_Upload::upload_url($val['file']);
     			}
-//     			if (isset($val['add_time'])) {
-//     				$list[$key]['add_time'] = RC_Time::local_date('Y-m-d H:i:s', $val['add_time']);
-//     			}
-    	
-//     			if (empty($val['title'])) {
-//     				$list[$key]['title'] = '';
-//     			}
-//     			if (!empty($val['size'])) {
-//     				if ($val['size'] > (1024 * 1024)) {
-//     					$list[$key]['size'] = round(($val['size'] / (1024 * 1024)), 1) . 'MB';
-//     				} else {
-//     					$list[$key]['size'] = round(($val['size'] / 1024), 1) . 'KB';
-//     				}
-//     			} else {
-//     				$list[$key]['size'] = '';
-//     			}
     		}
     	}
     	
