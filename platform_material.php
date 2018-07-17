@@ -876,10 +876,12 @@ class platform_material extends ecjia_platform
             //永久素材处理
             if ($material) {
                 $data['is_material'] = 'material';
+                $data['media_id'] = $rs['media_id'];
             }
-
-            $data['media_id'] = $rs['media_id'];
-
+            //临时素材上传获取的是thumb_media_id，特别注意
+            else {
+                $data['media_id'] = $rs['thumb_media_id'];
+            }
 
             $id = RC_DB::table('wechat_media')->insertGetId($data);
 
@@ -888,6 +890,8 @@ class platform_material extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.upload_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/init', array('type' => 'thumb', 'material' => $material))));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        } catch (\Royalcms\Component\Database\QueryException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
@@ -1802,7 +1806,7 @@ class platform_material extends ecjia_platform
      * @param  string $content
      * @return
      */
-    private function uploadMassMessageContentImg ($content = '')
+    private function uploadMassMessageContentImg($content = '')
     {
         $content = html_out($content);
         $pattern = "/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png|\.bmp|\.jpeg]))[\'|\"].*?[\/]?>/";
