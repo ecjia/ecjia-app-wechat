@@ -647,8 +647,8 @@ class admin_response extends ecjia_admin {
 		//获取该条规则的关键词
 		$rule_keywords = $this->wrk_db->where(array('rid' => $id))->get_field('rule_keywords',true);
 		$where = array(
-			'rule_keywords' . db_create_in($rule_keywords),
-			'rid' . db_create_in($id_list),
+			'rule_keywords' . ecjia_db_create_in($rule_keywords),
+			'rid' . ecjia_db_create_in($id_list),
  		);
 		
 		$rule_delete = $this->wr_db->where(array('id' => $id))->delete();
@@ -680,7 +680,7 @@ class admin_response extends ecjia_admin {
 		
 		if ($search_keywords != '') {
 			$rid_list = $this->wrk_db->where(array('rule_keywords' => array('like' => "%".mysql_like_quote($search_keywords)."%")))->get_field('rid',true);
-			$where .= 'and id' . db_create_in($rid_list);
+			$where .= 'and id' . ecjia_db_create_in($rid_list);
 		}
 		$count = $this->wr_db->where($where)->count();
 		$page = new ecjia_page ($count, 10, 5);

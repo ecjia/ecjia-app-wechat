@@ -434,7 +434,7 @@ class platform_customer extends ecjia_platform
                     $kf_account_list = array();
                 }
                 $arr = array_diff($kf_account_list, $kf_list);
-                $db_wechat_customer->where('wechat_id', $wechat_id)->whereRaw('kf_account' . db_create_in($arr));
+                $db_wechat_customer->where('wechat_id', $wechat_id)->whereRaw('kf_account' . ecjia_db_create_in($arr));
             } else {
                 $db_wechat_customer->where('wechat_id', $wechat_id);
             }
@@ -647,7 +647,7 @@ class platform_customer extends ecjia_platform
                     $kf_account_list = array();
                 }
                 $arr = array_diff($kf_account_list, $kf_list);
-                $db_wechat_customer->where('wechat_id', $wechat_id)->whereRaw('kf_account' . db_create_in($arr));
+                $db_wechat_customer->where('wechat_id', $wechat_id)->whereRaw('kf_account' . ecjia_db_create_in($arr));
             } else {
                 $db_wechat_customer->where('wechat_id', $wechat_id);
             }

@@ -146,7 +146,7 @@ class admin_subscribe extends ecjia_admin {
 					if (empty($user_list)) {
 						$user_list = 0;
 					}
-					$where .= ' and u.group_id != 1 and u.uid'.db_create_in($user_list);
+					$where .= ' and u.group_id != 1 and u.uid'.ecjia_db_create_in($user_list);
 				}
 			//黑名单
 			} elseif ($type == 'blacklist') {
@@ -416,7 +416,7 @@ class admin_subscribe extends ecjia_admin {
 			if (!empty($unsubscribe_list)) {
 				$where = array(
 					'wechat_id' => $wechat_id,
-					'openid' . db_create_in($unsubscribe_list)
+					'openid' . ecjia_db_create_in($unsubscribe_list)
 				);
 				$this->wechat_user_db->where($where)->update(array('subscribe' => 0));
 				

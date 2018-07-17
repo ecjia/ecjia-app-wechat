@@ -431,7 +431,7 @@ class admin_customer extends ecjia_admin {
 				$arr = array_diff($kf_account_list, $kf_list);
 				$where = array(
 					'wechat_id' => $wechat_id,
-					'kf_account' . db_create_in($arr)
+					'kf_account' . ecjia_db_create_in($arr)
 				);
 			} else {
 				$where = array('wechat_id' => $wechat_id);
@@ -648,7 +648,7 @@ class admin_customer extends ecjia_admin {
 				$arr = array_diff($kf_account_list, $kf_list);
 				$where = array(
 					'wechat_id' => $wechat_id,
-					'kf_account' . db_create_in($arr)
+					'kf_account' . ecjia_db_create_in($arr)
 				);
 			} else {
 				$where = array('wechat_id' => $wechat_id);

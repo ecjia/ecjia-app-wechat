@@ -135,7 +135,7 @@ class platform_subscribe extends ecjia_platform
                     if (empty($user_list)) {
                         $user_list = 0;
                     }
-                    $where .= ' and u.group_id != 1 and u.uid' . db_create_in($user_list);
+                    $where .= ' and u.group_id != 1 and u.uid' . ecjia_db_create_in($user_list);
                 }
                 //黑名单
             } elseif ($type == 'blacklist') {
@@ -400,12 +400,12 @@ class platform_subscribe extends ecjia_platform
             if (!empty($unsubscribe_list)) {
                 $where = array(
                     'wechat_id' => $wechat_id,
-                    'openid' . db_create_in($unsubscribe_list),
+                    'openid' . ecjia_db_create_in($unsubscribe_list),
                 );
-                RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->whereRaw('openid' . db_create_in($unsubscribe_list))->update(array('subscribe' => 0));
+                RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->whereRaw('openid' . ecjia_db_create_in($unsubscribe_list))->update(array('subscribe' => 0));
 
                 //删除取消关注用户的标签
-                $uid_list = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->whereRaw('openid' . db_create_in($unsubscribe_list))->lists('uid');
+                $uid_list = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->whereRaw('openid' . ecjia_db_create_in($unsubscribe_list))->lists('uid');
                 RC_DB::table('wechat_user_tag')->whereIn('userid', $uid_list)->delete();
             }
         }

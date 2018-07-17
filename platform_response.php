@@ -655,7 +655,7 @@ class platform_response extends ecjia_platform
         $rule_keywords = RC_DB::table('wechat_rule_keywords')->where('rid', $id)->lists('rule_keywords');
 
         RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
-        RC_DB::table('wechat_rule_keywords')->whereRaw('rule_keywords' . db_create_in($rule_keywords))->whereRaw('rid' . db_create_in($id_list))->delete();
+        RC_DB::table('wechat_rule_keywords')->whereRaw('rule_keywords' . ecjia_db_create_in($rule_keywords))->whereRaw('rid' . db_create_in($id_list))->delete();
         
         if (!empty($id_list)) {
 	        foreach ($id_list as $v) {
@@ -682,7 +682,7 @@ class platform_response extends ecjia_platform
 
         if ($search_keywords != '') {
             $rid_list = RC_DB::table('wechat_rule_keywords')->where('rule_keywords', 'like', "%" . mysql_like_quote($search_keywords) . "%")->lists('rid');
-            $db->whereRaw('id' . db_create_in($rid_list));
+            $db->whereRaw('id' . ecjia_db_create_in($rid_list));
         }
         
         $count = $db->count();

@@ -1795,6 +1795,33 @@ class platform_material extends ecjia_platform
         $data = $db_wechat_media->orderBy('id', 'asc')->get();
         return $data;
     }
+
+
+    /**
+     * 群发消息 内容上传图片（不是封面上传）
+     * @param  string $content
+     * @return
+     */
+    private function uploadMassMessageContentImg ($content = '')
+    {
+        $content = html_out($content);
+        $pattern = "/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png|\.bmp|\.jpeg]))[\'|\"].*?[\/]?>/";
+        preg_match_all($pattern, $content, $match);
+        if (count($match[1]) > 0) {
+            foreach ($match[1] as $img) {
+                if (strtolower(substr($img, 0, 4)) != 'http') {
+                    $filename = dirname(ROOT_PATH) . '/' . $img;
+                    $rs = $this->weObj->uploadImg(['media' => realpath_wechat($filename)], 'image');
+                    if (!empty($rs)) {
+                        $replace = $rs['url'];// http://mmbiz.qpic.cn/mmbiz/gLO17UPS6FS2xsypf378iaNhWacZ1G1UplZYWEYfwvuU6Ont96b1roYs CNFwaRrSaKTPCUdBK9DgEHicsKwWCBRQ/0
+                        $content = str_replace($img, $replace, $content);
+                    }
+                }
+            }
+        }
+
+        return $content;
+    }
 }
 
 //end
