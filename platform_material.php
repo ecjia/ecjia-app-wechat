@@ -1167,24 +1167,15 @@ class platform_material extends ecjia_platform
                 $rs = $wechat->material_temporary->uploadVideo(RC_Upload::upload_path($file_path));
             }
 
-            if ($material == 0) {
-                //临时素材
-                $rs = $wechat->uploadFile('video', RC_Upload::upload_path() . $file_path);
-            } elseif ($material == 1) {
-                $description = array('title' => $title, 'introduction' => $digest);
-                //永久素材
-                $rs = $wechat->addMaterialFile('video', RC_Upload::upload_path() . $file_path, $description);
-            }
-
             $data = array(
-                'title' => $title,
-                'digest' => $digest,
-                'is_show' => 0,
-                'file' => $file_path,
+                'title'     => $title,
+                'digest'    => $digest,
+                'is_show'   => 0,
+                'file'      => $file_path,
                 'file_name' => $_FILES['video']['name'],
-                'add_time' => RC_Time::gmtime(),
-                'type' => 'video',
-                'size' => $_FILES['video']['size'],
+                'add_time'  => RC_Time::gmtime(),
+                'type'      => 'video',
+                'size'      => $_FILES['video']['size'],
                 'wechat_id' => $wechat_id,
             );
 
