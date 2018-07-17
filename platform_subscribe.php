@@ -108,10 +108,10 @@ class platform_subscribe extends ecjia_platform
         } else {
             $this->assign('warn', 'warn');
 
-            //微信id、type、关键字
+            //微信id、标签id、关键字
             $where = "u.wechat_id = $wechat_id";
-            $type = isset($_GET['type']) ? $_GET['type'] : 'all';
             $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
+            $tag_id = isset($_GET['tag_id']) ? $_GET['tag_id'] : '';
 
             //用户标签列表
             $tag_arr['all'] = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('subscribe', 1)->where('group_id', '!=', 1)->count();
@@ -125,26 +125,17 @@ class platform_subscribe extends ecjia_platform
             }
 
             //全部用户
-            if ($type == 'all') {
+            if (empty($tag_id)) {
                 $where .= " and u.subscribe = 1 and u.group_id != 1";
-                //标签用户
-            } elseif ($type == 'subscribed') {
-                $tag_id = isset($_GET['tag_id']) ? $_GET['tag_id'] : '';
-                if (!empty($tag_id)) {
-                    $user_list = RC_DB::table('wechat_user_tag')->where('tagid', $tag_id)->lists('userid');
-                    if (empty($user_list)) {
-                        $user_list = 0;
-                    }
-                    $where .= ' and u.group_id != 1 and u.uid' . ecjia_db_create_in($user_list);
+            //标签用户
+            } else {
+                $user_list = RC_DB::table('wechat_user_tag')->where('tagid', $tag_id)->lists('userid');
+                if (empty($user_list)) {
+                    $user_list = 0;
                 }
-                //黑名单
-            } elseif ($type == 'blacklist') {
-                $where .= ' and u.group_id = 1';
-                //取消关注
-            } elseif ($type == 'unsubscribe') {
-                $where .= " and u.subscribe = 0 and u.group_id = 0";
+                $where .= ' and u.group_id != 1 and u.uid' . ecjia_db_create_in($user_list);
             }
-            //用户列表
+
             $total = RC_DB::table('wechat_user as u')->whereRaw($where)->count();
             $page = new ecjia_platform_page($total, 10, 5);
 
