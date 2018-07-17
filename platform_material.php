@@ -889,6 +889,8 @@ class platform_material extends ecjia_platform
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        } catch (\Royalcms\Component\Database\QueryException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -1802,7 +1804,7 @@ class platform_material extends ecjia_platform
      * @param  string $content
      * @return
      */
-    private function uploadMassMessageContentImg ($content = '')
+    private function uploadMassMessageContentImg($content = '')
     {
         $content = html_out($content);
         $pattern = "/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg|\.png|\.bmp|\.jpeg]))[\'|\"].*?[\/]?>/";
