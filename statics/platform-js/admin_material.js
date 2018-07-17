@@ -563,13 +563,10 @@
 			$('.choose_material').off('click').on('click', function() {
 				var $this = $(this);
 					url = $this.attr('data-url'),
-					type = $this.attr('data-type'),
-					material = $this.attr('data-material');
-				
+					type = $this.attr('data-type');
 					var info = {
 						type: type
 					}
-					
 				$.post(url, info, function(data) {
 					$('.inner_main').html(data.data);
 					$('#choose_material').modal('show');
@@ -579,10 +576,10 @@
 			
 			$('.js-btn').off('click').on('click', function() {
 				var $this = $('.img_item_bd.selected'),
-					url = $this.find('.pic').attr('data-src'),
+					media_id = $this.find('.pic').attr('data-media'),
 					src = $this.find('.pic').attr('src');
 				if ($this.length != 0) {
-					$('input[name="thumb_media_id"]').val(url);
+					$('input[name="thumb_media_id"]').val(media_id);
 					$('.show_cover').remove();
 					var html = '<div class="fileupload-preview fileupload-exists thumbnail m_r10 show_cover" style="width: 50px; height: 50px; line-height: 50px;"><img src="'+ src +'"></div>';
 					$('.choose_material').before(html);
