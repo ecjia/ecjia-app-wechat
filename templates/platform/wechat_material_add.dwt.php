@@ -103,7 +103,7 @@
 										<div class="col-lg-9 controls">
 											<div class="fileupload fileupload-exists" data-provides="fileupload">	
 												<a class="btn btn-outline-primary choose_material" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/get_material_array')}&material=1" data-type="thumb">从素材库选择</a>
-												<input type="hidden" name="cover_url" size="35"/>
+												<input type="hidden" name="thumb_media_id" size="35"/>
 											</div>
 											<span class="input-must">*</span>
 								

@@ -582,7 +582,7 @@
 					url = $this.find('.pic').attr('data-src'),
 					src = $this.find('.pic').attr('src');
 				if ($this.length != 0) {
-					$('input[name="cover_url"]').val(url);
+					$('input[name="thumb_media_id"]').val(url);
 					$('.show_cover').remove();
 					var html = '<div class="fileupload-preview fileupload-exists thumbnail m_r10 show_cover" style="width: 50px; height: 50px; line-height: 50px;"><img src="'+ src +'"></div>';
 					$('.choose_material').before(html);

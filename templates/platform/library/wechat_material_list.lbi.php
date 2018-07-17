@@ -3,7 +3,7 @@
 	<!-- {foreach from=$list item=val} -->
 	<li class="img_item">
 		<label class="img_item_bd">
-			<div class="pic_box"><img class="pic" src="{$val.file}" data-src="{$val.media_url}"/></div>
+			<div class="pic_box"><img class="pic" src="{$val.file}" data-src="{$val.thumb}"/></div>
 			<span class="lbl_content">{$val.file_name}</span>
 			<div class="selected_mask">
 	            <div class="selected_mask_inner"></div>

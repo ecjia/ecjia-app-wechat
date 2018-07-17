@@ -1535,7 +1535,7 @@ class platform_material extends ecjia_platform
     		->where('file', '!=', '')
     		->where('type', $type);
     	}
-    	$list = $db_wechat_media->select('id', 'file', 'title', 'size', 'add_time', 'type', 'file_name', 'media_url')->get();
+    	$list = $db_wechat_media->select('id', 'file', 'title', 'size', 'add_time', 'type', 'file_name', 'media_url', 'thumb')->get();
     	
     	if (!empty($list)) {
     		foreach ($list as $key => $val) {
