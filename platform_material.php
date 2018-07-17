@@ -876,10 +876,12 @@ class platform_material extends ecjia_platform
             //永久素材处理
             if ($material) {
                 $data['is_material'] = 'material';
+                $data['media_id'] = $rs['media_id'];
             }
-
-            $data['media_id'] = $rs['media_id'];
-
+            //临时素材上传获取的是thumb_media_id，特别注意
+            else {
+                $data['media_id'] = $rs['thumb_media_id'];
+            }
 
             $id = RC_DB::table('wechat_media')->insertGetId($data);
 
