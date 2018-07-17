@@ -61,4 +61,15 @@ class WechatMediaModel extends Model
         return $this->hasMany('Ecjia\App\Wechat\Models\WechatMediaModel', 'parent_id', 'id');
     }
 
+    /**
+     * 限制查询只包括指定缩略图素材ID。
+     *
+     * @return \Royalcms\Component\Database\Eloquent\Builder
+     */
+    public function scopeThumbMediaId($query, $media_id)
+    {
+        return $query->where('type', 'thumb')->where('thumb', $media_id);
+    }
+
+
 }
