@@ -68,7 +68,7 @@ class WechatMediaModel extends Model
      */
     public function scopeThumbMediaId($query, $media_id)
     {
-        return $query->where('type', 'thumb')->where('thumb', $media_id);
+        return $query->where('type', 'thumb')->where('media_id', $media_id);
     }
 
 
