@@ -24,7 +24,7 @@
                 <!-- {/foreach} -->
                 <p>
                     <a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_imgtext_cover'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
-                    <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}&material=1"}'><i class="ft-edit-2"></i></a>
+                    <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
                 </p>
             </li>
             <!-- {else} -->
@@ -40,9 +40,9 @@
                 <p>
                     <a class="ajaxremove" data-imgid="{$articles.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_images_material'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
                     <!-- {if $articles.article_id} -->
-                    <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}&material=1"}'><i class="ft-edit-2"></i></a>
+                    <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
                     <!-- {else} -->
-                    <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}&material=1"}'><i class="ft-edit-2"></i></a>
+                    <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
                     <!-- {/if} -->
                 </p>
             </li>

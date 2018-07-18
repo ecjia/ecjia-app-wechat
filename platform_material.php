@@ -330,7 +330,7 @@ class platform_material extends ecjia_platform
         ecjia_platform_screen::get_current_screen()->set_sidebar_display(false);
 
         $this->assign('ur_here', '图文编辑');
-        $this->assign('form_action', RC_Uri::url('wechat/platform_material/update', array('id' => $_GET['id'], 'material' => $material)));
+        $this->assign('form_action', RC_Uri::url('wechat/platform_material/update'));
         $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
         $this->assign('action', 'article_add');
         $this->assign('warn', 'warn');
@@ -357,6 +357,7 @@ class platform_material extends ecjia_platform
     {
         $this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 
+//<<<<<<< HEAD
         $id         = !empty($_GET['id']) ? $_GET['id'] : 0;
         $title      = !empty($_POST['title']) ? trim($_POST['title']) : '';
         $author     = !empty($_POST['author']) ? trim($_POST['author']) : '';
@@ -373,6 +374,29 @@ class platform_material extends ecjia_platform
         if (empty($id)) {
             return $this->showmessage('图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+//=======
+//        $wechat_id = $this->platformAccount->getAccountID();
+//        $uuid = $this->platformAccount->getUUID();
+//       	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+//
+//        $id = !empty($_GET['id']) ? $_GET['id'] : 0;
+//        $media_info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
+//        if (empty($media_info)) {
+//        	return $this->showmessage('该素材不存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+//        }
+//
+//        if (is_ecjia_error($wechat_id)) {
+//            return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed_operate'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+//        }
+//        $title = !empty($_POST['title']) ? trim($_POST['title']) : '';
+//        $author = !empty($_POST['author']) ? trim($_POST['author']) : '';
+//        $is_show = !empty($_POST['is_show']) ? intval($_POST['is_show']) : 0;
+//        $digest = !empty($_POST['digest']) ? $_POST['digest'] : '';
+//        $link = !empty($_POST['link']) ? trim($_POST['link']) : '';
+//        $content = !empty($_POST['content']) ? stripslashes($_POST['content']) : '';
+//        $sort = !empty($_POST['sort']) ? intval($_POST['sort']) : 0;
+//        $index = !empty($_POST['index']) ? intval($_POST['index']) : 0;
+//>>>>>>> 957c16953c8b8e6d593761aabf18461554413c6c
 
         if (empty($title)) {
         	return $this->showmessage(RC_Lang::get('wechat::wechat.enter_images_title'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -390,7 +414,13 @@ class platform_material extends ecjia_platform
 //        $uuid = $this->platformAccount->getUUID();
 //        $wechat = wechat_method::wechat_instance($uuid);
         
+        $model = WechatMediaModel::where('wechat_id', $wechat_id)->thumbMediaId($thumb_media_id)->first();
+        if (empty($model)) {
+        	return $this->showmessage('图文素材的封面图片不是一个有效的素材，请更换一个封面素材。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        
         try {
+//<<<<<<< HEAD
 
             $wechat_id = $this->platformAccount->getAccountID();
 
@@ -437,6 +467,12 @@ class platform_material extends ecjia_platform
                 $content = $this->uploadMassMessageContentImages($wechat, $content);
 
                 //默认修改数据
+//=======
+//            if (!empty($_POST)) {
+//            	//conent中图片下载并上传至微信素材中
+//            	$content = $this->uploadMassMessageContentImages($wechat, $content);
+//            	
+//>>>>>>> 957c16953c8b8e6d593761aabf18461554413c6c
                 $data = array(
                     'title' 		=> $title,
                     'author' 		=> $author,
@@ -577,6 +613,13 @@ class platform_material extends ecjia_platform
         } catch (\BadMethodCallException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+    }
+    
+    /**
+     * 添加子图文
+     */
+    public function add_child_article() {
+    	
     }
 
     /**

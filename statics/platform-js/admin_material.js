@@ -355,7 +355,6 @@
 		},
 		edit_area_show : function(num) {
 			var tmp = $('.mobile_news_edit').children().eq(num);
-//			tmp.find('input.material_is_show').attr('type', 'checkbox').uniform();
 			tmp.removeClass('hide');
 		},
 		edit_area : function() {
