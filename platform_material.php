@@ -563,7 +563,36 @@ class platform_material extends ecjia_platform
      */
     public function remove_child_article()
     {
-    
+        $this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
+
+        $id  = !empty($_GET['id']) ? $_GET['id'] : 0;
+
+        if (empty($id)) {
+            return $this->showmessage('图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        //查找多图文素材
+        $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('parent_id', 0)->find($id);
+        if (empty($model)) {
+            return $this->showmessage('多图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->find($model->parent_id);
+        if (empty($parent_model)) {
+            return $this->showmessage('父图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        //标记父图文素材等待上传中
+        if ($parent_model->media_url != 'wait_upload_article') {
+            $parent_model->media_url = 'wait_upload_article';
+            $parent_model->save();
+        }
+
+        $model->delete();
+
+        return $this->showmessage(sprintf("移除%s图文素材成功", $model->title), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $id, 'material' => 1))));
     }
 
     /**
