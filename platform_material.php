@@ -365,6 +365,10 @@ class platform_material extends ecjia_platform
         $this->display('wechat_material_edit.dwt');
     }
 
+    /**
+     * 更新单篇图文素材
+     * @return \Royalcms\Component\HttpKernel\Response|string
+     */
     public function update()
     {
         $this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
@@ -384,6 +388,8 @@ class platform_material extends ecjia_platform
         if (empty($id)) {
             return $this->showmessage('图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
+        $wechat_id = $this->platformAccount->getAccountID();
         
         //更新永久图文素材
         $model = WechatMediaModel::where('wechat_id', $wechat_id)->find($id);
@@ -403,10 +409,18 @@ class platform_material extends ecjia_platform
         	return $this->showmessage(RC_Lang::get('wechat::wechat.enter_main_body'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        $wechat_id = $this->platformAccount->getAccountID();
-        
-        $model = WechatMediaModel::where('wechat_id', $wechat_id)->thumbMediaId($thumb_media_id)->first();
-        if (empty($model)) {
+        if ($model->parent_id > 0) {
+            $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->find($model->parent_id);
+            if (empty($parent_model)) {
+                return $this->showmessage('父图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+            $parent_id = $model->parent_id;
+        } else {
+            $parent_id = $id;
+        }
+
+        $thumb_model = WechatMediaModel::where('wechat_id', $wechat_id)->thumbMediaId($thumb_media_id)->first();
+        if (empty($thumb_model)) {
         	return $this->showmessage('图文素材的封面图片不是一个有效的素材，请更换一个封面素材。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         
@@ -425,7 +439,7 @@ class platform_material extends ecjia_platform
         		'sort' 			=> $sort,
         	);
         	
-        	if ($model->thumb != $thumb_media_id) {
+        	if ($thumb_model->thumb != $thumb_media_id) {
         		$data['thumb']      = $thumb_media_id;
         		$data['file']       = $thumb_model->file;
         		$data['size']       = $thumb_model->size;
@@ -544,6 +558,16 @@ class platform_material extends ecjia_platform
         //第二步，删除原有单图文数据
 
         //第三步，提交新多图文数据
+
+    }
+
+    /**
+     * 上传多图文素材
+     */
+    public function upload_multi_articles()
+    {
+
+
 
     }
 
