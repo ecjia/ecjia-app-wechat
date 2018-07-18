@@ -327,7 +327,7 @@ class platform_material extends ecjia_platform
         ecjia_platform_screen::get_current_screen()->set_sidebar_display(false);
 
         $this->assign('ur_here', '图文编辑');
-        $this->assign('form_action', RC_Uri::url('wechat/platform_material/update'));
+        $this->assign('form_action', RC_Uri::url('wechat/platform_material/update', array('id' => intval($_GET['id']))));
         $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => 1))));
         $this->assign('action', 'article_add');
         $this->assign('warn', 'warn');
@@ -347,6 +347,7 @@ class platform_material extends ecjia_platform
             }
         }
         $this->assign('article', $article);
+        $this->assign('parent_id', $article['id']);
         $this->display('wechat_material_edit.dwt');
     }
 

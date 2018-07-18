@@ -145,6 +145,7 @@
 										<div class="form-group row">
 											<label class="col-lg-2 label-control text-right"></label>
 											<div class="col-lg-9 controls">
+												
 												<input type="hidden" name="index" />
 												<input type="submit" value="{lang key='wechat::wechat.update'}" class="btn btn-outline-primary"/>
 											</div>
@@ -161,7 +162,7 @@
 	</div>
 </div>
 <input type="hidden" name="update_url" value="{$form_action}" />
-<input type="hidden" name="add_url" value="{RC_Uri::url('wechat/platform_material/add_child_article')}" />
+<input type="hidden" name="add_url" value="{RC_Uri::url('wechat/platform_material/add_child_article')}&parent_id={$parent_id}" />
 
 <div class="select_mobile_area mobile_news_auxiliary mobile_news_auxiliary_clone hide material_info_select">
 	<div class="span7 news_auxiliary_title title_show">{lang key='wechat::wechat.title'}</div>
