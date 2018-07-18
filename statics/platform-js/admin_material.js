@@ -323,10 +323,10 @@
 					}
 				});
 				
-//				$("#content").children().find('iframe').contents().find('body.view').html('<p><br></p>');
-//				var editor = UE.getEditor('content');
-//				editor.setContent('');
-				$('textarea[name="content"]').html('');
+				$("#content").children().find('iframe').contents().find('body.view').html('<p><br></p>');
+				var editor = UE.getEditor('content');
+				editor.setContent('');
+//				$('textarea[name="content"]').html('');
 			});
 		},
 		clone_obj(options) {
@@ -429,11 +429,11 @@
 					}
 //					$('.material_info').attr('type', 'checkbox').uniform();
 					
-//					$("#content").children().find('iframe').contents().find('body.view').html(data.content.content);
-//					var editor = UE.getEditor('content');
-//					content = editor.setContent(data.content.content);
+					$("#content").children().find('iframe').contents().find('body.view').html(data.content.content);
+					var editor = UE.getEditor('content');
+					content = editor.setContent(data.content.content);
 					
-					$('textarea[name="content"]').html(data.content.content);
+//					$('textarea[name="content"]').html(data.content.content);
 				}, "JSON");
 				
 				app.material_edit.edit_area_show(index);
