@@ -161,8 +161,8 @@
 </div>
 
 <div class="select_mobile_area mobile_news_auxiliary mobile_news_auxiliary_clone hide material_info_select">
-	<div class="col-lg-7 news_auxiliary_title title_show">{lang key='wechat::wechat.title'}</div>
-	<div class="col-lg-4 thumb_image"><div>{lang key='wechat::wechat.thumbnail'}</div><div class="show_image"></div></div>
+	<div class="span7 news_auxiliary_title title_show">{lang key='wechat::wechat.title'}</div>
+	<div class="span4 thumb_image"><div>{lang key='wechat::wechat.thumbnail'}</div><div class="show_image"></div></div>
 	<div class="edit_mask">
 		<a href="javascript:;"><i class="ft-edit-2"></i></a>&nbsp;&nbsp;&nbsp;<a href="javascript:;" data-toggle="remove_edit_mask" data-parent=".mobile_news_auxiliary"><i class="ft-trash-2"></i></a>
 	</div>
