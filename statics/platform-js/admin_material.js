@@ -279,11 +279,9 @@
 				$('input[name="sort"]').val('');
 				$('input[name="author"]').val('');
 				$('textarea[name="digest"]').val('');
-//				$('.fileupload').removeClass('fileupload-exists').addClass('fileupload-new');
-//				$('.fileupload-preview').children('img').hide();
+				$('input[name="thumb_media_id"]').val('');
 				
 				$('.fileupload-preview.thumbnail').remove();
-				
 				$('input[name="is_show"]').attr("checked", false).parent().removeClass('uni-checked');
 
 				$('input[name="id"]').val('');
@@ -297,8 +295,10 @@
 					before		= $this.attr('data-before') || 'before',
 					$childobj	= $($this.attr('data-child')),
 					$childobj_clonearea	= $($this.attr('data-child-clone-area')),
+					form_action = $('input[name="add_url"]').val();
 					option		= {parentobj : $parentobj, parentobj_clonearea : $parentobj_clonearea, before : before, childobj : $childobj, childobj_clonearea : $childobj_clonearea};
 					!$parentobj ? console.log(js_lang.clone_no_parent) : app.material_edit.clone_obj(option);
+				$('form[name="theForm"]').attr('action', form_action);
 				
 				$(document).unbind('keyup').on("keyup", "input[name^='title']" ,function(){
 					$this = $(this);
@@ -326,7 +326,6 @@
 				$("#content").children().find('iframe').contents().find('body.view').html('<p><br></p>');
 				var editor = UE.getEditor('content');
 				editor.setContent('');
-//				$('textarea[name="content"]').html('');
 			});
 		},
 		clone_obj(options) {
@@ -358,7 +357,7 @@
 			tmp.removeClass('hide');
 		},
 		edit_area : function() {
-			$('.ft-edit-2').on('click', function (e) {
+			$('.ft-edit-2').off('click').on('click', function (e) {
 				e.preventDefault();
 				$('.material_info_select').not('.hide').remove();
 				$('.create_news').show();
@@ -366,6 +365,9 @@
 				
 				$('.material_info').children().children('h4').html(js_lang.graphic + index);
 				var edit_area = $('.mobile_news_view').children('.select_mobile_area').eq(index-1);
+				
+				var form_action = $('input[name="update_url"]').val();;
+				$('form[name="theForm"]').attr('action', form_action);
 				
 				$(document).unbind('keyup').on("keyup", "input[name^='title']" ,function(){
 					if ($(this).val() == '') {

@@ -69,7 +69,8 @@
 									</div>
 									<!-- {/if} -->
 								<!-- {/foreach} -->
-								<a href="javascript:;" class="create_news" data-toggle="clone-object" data-parent=".mobile_news_auxiliary_clone" data-clone-area=".create_news" data-child=".mobile_news_editarea_clone" data-child-clone-area=".mobile_news_edit"><i class="ft-plus"></i></a>
+								<a href="javascript:;" class="create_news" data-toggle="clone-object" data-parent=".mobile_news_auxiliary_clone" 
+								data-clone-area=".create_news" data-child=".mobile_news_editarea_clone" data-child-clone-area=".mobile_news_edit"><i class="ft-plus"></i></a>
 							</div>
 						</div>
 						<div class="mobile_news_edit material_info">
@@ -159,6 +160,8 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" name="update_url" value="{$form_action}" />
+<input type="hidden" name="add_url" value="{RC_Uri::url('wechat/platform_material/add_child_article')}" />
 
 <div class="select_mobile_area mobile_news_auxiliary mobile_news_auxiliary_clone hide material_info_select">
 	<div class="span7 news_auxiliary_title title_show">{lang key='wechat::wechat.title'}</div>
