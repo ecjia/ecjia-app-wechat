@@ -427,6 +427,7 @@
 .mobile_news_main .edit_mask i,.mobile_news_auxiliary .edit_mask i {
 	position: relative;
 	top: 50%;
+	font-size: 28px;
 }
 
 .mobile_news_main:hover .edit_mask, .mobile_news_auxiliary:hover .edit_mask {

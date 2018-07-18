@@ -404,19 +404,11 @@
 					$('input[name="link"]').val(data.content.link);
 					$('input[name="index"]').val(index-1);
 					
-					var img = $('.fileupload-preview').children('img');
-					if (data.content.file) {
-						$('.fileupload').addClass('fileupload-exists').removeClass('fileupload-new');
-						if (img) {
-							$('.fileupload-preview').html('<img src="'+data.content.file+'" alt=js_lang.img_priview>')
-						} else {
-							$('.fileupload-preview').children('img').show().attr('src', data.content.file);
-						}
-//						$('.fileupload').children('a').removeAttr('data-dismiss').attr({'href':data.content.href, 'data-toggle':'ajaxremove', 'data-msg':js_lang.remove_material_cover});
-					} else {
-						$('.fileupload').removeClass('fileupload-exists').addClass('fileupload-new');
-						$('.fileupload-preview').html('');
-					}
+					$('.fileupload-preview.thumbnail').remove();
+					var html = '<div class="fileupload-preview fileupload-exists thumbnail m_r10 show_cover" style="width: 50px; height: 50px; line-height: 50px;"><img src="'+ data.content.file +'"></div>';
+					$('.choose_material').before(html);
+					$('input[name="thumb_media_id"]').val(data.content.thumb_media_id);
+					
 					if (data.content.is_show == 1) {
 						$('input[name="is_show"]').attr("checked", true).parent().addClass('uni-checked');
 					} else {
@@ -427,8 +419,6 @@
 					} else {
 						$('.sort_form').show();
 					}
-//					$('.material_info').attr('type', 'checkbox').uniform();
-					
 					$("#content").children().find('iframe').contents().find('body.view').html(data.content.content);
 					var editor = UE.getEditor('content');
 					content = editor.setContent(data.content.content);
@@ -474,10 +464,12 @@
 				$.get(url, id, function(data) {
 					$('input[name="title"]').val(data.content.title);
 					$('input[name="author"]').val(data.content.author);
-					if (data.content.file) {
-						$('.fileupload').addClass('fileupload-exists').removeClass('fileupload-new');
-						$('.fileupload-preview').children('img').show().attr('src', data.content.file);
-					}
+					
+					$('.fileupload-preview.thumbnail').remove();
+					var html = '<div class="fileupload-preview fileupload-exists thumbnail m_r10 show_cover" style="width: 50px; height: 50px; line-height: 50px;"><img src="'+ data.content.file +'"></div>';
+					$('.choose_material').before(html);
+					$('input[name="thumb_media_id"]').val(data.content.thumb_media_id);
+					
 					if (data.content.is_show == 1) {
 						$('input[name="is_show"]').attr("checked", true).parent().addClass('uni-checked');
 					} else {
@@ -495,7 +487,6 @@
 					} else {
 						$('.sort_form').show();
 					}
-//					$('.material_info').attr('type', 'checkbox').uniform();
 				}, "JSON");
 			});
 		},
