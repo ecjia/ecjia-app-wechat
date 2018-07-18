@@ -363,7 +363,7 @@ class platform_material extends ecjia_platform
 
         $wechat_id = $this->platformAccount->getAccountID();
         $uuid = $this->platformAccount->getUUID();
-        $wechat = wechat_method::wechat_instance($uuid);
+       	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
         $id = !empty($_GET['id']) ? $_GET['id'] : 0;
         $media_info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
@@ -396,17 +396,12 @@ class platform_material extends ecjia_platform
         	return $this->showmessage(RC_Lang::get('wechat::wechat.enter_main_body'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         
+        $model = WechatMediaModel::where('wechat_id', $wechat_id)->thumbMediaId($thumb_media_id)->first();
+        if (empty($model)) {
+        	return $this->showmessage('图文素材的封面图片不是一个有效的素材，请更换一个封面素材。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        
         try {
-        	$wechat_id = $this->platformAccount->getAccountID();
-        	 
-        	$model = WechatMediaModel::where('wechat_id', $wechat_id)->thumbMediaId($thumb_media_id)->first();
-        	if (empty($model)) {
-        		return $this->showmessage('图文素材的封面图片不是一个有效的素材，请更换一个封面素材。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        	}
-        	
-        	$uuid = $this->platformAccount->getUUID();
-        	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-        	
             if (!empty($_POST)) {
             	//conent中图片下载并上传至微信素材中
             	$content = $this->uploadMassMessageContentImages($wechat, $content);
@@ -507,6 +502,13 @@ class platform_material extends ecjia_platform
         }
 
         return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $parent_id, 'material' => 1))));
+    }
+    
+    /**
+     * 添加子图文
+     */
+    public function add_child_article() {
+    	
     }
 
     /**

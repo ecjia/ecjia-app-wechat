@@ -144,7 +144,7 @@
 										<div class="form-group row">
 											<label class="col-lg-2 label-control text-right"></label>
 											<div class="col-lg-9 controls">
-												<input type="hidden" name="index">
+												<input type="hidden" name="index" />
 												<input type="submit" value="{lang key='wechat::wechat.update'}" class="btn btn-outline-primary"/>
 											</div>
 										</div>
