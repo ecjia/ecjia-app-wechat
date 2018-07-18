@@ -407,7 +407,7 @@
 					$('.fileupload-preview.thumbnail').remove();
 					var html = '<div class="fileupload-preview fileupload-exists thumbnail m_r10 show_cover" style="width: 50px; height: 50px; line-height: 50px;"><img src="'+ data.content.file +'"></div>';
 					$('.choose_material').before(html);
-					$('input[name="thumb_media_id"]').val(data.content.thumb_media_id);
+					$('input[name="thumb_media_id"]').val(data.content.thumb);
 					
 					if (data.content.is_show == 1) {
 						$('input[name="is_show"]').attr("checked", true).parent().addClass('uni-checked');
@@ -468,7 +468,7 @@
 					$('.fileupload-preview.thumbnail').remove();
 					var html = '<div class="fileupload-preview fileupload-exists thumbnail m_r10 show_cover" style="width: 50px; height: 50px; line-height: 50px;"><img src="'+ data.content.file +'"></div>';
 					$('.choose_material').before(html);
-					$('input[name="thumb_media_id"]').val(data.content.thumb_media_id);
+					$('input[name="thumb_media_id"]').val(data.content.thumb);
 					
 					if (data.content.is_show == 1) {
 						$('input[name="is_show"]').attr("checked", true).parent().addClass('uni-checked');
