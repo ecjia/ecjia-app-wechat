@@ -366,9 +366,6 @@
 				$('.material_info').children().children('h4').html(js_lang.graphic + index);
 				var edit_area = $('.mobile_news_view').children('.select_mobile_area').eq(index-1);
 				
-				var form_action = $('input[name="update_url"]').val();;
-				$('form[name="theForm"]').attr('action', form_action);
-				
 				$(document).unbind('keyup').on("keyup", "input[name^='title']" ,function(){
 					if ($(this).val() == '') {
 						edit_area.find('.title_show').html(js_lang.title);
@@ -396,6 +393,10 @@
 				if (url == undefined || id == undefined) {
 					return false;
 				}
+				
+				var form_action = $('input[name="update_url"]').val();
+				$('form[name="theForm"]').attr('action', form_action+'&id='+id);
+				
 				$.get(url, id, function(data) {
 					$('input[name="title"]').val(data.content.title);
 					$('input[name="author"]').val(data.content.author);
