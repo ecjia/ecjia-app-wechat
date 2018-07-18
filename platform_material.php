@@ -314,46 +314,42 @@ class platform_material extends ecjia_platform
 
         $material = !empty($_GET['material']) ? 1 : 0;
 
+        $wechat_id = $this->platformAccount->getAccountID();
+        $article = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', intval($_GET['id']))->where('type', 'news')->first();
+        if (empty($article)) {
+            return $this->showmessage('该素材不存在', ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+        }
+
+        if (!empty($article['file'])) {
+            $article['file'] = RC_Upload::upload_url($article['file']);
+        }
+
+
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('图文编辑'));
-        
         ecjia_platform_screen::get_current_screen()->set_sidebar_display(false);
-
-        $wechat_id = $this->platformAccount->getAccountID();
 
         $this->assign('ur_here', '图文编辑');
         $this->assign('form_action', RC_Uri::url('wechat/platform_material/update', array('id' => $_GET['id'], 'material' => $material)));
         $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
         $this->assign('action', 'article_add');
+        $this->assign('warn', 'warn');
 
-        if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.operate_before_pub'));
-        } else {
-            $this->assign('warn', 'warn');
+        $wechat_type = $this->platformAccount->getType();
+        $this->assign('wechat_type', $wechat_type);
 
-            $wechat_type = $this->platformAccount->getType();
-            $this->assign('wechat_type', $wechat_type);
+        $article['articles'][0] = $article;
+        $data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $article['id'])->orderBy('id', 'asc')->get();
 
-            $article = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', intval($_GET['id']))->where('type', 'news')->first();
-			if (empty($article)) {
-				return $this->showmessage('该素材不存在', ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
-			}
-            if (!empty($article['file'])) {
-                $article['file'] = RC_Upload::upload_url($article['file']);
-            }
-            $article['articles'][0] = $article;
-            $data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $article['id'])->orderBy('id', 'asc')->get();
-
-            if (!empty($data)) {
-                foreach ($data as $k => $v) {
-                    $article['articles'][$k + 1] = $v;
-                    if (!empty($v['file'])) {
-                        $article['articles'][$k + 1]['file'] = RC_Upload::upload_url($v['file']);
-                    }
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                $article['articles'][$k + 1] = $v;
+                if (!empty($v['file'])) {
+                    $article['articles'][$k + 1]['file'] = RC_Upload::upload_url($v['file']);
                 }
             }
-            $this->assign('article', $article);
         }
+        $this->assign('article', $article);
         $this->display('wechat_material_edit.dwt');
     }
 
@@ -361,26 +357,23 @@ class platform_material extends ecjia_platform
     {
         $this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 
-        $wechat_id = $this->platformAccount->getAccountID();
-        $uuid = $this->platformAccount->getUUID();
-        $wechat = wechat_method::wechat_instance($uuid);
-
-        $parent_id = !empty($_GET['id']) ? $_GET['id'] : 0;
-        if (is_ecjia_error($wechat_id)) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed_operate'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
-        $title = !empty($_POST['title']) ? trim($_POST['title']) : '';
-        $author = !empty($_POST['author']) ? trim($_POST['author']) : '';
-        $is_show = !empty($_POST['is_show']) ? intval($_POST['is_show']) : 0;
-        $digest = !empty($_POST['digest']) ? $_POST['digest'] : '';
-        $link = !empty($_POST['link']) ? trim($_POST['link']) : '';
-        $content = !empty($_POST['content']) ? stripslashes($_POST['content']) : '';
-        $sort = !empty($_POST['sort']) ? intval($_POST['sort']) : 0;
-        $id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-
-        $index = !empty($_POST['index']) ? intval($_POST['index']) : 0;
+        $id         = !empty($_GET['id']) ? $_GET['id'] : 0;
+        $title      = !empty($_POST['title']) ? trim($_POST['title']) : '';
+        $author     = !empty($_POST['author']) ? trim($_POST['author']) : '';
+        $is_show    = !empty($_POST['is_show']) ? intval($_POST['is_show']) : 0;
+        $digest     = !empty($_POST['digest']) ? $_POST['digest'] : '';
+        $link       = !empty($_POST['link']) ? trim($_POST['link']) : '';
+        $content    = !empty($_POST['content']) ? stripslashes($_POST['content']) : '';
+        $sort       = !empty($_POST['sort']) ? intval($_POST['sort']) : 0;
+//        $id         = !empty($_POST['id']) ? intval($_POST['id']) : 0;
+        $index      = !empty($_POST['index']) ? intval($_POST['index']) : 0;
 
         $thumb_media_id = $this->request->input('thumb_media_id');
+
+        if (empty($id)) {
+            return $this->showmessage('图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
         if (empty($title)) {
         	return $this->showmessage(RC_Lang::get('wechat::wechat.enter_images_title'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -392,24 +385,59 @@ class platform_material extends ecjia_platform
         if (empty($content)) {
         	return $this->showmessage(RC_Lang::get('wechat::wechat.enter_main_body'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
+//        $wechat_id = $this->platformAccount->getAccountID();
+//        $uuid = $this->platformAccount->getUUID();
+//        $wechat = wechat_method::wechat_instance($uuid);
         
         try {
-        	$wechat_id = $this->platformAccount->getAccountID();
-        	 
-        	$model = WechatMediaModel::where('wechat_id', $wechat_id)->thumbMediaId($thumb_media_id)->first();
-        	if (empty($model)) {
-        		return $this->showmessage('图文素材的封面图片不是一个有效的素材，请更换一个封面素材。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        	}
+
+            $wechat_id = $this->platformAccount->getAccountID();
+
+            //更新永久图文素材
+            $model = WechatMediaModel::where('wechat_id', $wechat_id)->find($id);
+            if (empty($model)) {
+                return $this->showmessage('图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+
+
         	
         	$uuid = $this->platformAccount->getUUID();
         	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-        	
-            if (!empty($_POST)) {
-            	//conent中图片下载并上传至微信素材中
-            	$content = $this->uploadMassMessageContentImages($wechat, $content);
-            	
+
+
+//            $data = array(
+//                'wechat_id' 	=> $wechat_id,
+//                'title' 		=> $title,
+//                'author' 		=> $author,
+//                'is_show' 		=> $is_show,
+//                'digest' 		=> $digest,
+//                'content' 		=> $content,
+//                'link' 			=> $link,
+//                'sort' 			=> $sort,
+//                'type' 			=> 'news',
+//                'thumb'         => $thumb_media_id,
+//                'file'          => $model->file,
+//                'size'          => $model->size,
+//                'file_name'     => $model->file_name,
+//                'add_time'      => RC_Time::gmtime(),
+//                'type'          => 'news',
+//                'is_material'   => 'material',
+//            );
+
+            if (!empty($id)) {
+
+
+                $thumb_model = WechatMediaModel::where('wechat_id', $wechat_id)->thumbMediaId($thumb_media_id)->first();
+                if (empty($thumb_model)) {
+                    return $this->showmessage('图文素材的封面图片不是一个有效的素材，请更换一个封面素材。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                }
+
+                //conent中图片下载并上传至微信素材中
+                $content = $this->uploadMassMessageContentImages($wechat, $content);
+
+                //默认修改数据
                 $data = array(
-                    'wechat_id' 	=> $wechat_id,
                     'title' 		=> $title,
                     'author' 		=> $author,
                     'is_show' 		=> $is_show,
@@ -417,93 +445,138 @@ class platform_material extends ecjia_platform
                     'content' 		=> $content,
                     'link' 			=> $link,
                     'sort' 			=> $sort,
-                    'type' 			=> 'news',
-                  	'thumb'         => $thumb_media_id,
-            		'file'          => $model->file,
-            		'size'          => $model->size,
-            		'file_name'     => $model->file_name,
-            		'add_time'      => RC_Time::gmtime(),
-            		'type'          => 'news',
-            		'is_material'   => 'material',
                 );
-                if (!empty($id)) {
-                    //更新永久图文素材
-                    $arr = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
-                    $articles = array('articles' => array(
-                        'title' => $title,
-                        'thumb_media_id' => $thumb_media_id,
-                        'author' => $author,
-                        'digest' => $digest,
-                        'show_cover_pic' => $is_show,
-                        'content' => $content,
-                        'content_source_url' => $link,
-                    ));
-                    if ($index != 0) {
-                        $articles['articles']['digest'] = '';
-                    }
-                    $msg = $wechat->material->updateArticle($arr['media_id'], $articles['articles'], $index);
-                    
-                    if (is_ecjia_error($msg)) {
-                        return $this->showmessage(wechat_method::wechat_error($msg->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                    }
 
-                    $data['edit_time'] = RC_Time::gmtime();
-                    RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
-                } else {
-                	//添加多图文素材
-                	$arr = $this->get_article_list($parent_id);
-
-                	if (!empty($arr)) {
-                		$count = count($arr);
-                		foreach ($arr as $k => $v) {
-                			$articles[$k] = array(
-                				'title'             	=> $v['title'],
-                				'thumb_media_id'    	=> $v['thumb'],
-                				'author'           	 	=> $v['author'],
-                				'digest'            	=> $v['digest'],
-                				'show_cover_pic'    	=> $v['is_show'],
-                				'content'           	=> $v['content'],
-                				'content_source_url'	=> $v['link']
-                			);
-                			if (!empty($v['media_id'])) {
-                				//删除原素材
-                				$rs2 = $wechat->material->delete($v['media_id']);
-                				if (is_ecjia_error($rs2) && $rs2->get_error_code() != 'wechat_error_40007') {
-                					return $this->showmessage(wechat_method::wechat_error($rs2->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                				}
-                			}
-                		}
-                	} else {
-                		$count = 0;
-                	}
-                		
-                	$articles[$count] = array(
-                		'title' 				=> $title,
-                		'thumb_media_id' 		=> $thumb_media_id,
-                		'author' 				=> $author,
-                		'digest' 				=> $digest,
-                		'show_cover_pic' 		=> $is_show,
-                		'content' 				=> $content,
-                		'content_source_url' 	=> $link
-                	);
-                	$rs1 = $wechat->material->uploadArticle($articles);
-                	if (is_ecjia_error($rs1)) {
-                		return $this->showmessage(wechat_method::wechat_error($rs1->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                	}
-                	RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $parent_id)->update(array('media_id' => $rs1['media_id']));
-                	
-                	$data['parent_id'] = $parent_id;
-                	$data['add_time'] = RC_Time::gmtime();
-                	$id = RC_DB::table('wechat_media')->insertGetId($data);
+                if ($model->thumb != $thumb_media_id) {
+                    $data['thumb']      = $thumb_media_id;
+                    $data['file']       = $thumb_model->file;
+                    $data['size']       = $thumb_model->size;
+                    $data['file_name']  = $thumb_model->file_name;
                 }
-                $title = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $parent_id)->pluck('title');
-                ecjia_admin::admin_log($title, 'edit', 'article_material');
+
+
+//                $articles = array('articles' => array(
+//                    'title'             => $title,
+//                    'thumb_media_id'    => $thumb_media_id,
+//                    'author'            => $author,
+//                    'digest'            => $digest,
+//                    'show_cover_pic'    => $is_show,
+//                    'content'           => $content,
+//                    'content_source_url'=> $link,
+//                ));
+
+//                dd($model->toArray());
+
+                // 上传单篇图文
+                $article = new Royalcms\Component\WeChat\Message\Article([
+                    'title'                 => $title,
+                    'thumb_media_id'        => $thumb_media_id,
+                    'author'                => $author,
+                    'digest'                => $digest,
+                    'show_cover_pic'        => $is_show,
+                    'content'               => $content,
+                    'content_source_url'    => $link,
+                ]);
+
+//                if ($index != 0) {
+//                    $articles['articles']['digest'] = '';
+//                }
+                $msg = $wechat->material->updateArticle($model->media_id, $article, $index);
+
+//                if (is_ecjia_error($msg)) {
+//                    return $this->showmessage(wechat_method::wechat_error($msg->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+//                }
+
+                //更新数据库
+                $data['edit_time'] = RC_Time::gmtime();
+                $model->update($data);
+            } else {
+                //添加多图文素材
+                //第一步，保存进数据库
+
+                //第二步，删除原有单图文数据
+
+                //第三步，提交新多图文数据
+
+                $thumb_model = WechatMediaModel::where('wechat_id', $wechat_id)->thumbMediaId($thumb_media_id)->first();
+                if (empty($thumb_model)) {
+                    return $this->showmessage('图文素材的封面图片不是一个有效的素材，请更换一个封面素材。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                }
+
+                $data = array(
+                    'wechat_id'     => $wechat_id,
+                    'title'         => $title,
+                    'author'        => $author,
+                    'is_show'       => $is_show,
+                    'digest'        => $digest,
+                    'link'          => $link,
+                    'content'       => $content,
+                    'sort'          => $sort,
+                    'thumb'         => $thumb_media_id,
+                    'file'          => $thumb_model->file,
+                    'size'          => $thumb_model->size,
+                    'file_name'     => $thumb_model->file_name,
+                    'add_time'      => RC_Time::gmtime(),
+                    'type'          => 'news',
+                    'is_material'   => 'material',
+                    'parent_id'     => $parent_id,
+                    'media_url'     => 'wait_upload_article', //标记图文素材等待上传中
+                );
+
+                $arr = $this->get_article_list($parent_id);
+
+                if (!empty($arr)) {
+                    $count = count($arr);
+                    foreach ($arr as $k => $v) {
+                        $articles[$k] = array(
+                            'title'             	=> $v['title'],
+                            'thumb_media_id'    	=> $v['thumb'],
+                            'author'           	 	=> $v['author'],
+                            'digest'            	=> $v['digest'],
+                            'show_cover_pic'    	=> $v['is_show'],
+                            'content'           	=> $v['content'],
+                            'content_source_url'	=> $v['link']
+                        );
+                        if (!empty($v['media_id'])) {
+                            //删除原素材
+                            $rs2 = $wechat->material->delete($v['media_id']);
+                            if (is_ecjia_error($rs2) && $rs2->get_error_code() != 'wechat_error_40007') {
+                                return $this->showmessage(wechat_method::wechat_error($rs2->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                            }
+                        }
+                    }
+                } else {
+                    $count = 0;
+                }
+
+                $articles[$count] = array(
+                    'title' 				=> $title,
+                    'thumb_media_id' 		=> $thumb_media_id,
+                    'author' 				=> $author,
+                    'digest' 				=> $digest,
+                    'show_cover_pic' 		=> $is_show,
+                    'content' 				=> $content,
+                    'content_source_url' 	=> $link
+                );
+                $rs1 = $wechat->material->uploadArticle($articles);
+                if (is_ecjia_error($rs1)) {
+                    return $this->showmessage(wechat_method::wechat_error($rs1->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                }
+                RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $parent_id)->update(array('media_id' => $rs1['media_id']));
+
+                $data['parent_id'] = $parent_id;
+                $data['add_time'] = RC_Time::gmtime();
+                $id = RC_DB::table('wechat_media')->insertGetId($data);
             }
+            $title = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $parent_id)->pluck('title');
+            ecjia_admin::admin_log($title, 'edit', 'article_material');
+
+            return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $parent_id, 'material' => 1))));
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        } catch (\BadMethodCallException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-
-        return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $parent_id, 'material' => 1))));
     }
 
     /**
