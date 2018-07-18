@@ -76,7 +76,7 @@
 							<!-- {foreach from=$article.articles key=key item=list}-->
 								<!-- {if $key eq 0} -->
 								<div class="mobile_news_edit_area">
-									<h4 class="heading">{lang key='wechat::wechat.graphic'} {$key+1}</h4>
+									<h4 class="heading">{lang key='wechat::wechat.graphic'}{$key+1}</h4>
 									<fieldset>
 										<div class="form-group row">
 											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_title'}</label>
@@ -144,7 +144,6 @@
 										<div class="form-group row">
 											<label class="col-lg-2 label-control text-right"></label>
 											<div class="col-lg-9 controls">
-												<input type="hidden" name="id" value="{$list.id}">
 												<input type="hidden" name="index">
 												<input type="submit" value="{lang key='wechat::wechat.update'}" class="btn btn-outline-primary"/>
 											</div>

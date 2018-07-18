@@ -322,7 +322,7 @@ class platform_material extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $this->assign('ur_here', '图文编辑');
-        $this->assign('form_action', RC_Uri::url('wechat/platform_material/update', array('id' => $_GET['id'], 'material' => $material)));
+        $this->assign('form_action', RC_Uri::url('wechat/platform_material/update'));
         $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
         $this->assign('action', 'article_add');
 
@@ -365,7 +365,12 @@ class platform_material extends ecjia_platform
         $uuid = $this->platformAccount->getUUID();
         $wechat = wechat_method::wechat_instance($uuid);
 
-        $parent_id = !empty($_GET['id']) ? $_GET['id'] : 0;
+        $id = !empty($_GET['id']) ? $_GET['id'] : 0;
+        $media_info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
+        if (empty($media_info)) {
+        	return $this->showmessage('该素材不存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        
         if (is_ecjia_error($wechat_id)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_failed_operate'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -376,8 +381,6 @@ class platform_material extends ecjia_platform
         $link = !empty($_POST['link']) ? trim($_POST['link']) : '';
         $content = !empty($_POST['content']) ? stripslashes($_POST['content']) : '';
         $sort = !empty($_POST['sort']) ? intval($_POST['sort']) : 0;
-        $id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-
         $index = !empty($_POST['index']) ? intval($_POST['index']) : 0;
 
         $thumb_media_id = $this->request->input('thumb_media_id');
