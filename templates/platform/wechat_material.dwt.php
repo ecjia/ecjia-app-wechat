@@ -65,7 +65,7 @@
                     </li>
 				</ul>
 				<!-- {if $action_link} -->
-				<a class="btn btn-outline-primary plus_or_reply float-right" id="sticky_a" href='{$action_link.href}{if $smarty.get.material}&material=1{/if}'><i class="ft-plus"></i>{$action_link.text}</a>
+				<a class="btn btn-outline-primary plus_or_reply float-right" id="sticky_a" href='{$action_link.href}{if $smarty.get.type neq "news"}{if $smarty.get.material}&material=1{/if}{/if}'><i class="ft-plus"></i>{$action_link.text}</a>
 				<!-- {/if} -->
 			</div>
 			<div class="card-body">

@@ -47,7 +47,7 @@
 						<div class="f_l">
 							<div class="mobile_news_view">
 								<!-- {foreach from=$article.articles key=key item=list}-->
-									<!-- {if $key eq '0'} -->
+									<!-- {if $key eq 0} -->
 									<div class="select_mobile_area mobile_news_main">
 										<div class="show_image"><img src='{$list.file}'></div>
 										<div class="item">
@@ -64,7 +64,6 @@
 										<div class="span4 thumb_image"><div>{lang key='wechat::wechat.thumbnail'}</div><div class="show_image"><img src='{$list.file}'></div></div>
 										<div class="edit_mask">
 											<a href="javascript:;" class="data-pjax" data-id="{$list.id}" data-href='{url path="wechat/platform_material/get_material_info" args="id={$list.id}&material=1"}'><i class="ft-edit-2"></i></a>&nbsp;&nbsp;&nbsp;
-		<!-- 									<a href="javascript:;" {if $list.id}class="data-pjax" data-toggle="remove_material" data-msg="{t}您确定要删除该图文素材吗？{/t}" data-href='{url path="wechat/platform_material/remove" args="id={$list.id}&article_id={$article.id}"}' title="{t}移除{/t}"{else}data-toggle="remove_edit_mask"{/if} data-parent=".mobile_news_auxiliary"><i class="icon-trash"></i></a> -->
 										</div>
 									</div>
 									<!-- {/if} -->
@@ -75,7 +74,7 @@
 						</div>
 						<div class="mobile_news_edit material_info">
 							<!-- {foreach from=$article.articles key=key item=list}-->
-								<!-- {if $key eq 0} -->
+								<!-- {if $list.id eq $id} -->
 								<div class="mobile_news_edit_area">
 									<h4 class="heading">{lang key='wechat::wechat.graphic'}{$key+1}</h4>
 									<fieldset>
@@ -107,7 +106,7 @@
 													<span class="m_l5 input-must">*</span>
 													<input type="hidden" name="thumb_media_id" size="35" value="{$list.thumb}"/>
 												</div>
-												<input type="checkbox" name="is_show" value="1" id="is_show_1" /><label for="is_show_1"></label>{lang key='wechat::wechat.cover_img_centent'}
+												<input type="checkbox" name="is_show" value="1" id="is_show_1" {if $list.is_show}checked{/if}/><label for="is_show_1"></label>{lang key='wechat::wechat.cover_img_centent'}
 												<span class="help-block">{lang key='wechat::wechat.img_size900x500'}</span>
 											</div>
 										</div>

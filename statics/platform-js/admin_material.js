@@ -282,7 +282,7 @@
 				$('input[name="thumb_media_id"]').val('');
 				
 				$('.fileupload-preview.thumbnail').remove();
-				$('input[name="is_show"]').attr("checked", false).parent().removeClass('uni-checked');
+				$('input[name="is_show"]').prop("checked", false);
 
 				$('input[name="id"]').val('');
 				$('input[name="link"]').val('http://');
@@ -412,9 +412,9 @@
 					$('input[name="thumb_media_id"]').val(data.content.thumb);
 					
 					if (data.content.is_show == 1) {
-						$('input[name="is_show"]').attr("checked", true).parent().addClass('uni-checked');
+						$('input[name="is_show"]').prop("checked", true);
 					} else {
-						$('input[name="is_show"]').attr("checked", false).parent().removeClass('uni-checked');
+						$('input[name="is_show"]').prop("checked", false);
 					}
 					if (data.content.parent_id != 0) {
 						$('.sort_form').hide();

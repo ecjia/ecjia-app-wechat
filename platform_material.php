@@ -184,19 +184,15 @@ class platform_material extends ecjia_platform
     {
         $this->admin_priv('wechat_material_add');
 
-        $material = !empty($_GET['material']) ? 1 : 0;
+        $material = 1;
 
         $nav_here = RC_Lang::get('wechat::wechat.forever_material');
-        if ($material != 1) {
-            $nav_here = RC_Lang::get('wechat::wechat.provisional_material');
-        }
-
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => 1))));
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.add_images')));
         ecjia_platform_screen::get_current_screen()->set_sidebar_display(false);
 
         $this->assign('ur_here', RC_Lang::get('wechat::wechat.add_images'));
-        $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
+        $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => 1))));
         $this->assign('form_action', RC_Uri::url('wechat/platform_material/insert'));
         $this->assign('action', 'article_add');
 
@@ -325,13 +321,10 @@ class platform_material extends ecjia_platform
             if (empty($parent_model)) {
                 return $this->showmessage('父图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
-
             $parent_id = $article['parent_id'];
         } else {
             $parent_id = $id;
         }
-
-
         if (!empty($article['file'])) {
             $article['file'] = RC_Upload::upload_url($article['file']);
         }
@@ -341,7 +334,7 @@ class platform_material extends ecjia_platform
         ecjia_platform_screen::get_current_screen()->set_sidebar_display(false);
 
         $this->assign('ur_here', '图文编辑');
-        $this->assign('form_action', RC_Uri::url('wechat/platform_material/update', array('id' => intval($_GET['id']))));
+        $this->assign('form_action', RC_Uri::url('wechat/platform_material/update', array('id' => $id)));
         $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => 1))));
         $this->assign('action', 'article_add');
         $this->assign('warn', 'warn');
@@ -349,9 +342,13 @@ class platform_material extends ecjia_platform
         $wechat_type = $this->platformAccount->getType();
         $this->assign('wechat_type', $wechat_type);
 
-        $article['articles'][0] = $article;
-        $data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $parent_id)->orderBy('id', 'asc')->get();
-
+        $media_data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $parent_id)->first();
+        $media_data['file'] = !empty($media_data['file']) ? RC_Upload::upload_url($media_data['file']) : RC_Uri::admin_url('statics/images/nopic.png');
+        $article['articles'][0] = $media_data;
+         
+        $db_wechat_media = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id);
+        
+        $data = $db_wechat_media->where('parent_id', $parent_id)->orderBy('id', 'asc')->get();
         if (!empty($data)) {
             foreach ($data as $k => $v) {
                 $article['articles'][$k + 1] = $v;
@@ -360,8 +357,11 @@ class platform_material extends ecjia_platform
                 }
             }
         }
+        
         $this->assign('article', $article);
-        $this->assign('parent_id', $article['id']);
+        $this->assign('parent_id', $parent_id);
+        $this->assign('id', $id);
+        
         $this->display('wechat_material_edit.dwt');
     }
 
