@@ -36,9 +36,13 @@
 			<div class="card-header">
                 <h4 class="card-title">
                 	{$ur_here}
-	               	{if $action_link}
+                	{if $action_link}
 					<a class="btn btn-outline-primary plus_or_reply float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
 					{/if}
+					
+                	{if $media_data.media_url eq 'wait_upload_article'}
+                	<a class="btn btn-outline-primary plus_or_reply float-right m_r10 upload_multi_articles" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/upload_multi_articles')}&id={$parent_id}"><i class="ft-corner-left-up"></i> 发布素材</a>
+                	{/if}
                 </h4>
             </div>
             <div class="col-lg-12">
