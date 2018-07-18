@@ -76,38 +76,15 @@
 										</div>
 									</div>
 									
-									<!-- 
-									<div class="form-group row">
-										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.cover'}</label>
-										<div class="col-lg-9 controls">
-											<div class="fileupload fileupload-new" data-provides="fileupload">	
-												<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;">
-												</div>
-												<span class="btn btn-outline-primary btn-file">
-													<span class="fileupload-new">{lang key='wechat::wechat.browser'}</span>
-													<span class="fileupload-exists">{lang key='wechat::wechat.modify'}</span>
-													<input type='file' name='image_url' size="35"/>
-												</span>
-												<a class="btn btn-danger fileupload-exists" data-dismiss="fileupload" href="javascrpt:;">{lang key='wechat::wechat.delete'}</a>
-											</div>
-											<span class="input-must">*</span>
-								
-											<input type="checkbox" name="is_show" value="1" id="is_show_1"/><label for="is_show_1"></label>{lang key='wechat::wechat.cover_img_centent'}
-											<span class="help-block">{lang key='wechat::wechat.img_size900x500'}</span>
-										</div>
-									</div>
-									 -->
-									
 									<div class="form-group row">
 										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.cover'}</label>
 										<div class="col-lg-9 controls">
 											<div class="fileupload fileupload-exists" data-provides="fileupload">	
 												<a class="btn btn-outline-primary choose_material" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/get_material_array')}&material=1" data-type="thumb">从素材库选择</a>
+												<span class="m_l5 input-must">*</span>
 												<input type="hidden" name="thumb_media_id" size="35"/>
 											</div>
-											<span class="input-must">*</span>
-								
-											<input type="checkbox" name="is_show" value="1" id="is_show_1"/><label for="is_show_1"></label>{lang key='wechat::wechat.cover_img_centent'}
+											<input type="checkbox" name="is_show" value="1" id="is_show_1" /><label for="is_show_1"></label>{lang key='wechat::wechat.cover_img_centent'}
 											<span class="help-block">{lang key='wechat::wechat.img_size900x500'}</span>
 										</div>
 									</div>

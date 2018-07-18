@@ -451,7 +451,7 @@
 .mobile_news_view .mobile_news_auxiliary .thumb_image {
 	height: 100px;
 	width: 100px;
-	margin: 10px 10px 10px 0;
+	margin: 10px 0;
 	float: left;
 	background: #dedede;
 	position: relative;

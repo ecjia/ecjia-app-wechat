@@ -20,6 +20,16 @@
 </div>
 {/if}
 
+<!-- {if ecjia_screen::get_current_screen()->get_help_sidebar()} -->
+<div class="alert alert-light alert-dismissible mb-2" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">×</span>
+	</button>
+	<h4 class="alert-heading mb-2">操作提示</h4>
+    <!-- {ecjia_screen::get_current_screen()->get_help_sidebar()} -->
+</div>
+<!-- {/if} -->
+
 <div class="row edit-page">
     <div class="col-12">
         <div class="card">
@@ -31,7 +41,7 @@
 					{/if}
                 </h4>
             </div>
-            <div class="col-lg-22">
+            <div class="col-lg-12">
 				<form method="post" class="form-horizontal" action="{$form_action}" name="theForm" enctype="multipart/form-data">
 					<!-- {if $article.articles}-->
 						<div class="f_l">
@@ -81,30 +91,26 @@
 												<input class='span8 form-control' type='text' name='author' value='{$list.author}'/>
 											</div>
 										</div>
+										
 										<div class="form-group row">
 											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.cover'}</label>
 											<div class="col-lg-9 controls">
-												<div class="fileupload {if $list.file}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">	
-													<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;">
-														{if $list.file}
-														<img src="{$list.file}" alt="{lang key='wechat::wechat.img_priview'}" />
-														{/if}
+												<div class="fileupload fileupload-exists" data-provides="fileupload">
+													{if $list.file}
+													<div class="fileupload-preview fileupload-exists thumbnail m_r10 show_cover" style="width: 50px; height: 50px; line-height: 50px;">
+														<img src="{$list.file}">
 													</div>
-													<span class="btn btn-outline-primary btn-file">
-														<span class="fileupload-new">{lang key='wechat::wechat.browser'}</span>
-														<span class="fileupload-exists">{lang key='wechat::wechat.modify'}</span>
-														<input type='file' name='image_url' size="35"/>
-													</span>
+													{/if}
+													<a class="btn btn-outline-primary choose_material" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/get_material_array')}&material=1" 
+													data-type="thumb">从素材库选择</a>
+													<span class="m_l5 input-must">*</span>
+													<input type="hidden" name="thumb_media_id" size="35" value="{$list.thumb}"/>
 												</div>
-												<input type="checkbox" name="is_show" value="1" {if $list.is_show eq 1}checked="checked"{/if}/>{lang key='wechat::wechat.cover_img_centent'}
-												<!-- {if $key eq '0'} -->
+												<input type="checkbox" name="is_show" value="1" id="is_show_1" /><label for="is_show_1"></label>{lang key='wechat::wechat.cover_img_centent'}
 												<span class="help-block">{lang key='wechat::wechat.img_size900x500'}</span>
-												<!-- {else} -->
-												<span class="help-block">{lang key='wechat::wechat.img_size200x200'}</span>
-												<!-- {/if} -->
 											</div>
-											<span class="input-must">*</span>
 										</div>
+									
 										<div class="form-group row">
 											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.summary'}</label>
 											<div class="col-lg-9 controls">
@@ -162,4 +168,39 @@
 		<a href="javascript:;"><i class="ft-edit-2"></i></a>&nbsp;&nbsp;&nbsp;<a href="javascript:;" data-toggle="remove_edit_mask" data-parent=".mobile_news_auxiliary"><i class="ft-trash-2"></i></a>
 	</div>
 </div>
+
+<div class="modal fade text-left" id="choose_material">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">选择缩略图</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
+			</div>
+			
+			<!-- {if $errormsg || ($warn && $wechat_type eq 0)} -->
+				<div class="card-body">
+				    <div class="alert alert-danger">
+			            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+			        </div>
+					<!-- {if $warn && $wechat_type eq 0} -->
+					<div class="alert alert-danger">
+						<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+					</div>
+					<!-- {/if} -->
+				</div>
+			<!-- {/if} -->
+
+			<form class="form" method="post" name="edit_tag" action="">
+				<div class="inner_main">
+				</div>
+				<div class="modal-footer justify-content-center">
+					<input type="button" class="btn btn-outline-primary js-btn" {if $errormsg || ($warn && $wechat_type eq 0)}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <!-- {/block} -->

@@ -266,7 +266,7 @@
 		},
 		
 		clone : function () {
-			$('a[data-toggle="clone-object"]').on('click',function(e){
+			$('a[data-toggle="clone-object"]').off('click').on('click',function(e){
 				$('div.hide').find('input').prop('disabled', true);
 				$('div.hide').find('textarea').prop('disabled', true);
 				$('div.hide').find('checkbox').prop('disabled', true);
@@ -279,8 +279,11 @@
 				$('input[name="sort"]').val('');
 				$('input[name="author"]').val('');
 				$('textarea[name="digest"]').val('');
-				$('.fileupload').removeClass('fileupload-exists').addClass('fileupload-new');
-				$('.fileupload-preview').children('img').hide();
+//				$('.fileupload').removeClass('fileupload-exists').addClass('fileupload-new');
+//				$('.fileupload-preview').children('img').hide();
+				
+				$('.fileupload-preview.thumbnail').remove();
+				
 				$('input[name="is_show"]').attr("checked", false).parent().removeClass('uni-checked');
 
 				$('input[name="id"]').val('');
@@ -409,7 +412,7 @@
 						} else {
 							$('.fileupload-preview').children('img').show().attr('src', data.content.file);
 						}
-						$('.fileupload').children('a').removeAttr('data-dismiss').attr({'href':data.content.href, 'data-toggle':'ajaxremove', 'data-msg':js_lang.remove_material_cover});
+//						$('.fileupload').children('a').removeAttr('data-dismiss').attr({'href':data.content.href, 'data-toggle':'ajaxremove', 'data-msg':js_lang.remove_material_cover});
 					} else {
 						$('.fileupload').removeClass('fileupload-exists').addClass('fileupload-new');
 						$('.fileupload-preview').html('');
