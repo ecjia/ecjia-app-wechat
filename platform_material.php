@@ -561,6 +561,7 @@ class platform_material extends ecjia_platform
 
         $id         = !empty($_GET['id']) ? $_GET['id'] : 0;
 
+
         $wechat_id = $this->platformAccount->getAccountID();
 
         //查找多图文素材
@@ -569,46 +570,49 @@ class platform_material extends ecjia_platform
             return $this->showmessage('多图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-//        if ($model->parent_id > 0) {
-//            $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->find($model->parent_id);
-//            if (empty($parent_model)) {
-//                return $this->showmessage('父图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//            }
-//            $parent_id = $model->parent_id;
-//        } else {
-//            $parent_id = $id;
-//        }
+        try {
+            $uuid = $this->platformAccount->getUUID();
+            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
-        $data = WechatMediaModel::where('parent_id', $id)->where('type', 'news')->orderBy('sort', 'asc')->orderBy('id', 'asc')->get();
-        if (!empty($data)) {
 
-            $articles = $data->map(function ($item) {
-                // 更新单篇图文
-                $article = new Royalcms\Component\WeChat\Message\Article([
-                    'title'                 => $item->title,
-                    'thumb_media_id'        => $item->thumb,
-                    'author'                => $item->author,
-                    'digest'                => $item->digest,
-                    'show_cover_pic'        => $item->is_show,
-                    'content'               => $item->content,
-                    'content_source_url'    => $item->link == 'http://' ? '' : $item->link,
-                ]);
+            $data = WechatMediaModel::where('parent_id', $id)->where('type', 'news')->orderBy('sort', 'asc')->orderBy('id', 'asc')->get();
+            if (!empty($data)) {
+                $data->prepend($model);
+                $articles = $data->map(function ($item) {
+                    // 更新单篇图文
+                    $article = new Royalcms\Component\WeChat\Message\Article([
+                        'title'                 => $item->title,
+                        'thumb_media_id'        => $item->thumb,
+                        'author'                => $item->author,
+                        'digest'                => $item->digest,
+                        'show_cover_pic'        => $item->is_show,
+                        'content'               => $item->content,
+                        'content_source_url'    => $item->link == 'http://' ? '' : $item->link,
+                    ]);
 
-                return $article;
-            });
+                    return $article;
+                });
 
-            dd($articles);
+                $rs = $wechat->material->uploadArticle($articles->all());
 
-//            foreach ($data as $k => $v) {
-//                $article['articles'][$k + 1] = $v;
-//                if (!empty($v['file'])) {
-//                    $article['articles'][$k + 1]['file'] = RC_Upload::upload_url($v['file']);
-//                }
-//            }
+                //删除旧的图文消息
+                $wechat->material->delete($model->media_id);
+
+                //图文消息的id
+                $model->media_id = $rs['media_id'];
+                if ($model->media_url == 'wait_upload_article') {
+                    $model->media_url = '';
+                }
+                $model->save();
+
+
+                return $this->showmessage('多图文素材发布成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $id))));
+            }
+        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        } catch (\BadMethodCallException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-
-
-
     }
 
     /**
