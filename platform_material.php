@@ -312,11 +312,25 @@ class platform_material extends ecjia_platform
     {
         $this->admin_priv('wechat_material_update');
 
+        $id = intval($_GET['id']);
         $wechat_id = $this->platformAccount->getAccountID();
-        $article = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', intval($_GET['id']))->where('type', 'news')->first();
+
+        $article = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->where('type', 'news')->first();
         if (empty($article)) {
             return $this->showmessage('该素材不存在', ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
+
+        if ($article['parent_id'] > 0) {
+            $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->find($article['parent_id']);
+            if (empty($parent_model)) {
+                return $this->showmessage('父图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+
+            $parent_id = $article['parent_id'];
+        } else {
+            $parent_id = $id;
+        }
+
 
         if (!empty($article['file'])) {
             $article['file'] = RC_Upload::upload_url($article['file']);
@@ -336,7 +350,7 @@ class platform_material extends ecjia_platform
         $this->assign('wechat_type', $wechat_type);
 
         $article['articles'][0] = $article;
-        $data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $article['id'])->orderBy('id', 'asc')->get();
+        $data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $parent_id)->orderBy('id', 'asc')->get();
 
         if (!empty($data)) {
             foreach ($data as $k => $v) {
@@ -591,20 +605,21 @@ class platform_material extends ecjia_platform
     {
         $this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 
-        $parent_id = !empty($_GET['id']) ? $_GET['id'] : 0;
-        $title = !empty($_POST['title']) ? trim($_POST['title']) : '';
-        $author = !empty($_POST['author']) ? trim($_POST['author']) : '';
-        $is_show = !empty($_POST['is_show']) ? intval($_POST['is_show']) : 0;
-        $digest = !empty($_POST['digest']) ? $_POST['digest'] : '';
-        $link = !empty($_POST['link']) ? trim($_POST['link']) : '';
-        $content = !empty($_POST['content']) ? stripslashes($_POST['content']) : '';
-        $sort = !empty($_POST['sort']) ? intval($_POST['sort']) : 0;
-        $index = !empty($_POST['index']) ? intval($_POST['index']) : 0;
+        $parent_id  = !empty($_GET['parent_id']) ? $_GET['parent_id'] : 0;
+        $title      = !empty($_POST['title']) ? trim($_POST['title']) : '';
+        $author     = !empty($_POST['author']) ? trim($_POST['author']) : '';
+        $is_show    = !empty($_POST['is_show']) ? intval($_POST['is_show']) : 0;
+        $digest     = !empty($_POST['digest']) ? $_POST['digest'] : '';
+        $link       = !empty($_POST['link']) ? trim($_POST['link']) : '';
+        $content    = !empty($_POST['content']) ? stripslashes($_POST['content']) : '';
+        $index      = !empty($_POST['index']) ? intval($_POST['index']) : 0;
+        $sort       = $index;
+
 
         $thumb_media_id = $this->request->input('thumb_media_id');
 
-        if (empty($id)) {
-            return $this->showmessage('图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        if (empty($parent_id)) {
+            return $this->showmessage('父级图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         if (empty($title)) {
@@ -621,7 +636,7 @@ class platform_material extends ecjia_platform
 
         $wechat_id = $this->platformAccount->getAccountID();
 
-        $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->find($id);
+        $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->find($parent_id);
         if (empty($parent_model)) {
             return $this->showmessage('父图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
