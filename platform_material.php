@@ -358,6 +358,7 @@ class platform_material extends ecjia_platform
             }
         }
         
+        $this->assign('media_data', $media_data);
         $this->assign('article', $article);
         $this->assign('parent_id', $parent_id);
         $this->assign('id', $id);
