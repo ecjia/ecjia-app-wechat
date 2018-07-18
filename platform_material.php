@@ -312,8 +312,6 @@ class platform_material extends ecjia_platform
     {
         $this->admin_priv('wechat_material_update');
 
-        $material = !empty($_GET['material']) ? 1 : 0;
-
         $wechat_id = $this->platformAccount->getAccountID();
         $article = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', intval($_GET['id']))->where('type', 'news')->first();
         if (empty($article)) {
@@ -324,14 +322,13 @@ class platform_material extends ecjia_platform
             $article['file'] = RC_Upload::upload_url($article['file']);
         }
 
-
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.material_manage'), RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => 1))));
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('图文编辑'));
         ecjia_platform_screen::get_current_screen()->set_sidebar_display(false);
 
         $this->assign('ur_here', '图文编辑');
         $this->assign('form_action', RC_Uri::url('wechat/platform_material/update'));
-        $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => $material))));
+        $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'news', 'material' => 1))));
         $this->assign('action', 'article_add');
         $this->assign('warn', 'warn');
 
