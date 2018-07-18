@@ -419,6 +419,15 @@ class platform_material extends ecjia_platform
         	$uuid = $this->platformAccount->getUUID();
         	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
+        	if ($model->parent_id > 0 && $model->sort != $sort) {
+                $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->find($model->parent_id);
+                if (empty($parent_model)) {
+                    return $this->showmessage('父图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                }
+                $parent_model->media_url = 'wait_upload_article';
+                $parent_model->save();
+            }
+
         	$content = $this->uploadMassMessageContentImages($wechat, $content);
         	$data = array(
         		'title' 		=> $title,
@@ -466,6 +475,10 @@ class platform_material extends ecjia_platform
     
     /**
      * 添加子图文
+     *
+     * 第一步，保存进数据库
+     * 第二步，删除原有单图文数据
+     * 第三步，提交新多图文数据
      */
     public function add_child_article()
     {
@@ -539,17 +552,18 @@ class platform_material extends ecjia_platform
         }
 
         //添加多图文素材
-        //第一步，保存进数据库
         $id = RC_DB::table('wechat_media')->insertGetId($data);
         ecjia_admin::admin_log($title, 'add', 'article_material');
 
         return $this->showmessage(RC_Lang::get('wechat::wechat.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $id, 'material' => 1))));
+    }
 
-
-        //第二步，删除原有单图文数据
-
-        //第三步，提交新多图文数据
-
+    /**
+     * 移除子图文
+     */
+    public function remove_child_article()
+    {
+    
     }
 
     /**
@@ -615,41 +629,41 @@ class platform_material extends ecjia_platform
         }
     }
 
-    /**
-     * 删除图文封面图片
-     */
-    public function remove_file()
-    {
-        $this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
-
-        $wechat_id = $this->platformAccount->getAccountID();
-
-        $id = intval($_GET['id']);
-        $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
-        //删除图片
-        if (!empty($info['file'])) {
-            $disk = RC_Filesystem::disk();
-            $disk->delete(RC_Upload::upload_path() . $info['file']);
-        }
-
-        $uuid = $this->platformAccount->getUUID();
-        $wechat = wechat_method::wechat_instance($uuid);
-
-        if ($info['media_id'] && $info['is_material'] == 'material') {
-            //删除永久素材
-            try {
-                $msg = $wechat->deleteMaterial($info['thumb']);
-                if (is_ecjia_error($msg)) {
-                    return $this->showmessage(wechat_method::wechat_error($msg->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                }
-            } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
-        }
-        RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('file' => ''));
-
-        return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
-    }
+//    /**
+//     * 删除图文封面图片
+//     */
+//    public function remove_file()
+//    {
+//        $this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
+//
+//        $wechat_id = $this->platformAccount->getAccountID();
+//
+//        $id = intval($_GET['id']);
+//        $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
+//        //删除图片
+//        if (!empty($info['file'])) {
+//            $disk = RC_Filesystem::disk();
+//            $disk->delete(RC_Upload::upload_path() . $info['file']);
+//        }
+//
+//        $uuid = $this->platformAccount->getUUID();
+//        $wechat = wechat_method::wechat_instance($uuid);
+//
+//        if ($info['media_id'] && $info['is_material'] == 'material') {
+//            //删除永久素材
+//            try {
+//                $msg = $wechat->deleteMaterial($info['thumb']);
+//                if (is_ecjia_error($msg)) {
+//                    return $this->showmessage(wechat_method::wechat_error($msg->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+//                }
+//            } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+//                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+//            }
+//        }
+//        RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('file' => ''));
+//
+//        return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+//    }
 
     /**
      * 删除图文素材
