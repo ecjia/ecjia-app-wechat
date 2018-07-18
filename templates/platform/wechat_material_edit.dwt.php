@@ -41,7 +41,7 @@
 					{/if}
 					
                 	{if $media_data.media_url eq 'wait_upload_article'}
-                	<a class="btn btn-outline-primary plus_or_reply float-right m_r10 upload_multi_articles" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/upload_multi_articles')}&id={$parent_id}"><i class="ft-corner-left-up"></i> 发布素材</a>
+                	<a class="btn btn-outline-primary plus_or_reply float-right m_r10 upload_multi_articles" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/upload_multi_articles')}&id={$parent_id}"><i class="ft-arrow-up"></i> 发布素材</a>
                 	{/if}
                 </h4>
             </div>
@@ -52,7 +52,7 @@
 							<div class="mobile_news_view">
 								<!-- {foreach from=$article.articles key=key item=list}-->
 									<!-- {if $key eq 0} -->
-									<div class="select_mobile_area mobile_news_main">
+									<div class="select_mobile_area mobile_news_main {if $id eq $list.id}active{/if}">
 										<div class="show_image"><img src='{$list.file}'></div>
 										<div class="item">
 											<div class="default">{lang key='wechat::wechat.cover_images'}</div>
@@ -63,7 +63,7 @@
 										</div>
 									</div>
 									<!-- {else} -->
-									<div class="select_mobile_area mobile_news_auxiliary">
+									<div class="select_mobile_area mobile_news_auxiliary {if $id eq $list.id}active{/if}">
 										<div class="span7 news_auxiliary_title title_show">{$list.title}</div>
 										<div class="span4 thumb_image"><div>{lang key='wechat::wechat.thumbnail'}</div><div class="show_image"><img src='{$list.file}'></div></div>
 										<div class="edit_mask">
@@ -133,6 +133,7 @@
 											<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.label_sort'}</label>
 											<div class="col-lg-9 controls">
 												<input name='sort' class='span8 form-control' type='text' value='{$list.sort}'/>
+												<span class="help-block">排序从小到大</span>
 											</div>
 										</div>
 		
