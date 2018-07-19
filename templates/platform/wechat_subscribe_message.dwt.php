@@ -32,7 +32,7 @@
 					{/if}
                 </h4>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-12 card-body">
 				<div class="chat_box row" data-url='{$chat_action}' style="padding-left:15px;">
 					<div class="col-xl-8 col-lg-12 chat_content h550">
 						<div class="card">
@@ -62,21 +62,8 @@
 									</div>
 								</div>
 							</div>
-								<div class="chat_editor_box">
-									<textarea class="col-lg-12" name="chat_editor" id="chat_editor" cols="30" rows="3" maxlength="600"></textarea>
-									<div class="btn-group send_btns">
-										<a class="btn btn-small btn-info {if !$disabled}send_msg{/if}" {if $disabled}disabled="disabled"{/if} href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>
-									</div>
-									<span class="tip_info">{lang key='wechat::wechat.tip_info'}</span>
-									<span class="word_info">{lang key='wechat::wechat.word_info'}</span>
-									<input type="hidden" name="chat_user" id="chat_user" value="{$info.uid}" />
-									<input type="hidden" name="openid" id="openid" value="{$info.openid}" />
-									<input type="hidden" name="nickname" id="nickname" value="{$info.nickname}" />
-									<input type="hidden" name="platform_name" id="platform_name" value="{$info.platform_name}" />
-								</div>
 						</div>
 					</div>
-					
 					
 					<div class="col-xl-4 col-lg-12">
 						<div class="card info_content h550">
@@ -174,6 +161,49 @@
 								</div>
 							</div>
 						</div>
+					</div>
+
+					<div class="col-xl-12 col-lg-12 material-table m_t20" data-url="{url path='wechat/platform_response/get_material_list'}">
+						<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
+							<li class="nav-item text-material">
+								<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>
+							</li>
+							<li class="nav-item picture-material">
+								<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.image'}"><i class="fa fa-file-image-o"> 图片</i></a>
+							</li>
+							<li class="nav-item music-material">
+								<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.voice'}"><i class="fa fa-music"> 语音</i></a>
+							</li>
+							<li class="nav-item video-material">
+								<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.video'}"><i class="fa fa-video-camera"> 视频</i></a>
+							</li>
+							<li class="nav-item list-material">
+								<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.text_message'}"><i class="fa fa-list-alt"> 图文</i></a>
+							</li>
+						</ul>
+                   		<div class="text m_b10 {if $data.media_id}hidden{/if}">
+                   			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5"></textarea>
+                    	</div>
+                    	
+    					<div class="material_picture {if empty($data.media_id)}hidden{/if}">
+                        	{if $data['media']}
+                       			{if $data['media']['type'] == 'voice'}
+                           			<input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
+                          		{elseif $subscribe['media']['type'] == 'video'}
+                             		<input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
+                         		{else}
+                        			<input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
+                     			{/if}
+                    		{/if}
+              			</div>
+              			
+              			<span class="tip_info">{lang key='wechat::wechat.tip_info'}</span>
+						<span class="word_info">{lang key='wechat::wechat.word_info'}</span>
+						<input type="hidden" name="chat_user" id="chat_user" value="{$info.uid}" />
+						<input type="hidden" name="openid" id="openid" value="{$info.openid}" />
+						<input type="hidden" name="nickname" id="nickname" value="{$info.nickname}" />
+						<input type="hidden" name="platform_name" id="platform_name" value="{$info.platform_name}" />
+						<a class="btn f_r btn-info {if !$disabled}send_msg{/if}" {if $disabled}disabled{/if} href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>				
 					</div>
 				</div>
             </div>

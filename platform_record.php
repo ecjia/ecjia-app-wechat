@@ -339,7 +339,7 @@ class platform_record extends ecjia_platform
             $where = "cs.openid = '" . $openid . "' ";
         }
 
-        $count = RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->whereRaw($where)->count();
+        $count = RC_DB::table('wechat_customer_session as cs')->where(RC_DB::raw('cs.wechat_id'), $wechat_id)->whereRaw($where)->count();
         $page = new ecjia_platform_page($count, 10, 5);
 		$list = RC_DB::table('wechat_customer_session as cs')
         		->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cs.openid'))

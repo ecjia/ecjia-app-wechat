@@ -20,7 +20,7 @@
 </div>
 {/if}
 
-{if $media_data.media_url eq 'wait_upload_article'}
+{if $media_data.wait_upload_article eq 1}
 <div class="alert alert-info">
 	<strong>{lang key='wechat::wechat.label_notice'}</strong>该素材已修改，请点击 “发布素材” 按钮上传到微信公众平台。
 </div>
@@ -46,7 +46,7 @@
 					<a class="btn btn-outline-primary plus_or_reply float-right" href="{$action_link.href}" id="sticky_a"><i class="fa fa-reply"></i> {$action_link.text}</a>
 					{/if}
 					
-                	{if $media_data.media_url eq 'wait_upload_article'}
+                	{if $media_data.wait_upload_article eq 1}
                 	<a class="btn btn-outline-info plus_or_reply float-right m_r10 upload_multi_articles" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/upload_multi_articles')}&id={$parent_id}"><i class="ft-arrow-up"></i> 发布素材</a>
                 	{/if}
                 </h4>
