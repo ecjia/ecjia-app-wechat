@@ -1367,6 +1367,7 @@ class platform_material extends ecjia_platform
         $this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 
         $type = $this->request->query('type', 'news');
+        $page = $this->request->query('page', '1');
 
         $wechat_id = $this->platformAccount->getAccountID();
 
@@ -1374,8 +1375,21 @@ class platform_material extends ecjia_platform
             $uuid = $this->platformAccount->getUUID();
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
-            $rs = $wechat->material->lists($type);
+            $pagesize = 20;
+            $start = $pagesize * ($page - 1);
 
+            $rs = $wechat->material->lists($type, $start, $pagesize);
+            dd($rs);
+            $count = $rs['item_count'];
+            //最后一页，直接返回结束
+            if ($pagesize > $count) {
+
+                dd($pagesize + $start);
+            } else {
+                //还有下一页
+                $page++;
+            }
+            dd($rs);
             (new \Ecjia\App\Wechat\Synchronizes\MaterialStorage($wechat_id, $type, $rs))->save();
 
             //返回成功提示，继续请求下一条

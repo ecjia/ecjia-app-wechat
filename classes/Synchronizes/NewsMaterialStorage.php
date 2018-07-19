@@ -10,7 +10,7 @@ namespace Ecjia\App\Wechat\Synchronizes;
 
 use \Ecjia\App\Wechat\Models\WechatMediaModel;
 
-class MaterialStorage
+class NewsMaterialStorage
 {
     protected $wechat_id;
 
@@ -18,17 +18,11 @@ class MaterialStorage
 
     protected $data;
 
-    protected $material;
-
     public function __construct($wechat_id, $type, $data)
     {
         $this->wechat_id = $wechat_id;
         $this->type = $type;
         $this->data = $data;
-
-        $className = __NAMESPACE__ . sprintf("\\%sMaterialStorage", ucfirst($type));
-        dd($className);
-        $this->material = new $className($wechat_id, $type, $data);
     }
 
 
