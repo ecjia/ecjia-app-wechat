@@ -359,14 +359,15 @@
 
 /*===========================ECJIAUI START===========================*/
 .mobile_news_view {
-	width: 300px;
+	width: 302px;
 	border: 1px solid #dedede;
 }
 
 .mobile_news_view .mobile_news_main {
-	height: 160px;
+	height: 164px;
 	background: #dedede;
 	position: relative;
+	border: 2px solid #fff;
 }
 
 .mobile_news_view .mobile_news_main .default {
@@ -413,8 +414,9 @@
 }
 
 .mobile_news_view .mobile_news_auxiliary {
-	height: 120px;
+	height: 124px;
 	position: relative;
+	border: 2px solid #fff;
 }
 
 .mobile_news_auxiliary .edit_mask {
@@ -440,12 +442,11 @@
 }
 
 .mobile_news_view .mobile_news_auxiliary {
-	height: 120px;
+	height: 124px;
 	border-top: 1px solid #dedede;
 }
 
 .mobile_news_view .select_mobile_area.active {
-	border-top-width: 0;
     border: 2px solid #43b548;
 }
 
@@ -502,7 +503,7 @@
 
 .mobile_news_main .show_image img {
 	height: 160px;
-	width: 300px;
+	width: 296px;
 }
 
 .mobile_news_edit {
