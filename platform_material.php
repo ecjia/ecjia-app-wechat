@@ -1303,23 +1303,22 @@ class platform_material extends ecjia_platform
 
             $pagesize = 20;
             $start = $pagesize * ($page - 1);
+            $get_count = $pagesize * $page;
 
             $rs = $wechat->material->lists($type, $start, $pagesize);
-            dd($rs);
             $count = $rs['item_count'];
-            //最后一页，直接返回结束
-            if ($pagesize > $count) {
 
-                dd($pagesize + $start);
+            //最后一页，直接返回结束
+            if ($count == 0) {
+            	return $this->showmessage('获取完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/init', array('type' => $type, 'material' => 1))));
             } else {
                 //还有下一页
                 $page++;
             }
-            dd($rs);
-            (new \Ecjia\App\Wechat\Synchronizes\MaterialStorage($wechat_id, $type, $rs))->save();
-
-            //返回成功提示，继续请求下一条
+//             (new \Ecjia\App\Wechat\Synchronizes\MaterialStorage($wechat_id, $type, $rs))->save();
             
+            //返回成功提示，继续请求下一条
+            return $this->showmessage('已获取'.$get_count.'条素材', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/platform_material/get_material', array('type' => $type)), 'page' => $page));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
