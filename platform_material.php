@@ -1315,7 +1315,8 @@ class platform_material extends ecjia_platform
                 //还有下一页
                 $page++;
             }
-//             (new \Ecjia\App\Wechat\Synchronizes\MaterialStorage($wechat_id, $type, $rs))->save();
+
+            (new \Ecjia\App\Wechat\Synchronizes\MaterialStorage($wechat_id, $type, $rs))->save();
             
             //返回成功提示，继续请求下一条
             return $this->showmessage('已获取'.$get_count.'条素材', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/platform_material/get_material', array('type' => $type)), 'page' => $page));
