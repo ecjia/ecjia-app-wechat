@@ -32,7 +32,7 @@
 					{/if}
                 </h4>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-12 card-body">
 				<div class="chat_box row" data-url='{$chat_action}' style="padding-left:15px;">
 					<div class="col-xl-8 col-lg-12 chat_content h550">
 						<div class="card">
@@ -62,21 +62,8 @@
 									</div>
 								</div>
 							</div>
-								<div class="chat_editor_box">
-									<textarea class="col-lg-12" name="chat_editor" id="chat_editor" cols="30" rows="3" maxlength="600"></textarea>
-									<div class="btn-group send_btns">
-										<a class="btn btn-small btn-info {if !$disabled}send_msg{/if}" {if $disabled}disabled="disabled"{/if} href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>
-									</div>
-									<span class="tip_info">{lang key='wechat::wechat.tip_info'}</span>
-									<span class="word_info">{lang key='wechat::wechat.word_info'}</span>
-									<input type="hidden" name="chat_user" id="chat_user" value="{$info.uid}" />
-									<input type="hidden" name="openid" id="openid" value="{$info.openid}" />
-									<input type="hidden" name="nickname" id="nickname" value="{$info.nickname}" />
-									<input type="hidden" name="platform_name" id="platform_name" value="{$info.platform_name}" />
-								</div>
 						</div>
 					</div>
-					
 					
 					<div class="col-xl-4 col-lg-12">
 						<div class="card info_content h550">
@@ -174,6 +161,21 @@
 								</div>
 							</div>
 						</div>
+					</div>
+
+					<div class="col-xl-12 col-lg-12">
+					<div class="chat_editor_box">
+									<textarea class="col-lg-12" name="chat_editor" id="chat_editor" cols="30" rows="3" maxlength="600"></textarea>
+									<div class="btn-group send_btns">
+										<a class="btn btn-small btn-info {if !$disabled}send_msg{/if}" {if $disabled}disabled="disabled"{/if} href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>
+									</div>
+									<span class="tip_info">{lang key='wechat::wechat.tip_info'}</span>
+									<span class="word_info">{lang key='wechat::wechat.word_info'}</span>
+									<input type="hidden" name="chat_user" id="chat_user" value="{$info.uid}" />
+									<input type="hidden" name="openid" id="openid" value="{$info.openid}" />
+									<input type="hidden" name="nickname" id="nickname" value="{$info.nickname}" />
+									<input type="hidden" name="platform_name" id="platform_name" value="{$info.platform_name}" />
+								</div>
 					</div>
 				</div>
             </div>

@@ -32,7 +32,7 @@
 					{/if}
                 </h4>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-12 card-body">
 				<div class="chat_box row" data-url='{$chat_action}' style="padding-left:15px;">
 					<div class="col-xl-8 col-lg-12 chat_content h550">
 						<div class="card">
