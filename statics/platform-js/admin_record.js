@@ -21,69 +21,69 @@ app.admin_record = {
 			}
 		});
 		
-        $('[data-toggle="popover"]').each(function() {
-		    var el = $(this),
-		    	url = el.attr('data-url');
-	    	$.ajax({
-				type: "get",
-				url: url,
-				dataType: "json",
-				async: true, 
-				success: function(data){
-					if (data.content == null) {
-						return false;
-					}
-					var sex ='';
-					if (data.content.sex == 1) {
-						sex = js_lang.male;
-					} else if (data.content.sex == 2) {
-						sex = js_lang.female;
-					}
-					if (data.content.user_name) {
-						user_name = data.content.user_name;
-					} else {
-						user_name = js_lang.not_bind_yet;
-					}
-					var content = "<div class='accordion-body in collapse' id='customer_info'><div class='accordion-inner ecjiaf-border'>" +
-						"<div class='control-group control-group-small formSep'>" +
-							"<label class='label-title'>"+ js_lang.label_nick +"</label>" +
-							"<div class='controls l_h30'><span class='p_l10'>"+ data.content.nickname +"</span></div>" +
-						"</div>" +
-						"<div class='control-group control-group-small formSep'>" +
-							"<label class='label-title'>"+ js_lang.label_remark +"</label>" +
-							"<div class='controls l_h30'>" +
-								"<span class='p_l10'>"+ data.content.remark +"</span></div>" +
-						"</div>" +
-						"<div class='control-group control-group-small formSep'>" +
-							"<label class='label-title'>"+ js_lang.label_sex +"</label>" +
-							"<div class='controls l_h30'>" +
-							"<span class='p_l10'>"+ sex +"</span></div>" +
-						"</div>" +
-						"<div class='control-group control-group-small formSep'>" +
-							"<label class='label-title'>"+ js_lang.label_province +"</label>" +
-							"<div class='controls l_h30'>" +
-							"<span class='p_l10'>"+ data.content.province + ' - ' + data.content.city +"</span></div>" +
-						"</div>" +
-						"<div class='control-group control-group-small formSep'>" +
-							"<label class='label-title'>"+ js_lang.label_user_tag +"</label>" +
-							"<div class='controls l_h30'>" +
-								"<span class='p_l10'>"+ data.content.tag_name +"</span></div>" +
-						"</div>" +
-						"<div class='control-group control-group-small formSep'>" +
-							"<label class='label-title'>"+ data.content.subscribe_time +"</label>" +
-							"<div class='controls l_h30'>" +
-							"<span class='p_l10'>"+ data.content.subscribe_time +"</span></div>" +
-						"</div>" +
-						"<div class='control-group control-group-small formSep'>" +
-							"<label class='label-title'>"+ js_lang.label_bind_user +"</label>" +
-							"<div class='controls l_h30'>" +
-							"<span class='p_l10'>"+ user_name +"</span></div>" +
-						"</div>" +
-					"</div></div>";
-					$("#popover-content_" + data.content.uid).html(content);
-				}
-			});
-		});
+        // $('[data-toggle="popover"]').each(function() {
+		//     var el = $(this),
+		//     	url = el.attr('data-url');
+	    // 	$.ajax({
+		// 		type: "get",
+		// 		url: url,
+		// 		dataType: "json",
+		// 		async: true, 
+		// 		success: function(data){
+		// 			if (data.content == null) {
+		// 				return false;
+		// 			}
+		// 			var sex ='';
+		// 			if (data.content.sex == 1) {
+		// 				sex = js_lang.male;
+		// 			} else if (data.content.sex == 2) {
+		// 				sex = js_lang.female;
+		// 			}
+		// 			if (data.content.user_name) {
+		// 				user_name = data.content.user_name;
+		// 			} else {
+		// 				user_name = js_lang.not_bind_yet;
+		// 			}
+		// 			var content = "<div class='accordion-body in collapse' id='customer_info'><div class='accordion-inner ecjiaf-border'>" +
+		// 				"<div class='control-group control-group-small formSep'>" +
+		// 					"<label class='label-title'>"+ js_lang.label_nick +"</label>" +
+		// 					"<div class='controls l_h30'><span class='p_l10'>"+ data.content.nickname +"</span></div>" +
+		// 				"</div>" +
+		// 				"<div class='control-group control-group-small formSep'>" +
+		// 					"<label class='label-title'>"+ js_lang.label_remark +"</label>" +
+		// 					"<div class='controls l_h30'>" +
+		// 						"<span class='p_l10'>"+ data.content.remark +"</span></div>" +
+		// 				"</div>" +
+		// 				"<div class='control-group control-group-small formSep'>" +
+		// 					"<label class='label-title'>"+ js_lang.label_sex +"</label>" +
+		// 					"<div class='controls l_h30'>" +
+		// 					"<span class='p_l10'>"+ sex +"</span></div>" +
+		// 				"</div>" +
+		// 				"<div class='control-group control-group-small formSep'>" +
+		// 					"<label class='label-title'>"+ js_lang.label_province +"</label>" +
+		// 					"<div class='controls l_h30'>" +
+		// 					"<span class='p_l10'>"+ data.content.province + ' - ' + data.content.city +"</span></div>" +
+		// 				"</div>" +
+		// 				"<div class='control-group control-group-small formSep'>" +
+		// 					"<label class='label-title'>"+ js_lang.label_user_tag +"</label>" +
+		// 					"<div class='controls l_h30'>" +
+		// 						"<span class='p_l10'>"+ data.content.tag_name +"</span></div>" +
+		// 				"</div>" +
+		// 				"<div class='control-group control-group-small formSep'>" +
+		// 					"<label class='label-title'>"+ data.content.subscribe_time +"</label>" +
+		// 					"<div class='controls l_h30'>" +
+		// 					"<span class='p_l10'>"+ data.content.subscribe_time +"</span></div>" +
+		// 				"</div>" +
+		// 				"<div class='control-group control-group-small formSep'>" +
+		// 					"<label class='label-title'>"+ js_lang.label_bind_user +"</label>" +
+		// 					"<div class='controls l_h30'>" +
+		// 					"<span class='p_l10'>"+ user_name +"</span></div>" +
+		// 				"</div>" +
+		// 			"</div></div>";
+		// 			$("#popover-content_" + data.content.uid).html(content);
+		// 		}
+		// 	});
+		// });
 		
 //		$('[data-toggle="popover"]').popover({ 
 //    		html: true,

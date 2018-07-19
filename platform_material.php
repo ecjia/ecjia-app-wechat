@@ -1474,6 +1474,13 @@ class platform_material extends ecjia_platform
     }
 
     /**
+     * 获取素材
+     */
+    public function get_material() {
+
+    }
+
+    /**
      * 编辑素材名称或文件名称
      */
     public function edit_file_name()
