@@ -115,9 +115,9 @@
 				dataType: "json",
 				success: function (data) {
 					ecjia.platform.showmessage(data);
-					if (data.notice == 1) {
+					if (data.page != undefined) {
 						var url = data.url;
-						app.material.get_material_info(url + '&p=' + data.p);
+						app.material.get_material_info(url + '&page=' + data.page);
 					}
 				}
 			});
