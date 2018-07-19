@@ -573,12 +573,12 @@ class platform_material extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         //查找多图文素材
-        $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('parent_id', 0)->find($id);
+        $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('type', 'news')->find($id);
         if (empty($model)) {
-            return $this->showmessage('多图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage('图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->find($model->parent_id);
+        $parent_model = WechatMediaModel::where('wechat_id', $wechat_id)->where('type', 'news')->find($model->parent_id);
         if (empty($parent_model)) {
             return $this->showmessage('父图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -591,7 +591,7 @@ class platform_material extends ecjia_platform
 
         $model->delete();
 
-        return $this->showmessage(sprintf("移除%s图文素材成功", $model->title), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $id, 'material' => 1))));
+        return $this->showmessage(sprintf("移除%s图文素材成功", $model->title), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $model->parent_id, 'material' => 1))));
     }
 
     /**
