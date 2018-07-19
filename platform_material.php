@@ -108,6 +108,7 @@ class platform_material extends ecjia_platform
 
         if ($type == 'news') {
             $action_link = array('text' => RC_Lang::get('wechat::wechat.add_images'), 'href' => RC_Uri::url('wechat/platform_material/add'));
+            $get_material_link = array('text' => '获取图文素材', 'href' => RC_Uri::url("wechat/platform_material/get_material", ['type' => 'news']));
 
             ecjia_platform_screen::get_current_screen()->set_help_sidebar(
                 '<p>图文素材：分为单图文、多图文素材。支持图片，语音，视频，缩略图素材。</p>' .
@@ -116,6 +117,7 @@ class platform_material extends ecjia_platform
             );
         } elseif ($type == 'image') {
             $form_action = RC_Uri::url('wechat/platform_material/picture_insert');
+            $get_material_link = array('text' => '获取图片素材', 'href' => RC_Uri::url("wechat/platform_material/get_material", ['type' => 'image']));
 
             if ($material) {
                 ecjia_platform_screen::get_current_screen()->set_help_sidebar(
@@ -129,6 +131,7 @@ class platform_material extends ecjia_platform
 
         } elseif ($type == 'voice') {
             $form_action = RC_Uri::url('wechat/platform_material/voice_insert');
+            $get_material_link = array('text' => '获取语音素材', 'href' => RC_Uri::url("wechat/platform_material/get_material", ['type' => 'voice']));
 
             if ($material) {
                 ecjia_platform_screen::get_current_screen()->set_help_sidebar(
@@ -142,6 +145,7 @@ class platform_material extends ecjia_platform
 
         } elseif ($type == 'video') {
             $action_link = array('text' => RC_Lang::get('wechat::wechat.add_video'), 'href' => RC_Uri::url('wechat/platform_material/video_add'));
+            $get_material_link = array('text' => '获取视频素材', 'href' => RC_Uri::url("wechat/platform_material/get_material", ['type' => 'video']));
 
             ecjia_platform_screen::get_current_screen()->set_help_sidebar(
                 '<p>视频（video）素材大小：10MB，支持MP4格式。</p>' .
@@ -163,6 +167,7 @@ class platform_material extends ecjia_platform
         
         $this->assign('ur_here', $ur_here);
         $this->assign('action_link', $action_link);
+        $this->assign('get_material_link', $get_material_link);
         $this->assign('form_action', $form_action);
 
         $this->assign('warn', 'warn');
@@ -1304,125 +1309,6 @@ class platform_material extends ecjia_platform
         }
     }
 
-//    /**
-//     * 素材编辑
-//     */
-//    public function video_edit()
-//    {
-//        $this->admin_priv('wechat_material_update');
-//
-//        $material = $this->request->query('material') ? 1 : 0;
-//        $id = $this->request->query('id');
-//
-//        $nav_here = RC_Lang::get('wechat::wechat.forever_material');
-//        if ($material != 1) {
-//            $nav_here = RC_Lang::get('wechat::wechat.provisional_material');
-//        }
-//
-//        ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-//        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here($nav_here, RC_Uri::url('wechat/platform_material/init', array('type' => 'video'))));
-//        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.edit_material')));
-//        ecjia_platform_screen::get_current_screen()->set_help_sidebar(
-//            '<p>视频（video）素材大小：10MB，支持MP4格式。</p>' .
-//            '<p>建议直接使用优酷等第三方视频网站的视频地址。优点:不占用服务器资源，支持更大、更多格式的视频素材。</p>'
-//        );
-//
-//        $this->assign('ur_here', RC_Lang::get('wechat::wechat.edit_video'));
-//        $this->assign('form_action', RC_Uri::url('wechat/platform_material/video_update', array('material' => $material)));
-//        $this->assign('action_link', array('text' => RC_Lang::get('wechat::wechat.material_manage'), 'href' => RC_Uri::url('wechat/platform_material/init', array('type' => 'video', 'material' => $material))));
-//        $this->assign('action', 'video_add');
-//
-//        $wechat_id = $this->platformAccount->getAccountID();
-//
-//        $this->assign('warn', 'warn');
-//
-//        $wechat_type = $this->platformAccount->getType();
-//        $this->assign('wechat_type', $wechat_type);
-//
-//        $article = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
-//        if (!empty($article['file'])) {
-//            $article['files'] = RC_Uri::admin_url('statics/images/ecjiafile.png');
-//        }
-//        $this->assign('article', $article);
-//
-//        $this->display('wechat_material_add.dwt');
-//    }
-
-//    /**
-//     * 视频素材更新
-//     */
-//    public function video_update()
-//    {
-//        $this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
-//
-//        $id = intval($this->request->input('id', 0));
-//        $material = $this->request->input('material') ? 1 : 0;
-//        $title = $this->request->input('video_title');
-//        $digest = $this->request->input('video_digest');
-//
-//        if (empty($title)) {
-//            return $this->showmessage(RC_Lang::get('wechat::wechat.enter_title'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//        }
-//        if ($material == 1 && empty($digest)) {
-//            return $this->showmessage(RC_Lang::get('wechat::wechat.video_intro'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//        }
-//
-//        $wechat_id = $this->platformAccount->getAccountID();
-//
-//        $medias = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
-//        if (empty($medias['file']) && empty($_FILES['video'])) {
-//            return $this->showmessage(RC_Lang::get('wechat::wechat.upload_viedo'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//        }
-//        dd($_FILES);
-//        if ((isset($_FILES['video']['error']) && $_FILES['video']['error'] == 0) || (!isset($_FILES['video']['error']) && isset($_FILES['video']['tmp_name']) && $_FILES['video']['tmp_name'] != 'none')) {
-//            $upload = RC_Upload::uploader(null, array('save_path' => 'data/material/video', 'auto_sub_dirs' => true));
-//            $upload->allowed_type('mp4');
-//            $upload->allowed_size('10485760');
-//            $upload->allowed_mime('video/mp4');
-//
-//            if (!$upload->check_upload_file($_FILES['video'])) {
-//                return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//            }
-//
-//            $info = $upload->upload($_FILES['video']);
-//            if (!empty($info)) {
-//                if (!empty($medias['file'])) {
-//                    $upload->remove($medias['file']);
-//                }
-//                $file = $upload->get_position($info);
-//            } else {
-//                return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//            }
-//        } else {
-//            if (!empty($medias['file'])) {
-//                $file = $medias['file'];
-//            } else {
-//                $disk = RC_Filesystem::disk();
-//                $disk->delete(RC_Upload::upload_path() . $medias['file']);
-//            }
-//        }
-//
-//
-//
-//
-//        $uuid = $this->platformAccount->getUUID();
-//        $wechat = wechat_method::wechat_instance($uuid);
-//
-//
-//        $data = array(
-//            'title' => $title,
-//            'is_show' => 0,
-//            'digest' => $digest,
-//            'file' => $file,
-//            'type' => 'video',
-//            'edit_time' => RC_Time::gmtime(),
-//            'size' => $_FILES['video']['size'],
-//        );
-//        RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
-//
-//        ecjia_admin::admin_log($title, 'edit', 'video_material');
-//        return $this->showmessage(RC_Lang::get('wechat::wechat.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/video_edit', array('id' => $id, 'material' => $material))));
-//    }
 
     /**
      * 删除视频素材
@@ -1476,7 +1362,28 @@ class platform_material extends ecjia_platform
     /**
      * 获取素材
      */
-    public function get_material() {
+    public function get_material()
+    {
+        $this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
+
+        $type = $this->request->query('type', 'news');
+
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        try {
+            $uuid = $this->platformAccount->getUUID();
+            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+
+            $rs = $wechat->material->lists($type);
+
+            (new \Ecjia\App\Wechat\Synchronizes\MaterialStorage($wechat_id, $type, $rs))->save();
+
+            //返回成功提示，继续请求下一条
+            
+
+        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
 
     }
 

@@ -37,9 +37,11 @@
                 <h4 class="card-title">{$ur_here}</h4>
             </div>
 
+            {if $get_material_link}
 			<div class="card-body">
-				<div><button type="button" class="get_material btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_material/get_material")}'>获取素材</button><span style="margin-left: 20px;">通过点击该按钮可以获取微信公众平台素材到本地。</span></div><br/>
+				<div><button type="button" class="get_material btn btn-outline-primary" data-url='{$get_material_link.href}'>{$get_material_link.text}</button><span style="margin-left: 20px;">通过点击该按钮可以获取微信公众平台素材到本地。</span></div><br/>
 			</div>
+            {/if}
 
 			<div class="card-body">
 				<ul class="nav nav-pills float-left">

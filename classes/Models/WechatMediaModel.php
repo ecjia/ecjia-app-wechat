@@ -47,7 +47,15 @@ class WechatMediaModel extends Model
         'edit_time',
         'type',
         'article_id',
-        'sort'
+        'sort',
+        'media_id',
+        'is_material',
+        'media_url',
+        'thumb_url',
+        'need_open_comment',
+        'only_fans_can_comment',
+        'wait_upload_article',
+        'parent_id',
     ];
 
     protected $guarded = [];
@@ -69,6 +77,18 @@ class WechatMediaModel extends Model
     public function scopeThumbMediaId($query, $media_id)
     {
         return $query->where('type', 'thumb')->where('media_id', $media_id);
+    }
+
+
+    /**
+     * 添加图文素材
+     * @param $parent_id
+     * @param array $news
+     */
+    public function addMaterialNews($parent_id, array $news)
+    {
+        $data = [];
+        $this->add();
     }
 
 
