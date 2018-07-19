@@ -55,7 +55,7 @@ class WechatRecord
             $content = [
                 'media_id' => $file //通过素材管理接口上传多媒体文件，得到的id。
             ];
-            self::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.image_content'));
+            self::replyMsg($message->get('FromUserName'), '回复图片消息');
             
             return new Image($content);
         } 
@@ -73,7 +73,7 @@ class WechatRecord
             $content = [
                 'media_id' => $file //通过素材管理接口上传多媒体文件，得到的id。
             ];
-            self::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.voice_content'));
+            self::replyMsg($message->get('FromUserName'), '回复语音消息');
             
             return new Voice($content);
         } 
@@ -93,7 +93,7 @@ class WechatRecord
                 'title' => $title,
                 'description' => $digest
             ];
-            self::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.video_content'));
+            self::replyMsg($message->get('FromUserName'), '回复视频消息');
         
             return new Video($content);
         }
@@ -114,7 +114,7 @@ class WechatRecord
                 'url' => $url,
                 'image' => $image,
             ];
-            self::replyMsg($message->get('FromUserName'), RC_Lang::get('wechat::wechat.news_content'));
+            self::replyMsg($message->get('FromUserName'), '回复图文消息');
         
             return new News($content);
         } 
@@ -157,7 +157,7 @@ class WechatRecord
                 'hq_url' => $hq_url, 
                 'thumb_media_id' => $thumb_media_id, 
             ];
-            self::replyMsg($message->get('FromUserName'), '音乐消息');
+            self::replyMsg($message->get('FromUserName'), '回复音乐消息');
             
             return new Music($content);
         }
