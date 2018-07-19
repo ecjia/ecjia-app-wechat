@@ -171,7 +171,6 @@ class platform_material extends ecjia_platform
         $this->assign('wechat_type', $wechat_type);
 
         $lists = $this->get_all_material();
-//        dd($lists);
         $this->assign('lists', $lists);
 
         $this->display('wechat_material.dwt');
@@ -1691,11 +1690,7 @@ class platform_material extends ecjia_platform
         } else {
             $type = $this->request->query('type', 'image');
         }
-
         $filter['type'] = $type;
-
-//        $filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
-//        $type = $filter['type'];
 
         $wechat_media_model = Ecjia\App\Wechat\Models\WechatMediaModel::where('wechat_id', $wechat_id);
 
@@ -1723,12 +1718,9 @@ class platform_material extends ecjia_platform
             $filter['count'] = $sumdata->toArray();
         }
 
-//        dd($sumdata);
-
         $count = $sumdata->$type;
         $page = new ecjia_platform_page($count, 12, 5);
         $data = $wechat_media_model->orderBy('sort', 'asc')->orderBy('id', 'desc')->take(12)->skip($page->start_id - 1)->get();
-//        dd($data);
 
         $newData = $data->map(function($item) {
             $item->add_time = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $item->add_time);

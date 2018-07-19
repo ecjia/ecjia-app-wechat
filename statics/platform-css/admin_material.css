@@ -144,19 +144,16 @@
 }
 
 .ecj-wookmark ul li.thumbnail {
-	width: 23%;
+	width: 100%;
 	margin-right: 2%;
 	cursor: auto;
 	border: 1px solid #eee;
 	border-radius: 4px;
+	margin-bottom: 20px;
 }
 
 .ecj-wookmark ul li.thumbnail:nth-child(4n) {
 	margin-right: 2%;
-}
-
-.ecj-wookmark ul li.thumbnail:nth-of-type(4n+1) {
-	clear: inherit;
 }
 
 .mass_message_group .chzn-container .chzn-results {
@@ -638,4 +635,32 @@
 .empty_material {
 	line-height: 290px;
     text-align: center;
+}
+
+.weui-desktop-media__list-col {
+	width: 25%;
+    padding-right: 10px;
+    box-sizing: border-box;
+	font-size: 14px;
+	display: inline-block;
+    vertical-align: top;
+}
+
+.wookmark_list ul.wookmark-goods-photo {
+	margin-right: -10px;
+    font-size: 0;
+}
+
+.wookmark_list ul.wookmark-goods-photo .thumbnail.move-mod-group p {
+	color: #666;
+    font-size: 15px;
+    margin: 0 4px 2px;
+    overflow: hidden;
+}
+
+.wookmark_list ul.wookmark-goods-photo .thumbnail.move-mod-group p a {
+	display: inline-block;
+    margin-left: 10px;
+    float: right;
+    opacity: .6;
 }

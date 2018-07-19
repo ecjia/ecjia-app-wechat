@@ -3,51 +3,205 @@
     <!-- {if $lists.item} -->
     <div class="wmk_grid ecj-wookmark wookmark_list material_pictures">
         <ul class="wookmark-goods-photo move-mod nomove">
-            <!-- {foreach from=$lists.item item=articles} -->
-            <!-- {if $articles.articles} -->
-            <li class="thumbnail move-mod-group">
-                <div class="article">
-                    <div class="cover">
-                        <a target="__blank" href="{$articles.file}">
-                            <img src="{$articles.file}" />
-                        </a>
-                        <span>{$articles.title}</span>
+            <div class="weui-desktop-media__list-col">
+            <!-- {foreach from=$lists.item item=articles key=k} -->
+                {if ($k+4) % 4 == 0}
+                <!-- {if $articles.articles} -->
+                <li class="thumbnail move-mod-group grid-item">
+                    <div class="article">
+                        <div class="cover">
+                            <a target="__blank" href="{$articles.file}">
+                                <img src="{$articles.file}" />
+                            </a>
+                            <span>{$articles.title}</span>
+                        </div>
                     </div>
-                </div>
-                <!-- {foreach from=$articles.articles key=key item=val} -->
-                <div class="article_list">
-                    <div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
-                    <a target="__blank" href="{$val.file}">
-                        <img src="{$val.file}" class="pull-right" />
-                    </a>
-                </div>
-                <!-- {/foreach} -->
-                <p>
-                    <a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_imgtext_cover'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
-                    <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
-                </p>
-            </li>
-            <!-- {else} -->
-            <li class="thumbnail move-mod-group">
-                <div class="articles">
-                    <div class="articles_title">{if $articles.title}{$articles.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
-                    <p class="ecjiaf-pre">{$articles.add_time}</p>
-                    <a target="__blank" href="{$articles.file}">
-                        <img src="{$articles.file}"/>
-                    </a>
-                    <div class="articles_content">{$articles.content}</div>
-                </div>
-                <p>
-                    <a class="ajaxremove" data-imgid="{$articles.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_images_material'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
-                    <!-- {if $articles.article_id} -->
-                    <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
-                    <!-- {else} -->
-                    <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
-                    <!-- {/if} -->
-                </p>
-            </li>
-            <!-- {/if} -->
+                    <!-- {foreach from=$articles.articles key=key item=val} -->
+                    <div class="article_list">
+                        <div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
+                        <a target="__blank" href="{$val.file}">
+                            <img src="{$val.file}" class="pull-right" />
+                        </a>
+                    </div>
+                    <!-- {/foreach} -->
+                    <p>
+                        <a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_imgtext_cover'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                    </p>
+                </li>
+                <!-- {else} -->
+                <li class="thumbnail move-mod-group grid-item">
+                    <div class="articles">
+                        <div class="articles_title">{if $articles.title}{$articles.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
+                        <p class="ecjiaf-pre">{$articles.add_time}</p>
+                        <a target="__blank" href="{$articles.file}">
+                            <img src="{$articles.file}"/>
+                        </a>
+                        <div class="articles_content">{$articles.content}</div>
+                    </div>
+                    <p>
+                        <a class="ajaxremove" data-imgid="{$articles.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_images_material'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
+                        <!-- {if $articles.article_id} -->
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                        <!-- {else} -->
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                        <!-- {/if} -->
+                    </p>
+                </li>
+                <!-- {/if} -->
+                {/if}
             <!-- {/foreach} -->
+            </div>
+
+            <div class="weui-desktop-media__list-col">
+            <!-- {foreach from=$lists.item item=articles key=k} -->
+                {if ($k+3) % 4 == 0}
+                <!-- {if $articles.articles} -->
+                <li class="thumbnail move-mod-group grid-item">
+                    <div class="article">
+                        <div class="cover">
+                            <a target="__blank" href="{$articles.file}">
+                                <img src="{$articles.file}" />
+                            </a>
+                            <span>{$articles.title}</span>
+                        </div>
+                    </div>
+                    <!-- {foreach from=$articles.articles key=key item=val} -->
+                    <div class="article_list">
+                        <div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
+                        <a target="__blank" href="{$val.file}">
+                            <img src="{$val.file}" class="pull-right" />
+                        </a>
+                    </div>
+                    <!-- {/foreach} -->
+                    <p>
+                        <a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_imgtext_cover'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                    </p>
+                </li>
+                <!-- {else} -->
+                <li class="thumbnail move-mod-group grid-item">
+                    <div class="articles">
+                        <div class="articles_title">{if $articles.title}{$articles.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
+                        <p class="ecjiaf-pre">{$articles.add_time}</p>
+                        <a target="__blank" href="{$articles.file}">
+                            <img src="{$articles.file}"/>
+                        </a>
+                        <div class="articles_content">{$articles.content}</div>
+                    </div>
+                    <p>
+                        <a class="ajaxremove" data-imgid="{$articles.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_images_material'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
+                        <!-- {if $articles.article_id} -->
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                        <!-- {else} -->
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                        <!-- {/if} -->
+                    </p>
+                </li>
+                <!-- {/if} -->
+                {/if}
+            <!-- {/foreach} -->
+            </div>
+
+            <div class="weui-desktop-media__list-col">
+            <!-- {foreach from=$lists.item item=articles key=k} -->
+                {if ($k+2) % 4 == 0}
+                <!-- {if $articles.articles} -->
+                <li class="thumbnail move-mod-group grid-item">
+                    <div class="article">
+                        <div class="cover">
+                            <a target="__blank" href="{$articles.file}">
+                                <img src="{$articles.file}" />
+                            </a>
+                            <span>{$articles.title}</span>
+                        </div>
+                    </div>
+                    <!-- {foreach from=$articles.articles key=key item=val} -->
+                    <div class="article_list">
+                        <div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
+                        <a target="__blank" href="{$val.file}">
+                            <img src="{$val.file}" class="pull-right" />
+                        </a>
+                    </div>
+                    <!-- {/foreach} -->
+                    <p>
+                        <a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_imgtext_cover'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                    </p>
+                </li>
+                <!-- {else} -->
+                <li class="thumbnail move-mod-group grid-item">
+                    <div class="articles">
+                        <div class="articles_title">{if $articles.title}{$articles.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
+                        <p class="ecjiaf-pre">{$articles.add_time}</p>
+                        <a target="__blank" href="{$articles.file}">
+                            <img src="{$articles.file}"/>
+                        </a>
+                        <div class="articles_content">{$articles.content}</div>
+                    </div>
+                    <p>
+                        <a class="ajaxremove" data-imgid="{$articles.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_images_material'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
+                        <!-- {if $articles.article_id} -->
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                        <!-- {else} -->
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                        <!-- {/if} -->
+                    </p>
+                </li>
+                <!-- {/if} -->
+                {/if}
+            <!-- {/foreach} -->
+            </div>
+
+            <div class="weui-desktop-media__list-col">
+            <!-- {foreach from=$lists.item item=articles key=k} -->
+                {if ($k+1) % 4 == 0}
+                <!-- {if $articles.articles} -->
+                <li class="thumbnail move-mod-group grid-item">
+                    <div class="article">
+                        <div class="cover">
+                            <a target="__blank" href="{$articles.file}">
+                                <img src="{$articles.file}" />
+                            </a>
+                            <span>{$articles.title}</span>
+                        </div>
+                    </div>
+                    <!-- {foreach from=$articles.articles key=key item=val} -->
+                    <div class="article_list">
+                        <div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
+                        <a target="__blank" href="{$val.file}">
+                            <img src="{$val.file}" class="pull-right" />
+                        </a>
+                    </div>
+                    <!-- {/foreach} -->
+                    <p>
+                        <a class="ajaxremove" data-imgid="{$val.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_imgtext_cover'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                    </p>
+                </li>
+                <!-- {else} -->
+                <li class="thumbnail move-mod-group grid-item">
+                    <div class="articles">
+                        <div class="articles_title">{if $articles.title}{$articles.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
+                        <p class="ecjiaf-pre">{$articles.add_time}</p>
+                        <a target="__blank" href="{$articles.file}">
+                            <img src="{$articles.file}"/>
+                        </a>
+                        <div class="articles_content">{$articles.content}</div>
+                    </div>
+                    <p>
+                        <a class="ajaxremove" data-imgid="{$articles.id}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_images_material'}" href='{url path="wechat/platform_material/remove" args="id={$articles.id}"}' title="{lang key='wechat::wechat.delete'}"><i class="ft-trash-2"></i></a>
+                        <!-- {if $articles.article_id} -->
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                        <!-- {else} -->
+                        <a href='{url path="wechat/platform_material/edit" args="id={$articles.id}"}'><i class="ft-edit-2"></i></a>
+                        <!-- {/if} -->
+                    </p>
+                </li>
+                <!-- {/if} -->
+                {/if}
+            <!-- {/foreach} -->
+            </div>
         </ul>
     </div>
     <!-- {else} -->
