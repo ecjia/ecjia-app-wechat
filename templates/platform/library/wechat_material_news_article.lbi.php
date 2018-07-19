@@ -1,5 +1,5 @@
 <!-- {if $articles.articles} -->
-<li class="thumbnail move-mod-group grid-item">
+<li class="thumbnail move-mod-group grid-item big">
     <div class="article">
         <div class="cover">
             <a target="__blank" href="{$articles.file}">
@@ -22,7 +22,7 @@
     </p>
 </li>
 <!-- {else} -->
-<li class="thumbnail move-mod-group grid-item">
+<li class="thumbnail move-mod-group grid-item big">
     <div class="articles">
         <div class="articles_title">{if $articles.title}{$articles.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
         <p class="ecjiaf-pre">{$articles.add_time}</p>

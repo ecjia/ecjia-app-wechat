@@ -144,11 +144,15 @@
 }
 
 .ecj-wookmark ul li.thumbnail {
-	width: 100%;
+	width: 23%;
 	margin-right: 2%;
 	cursor: auto;
 	border: 1px solid #eee;
 	border-radius: 4px;
+}
+
+.ecj-wookmark ul li.thumbnail.big {
+	width: 100%;
 	margin-bottom: 20px;
 }
 
@@ -647,8 +651,13 @@
     vertical-align: top;
 }
 
-.wookmark_list ul.wookmark-goods-photo {
+.wookmark_list ul.wookmark-goods-photo.wookmark-news {
 	margin-right: -10px;
+    font-size: 0;
+}
+
+.wookmark_list ul.wookmark-goods-photo {
+	margin-right: -2%;
     font-size: 0;
 }
 

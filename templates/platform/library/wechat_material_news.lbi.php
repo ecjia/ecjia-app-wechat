@@ -2,7 +2,7 @@
 <div class="row-fluid goods-photo-list">
     <!-- {if $lists.item} -->
     <div class="wmk_grid ecj-wookmark wookmark_list material_pictures">
-        <ul class="wookmark-goods-photo move-mod nomove">
+        <ul class="wookmark-goods-photo move-mod nomove wookmark-news">
 
             <div class="weui-desktop-media__list-col">
             <!-- {foreach from=$lists.item item=articles key=k} -->
