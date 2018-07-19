@@ -38,25 +38,21 @@ class MaterialStorage
             $create_time = array_get($item, 'content.create_time');
             $update_time = array_get($item, 'content.update_time');
             $news_item = array_get($item, 'content.news_item');
-//            dd($item);
+
             $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('media_id', $media_id)->where('type', 'news')->first();
             if (!empty($model)) {
                 //已存在，更新数据
-                //不存在，添加数据
                 if (count($news_item) > 1) {
                     $this->updateMultiNews($model, $news_item, $create_time, $update_time);
                 } else {
-//                    dd($news_item);
                     $this->updateMainNews($model, $news_item[0], $create_time, $update_time);
                 }
-
 
             } else {
                 //不存在，添加数据
                 if (count($news_item) > 1) {
                     $this->saveMultiNews($news_item, $create_time, $update_time);
                 } else {
-//                    dd($news_item);
                     $this->saveMainNews($news_item[0], $create_time, $update_time);
                 }
             }
