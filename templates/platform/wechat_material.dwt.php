@@ -38,6 +38,10 @@
             </div>
 
 			<div class="card-body">
+				<div><button type="button" class="get_material btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_material/get_material")}'>获取素材</button><span style="margin-left: 20px;">通过点击该按钮可以获取微信公众平台素材到本地。</span></div><br/>
+			</div>
+
+			<div class="card-body">
 				<ul class="nav nav-pills float-left">
 					<!-- {if $smarty.get.material eq 1} -->
      				<li class="nav-item">
