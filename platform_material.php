@@ -423,7 +423,7 @@ class platform_material extends ecjia_platform
                 if (empty($parent_model)) {
                     return $this->showmessage('父图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
-                $parent_model->media_url = 'wait_upload_article';
+                $parent_model->wait_upload_article = 1;
                 $parent_model->save();
             }
 
@@ -545,8 +545,8 @@ class platform_material extends ecjia_platform
         );
 
         //标记父图文素材等待上传中
-        if ($parent_model->media_url != 'wait_upload_article') {
-            $parent_model->media_url = 'wait_upload_article';
+        if ($parent_model->wait_upload_article != 1) {
+            $parent_model->wait_upload_article = 1;
             $parent_model->save();
         }
 
@@ -584,8 +584,8 @@ class platform_material extends ecjia_platform
         }
 
         //标记父图文素材等待上传中
-        if ($parent_model->media_url != 'wait_upload_article') {
-            $parent_model->media_url = 'wait_upload_article';
+        if ($parent_model->wait_upload_article != 1) {
+            $parent_model->wait_upload_article = 1;
             $parent_model->save();
         }
 
@@ -642,8 +642,8 @@ class platform_material extends ecjia_platform
 
                 //图文消息的id
                 $model->media_id = $rs['media_id'];
-                if ($model->media_url == 'wait_upload_article') {
-                    $model->media_url = '';
+                if ($model->wait_upload_article == 1) {
+                    $model->media_url = 0;
                 }
                 $model->save();
 
