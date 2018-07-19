@@ -41,7 +41,7 @@
 					{/if}
 					
                 	{if $media_data.media_url eq 'wait_upload_article'}
-                	<a class="btn btn-outline-primary plus_or_reply float-right m_r10 upload_multi_articles" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/upload_multi_articles')}&id={$parent_id}"><i class="ft-arrow-up"></i> 发布素材</a>
+                	<a class="btn btn-outline-info plus_or_reply float-right m_r10 upload_multi_articles" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/upload_multi_articles')}&id={$parent_id}"><i class="ft-arrow-up"></i> 发布素材</a>
                 	{/if}
                 </h4>
             </div>
@@ -68,6 +68,7 @@
 										<div class="span4 thumb_image"><div>{lang key='wechat::wechat.thumbnail'}</div><div class="show_image"><img src='{$list.file}'></div></div>
 										<div class="edit_mask">
 											<a href="javascript:;" class="data-pjax" data-id="{$list.id}" data-href='{url path="wechat/platform_material/get_material_info" args="id={$list.id}&material=1"}'><i class="ft-edit-2"></i></a>&nbsp;&nbsp;&nbsp;
+											<a href="javascript:;" data-toggle="remove_child_material" data-url='{url path="wechat/platform_material/remove_child_article" args="id={$list.id}"}'><i class="ft-trash-2"></i></a>
 										</div>
 									</div>
 									<!-- {/if} -->

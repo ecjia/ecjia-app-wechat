@@ -256,6 +256,7 @@
 			app.material_edit.image_show();
 			app.material_edit.issue_submit();
 			app.material_edit.upload_multi_articles();
+			app.material_edit.remove_child_article();
 			
 			var index = $('.mobile_news_view').find('.select_mobile_area').length;
 			if (index >= 8 ) {
@@ -616,6 +617,16 @@
 				})
 			});
 		},
+
+		remove_child_article: function() {
+			$("[data-toggle='remove_child_material']").off('click').on('click', function(e) {
+				e.preventDefault();
+				var url = $(this).attr('data-url');
+				$.post(url, function(data) {
+					ecjia.platform.showmessage(data);
+				})
+			});
+		}
 	};
 })(ecjia.platform, jQuery);
 
