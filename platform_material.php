@@ -112,8 +112,7 @@ class platform_material extends ecjia_platform
             ecjia_platform_screen::get_current_screen()->set_help_sidebar(
                 '<p>图文素材：分为单图文、多图文素材。支持图片，语音，视频，缩略图素材。</p>' .
                 '<p>单图文素材添加好之后，即可将多条单图文素材组合成为一条多图文素材。</p>' .
-                '<p>★ 注意事项：单图文素材如果经过修改，则原先添加好的多图文素材需要重新组合。</p>' .
-                '<p>★ 注意事项：已经群发过的素材请勿修改，修改会导致群发过的素材无法找到。</p>'
+                '<p>★ 注意事项：单图文素材如果经过修改，则原先添加好的多图文素材需要重新组合。</p>'
             );
         } elseif ($type == 'image') {
             $form_action = RC_Uri::url('wechat/platform_material/picture_insert');
