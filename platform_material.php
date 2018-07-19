@@ -662,42 +662,6 @@ class platform_material extends ecjia_platform
         }
     }
 
-//    /**
-//     * 删除图文封面图片
-//     */
-//    public function remove_file()
-//    {
-//        $this->admin_priv('wechat_material_delete', ecjia::MSGTYPE_JSON);
-//
-//        $wechat_id = $this->platformAccount->getAccountID();
-//
-//        $id = intval($_GET['id']);
-//        $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
-//        //删除图片
-//        if (!empty($info['file'])) {
-//            $disk = RC_Filesystem::disk();
-//            $disk->delete(RC_Upload::upload_path() . $info['file']);
-//        }
-//
-//        $uuid = $this->platformAccount->getUUID();
-//        $wechat = wechat_method::wechat_instance($uuid);
-//
-//        if ($info['media_id'] && $info['is_material'] == 'material') {
-//            //删除永久素材
-//            try {
-//                $msg = $wechat->deleteMaterial($info['thumb']);
-//                if (is_ecjia_error($msg)) {
-//                    return $this->showmessage(wechat_method::wechat_error($msg->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//                }
-//            } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-//                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//            }
-//        }
-//        RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('file' => ''));
-//
-//        return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
-//    }
-
     /**
      * 删除图文素材
      */
@@ -880,44 +844,6 @@ class platform_material extends ecjia_platform
         catch (\Error $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-
-//        $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->first();
-
-//        if (!empty($info['thumb']) && $info['is_material'] == 'material') {
-//            //删除微信端图片素材
-//            try {
-//                $rs = $wechat->deleteMaterial($info['thumb']);
-//                if (is_ecjia_error($rs)) {
-//                    return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//                }
-//            } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-//                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//            }
-//        }
-//
-//        //图片素材
-//        if ($info['type'] == 'image') {
-//            //删除图片
-//            $disk = RC_Filesystem::disk();
-//            if (!empty($info['file']) && $disk->exists(RC_Upload::upload_path($info['file']))) {
-//                $disk->delete(RC_Upload::upload_path($info['file']));
-//            }
-//            RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
-//
-//
-//        } elseif ($info['type'] == 'news') {
-//            RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('thumb' => ''));
-//            if (empty($info['parent_id']) && empty($info['media_id'])) {
-//                RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
-//            } elseif (!empty($info['parent_id'])) {
-//                $media_id = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $info['parent_id'])->pluck('media_id');
-//                if (empty($media_id)) {
-//                    RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
-//                }
-//            }
-//        }
-
-
     }
 
     /**
@@ -1395,6 +1321,8 @@ class platform_material extends ecjia_platform
             return $this->showmessage('已获取'.$get_count.'条素材', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/platform_material/get_material', array('type' => $type)), 'page' => $page));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        } catch (\InvalidArgumentException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
