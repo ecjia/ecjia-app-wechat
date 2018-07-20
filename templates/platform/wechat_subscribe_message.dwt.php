@@ -165,7 +165,7 @@
 
 					<div class="col-xl-12 col-lg-12 material-table m_t20" data-url="{url path='wechat/platform_response/get_material_list'}">
 						<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
-							<li class="nav-item text-material">
+							<li class="nav-item text-material" data-type="text">
 								<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>
 							</li>
 							<li class="nav-item picture-material">
@@ -183,6 +183,16 @@
 						</ul>
                    		<div class="text m_b10 {if $data.media_id}hidden{/if}">
                    			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5" id="chat_editor"></textarea>
+							<div class="js_appmsgArea">
+								<div class="tab_cont_cover create-type__list">
+									<div class="create-type__item">
+										<a href="javascript:;" class="create-type__link">
+											<i class="create-type__icon file"></i>
+											<strong class="create-type__title">从素材库选择</strong>
+										</a>
+									</div>
+								</div>
+							</div>
                     	</div>
                     	
     					<div class="material_picture {if empty($data.media_id)}hidden{/if}">
