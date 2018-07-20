@@ -1292,6 +1292,8 @@ class platform_material extends ecjia_platform
     {
         $this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
 
+        set_time_limit(0);
+
         $type = $this->request->query('type', 'news');
         $page = $this->request->query('page', '1');
 
@@ -1301,7 +1303,13 @@ class platform_material extends ecjia_platform
             $uuid = $this->platformAccount->getUUID();
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
-            $pagesize = 20;
+            //图文素材数据量比较大，容易超时，每次同步10条
+            if ($type == 'news') {
+                $pagesize = 10;
+            } else {
+                $pagesize = 20;
+            }
+
             $start = $pagesize * ($page - 1);
             $get_count = $pagesize * $page;
 
@@ -1324,6 +1332,8 @@ class platform_material extends ecjia_platform
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         } catch (\InvalidArgumentException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        } catch (\GuzzleHttp\Exception\ConnectException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
