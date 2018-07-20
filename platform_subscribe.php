@@ -73,6 +73,7 @@ class platform_subscribe extends ecjia_platform
 
         RC_Script::enqueue_script('platform_subscribe', RC_App::apps_url('statics/platform-js/platform_subscribe.js', __FILE__), array(), false, true);
         RC_Style::enqueue_style('platform_subscribe', RC_App::apps_url('statics/platform-css/admin_subscribe.css', __FILE__));
+        RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
         RC_Script::localize_script('platform_subscribe', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.subscribe_manage'), RC_Uri::url('wechat/platform_subscribe/init')));
@@ -605,6 +606,7 @@ class platform_subscribe extends ecjia_platform
     //发送信息
     public function send_message()
     {
+        _dump($_POST,1);
         $this->admin_priv('wechat_subscribe_message_add', ecjia::MSGTYPE_JSON);
 
         $openid = $this->request->input('openid');
@@ -1019,6 +1021,109 @@ class platform_subscribe extends ecjia_platform
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+    }
+
+    public function get_material_list()
+    {
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        if (is_ecjia_error($wechat_id)) {
+            $list = array();
+        } else {
+            $type = trim($_POST['type']);
+
+            $where = '';
+            if ($type == 'image') {
+                $where = "(file is NOT NULL and (type = 'image' or type = 'news')) and wechat_id = $wechat_id and thumb != ''";
+            } elseif ($type == 'news') {
+                $where = "type = '$type' and parent_id = 0 and wechat_id = $wechat_id and media_id != ''";
+            } else {
+                $where = "(file is NOT NULL and type = '$type') and wechat_id = $wechat_id";
+            }
+            $list = RC_DB::table('wechat_media')->select('*')->whereRaw($where)->get();
+            
+            if (!empty($list)) {
+                foreach ($list as $key => $val) {
+                    if ($val['type'] == 'news') {
+                        $list[$key]['children'] = $this->get_article_list($val['id'], $val['type']);
+                        $list[$key]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $val['add_time']);
+                        if (!empty($val['file'])) {
+                            $list[$key]['file'] = RC_Upload::upload_url($val['file']);
+                        } else {
+                            $list[$key]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+                        }
+
+                    } else {
+                        if (empty($val['file']) || $val['type'] == 'voice' || $val['type'] == 'video') {
+                            if (empty($val['file'])) {
+                                $list[$key]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+                            } elseif ($val['type'] == 'voice') {
+                                $list[$key]['file'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
+                            } elseif ($val['type'] == 'video') {
+                                $list[$key]['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
+                            }
+                        } else {
+                            $list[$key]['file'] = RC_Upload::upload_url($val['file']);
+                        }
+                        $list[$key]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $val['add_time']);
+                        if (empty($val['title'])) {
+                            $list[$key]['title'] = '';
+                        }
+                        if (!empty($val['size'])) {
+                            if ($val['size'] > (1024 * 1024)) {
+                                $list[$key]['size'] = round(($val['size'] / (1024 * 1024)), 1) . 'MB';
+                            } else {
+                                $list[$key]['size'] = round(($val['size'] / 1024), 1) . 'KB';
+                            }
+                        } else {
+                            $list[$key]['size'] = '';
+                        }
+                    }
+                    $list[$key]['type'] = $type;
+                }
+            }
+        }
+        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $list));
+    }
+
+        /**
+     * 获取多图文信息
+     */
+    private function get_article_list($id, $type)
+    {
+        $filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
+
+        $db = RC_DB::table('wechat_media')->where('type', $type);
+        if ($id) {
+            $db->where('parent_id', $id)->orWhere('id', $id);
+        }
+        $data = $db->orderBy('id', 'asc')->get();
+        $article['id'] = $id;
+
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                $article['ids'][$k] = $v['id'];
+
+                if (!empty($v['file'])) {
+                    $article['file'][$k]['file'] = RC_Upload::upload_url($v['file']);
+                } else {
+                    $article['file'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+                }
+                $article['file'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+                $article['file'][$k]['title'] = strip_tags(html_out($v['title']));
+                $article['file'][$k]['id'] = $v['id'];
+                if (!empty($v['size'])) {
+                    if ($v['size'] > (1024 * 1024)) {
+                        $article['file'][$k]['size'] = round(($v['size'] / (1024 * 1024)), 1) . 'MB';
+                    } else {
+                        $article['file'][$k]['size'] = round(($v['size'] / 1024), 1) . 'KB';
+                    }
+                } else {
+                    $article['file'][$k]['size'] = '';
+                }
+            }
+        }
+        return $article;
     }
 }
 

@@ -163,21 +163,21 @@
 						</div>
 					</div>
 
-					<div class="col-xl-12 col-lg-12 material-table m_t20" data-url="{url path='wechat/platform_response/get_material_list'}">
+					<div class="col-xl-12 col-lg-12 material-table m_t20" data-url="{url path='wechat/platform_subscribe/get_material_list'}">
 						<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
-							<li class="nav-item text-material" data-type="text">
+							<li class="nav-item" data-type="text">
 								<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>
 							</li>
-							<li class="nav-item picture-material">
+							<li class="nav-item" data-type="image">
 								<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.image'}"><i class="fa fa-file-image-o"> 图片</i></a>
 							</li>
-							<li class="nav-item music-material">
+							<li class="nav-item" data-type="voice">
 								<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.voice'}"><i class="fa fa-music"> 语音</i></a>
 							</li>
-							<li class="nav-item video-material">
+							<li class="nav-item" data-type="video">
 								<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.video'}"><i class="fa fa-video-camera"> 视频</i></a>
 							</li>
-							<li class="nav-item list-material">
+							<li class="nav-item" data-type="news">
 								<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.text_message'}"><i class="fa fa-list-alt"> 图文</i></a>
 							</li>
 						</ul>
@@ -186,7 +186,7 @@
 							<div class="js_appmsgArea">
 								<div class="tab_cont_cover create-type__list">
 									<div class="create-type__item">
-										<a href="javascript:;" class="create-type__link">
+										<a href="javascript:;" class="create-type__link" data-type="">
 											<i class="create-type__icon file"></i>
 											<strong class="create-type__title">从素材库选择</strong>
 										</a>
@@ -213,7 +213,7 @@
 						<input type="hidden" name="openid" id="openid" value="{$info.openid}" />
 						<input type="hidden" name="nickname" id="nickname" value="{$info.nickname}" />
 						<input type="hidden" name="platform_name" id="platform_name" value="{$info.platform_name}" />
-						<a class="btn f_r btn-info {if !$disabled}send_msg{/if}" {if $disabled}disabled{/if} href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>				
+						<a class="btn f_r btn-info send_msg" href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>				
 					</div>
 				</div>
             </div>
@@ -270,6 +270,37 @@
 					<button type="button" class="btn btn-outline-primary set_label" {if $errormsg}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
 				</div>
 			</form>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade text-left keywords_material" id="add_material">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">{lang key='wechat::wechat.select_material'}</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
+			</div>
+			
+			<div class="form material_choose" data-url="{url path='wechat/platform_response/get_material_info'}">
+				<div class="material_choose_list">
+                    <div class="material_select m_0">
+                        <table class="table smpl_tbl dataTable m_b0">
+                            <thead>
+                            </thead>
+                            <tbody class="material_select_tbody">
+                            </tbody>
+                        </table>
+					</div>
+				</div>
+		   	
+			   	<div class="modal-footer justify-content-center">
+					<input type="button" class="btn btn-outline-primary material_verify" value="{lang key='wechat::wechat.ok'}" />
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
