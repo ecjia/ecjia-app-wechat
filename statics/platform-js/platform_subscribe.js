@@ -18,7 +18,7 @@
                                 var is_myself = data.msg_list[i].iswechat == 1 ? 1 : 0;
                                 var options = {
                                     send_time: data.msg_list[i].send_time,
-                                    tr_msg: data.msg_list[i].msg,
+                                    msg: data.msg_list[i].msg,
                                     chat_user: data.msg_list[i].nickname,
                                     is_myself: is_myself,
                                     oldstart: 1
@@ -145,14 +145,13 @@
                 openid = $('#openid').val(),
                 platform_name = $('#platform_name').val();
             info = { message: msg, uid: chat_user, openid: openid };
-            tr_msg = msg.replace(/(^(<p>&nbsp;<\/p>)+|(<p>&nbsp;<\/p>)$)/g, "").replace(/(^(<div><br><\/div>)+|(<div><br><\/div>)$)/g, "").replace(/(^(<br>)+|(<br>)+$)/g, "");
-            if (tr_msg != "") {
+            if (msg != "") {
                 $.post(post_url, info, function(data) {
                     if (data.state == 'error') {
                         ecjia.platform.showmessage(data);
                         return false;
                     }
-                    var options = { send_time: data.send_time, tr_msg: tr_msg, chat_user: platform_name, is_myself: 1 };
+                    var options = { send_time: data.send_time, msg: msg, chat_user: platform_name, is_myself: 1 };
                     app.subscribe_message.addMsgItem(options);
                 }, 'json');
             } else {
@@ -168,7 +167,7 @@
             var msg_cloned = $('.msg_clone').clone();
             options.oldstart ? $('.chat_msg.media-list').prepend(msg_cloned) : $('.chat_msg.media-list').append(msg_cloned);
             msg_cloned.find('.chat_msg_date').html(options.send_time);
-            msg_cloned.find('.media-text').html(options.tr_msg);
+            msg_cloned.find('.media-text').html(options.msg);
             msg_cloned.find('.chat_user_name').html(options.chat_user);
             !options.is_myself && msg_cloned.removeClass('chat-msg-mine').addClass('chat-msg-you');
             msg_cloned.removeClass('msg_clone').show();
@@ -447,9 +446,8 @@
                 }
             }
             $('.frm_checkbox').off('click').on('click', function() {
-                var c = $("input[name='tag_id[]']:checked").length + 1,
+                var c = $("input[name='tag_id[]']:checked").length,
                     limit = 3;
-                $(this).attr('checked') == 'checked' ? c++ : c--;
                 if (c > limit) {
                     $(this).prop('checked', false);
                     $(".label_block").show();

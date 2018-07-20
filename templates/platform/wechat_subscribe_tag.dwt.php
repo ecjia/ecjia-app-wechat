@@ -170,7 +170,7 @@
 						</div>
 
 						<div class="form-group row">
-							<label class="col-md-3 label-control old_tag_name text-right">{lang key='wechat::wechat.label_old_tag_name'}</label>
+							<label class="col-md-3 label-control text-right">{lang key='wechat::wechat.label_new_tag_name'}</label>
 							<div class="col-md-8 controls">
 								<input class="form-control" type="text" name="new_tag" autocomplete="off"/>
 							</div>
