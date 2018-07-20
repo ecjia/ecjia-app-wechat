@@ -8,7 +8,8 @@
 
 namespace Ecjia\App\Wechat\Synchronizes;
 
-use \Ecjia\App\Wechat\Models\WechatMediaModel;
+use Ecjia\App\Wechat\Models\WechatMediaModel;
+use RC_File;
 
 class ImageMaterialStorage
 {
@@ -18,11 +19,22 @@ class ImageMaterialStorage
 
     protected $data;
 
-    public function __construct($wechat_id, $type, $data)
+    protected $wechat;
+
+    protected $save_dir;
+
+    public function __construct($wechat_id, $type, $data, $wechat)
     {
         $this->wechat_id = $wechat_id;
         $this->type = $type;
         $this->data = $data;
+        $this->wechat = $wechat;
+
+        $this->save_dir = \RC_Upload::upload_path('data/material/wechat_image');
+
+        if (! RC_File::isDirectory($this->save_dir)) {
+            RC_File::makeDirectory($this->save_dir, 0777, true, true);
+        }
     }
 
 
@@ -31,7 +43,7 @@ class ImageMaterialStorage
         $items = $this->data->get('item');
 
         $wechat_id = $this->wechat_id;
-//        dd($items);
+
         collect($items)->map(function($item) use ($wechat_id) {
 
             $media_id = $item['media_id'];
@@ -59,12 +71,14 @@ class ImageMaterialStorage
      */
     protected function updateImage($model, $item)
     {
-        $data = [
-            'file_name'             => $item['name'],
-            'media_url'             => $item['url'],
-            'edit_time'             => $item['update_time'],
-        ];
-        $model->update($data);
+        //图片文件修改名字后，保存变化
+        if ($model->file_name != $item['name']) {
+            $data = [
+                'file_name'             => $item['name'],
+                'edit_time'             => $item['update_time'],
+            ];
+            $model->update($data);
+        }
     }
 
     /**
@@ -76,8 +90,15 @@ class ImageMaterialStorage
      */
     protected function saveImage($item)
     {
+        $file_ext = RC_File::file_ext($item['name']) ? '.' . RC_File::file_ext($item['name']) : '.png';
+        $filename = \RC_Upload::random_filename() . $file_ext;
+        $file = str_replace(\RC_Upload::upload_path(), '', $this->save_dir . '/' . $filename);
+        $this->wechat->material->download($item['media_id'], $this->save_dir, $filename);
+
         $data = [
             'file_name'             => $item['name'],
+            'file'                  => $file,
+            'media_id'              => $item['media_id'],
             'media_url'             => $item['url'],
 
             'wechat_id'             => $this->wechat_id,
