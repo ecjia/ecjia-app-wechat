@@ -447,9 +447,8 @@
                 }
             }
             $('.frm_checkbox').off('click').on('click', function() {
-                var c = $("input[name='tag_id[]']:checked").length + 1,
+                var c = $("input[name='tag_id[]']:checked").length,
                     limit = 3;
-                $(this).attr('checked') == 'checked' ? c++ : c--;
                 if (c > limit) {
                     $(this).prop('checked', false);
                     $(".label_block").show();
