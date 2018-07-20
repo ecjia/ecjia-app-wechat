@@ -606,54 +606,30 @@ class platform_subscribe extends ecjia_platform
     public function send_message()
     {
         $this->admin_priv('wechat_subscribe_message_add', ecjia::MSGTYPE_JSON);
-
-        $wechat_id = $this->platformAccount->getAccountID();
-        $uuid = $this->platformAccount->getUUID();
-        $wechat = wechat_method::wechat_instance($uuid);
-
-        if (is_ecjia_error($wechat_id)) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
-
-        $openid = !empty($_POST['openid']) ? $_POST['openid'] : '';
-        $data['msg'] = !empty($_POST['message']) ? $_POST['message'] : '';
-        $data['uid'] = !empty($_POST['uid']) ? intval($_POST['uid']) : 0;
+        
+        $openid = $this->request->input('openid');
+        $msg = $this->request->input('msg');
 
         if (empty($openid)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.pls_select_user'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        if (empty($data['msg'])) {
+        if (empty($msg)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.message_content_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        $data['send_time'] = RC_Time::gmtime();
-        $data['iswechat'] = 1;
-
-        // 微信端发送消息
-        $msg = array(
-            'touser' => $openid,
-            'msgtype' => 'text',
-            'text' => array(
-                'content' => $data['msg'],
-            ),
-        );
         try {
-            $rs = $wechat->sendCustomMessage($msg);
-            if (is_ecjia_error($rs)) {
-                return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
+            $uuid = $this->platformAccount->getUUID();
+            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+
+            with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $openid))->sendTextMessage($msg);
+
+            ecjia_admin::admin_log($msg, 'send', 'subscribe_message');
+
+            return $this->showmessage(RC_Lang::get('wechat::wechat.send_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('send_time' => RC_Time::local_date(ecjia::config('time_format'), RC_Time::gmtime())));
+
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
-
-        // 添加数据
-        $message_id = RC_DB::table('wechat_custom_message')->insertGetId($data);
-        ecjia_admin::admin_log($data['msg'], 'send', 'subscribe_message');
-        if ($message_id) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.send_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('send_time' => RC_Time::local_date(ecjia::config('time_format'), RC_Time::gmtime())));
-        } else {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.send_failed'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
