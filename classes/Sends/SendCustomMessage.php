@@ -87,7 +87,7 @@ class SendCustomMessage
     {
         $content = ['media_id' => $media_id];
 
-        $message = new Image($media_id);
+        $message = new Image($content);
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
