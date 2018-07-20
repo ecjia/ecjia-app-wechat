@@ -606,9 +606,10 @@ class platform_subscribe extends ecjia_platform
     public function send_message()
     {
         $this->admin_priv('wechat_subscribe_message_add', ecjia::MSGTYPE_JSON);
-        
+
         $openid = $this->request->input('openid');
-        $msg = $this->request->input('msg');
+        $msg = $this->request->input('message');
+        $uid = $this->request->input('uid');
 
         if (empty($openid)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.pls_select_user'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
