@@ -48,7 +48,7 @@ class VideoMaterialStorage
 
             $media_id = $item['media_id'];
 
-            $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('media_id', $media_id)->where('type', 'image')->first();
+            $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('media_id', $media_id)->where('type', 'video')->first();
             if (!empty($model)) {
                 //已存在，更新数据
                 $this->updateImage($model, $item);

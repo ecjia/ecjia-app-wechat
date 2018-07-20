@@ -48,7 +48,7 @@ class VoiceMaterialStorage
 
             $media_id = $item['media_id'];
 
-            $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('media_id', $media_id)->where('type', 'image')->first();
+            $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('media_id', $media_id)->where('type', 'voice')->first();
             if (!empty($model)) {
                 //已存在，更新数据
                 $this->updateImage($model, $item);
@@ -94,7 +94,7 @@ class VoiceMaterialStorage
         $filename = \RC_Upload::random_filename() . $file_ext;
         $file = str_replace(\RC_Upload::upload_path(), '', $this->save_dir . '/' . $filename);
         $this->wechat->material->download($item['media_id'], $this->save_dir, $filename);
-
+  
         $data = [
             'file_name'             => $item['name'],
             'file'                  => $file,
