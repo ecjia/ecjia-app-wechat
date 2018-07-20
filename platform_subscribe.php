@@ -620,10 +620,11 @@ class platform_subscribe extends ecjia_platform
         }
 
         try {
+            $wechat_id = $this->platformAccount->getAccountID();
             $uuid = $this->platformAccount->getUUID();
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
-            with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $openid))->sendTextMessage($msg);
+            with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendTextMessage($msg);
 
             ecjia_admin::admin_log($msg, 'send', 'subscribe_message');
 
