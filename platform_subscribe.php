@@ -617,7 +617,7 @@ class platform_subscribe extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.pls_select_user'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        if (empty($media_id) || empty($msg)) {
+        if (empty($media_id) && empty($msg)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.message_content_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
