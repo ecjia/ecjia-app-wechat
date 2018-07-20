@@ -685,28 +685,28 @@ class platform_material extends ecjia_platform
 
         $model = Ecjia\App\Wechat\Models\WechatMediaModel::where('wechat_id', $wechat_id)->where('id', $id)->where('type', 'news')->where('parent_id', 0)->first();
         try {
-            if ($model->media_id || $model->thumb) {
+            if ($model->media_id) {
 
                 $uuid = $this->platformAccount->getUUID();
                 $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
-                if (! $model->subNews->isEmpty()) {
-                    $model->subNews->each(function ($item) {
-                        $item->delete();
-                        ecjia_admin::admin_log($item['title'], 'remove', 'article_material');
-                        return true;
-                    });
-                }
-
                 //删除永久素材
                 $rs = $wechat->material->delete($model->media_id);
-
-                $model->delete();
-
-                ecjia_admin::admin_log($model['title'], 'remove', 'article_material');
-
-                return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
             }
+
+            if (! $model->subNews->isEmpty()) {
+                $model->subNews->each(function ($item) {
+                    $item->delete();
+                    ecjia_admin::admin_log($item['title'], 'remove', 'article_material');
+                    return true;
+                });
+            }
+
+            $model->delete();
+
+            ecjia_admin::admin_log($model['title'], 'remove', 'article_material');
+
+            return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
