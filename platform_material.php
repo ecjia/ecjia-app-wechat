@@ -648,7 +648,7 @@ class platform_material extends ecjia_platform
                 //图文消息的id
                 $model->media_id = $rs['media_id'];
                 if ($model->wait_upload_article == 1) {
-                    $model->media_url = 0;
+                    $model->wait_upload_article = 0;
                 }
                 $model->save();
 
