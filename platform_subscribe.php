@@ -1038,7 +1038,7 @@ class platform_subscribe extends ecjia_platform
 
             $where = '';
             if ($type == 'image') {
-                $where = "(file is NOT NULL and (type = 'image' or type = 'news')) and wechat_id = $wechat_id and thumb != ''";
+                $where = "(file is NOT NULL and (type = 'image')) and wechat_id = $wechat_id";
             } elseif ($type == 'news') {
                 $where = "type = '$type' and parent_id = 0 and wechat_id = $wechat_id and media_id != ''";
             } else {
