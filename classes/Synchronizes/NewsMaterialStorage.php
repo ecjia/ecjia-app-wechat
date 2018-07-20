@@ -292,7 +292,7 @@ class NewsMaterialStorage
                 $item['create_time'] = $create_time;
                 $item['update_time'] = $update_time;
 
-                $thumb_model = (new ThumbMaterialStorage($this->wechat_id, 'thumb', $item, $this->wechat))->save();
+                $thumb_model = with(new ThumbMaterialStorage($this->wechat_id, 'thumb', $item, $this->wechat))->save();
 
                 $data['file'] = $thumb_model->file;
                 $data['file_name'] = $thumb_model->file_name;

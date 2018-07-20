@@ -9,6 +9,12 @@
 namespace Ecjia\App\Wechat\Sends;
 
 use Ecjia\App\Wechat\WechatRecord;
+use Royalcms\Component\WeChat\Message\Text;
+use Royalcms\Component\WeChat\Message\Image;
+use Royalcms\Component\WeChat\Message\Voice;
+use Royalcms\Component\WeChat\Message\Video;
+use Royalcms\Component\WeChat\Message\News;
+use Royalcms\Component\WeChat\Message\Music;
 
 class SendCustomMessage
 {

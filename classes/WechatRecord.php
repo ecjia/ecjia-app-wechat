@@ -169,17 +169,17 @@ class WechatRecord
     /**
      * 输入信息
      */
-    public static function inputMsg($fromusername, $content, $type = 'text', $content = null)
+    public static function inputMsg($fromusername, $msg, $type = 'text', $content = null)
     {
         $uid = WechatUserModel::where('openid', $fromusername)->pluck('uid');
         if (!empty($uid)) {
             $data = array(
                 'uid'  	     => $uid,
-                'msg'  	     => $content,
+                'msg'  	     => $msg,
                 'send_time'  => RC_Time::gmtime(),
                 'iswechat'   => 0,
                 'type'       => $type,
-                'content'    => $content ? serialize($content) : '',
+                'media_content'    => $content ? serialize($content) : '',
             );
             WechatCustomMessageModel::insert($data);
         }
@@ -198,7 +198,7 @@ class WechatRecord
                 'send_time'  => RC_Time::gmtime(),
                 'iswechat'   => 1,
                 'type'       => $type,
-                'content'    => $content ? serialize($content) : '',
+                'media_content'    => $content ? serialize($content) : '',
             );
             WechatCustomMessageModel::insert($data);
         }
