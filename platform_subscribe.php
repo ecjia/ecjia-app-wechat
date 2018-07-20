@@ -606,18 +606,18 @@ class platform_subscribe extends ecjia_platform
     //发送信息
     public function send_message()
     {
-        _dump($_POST,1);
         $this->admin_priv('wechat_subscribe_message_add', ecjia::MSGTYPE_JSON);
 
         $openid = $this->request->input('openid');
         $msg = $this->request->input('message');
         $uid = $this->request->input('uid');
+        $media_id = $this->request->input('media_id');
 
         if (empty($openid)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.pls_select_user'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        if (empty($msg)) {
+        if (empty($media_id) || empty($msg)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.message_content_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
@@ -626,7 +626,11 @@ class platform_subscribe extends ecjia_platform
             $uuid = $this->platformAccount->getUUID();
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
-            with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendTextMessage($msg);
+            if ($media_id) {
+                with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendMediaMessage($media_id);
+            } else {
+                with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendTextMessage($msg);
+            }
 
             ecjia_admin::admin_log($msg, 'send', 'subscribe_message');
 
