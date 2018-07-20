@@ -179,7 +179,7 @@ class WechatRecord
                 'send_time'  => RC_Time::gmtime(),
                 'iswechat'   => 0,
                 'type'       => $type,
-                'content'    => $content ? serialize($content) : '',
+                'media_content'    => $content ? serialize($content) : '',
             );
             WechatCustomMessageModel::insert($data);
         }
@@ -198,7 +198,7 @@ class WechatRecord
                 'send_time'  => RC_Time::gmtime(),
                 'iswechat'   => 1,
                 'type'       => $type,
-                'content'    => $content ? serialize($content) : '',
+                'media_content'    => $content ? serialize($content) : '',
             );
             WechatCustomMessageModel::insert($data);
         }
