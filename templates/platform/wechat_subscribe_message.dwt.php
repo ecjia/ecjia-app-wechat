@@ -182,7 +182,7 @@
 							</li>
 						</ul>
                    		<div class="text m_b10 {if $data.media_id}hidden{/if}">
-                   			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5"></textarea>
+                   			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5" id="chat_editor"></textarea>
                     	</div>
                     	
     					<div class="material_picture {if empty($data.media_id)}hidden{/if}">
