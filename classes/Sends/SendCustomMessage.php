@@ -9,6 +9,7 @@
 namespace Ecjia\App\Wechat\Sends;
 
 use Ecjia\App\Wechat\WechatRecord;
+use Ecjia\App\Wechat\WechatMediaReply;
 use Royalcms\Component\WeChat\Message\Text;
 use Royalcms\Component\WeChat\Message\Image;
 use Royalcms\Component\WeChat\Message\Voice;
@@ -18,15 +19,48 @@ use Royalcms\Component\WeChat\Message\Music;
 
 class SendCustomMessage
 {
+    protected $wechat_id;
 
     protected $wechat;
 
     protected $openid;
 
-    public function __construct($wechat, $openid)
+    public function __construct($wechat, $wechat_id, $openid)
     {
+        $this->wechat_id = $wechat_id;
         $this->wechat = $wechat;
         $this->openid = $openid;
+    }
+
+    /**
+     * 发送素材消息
+     * @param $id
+     */
+    public function sendMediaMessage($id)
+    {
+        $model = WechatMediaModel::where('wechat_id', $this->wechat_id)->find($id);
+        if ( ! empty($model)) {
+            switch ($model->type) {
+                case 'image':
+                    return $this->sendImageMessage($model->media_id, $model);
+                    break;
+
+                case 'voice':
+                    return $this->sendVoiceMessage();
+                    break;
+
+                case 'video':
+                    return $this->sendVedioMessage();
+                    break;
+
+                case 'news':
+                    return $this->sendMpnewsMessage();
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 
     /**
@@ -48,9 +82,21 @@ class SendCustomMessage
     /**
      * 发送图片消息
      */
-    public function sendImageMessage()
+    public function sendImageMessage($media_id, $model = null)
     {
+        $content = ['media_id' => $media_id];
 
+        $message = new Image($media_id);
+
+        $result = $this->wechat->staff->message($message)->to($this->openid)->send();
+
+        if (! is_null($model)) {
+            $content['img_url'] = \RC_Upload::upload_url($model->file);
+        }
+
+        WechatRecord::replyMsg($this->openid, '发送图片消息', 'image', $content);
+
+        return $result;
     }
 
     /**
