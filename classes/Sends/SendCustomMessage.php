@@ -16,6 +16,7 @@ use Royalcms\Component\WeChat\Message\Voice;
 use Royalcms\Component\WeChat\Message\Video;
 use Royalcms\Component\WeChat\Message\News;
 use Royalcms\Component\WeChat\Message\Music;
+use Ecjia\App\Wechat\Models\WechatMediaModel;
 
 class SendCustomMessage
 {
