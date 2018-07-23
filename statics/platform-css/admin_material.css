@@ -807,3 +807,7 @@
     font-weight: normal;
     display: block;
 }
+
+.modal-lg.modal-reset {
+	max-width: 1050px
+}

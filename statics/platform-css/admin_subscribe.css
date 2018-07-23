@@ -104,7 +104,7 @@
     margin: 5px 10px
 }
 
-.tag_popover {
+.modal-body.tag_popover {
     z-index: 999;
     height: auto
 }

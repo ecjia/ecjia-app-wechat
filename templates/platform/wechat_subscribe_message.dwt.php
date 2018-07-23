@@ -75,7 +75,7 @@
 								<div class="form-body">
 									<div class="form-group row p_t20">
 										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.label_user_headimgurl'}</label>
-										<div class="col-md-7 controls">
+										<div class="col-md-7 controls p_l0">
 											{if $info['headimgurl']}
 												<img class="thumbnail" src="{$info['headimgurl']}" alt="{$info['nickname']}"/>
 											{else}
@@ -86,15 +86,15 @@
 									
 									<div class="form-group row">
 										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.label_nickname'}</label>
-										<div class="col-md-7 controls">
-											<span class="p_l10">{$info.nickname}</span>
+										<div class="col-md-7 controls p_l0">
+											<span class="">{$info.nickname}</span>
 										</div>
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.label_remark'}</label>
-										<div class="col-md-7 controls">
-											<span class="p_l10">
+										<div class="col-md-7 controls p_l0">
+											<span class="">
 												{if $info.remark}
 													<span class="remark_info p_r5">{$info.remark}</span>
 												{/if}
@@ -116,22 +116,22 @@
 									
 									<div class="form-group row">
 										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.lable_sex'}</label>
-										<div class="col-md-7 controls">
-											<span class="p_l10">{if $info['sex'] == 1}{lang key='wechat::wechat.male'}{else if $info.sex == 2}{lang key='wechat::wechat.female'}{/if}</span>
+										<div class="col-md-7 controls p_l0">
+											<span class="">{if $info['sex'] == 1}{lang key='wechat::wechat.male'}{else if $info.sex == 2}{lang key='wechat::wechat.female'}{/if}</span>
 										</div>
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.label_province'}</label>
-										<div class="col-md-7 controls">
-											<span class="p_l10">{$info['province']} - {$info['city']}</span>
+										<div class="col-md-7 controls p_l0">
+											<span class="">{$info['province']} - {$info['city']}</span>
 										</div>
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.label_user_tag'}</label>
-										<div class="col-md-7 controls">
-											<span class="p_l10">{if $info['group_id'] eq 1}{else}{if $info['tag_name']}{$info['tag_name']}{else}{lang key='wechat::wechat.no_tag'}{/if}{/if}</span>
+										<div class="col-md-7 controls p_l0">
+											<span class="">{if $info['group_id'] eq 1}{else}{if $info['tag_name']}{$info['tag_name']}{else}{lang key='wechat::wechat.no_tag'}{/if}{/if}</span>
 											<!-- {if $info.group_id neq 1 && $info.subscribe neq 0} -->
 											<a class="set-label-btn" data-openid="{$info.openid}" data-uid="{$info.uid}" data-url="{$get_checked}" href="javascript:;"><i class="ft-tag"></i></a>
 											<!-- {/if} -->
@@ -140,14 +140,14 @@
 									
 									<div class="form-group row">
 										<label class="col-md-5 label-control text-right">{lang key='wechat::wechat.label_subscribe_time'}</label>
-										<div class="col-md-7 controls">
-											<span class="p_l10">{$info['subscribe_time']}</span>
+										<div class="col-md-7 controls p_l0">
+											<span class="">{$info['subscribe_time']}</span>
 										</div>
 									</div>
 									
 									<div class="form-group row">
 										<label class="col-md-5 label-control text-right"></label>
-										<div class="col-md-7 controls">
+										<div class="col-md-7 controls p_l0">
 											<!-- {if $info.group_id eq 1} -->
 											<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/backlist","uid={$info.uid}&openid={$info.openid}&type=remove_out&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.remove_blacklist'}">{lang key='wechat::wechat.remove_blacklist'}</a>
 											<!-- {else} -->

@@ -1,5 +1,5 @@
 <div class="modal fade text-left" id="choose_material">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-lg modal-reset" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h3 class="modal-title">选择素材</h3>
