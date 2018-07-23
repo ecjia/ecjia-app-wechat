@@ -725,6 +725,10 @@
 	margin: 10px 0 10px 10px;
 }
 
+.preview_img {
+	max-width: 260px;
+}
+
 .link_dele {
 	display: inline-block;
     vertical-align: bottom;
