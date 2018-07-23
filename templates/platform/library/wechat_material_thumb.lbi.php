@@ -5,7 +5,7 @@
 </div>
 <div class="row-fluid goods-photo-list{if !$lists.item} hide{/if}">
     <div class="span12">
-        <div class="wmk_grid ecj-wookmark wookmark_list">
+        <div class="wmk_grid ecj-wookmark wookmark_list other_material">
             <ul class="wookmark-goods-photo move-mod nomove">
                 <!-- {foreach from=$lists.item item=val} -->
                 <li class="thumbnail move-mod-group">
