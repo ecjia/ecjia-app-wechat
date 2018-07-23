@@ -1,5 +1,5 @@
 <!-- {if $articles.articles} -->
-<li class="thumbnail move-mod-group big grid-item" data-media="{$articles.media_id}">
+<li class="thumbnail move-mod-group big grid-item" data-media="{$articles.id}">
     <div class="article">
         <div class="cover">
             <a target="__blank" href="javascript:;">
@@ -21,7 +21,7 @@
     <!-- {/foreach} -->
 </li>
 <!-- {else} -->
-<li class="thumbnail move-mod-group big grid-item" data-media="{$articles.media_id}">
+<li class="thumbnail move-mod-group big grid-item" data-media="{$articles.id}">
     <div class="articles">
         <div class="articles_title">{if $articles.title}{$articles.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
         <a target="__blank" href="javascript:;">
