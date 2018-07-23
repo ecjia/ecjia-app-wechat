@@ -48,15 +48,15 @@ class SendCustomMessage
                     break;
 
                 case 'voice':
-                    return $this->sendVoiceMessage();
+                    return $this->sendVoiceMessage($model->media_id, $model);
                     break;
 
                 case 'video':
-                    return $this->sendVedioMessage();
+                    return $this->sendVideoMessage($model->media_id, $model);
                     break;
 
                 case 'news':
-                    return $this->sendMpnewsMessage();
+                    return $this->sendMpnewsMessage($model->media_id, $model);
                     break;
 
                 default:
