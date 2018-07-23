@@ -16,7 +16,7 @@ use Royalcms\Component\WeChat\Message\Voice;
 use Royalcms\Component\WeChat\Message\Video;
 use Royalcms\Component\WeChat\Message\News;
 use Royalcms\Component\WeChat\Message\Music;
-use Royalcms\Component\WeChat\Message\Mpnews;
+use Royalcms\Component\WeChat\Message\Material;
 use Ecjia\App\Wechat\Models\WechatMediaModel;
 
 class SendCustomMessage
@@ -172,7 +172,7 @@ class SendCustomMessage
             'media_id' => $media_id
         ];
 
-        $message = new Mpnews($content);
+        $message = new Material($content);
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
