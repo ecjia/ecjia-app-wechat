@@ -143,7 +143,7 @@
                 nickname = $('#nickname').val(),
                 openid = $('#openid').val(),
                 platform_name = $('#platform_name').val(),
-                media_id = $('.material_show').find('input[name="media_id"]').val(),
+                media_id = $('input[name="media_id"]').val(),
                 info = { message: msg, uid: chat_user, openid: openid, media_id: media_id };
             if (msg != "" || media_id != undefined) {
                 $.post(post_url, info, function(data) {
