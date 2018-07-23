@@ -4,7 +4,7 @@
 <!-- {block name="footer"} -->
 <script type="text/javascript">
 	ecjia.platform.subscribe_message.init();
-	ecjia.platform.material.init();
+	ecjia.platform.choose_material.init();
 </script>
 <!-- {/block} -->
 
