@@ -527,8 +527,9 @@ class platform_response extends ecjia_platform
                 '<p><strong>' . RC_Lang::get('wechat::wechat.lable_more_info') . '</strong></p>' .
                 '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia公众平台:关键词回复#.E6.B7.BB.E5.8A.A0.E8.A7.84.E5.88.99" target="_blank">' . RC_Lang::get('wechat::wechat.add_rule_help') . '</a>') . '</p>'
             );
+            $data['reply_type'] = 'text';
+            $this->assign('data', $data);
         }
-
         $this->display('wechat_reply_keywords_edit.dwt');
     }
 
@@ -787,15 +788,16 @@ class platform_response extends ecjia_platform
             $is_articles = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $media_id)->count();
 
             if ($is_articles != 0 && $list['reply_type'] == 'news') {
-                $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $media_id)->orWhere('parent_id', $media_id)->orderBy('id', 'asc')->get();
+                $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $media_id)->orderBy('id', 'asc')->get();
                 
+                $list['media'] = $media;
                 foreach ($info as $k => $v) {
                     if (!empty($v['file'])) {
-                        $list['medias'][$k]['title'] = strip_tags(html_out($v['title']));
-                        $list['medias'][$k]['file'] = RC_Upload::upload_url($v['file']);
-                        $list['medias'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+                        $list['child'][$k]['title'] = strip_tags(html_out($v['title']));
+                        $list['child'][$k]['file'] = RC_Upload::upload_url($v['file']);
+                        $list['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
                     } else {
-                        $list['medias'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+                        $list['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
                     }
                 }
             } else {

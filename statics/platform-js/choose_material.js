@@ -3,6 +3,7 @@
 	app.choose_material = {
 		init: function () {
 			app.choose_material.choose_material();
+			app.choose_material.link_del();
 		},
 		choose_material: function () {
             $('.nav-item').off('click').on('click', function(e) {
