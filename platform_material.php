@@ -1535,7 +1535,7 @@ class platform_material extends ecjia_platform
         $this->assign('type', $type);
 
         $title = sprintf(RC_Lang::get('wechat::wechat.material_type_title'), RC_Lang::get('wechat::wechat.'.$type));
-        $data = $this->fetch('library/wechat_material_list.lbi');
+        $data = $this->fetch('library/wechat_choose_material_list.lbi');
         return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data, 'title' => $title));
     }
 

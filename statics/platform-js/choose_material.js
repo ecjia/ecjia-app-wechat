@@ -40,13 +40,13 @@
 
 			$('.js-btn').off('click').on('click', function () {
 				var $this = $('.img_item_bd.selected'),
-					media_id = $this.find('.pic').attr('data-media'),
+					media_id = $this.find('.pic').attr('data-id'),
 					src = $this.find('.pic').attr('src');
 				var inner_html = '<div class="img_preview"><img class="preview_img margin_10" src="'+ src +'" alt=""><input type="hidden" name="media_id" value='+ media_id +'><a href="javascript:;" class="jsmsgSenderDelBt link_dele"">删除</a></div>';
 				
 				if (media_id == undefined) {
 					var html = $('.grid-item.selected');
-					media_id = html.attr('data-media');
+					media_id = html.attr('data-id');
 					inner_html = '<div class="weui-desktop-media__list-col margin_10">' + html[0]['outerHTML'] + '<input type="hidden" name="media_id" value='+ media_id +'></div><a href="javascript:;" class="jsmsgSenderDelBt link_dele p_l0">删除</a>';
 				}
 				$('.create-type__list').hide();

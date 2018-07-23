@@ -7,7 +7,7 @@
             <div class="weui-desktop-media__list-col">
             <!-- {foreach from=$lists.item item=articles key=k} -->
                 {if ($k+4) % 4 == 0}
-                <!-- {include file="library/wechat_material_news_article.lbi.php"} -->
+                <!-- {include file="library/wechat_material_news_child.lbi.php"} -->
                 {/if}
             <!-- {/foreach} -->
             </div>
@@ -15,7 +15,7 @@
             <div class="weui-desktop-media__list-col">
             <!-- {foreach from=$lists.item item=articles key=k} -->
                 {if ($k+3) % 4 == 0}
-                <!-- {include file="library/wechat_material_news_article.lbi.php"} -->
+                <!-- {include file="library/wechat_material_news_child.lbi.php"} -->
                 {/if}
             <!-- {/foreach} -->
             </div>
@@ -23,7 +23,7 @@
             <div class="weui-desktop-media__list-col">
             <!-- {foreach from=$lists.item item=articles key=k} -->
                 {if ($k+2) % 4 == 0}
-                <!-- {include file="library/wechat_material_news_article.lbi.php"} -->
+                <!-- {include file="library/wechat_material_news_child.lbi.php"} -->
                 {/if}
             <!-- {/foreach} -->
             </div>
@@ -31,7 +31,7 @@
             <div class="weui-desktop-media__list-col">
             <!-- {foreach from=$lists.item item=articles key=k} -->
                 {if ($k+1) % 4 == 0}
-                <!-- {include file="library/wechat_material_news_article.lbi.php"} -->
+                <!-- {include file="library/wechat_material_news_child.lbi.php"} -->
                 {/if}
             <!-- {/foreach} -->
             </div>
