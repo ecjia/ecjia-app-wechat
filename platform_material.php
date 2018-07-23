@@ -1466,56 +1466,76 @@ class platform_material extends ecjia_platform
         return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $list));
     }
     
-    public function get_material_array() {
+    public function choose_material() {
     	$wechat_id = $this->platformAccount->getAccountID();
     	
-    	$type = !empty($_POST['type']) ? trim($_POST['type']) : '';
     	$material = !empty($_GET['material']) ? 'material' : null;
+    	$type = !empty($_POST['type']) ? trim($_POST['type']) : '';
     	
-    	$db_wechat_media = RC_DB::table('wechat_media')
-    	->where('wechat_id', $wechat_id)
-    	->where('is_material', $material);
-    	
-    	if ($type == 'image') {
-    		$db_wechat_media
-    		->where('file', '!=', '')
-    		->where(function ($query) {
-    			$query->where('type', 'image');
-//     			->orWhere('type', 'news');
-    		});
-    	
-    	} elseif ($type == 'news') {
-    		$db_wechat_media
-    		->where('article_id', '')
-    		->where('type', $type);
-    	} else {
-    		$db_wechat_media
-    		->where('file', '!=', '')
-    		->where('type', $type);
-    	}
-    	$list = $db_wechat_media->select('id', 'file', 'title', 'size', 'add_time', 'type', 'file_name', 'media_url', 'media_id')->get();
-    	
-    	if (!empty($list)) {
-    		foreach ($list as $key => $val) {
-    			$val['type'] = isset($val['type']) ? $val['type'] : '';
-    			if (empty($val['file']) || $val['type'] == 'voice' || $val['type'] == 'video') {
-    				if (empty($val['file'])) {
-    					$list[$key]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
-    				} elseif ($val['type'] == 'voice') {
-    					$list[$key]['file'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
-    				} elseif ($val['type'] == 'video') {
-    					$list[$key]['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
-    				}
-    			} else {
-    				$list[$key]['file'] = RC_Upload::upload_url($val['file']);
-    			}
-    		}
-    	}
-    	
-    	$this->assign('list', $list);
-    	$data = $this->fetch('library/wechat_material_list.lbi');
-    	
-    	return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data));
+        $wechat_media_model = Ecjia\App\Wechat\Models\WechatMediaModel::where('wechat_id', $wechat_id)->where('type', $type);
+        if ($type == 'news') {
+        	$wechat_media_model->where('parent_id', 0)->where('wait_upload_article', 0);
+        }
+        $wechat_media_model->where('is_material', $material);
+        $data = $wechat_media_model->orderBy('sort', 'asc')->orderBy('id', 'desc')->get();
+
+        $newData = $data->map(function($item) {
+        	$item->add_time = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $item->add_time);
+        	if (empty($item->file)) {
+        		$item->file = RC_Uri::admin_url('statics/images/nopic.png');
+        	} else {
+        		if ($item->type == 'voice') {
+        			$item->thumb = RC_App::apps_url('statics/images/voice.png', __FILE__);
+        			$item->file = RC_Upload::upload_url($item->file);
+        		} elseif ($item->type == 'video') {
+        			$item->thumb = RC_App::apps_url('statics/images/video.png', __FILE__);
+        			$item->file = RC_Upload::upload_url($item->file);
+        		} else {
+        			$item->file = RC_Upload::upload_url($item->file);
+        		}
+        	}
+        	$content = !empty($item->digest) ? strip_tags(html_out($item->digest)) : strip_tags(html_out($item->content));
+        	if (strlen($content) > 100) {
+        		$item->content = msubstr($content, 100);
+        	} else {
+        		$item->content = $content;
+        	}
+        	$newItem = $item->toArray();
+        	if ($item->type == 'news') {
+        		$subNews = $item->subNews;
+        		if (!$subNews->isEmpty()) {
+        			$newSubNews = $subNews->map(function($item) {
+        				if (empty($item->file)) {
+        					$item->file = RC_Uri::admin_url('statics/images/nopic.png');
+        				} else {
+        					$item->file = RC_Upload::upload_url($item->file);
+        				}
+        				return [
+        				'id'        => $item->id,
+        				'title'     => $item->title,
+        				'file'      => $item->file,
+        				'file_name' => $item->file_name,
+        				];
+        			});
+        			$newItem['articles'] = $newSubNews->all();
+        		}
+        	}
+        	return $newItem;
+        });
+        
+		if (is_ecjia_error($wechat_id)) {
+  			$this->assign('errormsg', RC_Lang::get('wechat::wechat.operate_before_pub'));
+  		}
+  		$wechat_type = $this->platformAccount->getType();
+  		$this->assign('wechat_type', $wechat_type);
+  		$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.'.$wechat_type)));
+  		
+       	$list = $newData->all();
+        $this->assign('list', $list);
+        $this->assign('type', $type);
+        
+        $data = $this->fetch('library/wechat_material_list.lbi');
+        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data));
     }
 
     public function get_material_info()

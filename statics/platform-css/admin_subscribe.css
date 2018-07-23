@@ -232,7 +232,7 @@
 }
 
 .js_appmsgArea {
-    height: 300px;
+    min-height: 300px;
     margin-top: 10px;
     border: 1px solid #ADB5BD;
     border-radius: 0.21rem;

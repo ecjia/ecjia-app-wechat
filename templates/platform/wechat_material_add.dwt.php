@@ -80,7 +80,7 @@
 										<label class="col-lg-2 label-control text-right">{lang key='wechat::wechat.cover'}</label>
 										<div class="col-lg-9 controls">
 											<div class="fileupload fileupload-exists" data-provides="fileupload">	
-												<a class="btn btn-outline-primary choose_material" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/get_material_array')}&material=1" data-type="thumb">从素材库选择</a>
+												<a class="btn btn-outline-primary choose_material" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/choose_material')}&material=1" data-type="thumb">从素材库选择</a>
 												<span class="m_l5 input-must">*</span>
 												<input type="hidden" name="thumb_media_id" size="35"/>
 											</div>
@@ -172,38 +172,6 @@
     </div>
 </div>
 
-<div class="modal fade text-left" id="choose_material">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="modal-title">选择缩略图</h3>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				  <span aria-hidden="true">×</span>
-				</button>
-			</div>
-			
-			<!-- {if $errormsg || ($warn && $wechat_type eq 0)} -->
-				<div class="card-body">
-				    <div class="alert alert-danger">
-			            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
-			        </div>
-					<!-- {if $warn && $wechat_type eq 0} -->
-					<div class="alert alert-danger">
-						<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-					</div>
-					<!-- {/if} -->
-				</div>
-			<!-- {/if} -->
-
-			<form class="form" method="post" name="edit_tag" action="">
-				<div class="inner_main">
-				</div>
-				<div class="modal-footer justify-content-center">
-					<input type="button" class="btn btn-outline-primary js-btn" {if $errormsg || ($warn && $wechat_type eq 0)}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
+<!-- {include file="./library/wechat_choose_material.lbi.php"} -->
 
 <!-- {/block} -->

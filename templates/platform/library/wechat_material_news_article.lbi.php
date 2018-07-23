@@ -8,6 +8,7 @@
             <span>{$articles.title}</span>
         </div>
     </div>
+    
     <!-- {foreach from=$articles.articles key=key item=val} -->
     <div class="article_list">
         <div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
@@ -25,7 +26,6 @@
 <li class="thumbnail move-mod-group grid-item big">
     <div class="articles">
         <div class="articles_title">{if $articles.title}{$articles.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
-        <p class="ecjiaf-pre">{$articles.add_time}</p>
         <a target="__blank" href="{$articles.file}">
             <img src="{$articles.file}"/>
         </a>

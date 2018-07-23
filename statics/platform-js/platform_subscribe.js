@@ -80,45 +80,12 @@
                     $('#chat_editor').show();
                     $('.js_appmsgArea').hide();
                 }
-                $('.material_show').remove();
+                $('.img_preview').remove();
+                $('.weui-desktop-media__list-col').remove();
+                $('.link_dele').remove();
                 $('.create-type__list').show();
+                $('.choose_material').attr('data-type', type);
             });
-
-
-            $('.create-type__link').off('click').on('click', function(e) {
-                var $this = $(this),
-                    type = $('.nav-link.active').parent('.nav-item').attr('data-type'),
-		            url = $('.material-table').attr('data-url');
-                
-                $('.material_select_tbody').html('');
-				$.post(url, {type: type}, function(data) {
-					app.subscribe_message.load_material_list(data);
-					$('#add_material').modal('show');
-                }, "JSON");
-
-            });
-
-            $('.material_verify').on('click', function(){
-				var type = $('.material-table').attr('id');
-				
-				var id = $("input[name='media_id']").val();
-				if (id == undefined || id == '') {
-					$('#add_material').modal('hide');
-					smoke.alert(js_lang.select_material);
-					return false;
-				}
-				url = $('.material_choose').attr('data-url');
-				var filters = {
-					'JSON' : {
-						'id' : id,
-						'type' : type
-					}
-				};
-				$.get(url, filters, function(data) {
-					app.subscribe_message.load_material_verify(data);
-				}, "JSON");
-			});
-
             app.subscribe_message.edit_customer_remark();
         },
 
@@ -225,109 +192,6 @@
                 scrollTop: options.oldstart ? msg_cloned.offset().top : 9999999
             }, 1000);
         },
-
-        load_material_list : function(data) {
-			if (data.content != null) {
-				if (data.content.length > 0) {
-					for (var i = 0; i < data.content.length; i++) {
-						if (data.content[i].type == 'news') {
-							var opt = '<tr class="seleted_material" value="'+data.content[i].id+'"><td colspan="4"><div class="wmk_grid ecj-wookmark wookmark_list articles_picture"><ul class="wookmark-goods-photo move-mod nomove"><li class="thumbnail move-mod-group" style="width: 100%;height: auto; border-radius: 6px;">';
-							var children = data.content[i].children.file;
-							for (var j = 0; j < children.length; j++) {
-								if (j == 0) {
-									if (children[j].title == null) {
-										opt += '<div class="article"><h4 class="f_l"></h4><br><div class="cover"><img src="'+children[j].file+'"/><span>'+ js_lang.no_title +'</span></div></div>';
-									} else {
-										opt += '<div class="article"><div class="cover"><img src="'+children[j].file+'"/><span>'+children[j].title+'</span></div></div>';
-									}
-								} else {
-									if (children[j].title == null) {
-										opt += '<div class="article_list"><div class="f_l">'+ js_lang.no_title +'</div><img src="'+children[j].file+'" width="78" height="78" class="pull-right" /></div>';
-									} else {
-										opt += '<div class="article_list"><div class="f_l">'+children[j].title+'</div><img src="'+children[j].file+'" width="78" height="78" class="pull-right" /></div>';
-									}
-								}
-							}
-							opt += '<div class="news_mask hidden"></div></li></ul></div></td></tr>';
-							$('.material_select_tbody').append(opt);
-						} else {
-							var opt = '<tr class="seleted_material" value="'+data.content[i].id+'"><td colspan="4"><div class="wmk_grid ecj-wookmark wookmark_list articles_picture"><ul class="wookmark-goods-photo move-mod nomove"><li class="thumbnail move-mod-group" style="width: 100%;height: auto; border-radius: 6px;">';
-							
-							if (data.content[i].title == null) {
-								opt += '<div class="article"><h4 class="f_l"></h4><br><div class="cover"><img src="'+data.content[i].file+'"/><span>'+ js_lang.no_title +'</span></div></div>';
-							} else if (data.content[i].title == '') {
-								opt += '<div class="article"><div class="cover"><img src="'+data.content[i].file+'"/></div></div>';
-							} else {
-								opt += '<div class="article"><div class="cover"><img src="'+data.content[i].file+'"/><span>'+data.content[i].title+'</span></div></div>';
-							}
-							opt += '<div class="news_mask hidden"></div></li></ul></div></td></tr>';
-							$('.material_select_tbody').append(opt);
-						}
-					};
-					
-					$('.material_select_tbody').append('<input type="hidden" name="media_id">');
-					
-					$('.seleted_material').on('click',function(){
-						$("input[name='media_id']").val($(this).attr('value'));
-						$('.news_mask').addClass('hidden');
-						$(this).find('li').children('.news_mask').removeClass('hidden');
-					});
-					
-					$('.material_choose_list').css('height','455px');
-					$('.material_verify').parent().removeClass('hide');
-				} else {
-					$('.material_choose_list').css('height','auto');
-					$('.material_select_tbody').append('<tr><td class="no-records" colspan="5" style="line-height:100px;border-top:0px solid #eee;">' + js_lang.no_material_select + '</td></tr>');
-					$('.material_verify').parent().addClass('hide');
-				}
-			} else {
-				$('.material_choose_list').css('height','auto');
-				$('.material_select_tbody').html('');
-				$('.material_select_tbody').append('<tr><td class="no-records" colspan="5" style="line-height:100px;border-top:0px solid #eee;">' + js_lang.no_material_select + '</td></tr>');
-				$('.material_verify').parent().addClass('hide');
-			}
-			
-        },
-        
-        load_material_verify : function(data) {
-			var type = $('.nav-link.active').parent('.nav-item').attr('data-type');
-			$('.create-type__list').hide();
-			if (data.content != null) {
-                var opt = '<div class="material_show">';
-				if (data.content.ids != null) {
-					opt += '<div class="wmk_grid ecj-wookmark wookmark_list material_pictures w200"><div class="thumbnail move-mod-group material_pictures" style="margin-bottom:0px;">';
-					for (var i = 0; i < data.content.file.length; i++) {
-						if (i == 0) {
-							if (data.content.file[i].title == null) {
-								opt += '<div class="article"><h4 class="f_l"></h4><br><div class="cover"><img src="'+data.content.file[i].file+'"/><span>'+ js_lang.no_title +'</span></div></div>';
-							} else {
-								opt += '<div class="article"><div class="cover"><img src="'+data.content.file[i].file+'"/><span>'+data.content.file[i].title+'</span></div></div>';
-							}
-						} else {
-							if (data.content.file[i].title == null) {
-								opt += '<div class="article_list"><div class="f_l">'+ js_lang.no_title +'</div><img src="'+data.content.file[i].file+'" width="78" height="78" class="pull-right" /></div>';
-							} else {
-								opt += '<div class="article_list"><div class="f_l">'+data.content.file[i].title+'</div><img src="'+data.content.file[i].file+'" width="78" height="78" class="pull-right" /></div>';
-							}
-						}
-						opt += '<input type="hidden" name="media_id" value="'+data.content.id+'">';
-					}
-					opt += '</div></div>';
-				} else {
-					if (type == 'voice' || type == 'video') {
-						opt += '<img src="'+  data.content.file +'" style="margin:5px 0 5px 5px; max-height:300px;border-radius: 6px;"><div class="material_filename">'+data.content.file_name+'</div><input type="hidden" name="type" value="'+data.content.type+'"><input type="hidden" name="media_id" value="'+data.content.id+'">';
-					} else if (type == 'image') {
-						opt += '<img src="'+  data.content.file +'" style="margin:5px 0 5px 5px; max-height:300px;border-radius: 6px;"><input type="hidden" name="type" value="'+data.content.type+'"><input type="hidden" name="media_id" value="'+data.content.id+'">';
-					} else if (type == 'news') {
-						opt += '<div class="wmk_grid ecj-wookmark wookmark_list material_pictures w200"><div class="thumbnail move-mod-group "><div class="article_media"><div class="article_media_title">'+data.content.title+'</div><div>'+data.content.add_time+'</div><div class="cover"><img src="'+data.content.file+'" /></div><div class="articles_content">'+data.content.content+'</div></div></div></div><input type="hidden" name="media_id" value="'+data.content.id+'">';
-					}
-                }
-                opt += '</div>';
-                
-				$('#add_material').modal('hide');
-				$('.js_appmsgArea').append(opt);
-			}
-		}
     };
 
     app.admin_subscribe = {

@@ -72,6 +72,8 @@ class platform_subscribe extends ecjia_platform
         RC_Style::enqueue_style('bootstrap-responsive');
 
         RC_Script::enqueue_script('platform_subscribe', RC_App::apps_url('statics/platform-js/platform_subscribe.js', __FILE__), array(), false, true);
+        RC_Script::enqueue_script('choose_material', RC_App::apps_url('statics/platform-js/choose_material.js', __FILE__), array(), false, true);
+        
         RC_Style::enqueue_style('platform_subscribe', RC_App::apps_url('statics/platform-css/admin_subscribe.css', __FILE__));
         RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
         RC_Script::localize_script('platform_subscribe', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));

@@ -23,6 +23,10 @@
 	border-bottom: 1px solid #ddd;
 }
 
+.articles .articles_content.border-none {
+	border: none;
+}
+
 .article_media .articles_content {
 	overflow: hidden;
 	text-align: left;
@@ -52,16 +56,17 @@
 }
 
 .article span {
-	height: 30px;
-	line-height: 30px;
-	display: block;
-	z-index: 5;
-	position: absolute;
-	width: 100%;
-	bottom: 0px;
-	color: #FFF;
-	text-align: center;
-	background-color: rgba(0,0,0,0.6)
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    color: #FFF;
+    text-align: left;
+    background-color: rgba(0,0,0,0.6);
+    padding-left: 10px;
 }
 
 .article_list {
@@ -69,6 +74,10 @@
 	border-bottom: 1px solid #ddd;
 	border-top: 0;
 	overflow: hidden;
+}
+
+.article_list:last-child {
+	border-bottom: 0;
 }
 
 .article_list div {
@@ -143,7 +152,7 @@
 	height: 240px;
 }
 
-.ecj-wookmark ul li.thumbnail {
+.weui-desktop-media__list-col li.thumbnail {
 	width: 23%;
 	margin-right: 2%;
 	cursor: auto;
@@ -151,12 +160,13 @@
 	border-radius: 4px;
 }
 
-.ecj-wookmark ul li.thumbnail.big {
+.weui-desktop-media__list-col li.thumbnail.big {
 	width: 100%;
 	margin-bottom: 20px;
+	list-style: none;
 }
 
-.ecj-wookmark ul li.thumbnail:nth-child(4n) {
+.weui-desktop-media__list-col li.thumbnail:nth-child(4n) {
 	margin-right: 2%;
 }
 
@@ -563,13 +573,13 @@
 	margin-right: 0;
 }
 
-.inner_main ul .pic_box {
+.inner_main .pic_box {
 	height: 117px;
 	position: relative;
 	overflow: hidden;
 }
 
-.inner_main ul .pic {
+.inner_main .pic {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -579,11 +589,11 @@
 	-o-transform: translate(-50%,-50%);
 	-moz-transform: translate(-50%,-50%);
 	display: block;
-	border-bottom: 1px solid #e7e7eb;
 	height: 117px;
+	width: 135px;
 }
 
-.inner_main ul .img_item_bd {
+.inner_main .img_item_bd {
 	margin: 0;
 	border: 1px solid #e7e7eb;
 	width: 135px;
@@ -592,7 +602,7 @@
 	cursor: pointer;
 }
 
-.inner_main ul .lbl_content {
+.inner_main .lbl_content {
 	display: block;
 	padding: 0 9px;
 	height: 32px;
@@ -603,11 +613,11 @@
 	text-overflow: ellipsis;
 }
 
-.img_item_bd .selected_mask {
+.inner_main .img_item_bd .selected_mask {
     display: none;
 }
 
-.img_item_bd.selected .selected_mask {
+.inner_main .img_item_bd.selected .selected_mask {
     display: block;
     position: absolute;
     width: 100%;
@@ -616,7 +626,7 @@
     left: 0;
 }
 
-.img_item_bd.selected .selected_mask_inner {
+.inner_main .img_item_bd.selected .selected_mask_inner {
     height: 118px;
     -moz-opacity: .6;
     -khtml-opacity: .6;
@@ -625,7 +635,7 @@
     filter: alpha(opacity=60);
 }
 
-.img_item_bd.selected .selected_mask_icon {
+.inner_main .img_item_bd.selected .selected_mask_icon {
     position: absolute;
     top: 0;
     left: 0;
@@ -637,9 +647,48 @@
     background-position: 50% 50%;
 }
 
-.empty_material {
+.inner_main .empty_material {
 	line-height: 290px;
     text-align: center;
+}
+
+.inner_main .grid-item.selected .appmsg_mask {
+    display: block;
+}
+
+.inner_main .grid-item .appmsg_mask {
+	display: none;
+}
+
+.inner_main .grid-item .edit_mask {
+    font-size: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6)!important;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#99000000',endcolorstr = '#99000000');
+    color: #fff;
+    z-index: 6;
+    text-align: center;
+    padding: 14px;
+}
+
+.appmsg_mask .icon_card_selected {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -23px;
+    margin-left: -23px;
+    line-height: 999em;
+    overflow: hidden;
+    z-index: 7;
+	background: url(../images/icon_card_selected3a7b38.png) 0 0 no-repeat;
+    width: 46px;
+    height: 46px;
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .weui-desktop-media__list-col {
@@ -649,6 +698,27 @@
 	font-size: 14px;
 	display: inline-block;
     vertical-align: top;
+}
+
+.weui-desktop-media__list-col.margin_10 li.thumbnail.big {
+	margin-bottom: 0;
+}
+
+.margin_10 {
+	margin: 10px 0 10px 10px;
+}
+
+.link_dele {
+	display: inline-block;
+    vertical-align: bottom;
+    padding-left: 10px;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: #576b95;
+}
+
+.link_dele.p_l0 {
+	padding-left: 0;
 }
 
 .wookmark_list ul.wookmark-goods-photo.wookmark-news {

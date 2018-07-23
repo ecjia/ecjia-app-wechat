@@ -2,20 +2,6 @@
 ; (function (app, $) {
 	app.material = {
 		init: function () {
-			//			$( ".wookmark_list img" ).disableSelection();
-			//			$('.move-mod').sortable({
-			//				distance: 0,
-			//				revert: false, //缓冲效果   
-			//				handle: '.move-mod-head',
-			//				placeholder: 'ui-sortable-placeholder thumbnail',
-			//				activate: function(event, ui) {
-			//					$('.wookmark-goods-photo').append(ui.helper);
-			//				},
-			//				stop: function(event, ui) {
-			//				},
-			//				sort: function(event, ui) {
-			//				}
-			//			});
 			var action = $(".fileupload").attr('data-action');
 			var type = $(".fileupload").attr('data-type');
 			if (type == 'image') {
@@ -36,7 +22,6 @@
 			});
 			app.material.sort_ok();
 			app.material.edit_title();
-			app.material.loaded_img();
 			app.material.get_material();
 
 			$(".ajaxswitch").on('click', function (e) {
@@ -82,22 +67,8 @@
 				});
 			});
 		},
-		loaded_img: function () {
-			//			$('div.wookmark_list').imagesLoaded(function() {
-			//				$('div.wookmark_list .thumbnail a.bd').attr('rel', 'gallery').colorbox({
-			//					maxWidth		: '80%',
-			//					maxHeight		: '80%',
-			//					opacity			: '0.8', 
-			//					loop			: true,
-			//					slideshow		: false,
-			//					fixed			: true,
-			//					speed			: 300,
-			//				});
-			//			});
-		},
 
 		get_material: function () {
-
 			$(".get_material").off('click').on('click', function (e) {
 				e.preventDefault();
 				var $this = $(this);
@@ -124,156 +95,6 @@
 		},
 	};
 
-	app.material_add = {
-		init: function () {
-			app.material_add.add_material();
-			app.material_add.the_Form();
-		},
-		//添加必填项js
-		the_Form: function () {
-			$(".start_time,.end_time").datepicker({
-				format: "yyyy-mm-dd",
-				container: '.main_content',
-			});
-			var $form = $("form[name='theForm']");
-			var option = {
-				rules: {
-					title: { required: true },
-					video_title: { required: true },
-				},
-				messages: {
-					title: { required: js_lang.title_placeholder },
-					video_title: { required: js_lang.title_placeholder_title },
-				},
-				submitHandler: function () {
-					$form.bind('form-pre-serialize', function (event, form, options, veto) {
-						(typeof (tinyMCE) != "undefined") && tinyMCE.triggerSave();
-					}).ajaxSubmit({
-						dataType: "json",
-						success: function (data) {
-							ecjia.platform.showmessage(data);
-						}
-					});
-				}
-			}
-			var options = $.extend(ecjia.platform.defaultOptions.validate, option);
-			$form.validate(options);
-		},
-
-		add_material: function () {
-			$('.picture-material').on('click', function () {
-				$('.material_select_tbody').html('');
-				$('.material-table').attr('id', 'image');
-
-				var type = 'news';
-				url = $('.material-table').attr('data-url');
-				var filters = {
-					'JSON': {
-						'type': type
-					}
-				};
-
-				$.get(url, filters, function (data) {
-					app.material_add.load_material_list(data);
-				}, "JSON");
-			});
-
-
-			$('.material_verify').on('click', function () {
-				var type = $('.material-table').attr('id');
-				$('input[name="content_type"]').val(type);
-				var id = '';
-				$("input[name=media_id]").each(function () {
-					if ($(this).val()) {
-						id += $(this).val() + '.';
-					}
-				});
-				if (id == undefined || id == '') {
-					$('#add_material').modal('hide');
-					smoke.alert(js_lang.select_material);
-					return false;
-				}
-				url = $('.material_choose').attr('data-url');
-
-				var filters = {
-					'JSON': {
-						'id': id
-					}
-				};
-				$.get(url, filters, function (data) {
-					app.material_add.load_material_verify(data);
-				}, "JSON");
-			});
-		},
-
-		load_material_list: function (data) {
-			if (data.content != null) {
-				if (data.content.length > 0) {
-					for (var i = 0; i < data.content.length; i++) {
-						var opt = '<tr class="seleted_material multi_material" value="' + data.content[i].id + '"><td>' +
-							'<td><img src="' + data.content[i].file + '" style="width:80px;height:80px;border-radius: 6px;"></td>' +
-							'<td class="w180">' + data.content[i].title + '</td>' +
-							'<td>' + data.content[i].size + '</td>' +
-							'<td>' + data.content[i].add_time + '</td></tr>';
-						$('.material_select_tbody').append(opt);
-					};
-
-					$('.seleted_material').on('click', function () {
-						var value = $(this).attr('value');
-						if (!$(this).hasClass('selected_background')) {
-							$(this).addClass('selected_background');
-							$('.material_select_tbody').append('<input type="hidden" name="media_id" value="' + value + '" class="material_' + value + '">');
-						} else {
-							$(this).removeClass('selected_background');
-							var class_name = 'material_' + value;
-							$('.' + class_name).remove();
-						}
-					});
-					$('#add_material').css('height', '420px');
-					$('.material_choose_list').css('height', '300px');
-					//					$("input[type='radio']").uniform();
-					$('.material_verify').parent().parent().removeClass('hide');
-				} else {
-					$('#add_material').css('height', '200px');
-					$('.material_choose_list').css('height', 'auto');
-					$('.material_select_tbody').append('<tr><td class="no-records" colspan="5" style="line-height:100px;border-top:0px solid #eee;">' + js_lang.no_material_select + '</td></tr>');
-					$('.material_verify').parent().parent().addClass('hide');
-				}
-			} else {
-				$('#add_material').css('height', '200px');
-				$('.material_choose_list').css('height', 'auto');
-				$('.material_select_tbody').html('');
-				$('.material_select_tbody').append('<tr><td class="no-records" colspan="5" style="line-height:100px;border-top:0px solid #eee;">' + js_lang.no_material_select + '</td></tr>');
-				$('.material_verify').parent().parent().addClass('hide');
-			}
-		},
-
-		load_material_verify: function (data) {
-			$('.content').html('');
-			if (data.content != null) {
-				$('#add_material').modal('hide');
-				$('.image_message').removeClass('hidden');
-				var opt = '<div class="wmk_grid ecj-wookmark wookmark_list material_pictures"><ul class="wookmark-goods-photo move-mod nomove"><li class="thumbnail move-mod-group">';
-				for (var i = 0; i < data.content.length; i++) {
-					if (i == 0) {
-						opt += '<div class="article"><div class="cover"><img src="' + data.content[i].file + '"/><span>' + data.content[i].title + '</span></div></div>';
-					} else {
-						if (data.content[i].title == '') {
-							opt += '<div class="article_list"><div class="f_l">' + js_lang.no_title + '</div><img src="' + data.content[i].file + '" width="78" height="78" class="pull-right" /></div>';
-						} else {
-							opt += '<div class="article_list"><div class="f_l">' + data.content[i].title + '</div><img src="' + data.content[i].file + '" width="78" height="78" class="pull-right" /></div>';
-						}
-					}
-					opt += '<input type="hidden" name="media_id[]" value="' + data.content[i].id + '">';
-				}
-				opt += '</li></ul></div>';
-				$('.content').append(opt);
-			} else {
-				return false;
-			}
-		}
-	};
-
 	app.material_edit = {
 		init: function () {
 			app.material_edit.clone();
@@ -292,7 +113,6 @@
 			} else {
 				$('.create_news').show();
 			}
-
 			app.material_edit.choose_material();
 		},
 
@@ -462,8 +282,6 @@
 					$("#content").children().find('iframe').contents().find('body.view').html(data.content.content);
 					var editor = UE.getEditor('content');
 					content = editor.setContent(data.content.content);
-
-					//					$('textarea[name="content"]').html(data.content.content);
 				}, "JSON");
 
 				app.material_edit.edit_area_show(index);
