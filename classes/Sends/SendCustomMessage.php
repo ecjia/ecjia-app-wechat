@@ -156,7 +156,7 @@ class SendCustomMessage
 
 
     /**
-     * 发送图文消息
+     * 发送图文消息（点击跳转到外链）
      */
     public function sendNewsMessage()
     {
@@ -164,7 +164,7 @@ class SendCustomMessage
     }
 
     /**
-     * 发送图文消息
+     * 发送图文消息（点击跳转到图文消息页面）
      */
     public function sendMpnewsMessage($media_id, $model = null)
     {
@@ -172,7 +172,7 @@ class SendCustomMessage
             'media_id' => $media_id
         ];
 
-        $message = new Material($content);
+        $message = new Material('mpnews', $media_id);
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
