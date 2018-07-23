@@ -914,7 +914,9 @@ return array(
     'page_access_user_info'    => '网页授权获取用户信息',
     'check_access_token'       => '检验授权凭证（access_token）是否有效',
     
-    'extend_manage'			   => '插件管理'
+    'extend_manage'			   => '插件管理',
+    'material_type_title'	   => '选择%s素材',
+    'news'					   => '图文',
 );		
 
 // end

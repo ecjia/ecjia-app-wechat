@@ -704,6 +704,10 @@
 	margin-bottom: 0;
 }
 
+.weui-desktop-media__list-col.margin_10 {
+	width: 15%;
+}
+
 .margin_10 {
 	margin: 10px 0 10px 10px;
 }

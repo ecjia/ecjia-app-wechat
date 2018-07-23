@@ -1533,9 +1533,10 @@ class platform_material extends ecjia_platform
        	$list = $newData->all();
         $this->assign('list', $list);
         $this->assign('type', $type);
-        
+
+        $title = sprintf(RC_Lang::get('wechat::wechat.material_type_title'), RC_Lang::get('wechat::wechat.'.$type));
         $data = $this->fetch('library/wechat_material_list.lbi');
-        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data));
+        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data, 'title' => $title));
     }
 
     public function get_material_info()

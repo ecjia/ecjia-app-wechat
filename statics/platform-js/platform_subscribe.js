@@ -69,23 +69,6 @@
                     }
                 });
             });
-
-            $('.nav-item').off('click').on('click', function(e) {
-                var $this = $(this),
-                    type = $this.attr('data-type');
-                if (type != 'text') {
-                    $('#chat_editor').hide();
-                    $('.js_appmsgArea').show();
-                } else {
-                    $('#chat_editor').show();
-                    $('.js_appmsgArea').hide();
-                }
-                $('.img_preview').remove();
-                $('.weui-desktop-media__list-col').remove();
-                $('.link_dele').remove();
-                $('.create-type__list').show();
-                $('.choose_material').attr('data-type', type);
-            });
             app.subscribe_message.edit_customer_remark();
         },
 
