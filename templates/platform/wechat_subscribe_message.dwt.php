@@ -164,7 +164,7 @@
 						</div>
 					</div>
 
-					<div class="col-xl-12 col-lg-12 material-table m_t20" data-url="{url path='wechat/platform_subscribe/get_material_list'}">
+					<div class="col-xl-12 col-lg-12 material-table m_t20">
 						<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
 							<li class="nav-item" data-type="text">
 								<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>

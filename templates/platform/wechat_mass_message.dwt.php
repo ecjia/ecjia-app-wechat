@@ -4,6 +4,7 @@
 <!-- {block name="footer"} -->
 <script type="text/javascript">
 	ecjia.platform.mass_message.init();
+	ecjia.platform.choose_material.init();
 </script>
 <!-- {/block} -->
 
@@ -114,39 +115,37 @@
 								<label class="col-lg-2 label-control text-right">
 									{lang key='wechat::wechat.label_select_material'}
 								</label>
-								<div class="col-lg-8 controls material-table" data-url="{url path='wechat/platform_mass_message/get_material_list'}">
+								<div class="col-lg-8 controls">
 									<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
-										<li class="nav-item text-material">
+										<li class="nav-item" data-type="text">
 											<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>
 										</li>
-										<li class="nav-item picture-material">
+										<li class="nav-item" data-type="image">
 											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.image'}"><i class="fa fa-file-image-o"> 图片</i></a>
 										</li>
-										<li class="nav-item music-material">
+										<li class="nav-item" data-type="voice">
 											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.voice'}"><i class="fa fa-music"> 语音</i></a>
 										</li>
-										<li class="nav-item video-material">
+										<li class="nav-item" data-type="video">
 											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.video'}"><i class="fa fa-video-camera"> 视频</i></a>
 										</li>
-										<li class="nav-item list-material">
-											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.text_message'}"><i class="fa fa-list-alt"> 图文消息</i></a>
+										<li class="nav-item" data-type="news">
+											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.text_message'}"><i class="fa fa-list-alt"> 图文</i></a>
 										</li>
 									</ul>
-                               		<div class="text m_b10 {if $data.media_id}hidden{/if}">
-                               			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5"></textarea>
-                                	</div>
-                                	
-                					<div class="material_picture {if empty($data.media_id)}hidden{/if}">
-                                    	{if $data['media']}
-                                   			{if $data['media']['type'] == 'voice'}
-	                                   			<input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
-	                                  		{elseif $subscribe['media']['type'] == 'video'}
-                                         		<input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
-                                     		{else}
-                                    			<input type='hidden' name='media_id' value="{$data['media_id']}"><img src="{$data['media']['file']}" class='img-rounded material_show' />
-                                 			{/if}
-                                		{/if}
-	                      			</div>
+			                   		<div class="text m_b10 {if $data.media_id}hidden{/if}">
+			                   			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5" id="chat_editor"></textarea>
+										<div class="js_appmsgArea">
+											<div class="tab_cont_cover create-type__list">
+												<div class="create-type__item">
+													<a href="javascript:;" class="create-type__link choose_material" data-type="" data-url="{RC_Uri::url('wechat/platform_material/choose_material')}&material=1">
+														<i class="create-type__icon file"></i>
+														<strong class="create-type__title">从素材库选择</strong>
+													</a>
+												</div>
+											</div>
+										</div>
+			                    	</div>
 								</div>
 								<span class="input-must">{lang key='system::system.require_field'}</span>
 							</div>
@@ -161,4 +160,7 @@
         </div>
     </div>
 </div>
+
+<!-- {include file="./library/wechat_choose_material.lbi.php"} -->
+
 <!-- {/block} -->

@@ -1,8 +1,8 @@
 // JavaScript Document
 ; (function (app, $) {
-	app.material = {
+	app.choose_material = {
 		init: function () {
-			app.material.choose_material();
+			app.choose_material.choose_material();
 		},
 		choose_material: function () {
             $('.nav-item').off('click').on('click', function(e) {
@@ -33,7 +33,7 @@
 					$('.inner_main').html(data.data);
 					$('#choose_material').find('.modal-title').html(data.title);
 					$('#choose_material').modal('show');
-					app.material.img_item_click();
+					app.choose_material.img_item_click();
 				})
 			});
 
@@ -41,17 +41,17 @@
 				var $this = $('.img_item_bd.selected'),
 					media_id = $this.find('.pic').attr('data-media'),
 					src = $this.find('.pic').attr('src');
-				var inner_html = '<div class="img_preview"><img class="preview_img margin_10" src="'+ src +'" alt=""><input type="hidden" name="media" value='+ media_id +'><a href="javascript:;" class="jsmsgSenderDelBt link_dele"">删除</a></div>';
+				var inner_html = '<div class="img_preview"><img class="preview_img margin_10" src="'+ src +'" alt=""><input type="hidden" name="media_id" value='+ media_id +'><a href="javascript:;" class="jsmsgSenderDelBt link_dele"">删除</a></div>';
 				
 				if (media_id == undefined) {
 					var html = $('.grid-item.selected');
 					media_id = html.attr('data-media');
-					inner_html = '<div class="weui-desktop-media__list-col margin_10">' + html[0]['outerHTML'] + '<input type="hidden" name="media" value='+ media_id +'></div><a href="javascript:;" class="jsmsgSenderDelBt link_dele p_l0">删除</a>';
+					inner_html = '<div class="weui-desktop-media__list-col margin_10">' + html[0]['outerHTML'] + '<input type="hidden" name="media_id" value='+ media_id +'></div><a href="javascript:;" class="jsmsgSenderDelBt link_dele p_l0">删除</a>';
 				}
 				$('.create-type__list').hide();
 				$('.js_appmsgArea').append(inner_html);
 				$('#choose_material').modal('hide');
-				app.material.link_del();
+				app.choose_material.link_del();
 			});
 		},
 
