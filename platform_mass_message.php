@@ -132,8 +132,6 @@ class platform_mass_message extends ecjia_platform
             $content_type = 'mpnews';
         } elseif ($content_type == 'video') {
             $content_type = 'mpvideo';
-        } elseif ($content_type == 'image') {
-            $field = 'thumb';
         }
         $type = 'media_id';
         //发送文本

@@ -20,6 +20,7 @@
                 $('.link_dele').remove();
                 $('.create-type__list').show();
                 $('.choose_material').attr('data-type', type);
+                $('input[name="content_type"]').val(type);//群发消息类型
             });
             
 			$('.choose_material').off('click').on('click', function () {
