@@ -559,7 +559,7 @@
 
 .inner_main {
 	position: relative;
-	height: 350px;
+	height: 560px;
 	overflow-x: hidden;
 	padding: 20px;
 }
@@ -718,7 +718,7 @@
 }
 
 .weui-desktop-media__list-col.margin_10 {
-	width: 25%;
+	width: 18%;
 }
 
 .margin_10 {
