@@ -16,6 +16,7 @@ use Royalcms\Component\WeChat\Message\Voice;
 use Royalcms\Component\WeChat\Message\Video;
 use Royalcms\Component\WeChat\Message\News;
 use Royalcms\Component\WeChat\Message\Music;
+use Royalcms\Component\WeChat\Message\Mpnews;
 use Ecjia\App\Wechat\Models\WechatMediaModel;
 
 class SendCustomMessage
@@ -103,17 +104,46 @@ class SendCustomMessage
     /**
      * 发送语音消息
      */
-    public function sendVoiceMessage()
+    public function sendVoiceMessage($media_id, $model = null)
     {
+        $content = ['media_id' => $media_id];
 
+        $message = new Voice($content);
+
+        $result = $this->wechat->staff->message($message)->to($this->openid)->send();
+
+        if (! is_null($model)) {
+            $content['voice_url'] = \RC_Upload::upload_url($model->file);
+        }
+
+        WechatRecord::replyMsg($this->openid, '发送语音消息', 'voice', $content);
+
+        return $result;
     }
 
     /**
      * 发送视频消息
      */
-    public function sendVedioMessage()
+    public function sendVideoMessage($media_id, $model = null)
     {
+        $content = [
+            'media_id' => $media_id,
+            'thumb_media_id' => $model->thumb,
+            'title' => $model->title,
+            'description' => $model->digest,
+        ];
 
+        $message = new Video($content);
+
+        $result = $this->wechat->staff->message($message)->to($this->openid)->send();
+
+        if (! is_null($model)) {
+            $content['video_url'] = \RC_Upload::upload_url($model->file);
+        }
+
+        WechatRecord::replyMsg($this->openid, '发送视频消息', 'video', $content);
+
+        return $result;
     }
 
     /**
@@ -136,9 +166,19 @@ class SendCustomMessage
     /**
      * 发送图文消息
      */
-    public function sendMpnewsMessage()
+    public function sendMpnewsMessage($media_id, $model = null)
     {
+        $content = [
+            'media_id' => $media_id
+        ];
 
+        $message = new Mpnews($content);
+
+        $result = $this->wechat->staff->message($message)->to($this->openid)->send();
+
+        WechatRecord::replyMsg($this->openid, '发送图文消息（点击跳转到图文消息页面）', 'mpnews', $content);
+
+        return $result;
     }
 
     /**
