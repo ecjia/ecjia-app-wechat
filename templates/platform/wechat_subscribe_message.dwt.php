@@ -182,7 +182,7 @@
 								<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.text_message'}"><i class="fa fa-list-alt"> 图文</i></a>
 							</li>
 						</ul>
-                   		<div class="text m_b10 {if $data.media_id}hidden{/if}">
+                   		<div class="text m_b10">
                    			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5" id="chat_editor"></textarea>
 							<div class="js_appmsgArea">
 								<div class="tab_cont_cover create-type__list">
