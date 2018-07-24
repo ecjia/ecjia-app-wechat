@@ -119,7 +119,7 @@ class platform_mass_message extends ecjia_platform
 
         $tag_id         = $this->request->input('tag_id', 0);
         $mass_type      = $this->request->input('mass_type');
-        $id             = $this->request->input('media_id', 0);
+        $media_id       = $this->request->input('media_id', 0);
         $content_type   = $this->request->input('content_type');
         $content        = $this->request->input('content');
 
@@ -147,9 +147,9 @@ class platform_mass_message extends ecjia_platform
 //            $rs = $wechat->broadcast->sendText($massmsg);
 
             if ($media_id) {
-                with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id))->sendMediaMessage($media_id);
+                with(new Ecjia\App\Wechat\Sends\BroadcastSendMessage($wechat, $wechat_id))->sendMediaMessage($media_id);
             } else {
-                with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id))->sendTextMessage($msg);
+                with(new Ecjia\App\Wechat\Sends\BroadcastSendMessage($wechat, $wechat_id))->sendTextMessage($content);
             }
 
 
@@ -168,15 +168,15 @@ class platform_mass_message extends ecjia_platform
 
 
 
-        $msg_data['type'] = $content_type;
-        $field = 'media_id';
-
-        if ($content_type == 'news') {
-            $content_type = 'mpnews';
-        } elseif ($content_type == 'video') {
-            $content_type = 'mpvideo';
-        }
-        $type = 'media_id';
+//        $msg_data['type'] = $content_type;
+//        $field = 'media_id';
+//
+//        if ($content_type == 'news') {
+//            $content_type = 'mpnews';
+//        } elseif ($content_type == 'video') {
+//            $content_type = 'mpvideo';
+//        }
+//        $type = 'media_id';
 //        //发送文本
 //        if ($content_type == 'text') {
 //            if (empty($content)) {
