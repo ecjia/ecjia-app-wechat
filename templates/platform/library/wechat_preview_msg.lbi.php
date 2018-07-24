@@ -43,7 +43,8 @@
 			</div>
 			
 			<div class="modal-footer justify-content-center">
-				<input type="button" class="btn btn-outline-primary confirm-send" {if $errormsg || $wechat_type eq '0'}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+				<input type="button" class="btn btn-success confirm-send" {if $errormsg || $wechat_type eq '0'}disabled{/if} value="{lang key='wechat::wechat.ok'}" />
+				<input type="button" class="btn btn-outline-primary" data-dismiss="modal" aria-label="Close" value="{lang key='wechat::wechat.cancel'}" />
 			</div>
 		</div>
 	</div>
