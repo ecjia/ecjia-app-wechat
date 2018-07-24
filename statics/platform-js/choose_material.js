@@ -16,8 +16,8 @@
                     $('#chat_editor').show();
                     $('.js_appmsgArea').hide();
                 }
-                $('.img_preview').remove();
-                $('.weui-desktop-media__list-col').remove();
+                $('.material-table').find('.img_preview').remove();
+                $('.material-table').find('.weui-desktop-media__list-col').remove();
                 $('.link_dele').remove();
                 $('.create-type__list').show();
                 $('.choose_material').attr('data-type', type);

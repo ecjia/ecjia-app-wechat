@@ -513,7 +513,9 @@ class platform_subscribe extends ecjia_platform
         $this->admin_priv('wechat_subscribe_message_manage');
 
         $wechat_id = $this->platformAccount->getAccountID();
-
+		$account_name = $this->platformAccount->getAccountName();
+        $this->assign('account_name', $account_name);
+        
         $page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
         $this->assign('ur_here', RC_Lang::get('wechat::wechat.user_message_record'));
 
@@ -742,7 +744,7 @@ class platform_subscribe extends ecjia_platform
             ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'));
 
         $wechat_id = $this->platformAccount->getAccountID();
-        $platform_name = $this->platformAccount->getPlatformName();
+        $platform_name = $this->platformAccount->getAccountName();
 
         $uid = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
         $last_id = !empty($_GET['last_id']) ? intval($_GET['last_id']) : 0;
