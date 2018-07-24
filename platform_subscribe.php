@@ -513,7 +513,9 @@ class platform_subscribe extends ecjia_platform
         $this->admin_priv('wechat_subscribe_message_manage');
 
         $wechat_id = $this->platformAccount->getAccountID();
-
+		$account_name = $this->platformAccount->getAccountName();
+        $this->assign('account_name', $account_name);
+        
         $page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
         $this->assign('ur_here', RC_Lang::get('wechat::wechat.user_message_record'));
 
@@ -634,14 +636,13 @@ class platform_subscribe extends ecjia_platform
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
             if ($media_id) {
-                $content = with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendMediaMessage($media_id);
+                with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendMediaMessage($media_id);
             } else {
-                $content = with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendTextMessage($msg);
+                with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendTextMessage($msg);
             }
 
             ecjia_admin::admin_log($msg, 'send', 'subscribe_message');
-
-            return $this->showmessage(RC_Lang::get('wechat::wechat.send_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $content, 'send_time' => RC_Time::local_date(ecjia::config('time_format'), RC_Time::gmtime())));
+            return $this->showmessage(RC_Lang::get('wechat::wechat.send_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('send_time' => RC_Time::local_date(ecjia::config('time_format'), RC_Time::gmtime())));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -742,16 +743,16 @@ class platform_subscribe extends ecjia_platform
             ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'));
 
         $wechat_id = $this->platformAccount->getAccountID();
-        $platform_name = $this->platformAccount->getPlatformName();
+        $platform_name = $this->platformAccount->getAccountName();
 
         $uid = !empty($_GET['uid']) ? intval($_GET['uid']) : 0;
         $last_id = !empty($_GET['last_id']) ? intval($_GET['last_id']) : 0;
         $chat_id = !empty($_GET['chat_id']) ? intval($_GET['chat_id']) : 0;
 
         if (!empty($last_id)) {
-            $db_custom_message->where(RC_DB::raw('m.uid'), $chat_id)->where(RC_DB::raw('m.iswechat'), 0)->orWhere(RC_DB::raw('m.iswechat'), 1)->where(RC_DB::raw('m.id'), '<', $last_id);
+            $db_custom_message->where(RC_DB::raw('m.uid'), $chat_id)->where(RC_DB::raw('m.id'), '<', $last_id);
         } else {
-            $db_custom_message->where(RC_DB::raw('m.uid'), $uid)->where(RC_DB::raw('m.iswechat'), 0)->orWhere(RC_DB::raw('m.iswechat'), 1);
+            $db_custom_message->where(RC_DB::raw('m.uid'), $uid);
         }
         $count = $db_custom_message->count();
 
@@ -1034,108 +1035,6 @@ class platform_subscribe extends ecjia_platform
         }
     }
 
-    public function get_material_list()
-    {
-        $wechat_id = $this->platformAccount->getAccountID();
-
-        if (is_ecjia_error($wechat_id)) {
-            $list = array();
-        } else {
-            $type = trim($_POST['type']);
-
-            $where = '';
-            if ($type == 'image') {
-                $where = "(file is NOT NULL and (type = 'image')) and wechat_id = $wechat_id";
-            } elseif ($type == 'news') {
-                $where = "type = '$type' and parent_id = 0 and wechat_id = $wechat_id and media_id != ''";
-            } else {
-                $where = "(file is NOT NULL and type = '$type') and wechat_id = $wechat_id";
-            }
-            $list = RC_DB::table('wechat_media')->select('*')->whereRaw($where)->get();
-            
-            if (!empty($list)) {
-                foreach ($list as $key => $val) {
-                    if ($val['type'] == 'news') {
-                        $list[$key]['children'] = $this->get_article_list($val['id'], $val['type']);
-                        $list[$key]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $val['add_time']);
-                        if (!empty($val['file'])) {
-                            $list[$key]['file'] = RC_Upload::upload_url($val['file']);
-                        } else {
-                            $list[$key]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
-                        }
-
-                    } else {
-                        if (empty($val['file']) || $val['type'] == 'voice' || $val['type'] == 'video') {
-                            if (empty($val['file'])) {
-                                $list[$key]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
-                            } elseif ($val['type'] == 'voice') {
-                                $list[$key]['file'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
-                            } elseif ($val['type'] == 'video') {
-                                $list[$key]['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
-                            }
-                        } else {
-                            $list[$key]['file'] = RC_Upload::upload_url($val['file']);
-                        }
-                        $list[$key]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $val['add_time']);
-                        if (empty($val['title'])) {
-                            $list[$key]['title'] = '';
-                        }
-                        if (!empty($val['size'])) {
-                            if ($val['size'] > (1024 * 1024)) {
-                                $list[$key]['size'] = round(($val['size'] / (1024 * 1024)), 1) . 'MB';
-                            } else {
-                                $list[$key]['size'] = round(($val['size'] / 1024), 1) . 'KB';
-                            }
-                        } else {
-                            $list[$key]['size'] = '';
-                        }
-                    }
-                    $list[$key]['type'] = $type;
-                }
-            }
-        }
-        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $list));
-    }
-
-        /**
-     * 获取多图文信息
-     */
-    private function get_article_list($id, $type)
-    {
-        $filter['type'] = empty($_GET['type']) ? '' : trim($_GET['type']);
-
-        $db = RC_DB::table('wechat_media')->where('type', $type);
-        if ($id) {
-            $db->where('parent_id', $id)->orWhere('id', $id);
-        }
-        $data = $db->orderBy('id', 'asc')->get();
-        $article['id'] = $id;
-
-        if (!empty($data)) {
-            foreach ($data as $k => $v) {
-                $article['ids'][$k] = $v['id'];
-
-                if (!empty($v['file'])) {
-                    $article['file'][$k]['file'] = RC_Upload::upload_url($v['file']);
-                } else {
-                    $article['file'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
-                }
-                $article['file'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
-                $article['file'][$k]['title'] = strip_tags(html_out($v['title']));
-                $article['file'][$k]['id'] = $v['id'];
-                if (!empty($v['size'])) {
-                    if ($v['size'] > (1024 * 1024)) {
-                        $article['file'][$k]['size'] = round(($v['size'] / (1024 * 1024)), 1) . 'MB';
-                    } else {
-                        $article['file'][$k]['size'] = round(($v['size'] / 1024), 1) . 'KB';
-                    }
-                } else {
-                    $article['file'][$k]['size'] = '';
-                }
-            }
-        }
-        return $article;
-    }
 }
 
 //end
