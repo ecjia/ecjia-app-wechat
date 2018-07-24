@@ -14,7 +14,7 @@
                         <div class="ecj-thumbnail">
                             <div class="centered">
                                 <a target="__blank" href="{$val.file}" title="{$val.file_name}">
-                                    <img src="{$val.file}" />
+                                    <img src="{$val.thumb}" />
                                 </a>
                             </div>
                         </div>

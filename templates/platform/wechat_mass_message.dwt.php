@@ -153,7 +153,9 @@
 					</div>
 					<div class="modal-footer justify-content-center">
 						<input type="hidden" name="content_type" value="text">
+						<input type="hidden" name="preview_url" value="{RC_Uri::url('wechat/platform_mass_message/preview_msg')}">
 						<input type="submit" class="btn btn-outline-primary" value="{lang key='wechat::wechat.send_msg'}" {if $errormsg}disabled="disabled"{/if}/>
+						<input type="button" class="btn btn-outline-primary preview_msg" value="预览" {if $errormsg}disabled="disabled"{/if}/>
 					</div>
 				</form>	
             </div>
@@ -162,5 +164,6 @@
 </div>
 
 <!-- {include file="./library/wechat_choose_material.lbi.php"} -->
+<!-- {include file="./library/wechat_preview_msg.lbi.php"} -->
 
 <!-- {/block} -->
