@@ -601,6 +601,13 @@ class platform_subscribe extends ecjia_platform
         $list = $this->get_message_list();
         $message = count($list['item']) < 10 ? RC_Lang::get('wechat::wechat.no_more_message') : RC_Lang::get('wechat::wechat.searched');
         if (!empty($list['item'])) {
+        	foreach ($list['item'] as $k => $v) {
+        		if ($v['type'] != 'text') {
+        			$this->assign('type', $v['type']);
+        			$this->assign('media_content', $v['media_content']);
+        			$list['item'][$k]['media_content_html'] = $this->fetch('library/wechat_subscribe_message.lbi');
+        		}
+        	}
             return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('msg_list' => $list['item'], 'last_id' => $list['last_id']));
         } else {
             return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);

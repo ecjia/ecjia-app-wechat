@@ -21,7 +21,9 @@
                                     msg: data.msg_list[i].msg,
                                     chat_user: data.msg_list[i].nickname,
                                     is_myself: is_myself,
-                                    oldstart: 1
+                                    oldstart: 1,
+                                    type: data.msg_list[i].type,
+                                    media_content: data.msg_list[i].media_content_html
                                 };
                                 app.subscribe_message.addMsgItem(options);
                             };
@@ -29,6 +31,9 @@
                             $this.attr('data-lastid', new_last_id);
                             data.msg_list.length < 10 && $this.text(data.message).attr('disabled', 'disabled');
                             $('.chat_msg.media-list').prepend($this.parents('.chat_msg'));
+                            $('.chat-box').stop().animate({
+                                scrollTop: 0
+                            }, 1000);
                         } else {
                             $this.text(data.message).attr('disabled', 'disabled');
                         }
@@ -144,14 +149,16 @@
                 openid = $('#openid').val(),
                 account_name = $('#account_name').val(),
                 media_id = $('input[name="media_id"]').val(),
-                info = { message: msg, uid: chat_user, openid: openid, media_id: media_id };
+                info = { message: msg, uid: chat_user, openid: openid, media_id: media_id },
+            	type = $('.nav-link.active').parent('.nav-item').attr('data-type');
+
             if (msg != "" || media_id != undefined) {
                 $.post(post_url, info, function(data) {
                     if (data.state == 'error') {
                         ecjia.platform.showmessage(data);
                         return false;
                     }
-                    var options = { send_time: data.send_time, msg: msg, chat_user: account_name, is_myself: 1, media_id: media_id };
+                    var options = { send_time: data.send_time, msg: msg, chat_user: account_name, is_myself: 1, media_id: media_id, type: type };
                     app.subscribe_message.addMsgItem(options);
                 }, 'json');
             } else {
@@ -166,19 +173,23 @@
         addMsgItem: function(options) {
             var msg_cloned = $('.msg_clone').clone();
             options.oldstart ? $('.chat_msg.media-list').prepend(msg_cloned) : $('.chat_msg.media-list').append(msg_cloned);
+            var html = '';
             if (options.media_id != undefined && options.media_id != '') {
-            	var type = $('.nav-link.active').parent('.nav-item').attr('data-type');
             	$('.js_appmsgArea').find('.link_dele').remove();
             	$('.js_appmsgArea').find('input[name="media_id"]').remove();
-            	if (type == 'news') {
-            		var html = $('.js_appmsgArea').find('.weui-desktop-media__list-col');
+            	if (options.type == 'news') {
+            		html = $('.js_appmsgArea').find('.weui-desktop-media__list-col');
             	} else {
-            		var html = $('.js_appmsgArea').find('.img_preview');
+            		html = $('.js_appmsgArea').find('.img_preview');
             	}
-            	msg_cloned.find('.media-text').html(html);
             } else {
-            	msg_cloned.find('.media-text').html(options.msg);
+            	if (options.media_content != undefined) {
+            		html = options.media_content;
+            	} else {
+            		html = options.msg;
+            	}
             }
+            msg_cloned.find('.media-text').html(html);
             msg_cloned.find('.chat_msg_date').html(options.send_time);
             msg_cloned.find('.chat_user_name').html(options.chat_user);
             !options.is_myself && msg_cloned.removeClass('chat-msg-mine').addClass('chat-msg-you');

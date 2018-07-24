@@ -84,9 +84,6 @@
 													            <span>{$val.title}</span>
 													        </div>
 													    </div>
-													    <div class="edit_mask appmsg_mask">
-													        <i class="icon_card_selected">已选择</i>
-													    </div>
 													    {else}
 													    <div class="article_list">
 													        <div class="f_l">{$val.title}</div>
