@@ -642,7 +642,6 @@ class platform_subscribe extends ecjia_platform
             }
 
             ecjia_admin::admin_log($msg, 'send', 'subscribe_message');
-
             return $this->showmessage(RC_Lang::get('wechat::wechat.send_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('send_time' => RC_Time::local_date(ecjia::config('time_format'), RC_Time::gmtime())));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
