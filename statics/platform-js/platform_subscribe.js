@@ -177,6 +177,7 @@
             if (options.media_id != undefined && options.media_id != '') {
             	$('.js_appmsgArea').find('.link_dele').remove();
             	$('.js_appmsgArea').find('input[name="media_id"]').remove();
+            	$('.create-type__list').show();
             	if (options.type == 'news') {
             		html = $('.js_appmsgArea').find('.weui-desktop-media__list-col');
             	} else {
@@ -194,7 +195,7 @@
             msg_cloned.find('.chat_user_name').html(options.chat_user);
             !options.is_myself && msg_cloned.removeClass('chat-msg-mine').addClass('chat-msg-you');
             msg_cloned.removeClass('msg_clone').show();
-            $('.create-type__list').show();
+            
             $('.chat-box').stop().animate({
                 scrollTop: $('.chat-box .card-body').height()
             }, 1000);
