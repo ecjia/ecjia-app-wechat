@@ -68,17 +68,18 @@ class SendCustomMessage
     /**
      * 发送文本消息
      */
-    public function sendTextMessage($content)
+    public function sendTextMessage($msg)
     {
-        $body = ['content' => $content];
+        $content = ['content' => $msg];
 
-        $message = new Text($body);
+        $message = new Text($content);
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
-        WechatRecord::replyMsg($this->openid, $body['content']);
+        WechatRecord::replyMsg($this->openid, $msg);
 
-        return $result;
+        $content['type'] = 'text';
+        return $content;
     }
 
     /**
@@ -98,7 +99,8 @@ class SendCustomMessage
 
         WechatRecord::replyMsg($this->openid, '发送图片消息', 'image', $content);
 
-        return $result;
+        $content['type'] = 'image';
+        return $content;
     }
 
     /**
@@ -118,7 +120,8 @@ class SendCustomMessage
 
         WechatRecord::replyMsg($this->openid, '发送语音消息', 'voice', $content);
 
-        return $result;
+        $content['type'] = 'voice';
+        return $content;
     }
 
     /**
@@ -143,7 +146,8 @@ class SendCustomMessage
 
         WechatRecord::replyMsg($this->openid, '发送视频消息', 'video', $content);
 
-        return $result;
+        $content['type'] = 'video';
+        return $content;
     }
 
     /**
@@ -178,7 +182,10 @@ class SendCustomMessage
 
         WechatRecord::replyMsg($this->openid, '发送图文消息（点击跳转到图文消息页面）', 'mpnews', $content);
 
-        return $result;
+        $content['type'] = 'mpnews';
+        $content['id'] = $model->id;
+
+        return $content;
     }
 
     /**
