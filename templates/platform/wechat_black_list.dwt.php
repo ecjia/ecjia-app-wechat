@@ -51,7 +51,7 @@
 								</span>
 								<div class="edit-list">
 									<!-- {if $val.group_id eq 1} -->
-									<a class="ajaxremove cursor_pointer" href='{RC_Uri::url("wechat/platform_subscribe/unblack_user","openid={$val.openid}")}' title="{lang key='wechat::wechat.add_blacklist'}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}">取消黑名单</a>
+									<a class="ajaxremove cursor_pointer" href='{RC_Uri::url("wechat/platform_subscribe/unblack_user","openid={$val.openid}")}' title="{lang key='wechat::wechat.remove_blacklist'}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_blacklist_confirm'}">取消黑名单</a>
 									<!-- {/if} -->
 								</div>
 							</td>

@@ -462,7 +462,6 @@ class platform_subscribe extends ecjia_platform
 
             try {
                 $info3 = $wechat->user->batchGet($arr2)->toArray();
-//                 _dump($info3,1);
                 if (is_ecjia_error($info3)) {
                     return $this->showmessage(wechat_method::wechat_error($info3->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
@@ -705,6 +704,7 @@ class platform_subscribe extends ecjia_platform
         $type = !empty($_GET['type']) ? trim($_GET['type']) : '';
         $page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
         $openid = !empty($_GET['openid']) ? trim($_GET['openid']) : '';
+        $from = !empty($_GET['from']) ? trim($_GET['from']) : '';
 
         if ($type == 'remove_out') {
             $data['group_id'] = 0;
@@ -732,7 +732,11 @@ class platform_subscribe extends ecjia_platform
         RC_DB::table('wechat_user')->where('openid', $openid)->where('wechat_id', $wechat_id)->update($data);
 
 //         $this->get_user_tags();
-        return $this->showmessage($success_msg, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/subscribe_message', array('uid' => $uid, 'page' => $page))));
+		$pjaxurl = RC_Uri::url('wechat/platform_subscribe/subscribe_message', array('uid' => $uid, 'page' => $page));
+		if ($from == 'list') {
+			$pjaxurl = RC_Uri::url('wechat/platform_subscribe/init', array('page' => $page));
+		}
+        return $this->showmessage($success_msg, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
     }
     
     public function unblack_user() 
