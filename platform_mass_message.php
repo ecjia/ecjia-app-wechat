@@ -400,13 +400,32 @@ class platform_mass_message extends ecjia_platform
      * 预览群发消息
      */
     public function preview_msg() {
-    	$type = trim($_POST['type']); //素材类型 text image voice video news
-    	$media_id = intval($_POST['media_id']); //素材id  1/2/3
-    	$content = trim($_POST['content']); //为text类型是 文本消息
-    	$wechat_account = trim($_POST['wechat_account']); //微信号
-    	
-    	
-    	return $this->showmessage('发送预览成功，请留意你的手机微信', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+    	$type = trim($this->request->input('type'));   //素材类型 text image voice video news
+    	$media_id = intval($this->request->input('media_id')); //素材id  1/2/3
+    	$content = trim($this->request->input('content')); //为text类型是 文本消息
+    	$wechat_account = trim($this->request->input('wechat_account')); //微信号
+
+        if (empty($wechat_account)) {
+            return $this->showmessage('请输入要预览的微信帐号', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        try {
+
+            $wechat_id = $this->platformAccount->getAccountID();
+            $uuid = $this->platformAccount->getUUID();
+            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+
+            if ($media_id) {
+                with(new Ecjia\App\Wechat\Sends\BroadcastSendMessage($wechat, $wechat_id))->previewMediaMessage($media_id, $wechat_account);
+            } else {
+                with(new Ecjia\App\Wechat\Sends\BroadcastSendMessage($wechat, $wechat_id))->prviewTextMessage($content, $wechat_account);
+            }
+
+            return $this->showmessage('发送预览成功，请留意你的手机微信', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+
+        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
     }
 
     /**

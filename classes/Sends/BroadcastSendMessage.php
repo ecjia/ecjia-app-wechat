@@ -8,6 +8,7 @@
 
 namespace Ecjia\App\Wechat\Sends;
 
+use Ecjia\App\Wechat\Models\WechatMediaModel;
 
 class BroadcastSendMessage
 {
@@ -17,7 +18,7 @@ class BroadcastSendMessage
     protected $wechat;
 
 
-    public function __construct($wechat, $wechat_id, $openid)
+    public function __construct($wechat, $wechat_id)
     {
         $this->wechat_id = $wechat_id;
         $this->wechat = $wechat;
@@ -65,11 +66,58 @@ class BroadcastSendMessage
 
     }
 
+
+    /**
+     * 预览素材消息
+     */
+    public function previewMediaMessage($id, $wxname)
+    {
+        $model = WechatMediaModel::where('wechat_id', $this->wechat_id)->find($id);
+        if ( ! empty($model)) {
+            switch ($model->type) {
+                case 'image':
+                    $result = $this->wechat->broadcast->previewImageByName($model->media_id, $wxname);
+                    break;
+
+                case 'voice':
+                    $result = $this->wechat->broadcast->previewVoiceByName($model->media_id, $wxname);
+                    break;
+
+                case 'video':
+                    $result = $this->wechat->broadcast->previewVideoByName($model->media_id, $wxname);
+                    break;
+
+                case 'news':
+                    $result = $this->wechat->broadcast->previewNewsByName($model->media_id, $wxname);
+                    break;
+
+                default:
+                    break;
+            }
+
+            return $result;
+        }
+
+    }
+
+
+    /**
+     * 预览文本消息
+     */
+    public function prviewTextMessage($text, $wxname)
+    {
+        $result = $this->wechat->broadcast->previewTextByName($text, $wxname);
+
+        return $result;
+    }
+
+
     /**
      * 发送图片消息
      */
-    public function sendImageMessage($media_id, $model = null)
+    public function sendImageMessage()
     {
+
 
 
     }
