@@ -138,7 +138,7 @@
 										<div class="js_appmsgArea" style="display:block;">
 											<div class="tab_cont_cover create-type__list">
 												<div class="create-type__item">
-													<a href="javascript:;" class="create-type__link choose_material" data-type="" data-url="{RC_Uri::url('wechat/platform_material/choose_material')}&material=1">
+													<a href="javascript:;" class="create-type__link choose_material" data-type="news" data-url="{RC_Uri::url('wechat/platform_material/choose_material')}&material=1">
 														<i class="create-type__icon file"></i>
 														<strong class="create-type__title">从素材库选择</strong>
 													</a>
