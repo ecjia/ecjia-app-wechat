@@ -111,7 +111,8 @@
 										<!-- {if $val.group_id neq 1 && $val.subscribe neq 0} -->
 											<a class="set-label-btn cursor_pointer" href="javascript:;" data-openid="{$val.openid}" data-uid="{$val.uid}" data-url="{$get_checked}">{lang key='wechat::wechat.set_tag'}</a>&nbsp;|&nbsp;
 										<!-- {/if} -->
-										<a class="data-pjax" href='{url path="wechat/platform_subscribe/subscribe_message" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">{lang key='wechat::wechat.message_record'}</a>
+										<a class="data-pjax" href='{url path="wechat/platform_subscribe/subscribe_message" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">{lang key='wechat::wechat.message_record'}</a>&nbsp;|&nbsp;
+										<a class="ajaxremove cursor_pointer" href='{RC_Uri::url("wechat/platform_subscribe/black_user","openid={$val.openid}&from=list&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}">加入黑名单</a>
 									</div>
 								</td>
 								<td>{$val['province']} - {$val['city']}</td>

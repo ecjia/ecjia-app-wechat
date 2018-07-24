@@ -75,7 +75,8 @@ class wechat_platform_menu_api extends Component_Event_Api
             array(
                 ecjia_admin::make_admin_menu('01_wechat', RC_Lang::get('wechat::wechat.user_manage'), RC_Uri::url('wechat/platform_subscribe/init'), 1)->add_purview('wechat_subscribe_manage'),
                 ecjia_admin::make_admin_menu('02_wechat', '标签管理', RC_Uri::url('wechat/platform_subscribe/tag'), 2)->add_purview('wechat_subscribe_manage'),
-                ecjia_admin::make_admin_menu('02_wechat', '取消关注', RC_Uri::url('wechat/platform_subscribe/cancel_list'), 2)->add_purview('wechat_subscribe_manage'),
+                ecjia_admin::make_admin_menu('03_wechat', '取消关注', RC_Uri::url('wechat/platform_subscribe/cancel_list'), 3)->add_purview('wechat_subscribe_manage'),
+            	ecjia_admin::make_admin_menu('04_wechat', '黑名单', RC_Uri::url('wechat/platform_subscribe/back_list'), 4)->add_purview('wechat_subscribe_manage'),
             )
         );
 
