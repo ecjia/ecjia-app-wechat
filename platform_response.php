@@ -112,31 +112,39 @@ class platform_response extends ecjia_platform
         if (is_ecjia_error($wechat_id)) {
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
         } else {
-            $subscribe = RC_DB::table('wechat_reply')->where('type', 'subscribe')->where('wechat_id', $wechat_id)->first();
+      		$subscribe = RC_DB::table('wechat_reply')->where('wechat_id', $wechat_id)->where('type', 'subscribe')->first();
             if (!empty($subscribe['media_id'])) {
-                $subscribe['media'] = RC_DB::table('wechat_media')
-                	->select('file', 'type', 'file_name')
-                	->where('wechat_id', $wechat_id)
-                	->where('id', $subscribe['media_id'])
-                	->first();
+                $subscribe['media'] = RC_DB::table('wechat_media')->select('file', 'type', 'file_name')->where('wechat_id', $wechat_id)->where('id', $subscribe['media_id'])->first();
             }
+            if ($subscribe['reply_type'] == 'news') {
+	            $data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $subscribe['media_id'])->orderBy('id', 'asc')->get();
+	            if (!empty($data)) {
+	            	foreach ($data as $k => $v) {
+	            		if (!empty($v['file'])) {
+	            			$subscribe['child'][$k]['title'] = strip_tags(html_out($v['title']));
+	            			$subscribe['child'][$k]['file'] = RC_Upload::upload_url($v['file']);
+	            			$subscribe['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+	            		} else {
+	            			$subscribe['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+	            		}
+	            	}
+	            }
+            }
+            
             if (!empty($subscribe)) {
                 foreach ($subscribe as $key => $val) {
                     if (isset($val['type'])) {
                         if ($val['type'] == 'image' || $val['type'] == 'news') {
                             $subscribe['media']['file'] = RC_Upload::upload_url($val['file']);
-                        } elseif ($val['type'] == 'voice' || $val['type'] == 'video') {
-                            if ($val['type'] == 'voice') {
-                                $subscribe['media']['file'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
-                            } elseif ($val['type'] == 'video') {
-                                $subscribe['media']['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
-                            }
-
+                        } elseif ($val['type'] == 'voice') {
+                            $subscribe['media']['file'] = RC_Uri::admin_url('statics/images/voice.png');
+                        } elseif ($val['type'] == 'video') {
+                            $subscribe['media']['file'] = RC_Uri::admin_url('statics/images/video.png');
                         }
                     }
                 }
-                $this->assign('subscribe', $subscribe);
             }
+            $this->assign('subscribe', $subscribe);
         }
 
         $this->display('wechat_reply_subscribe.dwt');
@@ -350,13 +358,30 @@ class platform_response extends ecjia_platform
             if (!empty($subscribe['media_id'])) {
                 $subscribe['media'] = RC_DB::table('wechat_media')->select('file', 'type', 'file_name')->where('wechat_id', $wechat_id)->where('id', $subscribe['media_id'])->first();
             }
+            if ($subscribe['reply_type'] == 'news') {
+	            $data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $subscribe['media_id'])->orderBy('id', 'asc')->get();
+	            if (!empty($data)) {
+	            	foreach ($data as $k => $v) {
+	            		if (!empty($v['file'])) {
+	            			$subscribe['child'][$k]['title'] = strip_tags(html_out($v['title']));
+	            			$subscribe['child'][$k]['file'] = RC_Upload::upload_url($v['file']);
+	            			$subscribe['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+	            		} else {
+	            			$subscribe['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+	            		}
+	            	}
+	            }
+            }
+            
             if (!empty($subscribe)) {
                 foreach ($subscribe as $key => $val) {
                     if (isset($val['type'])) {
                         if ($val['type'] == 'image' || $val['type'] == 'news') {
                             $subscribe['media']['file'] = RC_Upload::upload_url($val['file']);
-                        } elseif ($val['type'] == 'voice' || $val['type'] == 'video') {
-                            $subscribe['media']['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+                        } elseif ($val['type'] == 'voice') {
+                            $subscribe['media']['file'] = RC_Uri::admin_url('statics/images/voice.png');
+                        } elseif ($val['type'] == 'video') {
+                            $subscribe['media']['file'] = RC_Uri::admin_url('statics/images/video.png');
                         }
                     }
                 }
@@ -761,13 +786,11 @@ class platform_response extends ecjia_platform
             $media = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $list['media_id'])->first();
             if (!empty($media)) {
                 if ($media['type'] == 'voice' || $media['type'] == 'video') {
-                    // $media['file'] = RC_Uri::admin_url('statics/images/nopic.png');
                     if ($media['type'] == 'voice') {
                         $media['file'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
                     } elseif ($media['type'] == 'video') {
                         $media['file'] = RC_App::apps_url('statics/images/video.png', __FILE__);
                     }
-
                 } else {
                     if (!empty($media['file'])) {
                         $media['file'] = RC_Upload::upload_url($media['file']);
@@ -785,23 +808,21 @@ class platform_response extends ecjia_platform
                 }
             }
             $media_id = $list['media_id'];
-            $is_articles = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $media_id)->count();
-
-            if ($is_articles != 0 && $list['reply_type'] == 'news') {
-                $info = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $media_id)->orderBy('id', 'asc')->get();
-                
-                $list['media'] = $media;
-                foreach ($info as $k => $v) {
-                    if (!empty($v['file'])) {
-                        $list['child'][$k]['title'] = strip_tags(html_out($v['title']));
-                        $list['child'][$k]['file'] = RC_Upload::upload_url($v['file']);
-                        $list['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
-                    } else {
-                        $list['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
-                    }
+            
+            $list['media'] = $media;
+            if ($list['reply_type'] == 'news') {
+                $data = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('parent_id', $media_id)->orderBy('id', 'asc')->get();
+                if (!empty($data)) {
+	                foreach ($data as $k => $v) {
+	                    if (!empty($v['file'])) {
+	                        $list['child'][$k]['title'] = strip_tags(html_out($v['title']));
+	                        $list['child'][$k]['file'] = RC_Upload::upload_url($v['file']);
+	                        $list['child'][$k]['add_time'] = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_ymd'), $v['add_time']);
+	                    } else {
+	                        $list['child'][$k]['file'] = RC_Uri::admin_url('statics/images/nopic.png');
+	                    }
+	                }
                 }
-            } else {
-                $list['media'] = $media;
             }
         }
         if (!empty($list['id'])) {
