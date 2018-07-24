@@ -180,7 +180,7 @@ class SendCustomMessage
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
-        if (is_null($model)) {
+        if (! is_null($model)) {
 
             $subNews = $model->subNews;
 
