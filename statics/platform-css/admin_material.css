@@ -727,12 +727,12 @@
 }
 
 .preview_img {
-	max-width: 260px;
+	max-width: 148px;
 }
 
 .media img.preview_img  {
-	width: 100%;
-	height: 100%;
+	width: 148px;
+    height: 117px;
 }
 
 .link_dele {
