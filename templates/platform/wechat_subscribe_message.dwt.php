@@ -50,7 +50,56 @@
 										<div class="media {if $msg.iswechat eq 1} chat-msg-mine{else} chat-msg-you{/if} last_chat">
 											<div class="media-body">
 												<h5 class="media-heading"><span class="chat_msg_date">{$msg.send_time}</span><span class="chat_user_name">{$msg.nickname}</span></h5>
-												<h5 class="media-text {if $msg.iswechat eq 1}text-left{/if}">{$msg.msg}</h5>
+												<h5 class="media-text {if $msg.iswechat eq 1}text-left{/if}">
+												{if $msg.type eq 'text'}{$msg.msg}{/if}
+												
+												{if $msg.type eq 'image'}
+												<div class="img_preview">
+													<img class="preview_img margin_10" src="{$msg.media_content.img_url}" alt="点击查看">
+												</div>
+												{/if}
+												
+												{if $msg.type eq 'voice'}
+												<div class="img_preview">
+													<img class="preview_img margin_10" src="{$msg.media_content.voice_url}" alt="点击播放">
+												</div>
+												{/if}
+												
+												{if $msg.type eq 'video'}
+												<div class="img_preview">
+													<img class="preview_img margin_10" src="{$msg.media_content.video_url}" alt="点击播放">
+												</div>											
+												{/if}
+												
+												{if $msg.type eq 'mpnews'}
+												<div class="weui-desktop-media__list-col margin_10">
+													<li class="thumbnail move-mod-group big grid-item">
+														<!-- {foreach from=$msg.media_content.articles key=key item=val} -->
+														{if $key eq 0}
+													    <div class="article">
+													        <div class="cover">
+													            <a target="__blank" href="javascript:;">
+													                <img src="{$val.picurl}" />
+													            </a>
+													            <span>{$val.title}</span>
+													        </div>
+													    </div>
+													    <div class="edit_mask appmsg_mask">
+													        <i class="icon_card_selected">已选择</i>
+													    </div>
+													    {else}
+													    <div class="article_list">
+													        <div class="f_l">{$val.title}</div>
+													        <a target="__blank" href="javascript:;">
+													            <img src="{$val.picurl}" class="pull-right" />
+													        </a>
+													    </div>
+														{/if}
+													    <!-- {/foreach} -->
+													</li>
+												</div>
+												{/if}
+												</h5>
 											</div>
 										</div>
 										<!-- {/foreach} -->

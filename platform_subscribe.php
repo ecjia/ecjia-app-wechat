@@ -803,6 +803,7 @@ class platform_subscribe extends ecjia_platform
                 if (!empty($val['iswechat'])) {
                     $list[$key]['nickname'] = $platform_name;
                 }
+                $list[$key]['media_content'] = unserialize($val['media_content']);
             }
             $end_list = end($list);
             $reverse_list = array_reverse($list);
