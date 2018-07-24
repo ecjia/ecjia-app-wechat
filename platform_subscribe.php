@@ -634,14 +634,14 @@ class platform_subscribe extends ecjia_platform
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
             if ($media_id) {
-                with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendMediaMessage($media_id);
+                $content = with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendMediaMessage($media_id);
             } else {
-                with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendTextMessage($msg);
+                $content = with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendTextMessage($msg);
             }
 
             ecjia_admin::admin_log($msg, 'send', 'subscribe_message');
 
-            return $this->showmessage(RC_Lang::get('wechat::wechat.send_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('send_time' => RC_Time::local_date(ecjia::config('time_format'), RC_Time::gmtime())));
+            return $this->showmessage(RC_Lang::get('wechat::wechat.send_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $content, 'send_time' => RC_Time::local_date(ecjia::config('time_format'), RC_Time::gmtime())));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
