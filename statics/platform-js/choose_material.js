@@ -16,8 +16,8 @@
                     $('#chat_editor').show();
                     $('.js_appmsgArea').hide();
                 }
-                $('.img_preview').remove();
-                $('.weui-desktop-media__list-col').remove();
+                $('.material-table').find('.img_preview').remove();
+                $('.material-table').find('.weui-desktop-media__list-col').remove();
                 $('.link_dele').remove();
                 $('.create-type__list').show();
                 $('.choose_material').attr('data-type', type);
@@ -40,17 +40,17 @@
 			});
 
 			$('.js-btn').off('click').on('click', function () {
-				var $this = $('.img_item_bd.selected'),
+				var $this = $('.inner_main .img_item_bd.selected'),
 					media_id = $this.find('.pic').attr('data-id'),
 					src = $this.find('.pic').attr('src');
 				var inner_html = '<div class="img_preview"><img class="preview_img margin_10" src="'+ src +'" alt=""><input type="hidden" name="media_id" value='+ media_id +'><a href="javascript:;" class="jsmsgSenderDelBt link_dele"">删除</a></div>';
 				
 				if (media_id == undefined) {
-					var html = $('.grid-item.selected');
+					var html = $('.inner_main .grid-item.selected');
 					media_id = html.attr('data-id');
 					inner_html = '<div class="weui-desktop-media__list-col margin_10">' + html[0]['outerHTML'] + '<input type="hidden" name="media_id" value='+ media_id +'></div><a href="javascript:;" class="jsmsgSenderDelBt link_dele p_l0">删除</a>';
 				}
-				$('.create-type__list').hide();
+				$('.js_appmsgArea .create-type__list').hide();
 				$('.js_appmsgArea').append(inner_html);
 				$('#choose_material').modal('hide');
 				app.choose_material.link_del();
@@ -84,10 +84,12 @@
 		link_del: function() {
 			$('.link_dele').off('click').on('click', function (e) {
 				e.preventDefault();
-				$('.img_preview').remove();
-                $('.weui-desktop-media__list-col').remove();
-                $('.link_dele').remove();
-                $('.create-type__list').show();
+				var $this = $(this),
+					parent = $this.parent('.js_appmsgArea');
+				parent.find('.img_preview').remove();
+				parent.find('.weui-desktop-media__list-col').remove();
+				parent.find('.link_dele').remove();
+				parent.find('.create-type__list').show();
 			});
 		}
 	};

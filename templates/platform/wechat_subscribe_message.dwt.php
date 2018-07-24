@@ -164,7 +164,7 @@
 						</div>
 					</div>
 
-					<div class="col-xl-12 col-lg-12 material-table m_t20">
+					<div class="col-xl-12 col-lg-12 material-table m_t20 p_l0">
 						<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
 							<li class="nav-item" data-type="text">
 								<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>
@@ -201,6 +201,7 @@
 						<input type="hidden" name="chat_user" id="chat_user" value="{$info.uid}" />
 						<input type="hidden" name="openid" id="openid" value="{$info.openid}" />
 						<input type="hidden" name="nickname" id="nickname" value="{$info.nickname}" />
+						<input type="hidden" name="account_name" id="account_name" value="{$account_name}" />
 						<a class="btn f_r btn-info send_msg" href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>				
 					</div>
 				</div>

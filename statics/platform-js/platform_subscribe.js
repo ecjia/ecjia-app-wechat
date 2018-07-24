@@ -142,7 +142,7 @@
                 chat_user = $('#chat_user').val(),
                 nickname = $('#nickname').val(),
                 openid = $('#openid').val(),
-                platform_name = $('#platform_name').val(),
+                account_name = $('#account_name').val(),
                 media_id = $('input[name="media_id"]').val(),
                 info = { message: msg, uid: chat_user, openid: openid, media_id: media_id };
             if (msg != "" || media_id != undefined) {
@@ -151,7 +151,7 @@
                         ecjia.platform.showmessage(data);
                         return false;
                     }
-                    var options = { send_time: data.send_time, msg: msg, chat_user: platform_name, is_myself: 1 };
+                    var options = { send_time: data.send_time, msg: msg, chat_user: account_name, is_myself: 1, media_id: media_id };
                     app.subscribe_message.addMsgItem(options);
                 }, 'json');
             } else {
@@ -166,13 +166,26 @@
         addMsgItem: function(options) {
             var msg_cloned = $('.msg_clone').clone();
             options.oldstart ? $('.chat_msg.media-list').prepend(msg_cloned) : $('.chat_msg.media-list').append(msg_cloned);
+            if (options.media_id != undefined && options.media_id != '') {
+            	var type = $('.nav-link.active').parent('.nav-item').attr('data-type');
+            	$('.js_appmsgArea').find('.link_dele').remove();
+            	$('.js_appmsgArea').find('input[name="media_id"]').remove();
+            	if (type == 'news') {
+            		var html = $('.js_appmsgArea').find('.weui-desktop-media__list-col');
+            	} else {
+            		var html = $('.js_appmsgArea').find('.img_preview');
+            	}
+            	msg_cloned.find('.media-text').html(html);
+            } else {
+            	msg_cloned.find('.media-text').html(options.msg);
+            }
             msg_cloned.find('.chat_msg_date').html(options.send_time);
-            msg_cloned.find('.media-text').html(options.msg);
             msg_cloned.find('.chat_user_name').html(options.chat_user);
             !options.is_myself && msg_cloned.removeClass('chat-msg-mine').addClass('chat-msg-you');
             msg_cloned.removeClass('msg_clone').show();
-            $('.chat_msg.media-list').stop().animate({
-                scrollTop: options.oldstart ? msg_cloned.offset().top : 9999999
+            $('.create-type__list').show();
+            $('.chat-box').stop().animate({
+                scrollTop: $('.chat-box .card-body').height()
             }, 1000);
         },
     };

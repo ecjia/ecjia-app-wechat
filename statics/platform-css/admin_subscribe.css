@@ -1,3 +1,7 @@
+.chat_box .chat_msg {
+	overflow: hidden;	
+}
+
 .chat_box .chat_sidebar .chat_user_list li a {
     display: inline-block;
     padding: 5px 0;
