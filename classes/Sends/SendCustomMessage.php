@@ -180,10 +180,47 @@ class SendCustomMessage
 
         $result = $this->wechat->staff->message($message)->to($this->openid)->send();
 
+        if (is_null($model)) {
+
+            $subNews = $model->subNews;
+
+            if ( ! $subNews->isEmpty()) {
+                $newSubNews = $subNews->map(function ($item) {
+                    if (empty($item->file)) {
+
+                        $item->file = \RC_Uri::admin_url('statics/images/nopic.png');
+
+                    } else {
+
+                        $item->file = \RC_Upload::upload_url($item->file);
+
+                    }
+
+                    return [
+                        'title' => $item->title,
+                        'description' => $item->digest,
+                        'url' => $item->media_url,
+                        'picurl' => $item->file,
+                    ];
+                });
+
+                $content['articles'] = $newSubNews->all();
+            } else {
+                $content['articles'] = [];
+            }
+
+            //将主元素插入开头
+            array_unshift($content['articles'], [
+                'title' => $model->title,
+                'description' => $model->digest,
+                'url' => $model->media_url,
+                'picurl' => \RC_Upload::upload_url($model->file),
+            ]);
+        }
+
         WechatRecord::replyMsg($this->openid, '发送图文消息（点击跳转到图文消息页面）', 'mpnews', $content);
 
         $content['type'] = 'mpnews';
-        $content['id'] = $model->id;
 
         return $content;
     }
