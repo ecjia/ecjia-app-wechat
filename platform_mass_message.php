@@ -395,6 +395,19 @@ class platform_mass_message extends ecjia_platform
         }
         return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
+    
+    /**
+     * 预览群发消息
+     */
+    public function preview_msg() {
+    	$type = trim($_POST['type']); //素材类型 text image voice video news
+    	$media_id = intval($_POST['media_id']); //素材id  1/2/3
+    	$content = trim($_POST['content']); //为text类型是 文本消息
+    	$wechat_account = trim($_POST['wechat_account']); //微信号
+    	
+    	
+    	return $this->showmessage('发送预览成功，请留意你的手机微信', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+    }
 
     /**
      * 获取多图文信息

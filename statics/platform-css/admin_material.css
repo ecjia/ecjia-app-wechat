@@ -565,6 +565,73 @@
 	padding: 20px;
 }
 
+.inner_main.inner_reset {
+	min-height: 300px;
+	max-height: 485px;
+	height: auto;
+}
+
+.inner_main .dialog_bd {
+	text-align: center;
+	padding-top: 60px;
+}
+
+.inner_main .dialog_bd .simple_dialog_content.send_preview {
+    width: 630px;
+	display: inline-block;
+    text-align: left;
+}
+
+.inner_main .dialog_bd .preview_form_box {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.inner_main .dialog_bd .send_preview .frm_control_group {
+    padding-bottom: 14px;
+}
+
+.inner_main .dialog_bd .dialog_wrp.label_block .frm_label {
+    display: block;
+    width: auto;
+    float: none;
+    font-size: 14px;
+    margin-bottom: .5em;
+	margin-top: .3em;
+    margin-right: 1em;
+}
+
+.inner_main .dialog_bd .frm_input_box {
+    display: block;
+    position: relative;
+    vertical-align: middle;
+    width: 278px;
+    font-size: 14px;
+    padding: 10px 0;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    background-color: #fff;
+	width: auto;
+}
+
+.inner_main .dialog_bd .jsAccountFail {
+	display: none;
+}
+
+.inner_main .dialog_bd .frm_tips {
+	margin-bottom: 0;
+}
+
+.inner_main .dialog_bd .frm_msg.fail {
+    color: #e15f63;
+	overflow: hidden;
+	padding-top: 4px;
+}
+
 .inner_main ul, .inner_main li {
 	list-style: none;
 }
@@ -728,6 +795,16 @@
 
 .preview_img {
 	max-width: 148px;
+}
+
+.preview_voice {
+    width: 50%;
+    height: 60px;
+}
+
+.preview_video {
+    width: 50%;
+    height: 50%;
 }
 
 .media img.preview_img  {

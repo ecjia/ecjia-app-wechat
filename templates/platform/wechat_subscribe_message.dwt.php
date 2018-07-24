@@ -61,13 +61,13 @@
 												
 												{if $msg.type eq 'voice'}
 												<div class="img_preview">
-													<img class="preview_img margin_10" src="{$msg.media_content.voice_url}" alt="点击播放">
+													<video class="preview_voice margin_10" src="{$msg.media_content.voice_url}" controls="controls"></video>
 												</div>
 												{/if}
 												
 												{if $msg.type eq 'video'}
 												<div class="img_preview">
-													<img class="preview_img margin_10" src="{$msg.media_content.video_url}" alt="点击播放">
+													<video class="preview_video margin_10" src="{$msg.media_content.video_url}" controls="controls"></video>
 												</div>											
 												{/if}
 												

@@ -117,8 +117,11 @@
 								</label>
 								<div class="col-lg-8 controls">
 									<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
+										<li class="nav-item" data-type="news">
+											<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text_message'}"><i class="fa fa-list-alt"> 图文</i></a>
+										</li>
 										<li class="nav-item" data-type="text">
-											<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>
+											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>
 										</li>
 										<li class="nav-item" data-type="image">
 											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.image'}"><i class="fa fa-file-image-o"> 图片</i></a>
@@ -129,13 +132,10 @@
 										<li class="nav-item" data-type="video">
 											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.video'}"><i class="fa fa-video-camera"> 视频</i></a>
 										</li>
-										<li class="nav-item" data-type="news">
-											<a class="nav-link" data-toggle="tab" title="{lang key='wechat::wechat.text_message'}"><i class="fa fa-list-alt"> 图文</i></a>
-										</li>
 									</ul>
 			                   		<div class="text m_b10">
-			                   			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5" id="chat_editor"></textarea>
-										<div class="js_appmsgArea">
+			                   			<textarea class="m_t10 span12 form-control" name="content" cols="40" rows="5" id="chat_editor" style="display:none;"></textarea>
+										<div class="js_appmsgArea" style="display:block;">
 											<div class="tab_cont_cover create-type__list">
 												<div class="create-type__item">
 													<a href="javascript:;" class="create-type__link choose_material" data-type="" data-url="{RC_Uri::url('wechat/platform_material/choose_material')}&material=1">
@@ -152,8 +152,10 @@
 						</div>
 					</div>
 					<div class="modal-footer justify-content-center">
-						<input type="hidden" name="content_type" value="text">
+						<input type="hidden" name="content_type" value="news">
+						<input type="hidden" name="preview_url" value="{RC_Uri::url('wechat/platform_mass_message/preview_msg')}">
 						<input type="submit" class="btn btn-outline-primary" value="{lang key='wechat::wechat.send_msg'}" {if $errormsg}disabled="disabled"{/if}/>
+						<input type="button" class="btn btn-outline-primary preview_msg" value="预览" {if $errormsg}disabled="disabled"{/if}/>
 					</div>
 				</form>	
             </div>
@@ -162,5 +164,6 @@
 </div>
 
 <!-- {include file="./library/wechat_choose_material.lbi.php"} -->
+<!-- {include file="./library/wechat_preview_msg.lbi.php"} -->
 
 <!-- {/block} -->

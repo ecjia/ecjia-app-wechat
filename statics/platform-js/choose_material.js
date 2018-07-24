@@ -32,7 +32,7 @@
 					type: type
 				}
 				$.post(url, info, function (data) {
-					$('.inner_main').html(data.data);
+					$('#choose_material').find('.inner_main').html(data.data);
 					$('#choose_material').find('.modal-title').html(data.title);
 					$('#choose_material').modal('show');
 					app.choose_material.img_item_click();
