@@ -35,10 +35,12 @@ class WechatSubscribeHandler
         $userinfo = $wechat->user->get($openid);
         
         if (! empty($userinfo)) {
+
+            $wechat_user = new WechatUser($wechat_id, $openid);
+
+            //查看有没有在手机或网站上使用微信登录
             if ($userinfo->has('unionid')) {
                 $unionid = $userinfo->get('unionid');
-                //查看有没有在手机或网站上使用微信登录
-                $wechat_user = new WechatUser($wechat_id, $openid);
                 $connect_user = $wechat_user->getConnectUser($unionid);
                 $ecjia_userid = $connect_user->getUserId();
                 if (empty($ecjia_userid)) {
