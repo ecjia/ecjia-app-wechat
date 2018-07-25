@@ -74,7 +74,7 @@ class WechatEventHandler
                 break;
                 
             case 'MASSSENDJOBFINISH':
-                return self::MassSendJobFinish_event($message);
+                self::MassSendJobFinish_event($message);
                 break;
                 
             default:
@@ -292,14 +292,29 @@ class WechatEventHandler
      */
     public static function MassSendJobFinish_event($message)
     {
+        $wechatUUID = new WechatUUID();
+        $wechat_id = $wechatUUID->getWechatId();
+
         $data = [
-            'status'        => $message->get('status'),
-            'totalcount'    => $message->get('totalcount'),
-            'filtercount'   => $message->get('filtercount'),
-            'sentcount'     => $message->get('sentcount'),
-            'errorcount'    => $message->get('errorcount'),
+            'status'                => $message->get('Status'),
+            'totalcount'            => $message->get('TotalCount'),
+            'filtercount'           => $message->get('FilterCount'),
+            'sentcount'             => $message->get('SentCount'),
+            'errorcount'            => $message->get('ErrorCount'),
+            'result_list'           => $message->get('ResultList'),
+            'article_idx'           => $message->get('ArticleIdx'),
+            'user_declare_state'    => $message->get('UserDeclareState'),
+            'audit_state'           => $message->get('AuditState'),
+            'original_article_url'  => $message->get('OriginalArticleUrl'),
+            'original_article_type' => $message->get('OriginalArticleType'),
+            'can_reprint'           => $message->get('CanReprint'),
+            'need_replace_content'  => $message->get('NeedReplaceContent'),
+            'need_show_reprint_source' => $message->get('NeedShowReprintSource'),
+            'check_state'              => $message->get('CheckState'),
         ];
         
-        WechatMassHistoryModel::where('msg_id', $message->get('msgid'))->update($data);
+        WechatMassHistoryModel::where('wechat_id', $wechat_id)->where('msg_id', $message->get('MsgID'))->update($data);
+
+        return;
     }
 }
