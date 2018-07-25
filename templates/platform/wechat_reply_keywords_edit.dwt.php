@@ -53,7 +53,7 @@
 								<label class="col-lg-2 label-control text-right">
 									{lang key='wechat::wechat.lable_reply'}
 								</label>
-								<div class="col-lg-8 controls">
+								<div class="col-lg-8 controls material-table">
 									<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
 										<li class="nav-item" data-type="text">
 											<a class="nav-link {if $data.reply_type eq 'text'}active{/if}" data-toggle="tab" title="{lang key='wechat::wechat.text'}"><i class="fa fa-pencil"> 文字</i></a>

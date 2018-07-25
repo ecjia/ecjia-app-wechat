@@ -1471,13 +1471,18 @@ class platform_material extends ecjia_platform
     	
     	$material = !empty($_GET['material']) ? 'material' : null;
     	$type = !empty($_POST['type']) ? trim($_POST['type']) : '';
-    	
-        $wechat_media_model = Ecjia\App\Wechat\Models\WechatMediaModel::where('wechat_id', $wechat_id)->where('type', $type);
+
+    	$wechat_media_model = Ecjia\App\Wechat\Models\WechatMediaModel::where('wechat_id', $wechat_id)->where('type', $type);
+        $size = 18;
         if ($type == 'news') {
+        	$size = 8;
         	$wechat_media_model->where('parent_id', 0)->where('wait_upload_article', 0);
         }
         $wechat_media_model->where('is_material', $material);
-        $data = $wechat_media_model->orderBy('sort', 'asc')->orderBy('id', 'desc')->get();
+        
+        $count = $wechat_media_model->count();
+        $page = new ecjia_platform_page($count, $size, 5);
+        $data = $wechat_media_model->select('*')->take($size)->skip($page->start_id-1)->orderBy('sort', 'asc')->orderBy('id', 'desc')->get();
 
         $newData = $data->map(function($item) {
         	$item->add_time = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $item->add_time);
@@ -1536,7 +1541,8 @@ class platform_material extends ecjia_platform
 
         $title = sprintf(RC_Lang::get('wechat::wechat.material_type_title'), RC_Lang::get('wechat::wechat.'.$type));
         $data = $this->fetch('library/wechat_choose_material_list.lbi');
-        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data, 'title' => $title));
+        
+        return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('data' => $data, 'title' => $title, 'page' => $page->show(5)));
     }
 
     public function get_material_info()
