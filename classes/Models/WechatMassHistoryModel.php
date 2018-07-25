@@ -35,8 +35,6 @@ class WechatMassHistoryModel extends Model
      */
     public static function massSendRecord($wechat_id, $media_id, $type, $content = null, $result = null)
     {
-        $uuid = \Royalcms\Component\Uuid\Uuid::generate();
-        $uuid = str_replace("-", "", $uuid);
 
         $data = array(
             'wechat_id'  => $wechat_id,
@@ -48,12 +46,11 @@ class WechatMassHistoryModel extends Model
             ],
             'msg_id'      => $result['msg_id'],
             'msg_data_id' => $result['msg_data_id'],
-            'clientmsgid' => $uuid,
         );
 
         $data['content'] = serialize($data['content']);
 
-        WechatCustomMessageModel::insert($data);
+        WechatMassHistoryModel::insert($data);
     }
 
 }
