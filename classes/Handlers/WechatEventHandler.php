@@ -301,16 +301,8 @@ class WechatEventHandler
             'filtercount'           => $message->get('FilterCount'),
             'sentcount'             => $message->get('SentCount'),
             'errorcount'            => $message->get('ErrorCount'),
-            'result_list'           => $message->get('ResultList'),
-            'article_idx'           => $message->get('ArticleIdx'),
-            'user_declare_state'    => $message->get('UserDeclareState'),
-            'audit_state'           => $message->get('AuditState'),
-            'original_article_url'  => $message->get('OriginalArticleUrl'),
-            'original_article_type' => $message->get('OriginalArticleType'),
-            'can_reprint'           => $message->get('CanReprint'),
-            'need_replace_content'  => $message->get('NeedReplaceContent'),
-            'need_show_reprint_source' => $message->get('NeedShowReprintSource'),
-            'check_state'              => $message->get('CheckState'),
+            'copyright_check_result' => serialize($message->get('CopyrightCheckResult')),
+            'check_state'            => $message->get('CopyrightCheckResult.CheckState'),
         ];
         
         WechatMassHistoryModel::where('wechat_id', $wechat_id)->where('msg_id', $message->get('MsgID'))->update($data);
