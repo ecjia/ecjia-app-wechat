@@ -111,13 +111,7 @@ class platform_mass_message extends ecjia_platform
     {
         $this->admin_priv('wechat_message_manage');
 
-//        $tag_id         = isset($_POST['tag_id']) ? $_POST['tag_id'] : 0;
-//        $mass_type      = isset($_POST['mass_type']) ? $_POST['mass_type'] : '';
-//        $id             = isset($_POST['media_id']) ? intval($_POST['media_id']) : 0;
-//        $content_type   = isset($_POST['content_type']) ? $_POST['content_type'] : '';
-//        $content        = isset($_POST['content']) ? $_POST['content'] : '';
-
-        $tag_id         = $this->request->input('tag_id', 0);
+        $tag_id         = $this->request->input('tag_id', null);
         $mass_type      = $this->request->input('mass_type');
         $media_id       = $this->request->input('media_id', 0);
         $content_type   = $this->request->input('content_type');
@@ -128,15 +122,16 @@ class platform_mass_message extends ecjia_platform
             if (empty($content)) {
                 return $this->showmessage(RC_Lang::get('wechat::wechat.text_must_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
-
-//            $media_id = $content;
-//            $type = 'content';
-//            $msg_data['content'] = $content;
         } else {
             if (empty($id)) {
                 return $this->showmessage(RC_Lang::get('wechat::wechat.pls_select_material'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
-//            $media_id = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->pluck($field);
+        }
+
+        if ($mass_type == 'by_group') {
+            if (empty($tag_id)) {
+                return $this->showmessage('按群组发送，必须选择标签', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
         }
 
         try {
@@ -144,91 +139,18 @@ class platform_mass_message extends ecjia_platform
             $uuid = $this->platformAccount->getUUID();
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
-//            $rs = $wechat->broadcast->sendText($massmsg);
-
             if ($media_id) {
-                with(new Ecjia\App\Wechat\Sends\BroadcastSendMessage($wechat, $wechat_id))->sendMediaMessage($media_id);
+                with(new Ecjia\App\Wechat\Sends\BroadcastSendMessage($wechat, $wechat_id))->sendMediaMessage($media_id, $tag_id);
             } else {
-                with(new Ecjia\App\Wechat\Sends\BroadcastSendMessage($wechat, $wechat_id))->sendTextMessage($content);
+                with(new Ecjia\App\Wechat\Sends\BroadcastSendMessage($wechat, $wechat_id))->sendTextMessage($content, $tag_id);
             }
 
+            return $this->showmessage(RC_Lang::get('wechat::wechat.mass_task_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,
+                array('pjaxurl' => RC_Uri::url('wechat/platform_mass_message/init')));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-
-//        RC_Loader::load_app_class('wechat_method', 'wechat', false);
-
-
-//        $wechat = wechat_method::wechat_instance($uuid);
-
-
-
-
-
-
-
-//        $msg_data['type'] = $content_type;
-//        $field = 'media_id';
-//
-//        if ($content_type == 'news') {
-//            $content_type = 'mpnews';
-//        } elseif ($content_type == 'video') {
-//            $content_type = 'mpvideo';
-//        }
-//        $type = 'media_id';
-//        //发送文本
-//        if ($content_type == 'text') {
-//            if (empty($content)) {
-//                return $this->showmessage(RC_Lang::get('wechat::wechat.text_must_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//            }
-//            $media_id = $content;
-//            $type = 'content';
-//            $msg_data['content'] = $content;
-//        } else {
-//            if (empty($id)) {
-//                return $this->showmessage(RC_Lang::get('wechat::wechat.pls_select_material'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//            }
-//            $media_id = RC_DB::table('wechat_media')->where('wechat_id', $wechat_id)->where('id', $id)->pluck($field);
-//        }
-//        if ($mass_type == 'all') {
-//            //按全部用户群发
-//            $massmsg = array(
-//                'filter' => array('is_to_all' => true),
-//                $content_type => array(
-//                    $type => $media_id,
-//                ),
-//                'msgtype' => $content_type,
-//            );
-//        } else {
-//            //按标签进行群发
-//            $massmsg = array(
-//                'filter' => array(
-//                    'is_to_all' => false,
-//                    'tag_id' => $tag_id,
-//                ),
-//                $content_type => array(
-//                    $type => $media_id,
-//                ),
-//                'msgtype' => $content_type,
-//            );
-//        }
-//        try {
-//            $rs = $wechat->sendallMass($massmsg);
-//            if (is_ecjia_error($rs)) {
-//                return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//            }
-//        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-//            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//        }
-
-        // 数据处理
-//        $msg_data['wechat_id'] = $wechat_id;
-//        $msg_data['media_id'] = $id;
-//        $msg_data['send_time'] = RC_Time::gmtime();
-//        $msg_data['msg_id'] = $rs['msg_id'];
-//        $mass_id = RC_DB::table('wechat_mass_history')->insertGetId($msg_data);
-        return $this->showmessage(RC_Lang::get('wechat::wechat.mass_task_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_mass_message/init')));
     }
 
     public function get_material_list()
