@@ -42,7 +42,7 @@ class WechatMassHistoryModel extends Model
             'wechat_id'  => $wechat_id,
             'media_id'   => $media_id,
             'type'       => $type,
-            'send_time'  => RC_Time::gmtime(),
+            'send_time'  => \RC_Time::gmtime(),
             'content'    => [
                 'media_content' => $content,
             ],
