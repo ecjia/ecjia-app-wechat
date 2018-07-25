@@ -123,7 +123,7 @@ class platform_mass_message extends ecjia_platform
                 return $this->showmessage(RC_Lang::get('wechat::wechat.text_must_info'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         } else {
-            if (empty($id)) {
+            if (empty($media_id)) {
                 return $this->showmessage(RC_Lang::get('wechat::wechat.pls_select_material'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
