@@ -179,7 +179,7 @@
                 account_name = $('#account_name').val(),
                 media_id = $('input[name="media_id"]').val(),
                 info = { message: msg, uid: chat_user, openid: openid, media_id: media_id },
-            	type = $('.nav-link.active').parent('.nav-item').attr('data-type');
+            	type = $('.material-table').find('.nav-link.active').parent('.nav-item').attr('data-type');
 
             if (msg != "" || media_id != undefined) {
                 $.post(post_url, info, function(data) {

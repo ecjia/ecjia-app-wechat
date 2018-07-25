@@ -60,69 +60,75 @@
 				<table class="table table-striped smpl_tbl table-hide-edit">
 					<thead>
 						<tr>
+							<th class="w35">ID</th>
 							<th class="w200">{lang key='wechat::wechat.message_content'}</th>
+							<th class="w35">消息类型</th>
 							<th class="w250">{lang key='wechat::wechat.status'}</th>
-							<th class="w150">{lang key='wechat::wechat.time'}</th>
+							<th class="w200">发送状态</th>
+							<th class="w180">{lang key='wechat::wechat.time'}</th>
 							<th class="w50">{lang key='wechat::wechat.operate'}</th>
 						</tr>
 					</thead>
 					<tbody>
 						<!-- {foreach from=$list.list item=item} -->
 						<tr>
+							<td>{$item.id}</td>
 							<td>
-								<!-- {if $item.children} -->
-								<div class="wmk_grid ecj-wookmark wookmark_list w200">
-									<div class="thumbnail move-mod-group">
-										<!-- {foreach from=$item.children.file key=k item=val} -->
-											<!-- {if $val neq ''} -->
-											{if $k == 0}
-											<div class="article">
-		                                		<div class="cover">
-		                                			<img src="{$val.file}" />
-		                                			<span>{$val.title}</span>
-		                                		</div>
-											</div>
-											{else}
-											<div class="article_list">
-											 	<div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
-		                               	 		<img src="{$val.file}" class="pull-right material_content" />
-											</div>
-											{/if}
-											<!-- {else} -->
-												<div class="article_list">
-												 	<div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>
-			                               	 		<img src="{RC_Uri::admin_url('statics/images/nopic.png')}" class="pull-right material_content" />
-												</div>
-											<!-- {/if} -->
-		                                <!-- {/foreach} -->
-				               		</div>
-		                        </div>
-	                            <!-- {elseif $item.type} -->
-	                                <!-- {if $item.type == 'voice' || $item.type == 'video' || $item.type == 'image'} -->
-	                                    <img src="{$item.file}" class="material_reply_content material_content m_b5"/><br>
-	                                    <span>{$item.file_name}</span>
-	                                <!-- {else} -->
-	                                	 <span class="ecjiaf-pre">{$item.content}</span>
-	                                <!-- {/if} -->
-	                           <!-- {/if} -->
-							</td>
-							
-							<td>  
-								{if $item.status eq 1}
-								<p class="ecjiafc-blue">{lang key='wechat::wechat.send_success'}</p>
-								{elseif $item.status eq 2}
-								<p class="ecjiafc-red">{lang key='wechat::wechat.send_failed'}</p>
-								{elseif $item.status eq 3}
-								<p class="ecjiafc-red">{lang key='wechat::wechat.send_error'}</p>
-								{elseif $item.status eq 4}
-								<p class="ecjiafc-red">{lang key='wechat::wechat.deleted'}</p>
+								{if $item.type eq 'text'}{$item.media_content.content}{/if}
+								{if $item.type eq 'mpnews'}
+								<div class="weui-desktop-media__list-col margin_10">
+									<li class="thumbnail move-mod-group big grid-item">
+										<!-- {foreach from=$item.media_content.articles key=key item=val} -->
+										{if $key eq 0}
+									    <div class="article">
+									        <div class="cover">
+									            <a target="__blank" href="{$val.url}">
+									                <img src="{$val.picurl}" />
+									            </a>
+									            <span>{$val.title}</span>
+									        </div>
+									    </div>
+									    {else}
+									    <div class="article_list">
+									        <div class="f_l">{$val.title}</div>
+									        <a target="__blank" href="{$val.url}">
+									            <img src="{$val.picurl}" class="pull-right" />
+									        </a>
+									    </div>
+										{/if}
+									    <!-- {/foreach} -->
+									</li>
+								</div>
 								{/if}
+								{if $item.type eq 'image'}
+								<div class="img_preview">
+									<img class="preview_img margin_10" src="{$item.media_content.img_url}" data-type="image">
+								</div>
+								{/if}
+								{if $item.type eq 'voice'}
+								<div class="img_preview">
+									<img class="preview_img margin_10" src="{$item.media_content.img_url}" data-src="{$item.media_content.voice_url}" data-type="voice"></img>
+								</div>
+								{/if}
+								{if $item.type eq 'mpvideo'}
+								<div class="img_preview">
+									<img class="preview_img margin_10" src="{$item.media_content.img_url}" data-src="{$item.media_content.video_url}" data-type="video"></img>
+								</div>	
+								{/if}
+							</td>
+							<td>
+								{if $item.type eq 'text'}文字{/if}
+								{if $item.type eq 'mpnews'}图文{/if}
+								{if $item.type eq 'image'}图片{/if}
+								{if $item.type eq 'voice'}语音{/if}
+								{if $item.type eq 'mpvideo'}视频{/if}
+							</td>
+							<td>  
 			                    <p>{lang key='wechat::wechat.label_sentcount'}{$item.sentcount}{lang key='wechat::wechat.people'}</p>
 			                    <p>{lang key='wechat::wechat.label_errorcount'}{$item.errorcount}{lang key='wechat::wechat.people'}</p>
 		                    </td>
-		                    <td>
-		                    	{$item.send_time}
-		                    </td>
+		                    <td>{$item.status}</td>
+		                    <td>{$item.send_time}</td>
 		                    <td>
 		                    	{if $item.status neq 4}
 		                    	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_record_confirm'}" href='{RC_Uri::url("wechat/platform_mass_message/mass_del", "id={$item.id}")}' title="{lang key='system::system.drop'}"><i class="ft-trash-2"/></i></a>

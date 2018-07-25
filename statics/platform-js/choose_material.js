@@ -102,7 +102,7 @@
 				e.preventDefault();
 				var $this = $(this),
 					url = $this.attr('href'),
-					type = $('.nav-link.active').parent().attr('data-type');
+					type = $('.material-table').find('.nav-link.active').parent().attr('data-type');
 				if (url == undefined) {
 					return false;
 				}
