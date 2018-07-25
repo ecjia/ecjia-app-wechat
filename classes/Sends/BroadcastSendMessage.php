@@ -32,7 +32,7 @@ class BroadcastSendMessage
     {
         $content = ['content' => $msg];
         if (! empty($tagid)) {
-            $content = ['tag_id' => $tagid];
+            $content['tag_id'] = $tagid;
         }
 
         $result = $this->wechat->broadcast->sendText($msg, $tagid);
@@ -125,7 +125,7 @@ class BroadcastSendMessage
     {
         $content = ['media_id' => $media_id];
         if (! empty($tagid)) {
-            $content = ['tag_id' => $tagid];
+            $content['tag_id'] = $tagid;
         }
 
         $result = $this->wechat->broadcast->sendImage($media_id, $tagid);
@@ -148,7 +148,7 @@ class BroadcastSendMessage
     {
         $content = ['media_id' => $media_id];
         if (! empty($tagid)) {
-            $content = ['tag_id' => $tagid];
+            $content['tag_id'] = $tagid;
         }
 
         $result = $this->wechat->broadcast->sendVoice($media_id, $tagid);
@@ -172,7 +172,7 @@ class BroadcastSendMessage
     {
         $content = ['media_id' => $media_id];
         if (! empty($tagid)) {
-            $content = ['tag_id' => $tagid];
+            $content['tag_id'] = $tagid;
         }
 
         if (is_array($tagid) && ! is_null($model)) {
@@ -209,7 +209,7 @@ class BroadcastSendMessage
     {
         $content = ['media_id' => $media_id];
         if (! empty($tagid)) {
-            $content = ['tag_id' => $tagid];
+            $content['tag_id'] = $tagid;
         }
 
         $result = $this->wechat->broadcast->sendNews($media_id, $tagid);
