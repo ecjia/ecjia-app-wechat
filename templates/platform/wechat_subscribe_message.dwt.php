@@ -55,19 +55,19 @@
 												
 												{if $msg.type eq 'image'}
 												<div class="img_preview">
-													<img class="preview_img margin_10" src="{$msg.media_content.img_url}" alt="点击查看">
+													<img class="preview_img margin_10" src="{$msg.media_content.img_url}" title="点击查看">
 												</div>
 												{/if}
 												
 												{if $msg.type eq 'voice'}
 												<div class="img_preview">
-													<video class="preview_voice margin_10" src="{$msg.media_content.voice_url}" controls="controls"></video>
+													<img class="preview_img margin_10" src="{$msg.media_content.img_url}" title="点击播放" data-src="{$msg.media_content.voice_url}"></img>
 												</div>
 												{/if}
 												
 												{if $msg.type eq 'video'}
 												<div class="img_preview">
-													<video class="preview_video margin_10" src="{$msg.media_content.video_url}" controls="controls"></video>
+													<img class="preview_img margin_10" src="{$msg.media_content.img_url}" title="点击播放" data-src="{$msg.media_content.video_url}"></img>
 												</div>											
 												{/if}
 												
