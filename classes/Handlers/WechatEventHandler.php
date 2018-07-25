@@ -302,7 +302,7 @@ class WechatEventHandler
             'sentcount'             => $message->get('SentCount'),
             'errorcount'            => $message->get('ErrorCount'),
             'copyright_check_result' => serialize($message->get('CopyrightCheckResult')),
-            'check_state'            => $message->get('CopyrightCheckResult.CheckState'),
+            'check_state'            => array_get($message->get('CopyrightCheckResult'), 'CheckState'),
         ];
         
         WechatMassHistoryModel::where('wechat_id', $wechat_id)->where('msg_id', $message->get('MsgID'))->update($data);
