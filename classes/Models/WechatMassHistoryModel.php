@@ -39,6 +39,7 @@ class WechatMassHistoryModel extends Model
         $data = array(
             'wechat_id'  => $wechat_id,
             'media_id'   => $media_id,
+            'tag_id'     => array_get($content, 'tag_id', 0),
             'type'       => $type,
             'send_time'  => \RC_Time::gmtime(),
             'content'    => [
