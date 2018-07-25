@@ -4,6 +4,7 @@
 		init: function () {
 			app.choose_material.choose_material();
 			app.choose_material.link_del();
+			app.choose_material.page_click();
 		},
 		choose_material: function () {
             $('.nav-item').off('click').on('click', function(e) {
@@ -32,10 +33,13 @@
 					type: type
 				}
 				$.post(url, info, function (data) {
+					$('#choose_material').find('.page-item').remove();
 					$('#choose_material').find('.inner_main').html(data.data);
+					$('#choose_material').find('.inner_main').after('<div class="page-item">'+data.page+'</div>');
 					$('#choose_material').find('.modal-title').html(data.title);
 					$('#choose_material').modal('show');
 					app.choose_material.img_item_click();
+					app.choose_material.page_click();
 				})
 			});
 
@@ -90,6 +94,27 @@
 				parent.find('.weui-desktop-media__list-col').remove();
 				parent.find('.link_dele').remove();
 				parent.find('.create-type__list').show();
+			});
+		},
+		
+		page_click: function() {
+			$('#choose_material .page-link').off('click').on('click', function (e) {
+				e.preventDefault();
+				var $this = $(this),
+					url = $this.attr('href'),
+					type = $('.nav-link.active').parent().attr('data-type');
+				if (url == undefined) {
+					return false;
+				}
+				$.post(url, {type: type}, function(data) {
+					$('#choose_material').find('.page-item').remove();
+					$('#choose_material').find('.inner_main').html(data.data);
+					$('#choose_material').find('.inner_main').after('<div class="page-item">'+data.page+'</div>');
+					$('#choose_material').find('.modal-title').html(data.title);
+					$('#choose_material').modal('show');
+					app.choose_material.img_item_click();
+					app.choose_material.page_click();
+				});
 			});
 		}
 	};

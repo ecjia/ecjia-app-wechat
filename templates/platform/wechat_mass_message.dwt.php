@@ -115,7 +115,7 @@
 								<label class="col-lg-2 label-control text-right">
 									{lang key='wechat::wechat.label_select_material'}
 								</label>
-								<div class="col-lg-8 controls">
+								<div class="col-lg-8 controls material-table">
 									<ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
 										<li class="nav-item" data-type="news">
 											<a class="nav-link active" data-toggle="tab" title="{lang key='wechat::wechat.text_message'}"><i class="fa fa-list-alt"> 图文</i></a>
