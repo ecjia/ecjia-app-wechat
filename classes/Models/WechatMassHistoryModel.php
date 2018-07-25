@@ -28,6 +28,28 @@ class WechatMassHistoryModel extends Model
 
     protected $guarded = [];
 
-    
+    /**
+     * 群发消息记录
+     * $result["msg_id"]:34182,
+     * $result["msg_data_id"]: 206227730
+     */
+    public function massSendRecord($wechat_id, $media_id, $type, $content = null, $result = null)
+    {
+        $data = array(
+            'wechat_id'  => $wechat_id,
+            'media_id'   => $media_id,
+            'type'       => $type,
+            'send_time'  => RC_Time::gmtime(),
+            'content'    => [
+                'media_content' => $content,
+            ],
+            'msg_id'      => $result['msg_id'],
+            'msg_data_id' => $result['msg_data_id'],
+        );
+
+        $data['content'] = serialize($data['content']);
+
+        WechatCustomMessageModel::insert($data);
+    }
 
 }
