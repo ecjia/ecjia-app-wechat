@@ -75,6 +75,7 @@
                 });
             });
             app.subscribe_message.edit_customer_remark();
+            app.subscribe_message.show_message_modal();
         },
 
         load_opt: function(data) {
@@ -137,6 +138,34 @@
                 $('.remark').hide();
             });
         },
+        
+        //素材消息预览弹出框
+        show_message_modal: function() {
+        	$('.preview_img').off('click').on('click', function() {
+        		var $this = $(this),
+        			type = $this.attr('data-type'),
+        			title = '';
+        		
+        		$('#show_message').find('.inner_main').html('');
+        		if (type == 'image') {
+        			title = '图片预览';
+        			var src = $this.attr('src');
+        			$('#show_message').find('.inner_main').html('<img style="width:100%;height:100%;" src="'+ src +'" />');
+        		} else if (type == 'voice') {
+        			var src = $this.attr('data-src');
+        			title = '语音预览';
+        			$('#show_message').find('.inner_main').html('<video autoplay style="width:100%;height:100px;" src="'+src+'" controls></video')
+        		} else if (type == 'video') {
+        			var src = $this.attr('data-src');
+        			title = '视频预览';
+        			$('#show_message').find('.inner_main').html('<video autoplay style="width:100%;height:99%;" src="'+src+'" controls></video')
+        		}
+        		console.log(title);
+        		
+        		$('#show_message').find('.modal-title').html(title);
+        		$('#show_message').modal('show');
+        	})
+        },
 
         /*
          * 发送信息
@@ -196,6 +225,7 @@
             !options.is_myself && msg_cloned.removeClass('chat-msg-mine').addClass('chat-msg-you');
             msg_cloned.removeClass('msg_clone').show();
             
+            app.subscribe_message.show_message_modal();
             $('.chat-box').stop().animate({
                 scrollTop: $('.chat-box .card-body').height()
             }, 1000);

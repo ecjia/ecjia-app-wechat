@@ -43,7 +43,7 @@
 				var $this = $('.inner_main .img_item_bd.selected'),
 					media_id = $this.find('.pic').attr('data-id'),
 					src = $this.find('.pic').attr('src');
-				var inner_html = '<div class="img_preview"><img class="preview_img margin_10" src="'+ src +'" alt=""><input type="hidden" name="media_id" value='+ media_id +'><a href="javascript:;" class="jsmsgSenderDelBt link_dele"">删除</a></div>';
+				var inner_html = '<div class="img_preview"><img class="preview_img margin_10" src="'+ src +'" alt=""><input type="hidden" name="media_id" value='+ media_id +'><a href="javascript:;" class="jsmsgSenderDelBt link_dele">删除</a></div>';
 				
 				if (media_id == undefined) {
 					var html = $('.inner_main .grid-item.selected');
@@ -85,7 +85,7 @@
 			$('.link_dele').off('click').on('click', function (e) {
 				e.preventDefault();
 				var $this = $(this),
-					parent = $this.parent('.js_appmsgArea');
+					parent = $this.parents('.js_appmsgArea');
 				parent.find('.img_preview').remove();
 				parent.find('.weui-desktop-media__list-col').remove();
 				parent.find('.link_dele').remove();
