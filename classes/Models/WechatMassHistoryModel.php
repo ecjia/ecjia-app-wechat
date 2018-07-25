@@ -33,7 +33,7 @@ class WechatMassHistoryModel extends Model
      * $result["msg_id"]:34182,
      * $result["msg_data_id"]: 206227730
      */
-    public function massSendRecord($wechat_id, $media_id, $type, $content = null, $result = null)
+    public static function massSendRecord($wechat_id, $media_id, $type, $content = null, $result = null)
     {
         $data = array(
             'wechat_id'  => $wechat_id,
