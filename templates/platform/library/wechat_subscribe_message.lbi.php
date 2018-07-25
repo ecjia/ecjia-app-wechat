@@ -1,18 +1,18 @@
 {if $type eq 'image'}
 <div class="img_preview">
-	<img class="preview_img margin_10" src="{$msg.img_url}" alt="点击查看">
+	<img class="preview_img margin_10" src="{$media_content.img_url}" alt="点击查看">
 </div>
 {/if}
 
 {if $type eq 'voice'}
 <div class="img_preview">
-	<img class="preview_img margin_10" src="{$msg.voice_url}" alt="点击播放">
+	<img class="preview_img margin_10" src="{$media_content.img_url}" title="点击播放" data-src="{$media_content.voice_url}"></img>
 </div>
 {/if}
 
 {if $type eq 'video'}
 <div class="img_preview">
-	<img class="preview_img margin_10" src="{$msg.video_url}" alt="点击播放">
+	<img class="preview_img margin_10" src="{$media_content.img_url}" title="点击播放" data-src="{$media_content.media_content.video_url}"></img>
 </div>											
 {/if}
 

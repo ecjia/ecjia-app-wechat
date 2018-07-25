@@ -604,6 +604,12 @@ class platform_subscribe extends ecjia_platform
         	foreach ($list['item'] as $k => $v) {
         		if ($v['type'] != 'text') {
         			$this->assign('type', $v['type']);
+        			if ($v['type'] == 'voice') {
+        				$v['media_content']['img_url'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
+        			}
+        			if ($v['type'] == 'video') {
+        				$v['media_content']['img_url'] = RC_App::apps_url('statics/images/video.png', __FILE__);
+        			}
         			$this->assign('media_content', $v['media_content']);
         			$list['item'][$k]['media_content_html'] = $this->fetch('library/wechat_subscribe_message.lbi');
         		}
@@ -632,10 +638,10 @@ class platform_subscribe extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.message_content_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        $model = \Ecjia\App\Wechat\Models\WechatCustomMessageModel::where('uid', $uid)->where('iswechat', 0)->orderBy('send_time', 'DESC')->first();
-        if (! empty($model) && (RC_Time::gmtime() - $model->send_time) > 48*3600 ) {
-            return $this->showmessage('由于该用户48小时未与你互动，你不能再主动发消息给他。直到用户下次主动发消息给你才可以对其进行回复。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
+//         $model = \Ecjia\App\Wechat\Models\WechatCustomMessageModel::where('uid', $uid)->where('iswechat', 0)->orderBy('send_time', 'DESC')->first();
+//         if (! empty($model) && (RC_Time::gmtime() - $model->send_time) > 48*3600 ) {
+//             return $this->showmessage('由于该用户48小时未与你互动，你不能再主动发消息给他。直到用户下次主动发消息给你才可以对其进行回复。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+//         }
 
         try {
             $wechat_id = $this->platformAccount->getAccountID();
@@ -811,6 +817,13 @@ class platform_subscribe extends ecjia_platform
                     $list[$key]['nickname'] = $platform_name;
                 }
                 $list[$key]['media_content'] = unserialize($val['media_content']);
+                if ($val['type'] == 'voice') {
+                	$list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
+                }
+                
+                if ($val['type'] == 'video') {
+                	$list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/video.png', __FILE__);
+                }
             }
             $end_list = end($list);
             $reverse_list = array_reverse($list);
