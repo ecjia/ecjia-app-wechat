@@ -71,12 +71,14 @@
 						<!-- {foreach from=$list.list item=item} -->
 						<tr>
 							<td>
-								{$item.id}<br>
+								{$item.id}<br /><br />
+                                <strong>
 								{if $item.type eq 'text'}文字{/if}
 								{if $item.type eq 'mpnews'}图文{/if}
 								{if $item.type eq 'image'}图片{/if}
 								{if $item.type eq 'voice'}语音{/if}
 								{if $item.type eq 'mpvideo'}视频{/if}
+                                </strong>
 							</td>
 							<td>
 								{if $item.type eq 'text'}{$item.media_content.content}{/if}
