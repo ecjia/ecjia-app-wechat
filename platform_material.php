@@ -671,6 +671,42 @@ class platform_material extends ecjia_platform
     	
     	$id = !empty($_GET['id']) ? $_GET['id'] : 0;
 
+
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        //查找多图文素材
+        $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('type', 'news')->find($id);
+        if (empty($model)) {
+            return $this->showmessage('图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        try {
+            $uuid = $this->platformAccount->getUUID();
+            $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+
+            $rs = $wechat->material->get($model->media_id);
+            dd($rs);
+
+            $data = [
+                'item' => [
+                    [
+                        'media_id' => $model->media_id,
+                        'content' => $rs,
+                        'update_time' => SYS_TIME,
+                    ]
+                ],
+                'total_count' => 1,
+                'item_count' => 1
+            ];
+
+            with(new \Ecjia\App\Wechat\Synchronizes\MaterialStorage($wechat_id, 'news', $data, $wechat))->save();
+
+        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        } catch (\BadMethodCallException $e) {
+            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
     }
 
     /**
