@@ -449,19 +449,22 @@ class platform_material extends ecjia_platform
         		$data['size']       = $thumb_model->size;
         		$data['file_name']  = $thumb_model->file_name;
         	}
-        	
-        	// 更新单篇图文
-        	$article = new Royalcms\Component\WeChat\Message\Article([
-        		'title'                 => $title,
-        		'thumb_media_id'        => $thumb_media_id,
-        		'author'                => $author,
-        		'digest'                => $digest,
-        		'show_cover_pic'        => $is_show,
-        		'content'               => $content,
-        		'content_source_url'    => $link == 'http://' ? '' : $link,
-			]);
-        	$msg = $wechat->material->updateArticle($model->media_id, $article, $index);
-        	
+
+        	if ($model->parent_id > 0) {
+
+                // 更新单篇图文
+                $article = new Royalcms\Component\WeChat\Message\Article([
+                    'title'                 => $title,
+                    'thumb_media_id'        => $thumb_media_id,
+                    'author'                => $author,
+                    'digest'                => $digest,
+                    'show_cover_pic'        => $is_show,
+                    'content'               => $content,
+                    'content_source_url'    => $link == 'http://' ? '' : $link,
+                ]);
+                $msg = $wechat->material->updateArticle($model->parentNews->media_id, $article, $index);
+            }
+
         	//更新数据库
         	$data['edit_time'] = RC_Time::gmtime();
         	$model->update($data);

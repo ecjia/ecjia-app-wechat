@@ -70,6 +70,14 @@ class WechatMediaModel extends Model
     }
 
     /**
+     * 获取素材的父图文。
+     */
+    public function parentNews()
+    {
+        return $this->belongsTo('Ecjia\App\Wechat\Models\WechatMediaModel', 'parent_id', 'id');
+    }
+
+    /**
      * 限制查询只包括指定缩略图素材ID。
      *
      * @return \Royalcms\Component\Database\Eloquent\Builder
@@ -78,18 +86,5 @@ class WechatMediaModel extends Model
     {
         return $query->where('type', 'thumb')->where('media_id', $media_id);
     }
-
-
-    /**
-     * 添加图文素材
-     * @param $parent_id
-     * @param array $news
-     */
-    public function addMaterialNews($parent_id, array $news)
-    {
-        $data = [];
-        $this->add();
-    }
-
 
 }
