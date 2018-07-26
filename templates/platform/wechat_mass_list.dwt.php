@@ -60,19 +60,25 @@
 				<table class="table table-striped smpl_tbl table-hide-edit">
 					<thead>
 						<tr>
-							<th class="w35">ID</th>
+							<th class="w100">ID</th>
 							<th class="w200">{lang key='wechat::wechat.message_content'}</th>
-							<th class="w35">消息类型</th>
-							<th class="w250">{lang key='wechat::wechat.status'}</th>
-							<th class="w200">发送状态</th>
-							<th class="w180">{lang key='wechat::wechat.time'}</th>
-							<th class="w50">{lang key='wechat::wechat.operate'}</th>
+							<th class="w180">{lang key='wechat::wechat.status'}</th>
+							<th class="w180">发送状态</th>
+							<th class="w130">{lang key='wechat::wechat.time'}</th>
+							<th class="w30">{lang key='wechat::wechat.operate'}</th>
 						</tr>
 					</thead>
 					<tbody>
 						<!-- {foreach from=$list.list item=item} -->
 						<tr>
-							<td>{$item.id}</td>
+							<td>
+								{$item.id}<br>
+								{if $item.type eq 'text'}文字{/if}
+								{if $item.type eq 'mpnews'}图文{/if}
+								{if $item.type eq 'image'}图片{/if}
+								{if $item.type eq 'voice'}语音{/if}
+								{if $item.type eq 'mpvideo'}视频{/if}
+							</td>
 							<td>
 								{if $item.type eq 'text'}{$item.media_content.content}{/if}
 								{if $item.type eq 'mpnews'}
@@ -116,13 +122,6 @@
 								</div>	
 								{/if}
 							</td>
-							<td>
-								{if $item.type eq 'text'}文字{/if}
-								{if $item.type eq 'mpnews'}图文{/if}
-								{if $item.type eq 'image'}图片{/if}
-								{if $item.type eq 'voice'}语音{/if}
-								{if $item.type eq 'mpvideo'}视频{/if}
-							</td>
 							<td>  
 			                    <p>{lang key='wechat::wechat.label_sentcount'}{$item.sentcount}{lang key='wechat::wechat.people'}</p>
 			                    <p>{lang key='wechat::wechat.label_errorcount'}{$item.errorcount}{lang key='wechat::wechat.people'}</p>
@@ -136,7 +135,7 @@
 		                    </td>
 						</tr>
 						<!--  {foreachelse} -->
-						<tr><td class="no-records" colspan="4">{lang key='system::system.no_records'}</td></tr>
+						<tr><td class="no-records" colspan="6">{lang key='system::system.no_records'}</td></tr>
 						<!-- {/foreach} -->
 					</tbody>
 				</table>
