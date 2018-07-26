@@ -63,7 +63,6 @@
 							<th class="w100">ID</th>
 							<th class="w200">{lang key='wechat::wechat.message_content'}</th>
 							<th class="w180">{lang key='wechat::wechat.status'}</th>
-							<th class="w180">发送状态</th>
 							<th class="w130">{lang key='wechat::wechat.time'}</th>
 							<th class="w30">{lang key='wechat::wechat.operate'}</th>
 						</tr>
@@ -123,10 +122,9 @@
 								{/if}
 							</td>
 							<td>  
-			                    <p>{lang key='wechat::wechat.label_sentcount'}{$item.sentcount}{lang key='wechat::wechat.people'}</p>
-			                    <p>{lang key='wechat::wechat.label_errorcount'}{$item.errorcount}{lang key='wechat::wechat.people'}</p>
+								{$item.status}<br>
+			                    <p>（成功：{$item.sentcount}{lang key='wechat::wechat.people'}&nbsp;失败：{$item.errorcount}{lang key='wechat::wechat.people'}）</p>
 		                    </td>
-		                    <td>{$item.status}</td>
 		                    <td>{$item.send_time}</td>
 		                    <td>
 		                    	{if $item.status neq 4}
@@ -135,7 +133,7 @@
 		                    </td>
 						</tr>
 						<!--  {foreachelse} -->
-						<tr><td class="no-records" colspan="6">{lang key='system::system.no_records'}</td></tr>
+						<tr><td class="no-records" colspan="5>{lang key='system::system.no_records'}</td></tr>
 						<!-- {/foreach} -->
 					</tbody>
 				</table>
