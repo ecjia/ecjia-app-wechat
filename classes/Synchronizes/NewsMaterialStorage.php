@@ -119,11 +119,11 @@ class NewsMaterialStorage
 
         unset($news_item[0]);
 
-        $a = $model->subNews->lists('title');
-        $b = collect($news_item)->lists('title');
+        //子图文素材对比，如果不一样，删除原有子图文，添加新的子图文
+        $a = collect($news_item)->lists('title');
+        $b = $model->subNews->lists('title');
         $result = array_diff($a, $b);
 
-        //子图文素材对比，如果不一样，删除原有子图文，添加新的子图文
         //如果一样，只更新内容
         if (! empty($result)) {
             if (! $model->subNews->isEmpty()) {
