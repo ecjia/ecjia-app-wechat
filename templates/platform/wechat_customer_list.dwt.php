@@ -146,41 +146,51 @@
 	</div>
 </div>
 
-<div class="modal hide fade" id="bind_wx">
-	<div class="modal-header">
-		<button class="close" data-dismiss="modal">×</button>
-		<h3>{lang key='wechat::wechat.bind_wx'}</h3>
-	</div>
-	<div class="modal-body" id="bind_modal">
-		<div class="row-fluid edit-page">
-			<div class="span12">
-			<!-- {if $errormsg} -->
-			    <div class="alert alert-danger">
-		            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
-		        </div>
+<div class="modal fade text-left" id="bind_wx">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">{lang key='wechat::wechat.bind_wx'}</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			
+			<!-- {if $errormsg || $type neq 2} -->
+				<div class="card-body">
+					<!-- {if $errormsg} -->
+				    <div class="alert alert-danger m_b0">
+			            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+			        </div>
+			        <!-- {/if} -->
+					<!-- {if $type neq 2} -->
+					<div class="alert alert-danger m_b0">
+						<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+					</div>
+					<!-- {/if} -->
+				</div>
 			<!-- {/if} -->
 			
-			<!-- {if $warn} -->
-				<!-- {if $type eq 0} -->
-				<div class="alert alert-danger">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
-				</div>
-				<!-- {/if} -->
-			<!-- {/if} -->
-				<form class="form-horizontal" method="post" name="bind_form" action="{url path='wechat/platform_customer/bind_wx'}">
-					<fieldset>
-						<div class="w330 m_0">
-							<div class="m_b5 m_l10">{lang key='wechat::wechat.label_kf_wx_required'}</div>
-							<div class="ecjiaf-tac m_b10">
-								<input type="text" name="kf_wx" value="{$smarty.get.kf_wx}" autocomplete="off"/>
-								<input type="hidden" name="kf_account" />
-								<input type="submit" value="{lang key='wechat::wechat.invite_bind'}" class="btn btn-gebo m_l5" {if $errormsg || $warn && $type eq 0}disabled{/if}/>
+			<form class="form" method="post" name="bind_form" action="{url path='wechat/platform_customer/bind_wx'}">
+				<div class="card-body">
+					<div class="form-body">
+						<div class="form-group row">
+							<label class="col-md-3 label-control text-right">微信号：</label>
+							<div class="col-md-8 controls">
+								<input class="form-control" type="text" name="kf_wx" value="{$smarty.get.kf_wx}" autocomplete="off" placeholder="{lang key='wechat::wechat.label_kf_wx_required'}"/>
 							</div>
+							<div class="col-md-1"><span class="input-must">*</span></div>
 						</div>
-					</fieldset>
-				</form>
-			</div>
+					</div>
+				</div>
+
+				<div class="modal-footer justify-content-center">
+			   		<input type="hidden" name="kf_account" />
+					<input type="submit" value="{lang key='wechat::wechat.invite_bind'}" class="btn btn-outline-primary" {if $errormsg || $warn && $type neq 2}disabled{/if}/>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
+
 <!-- {/block} -->
