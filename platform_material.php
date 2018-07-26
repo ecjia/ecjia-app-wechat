@@ -697,8 +697,8 @@ class platform_material extends ecjia_platform
                 'total_count' => 1,
                 'item_count' => 1
             ];
-            
-            with(new \Ecjia\App\Wechat\Synchronizes\NewsMaterialStorage($wechat_id, 'news', $data, $wechat))->save();
+
+            with(new \Ecjia\App\Wechat\Synchronizes\NewsMaterialStorage($wechat_id, 'news', collect($data), $wechat))->save();
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
