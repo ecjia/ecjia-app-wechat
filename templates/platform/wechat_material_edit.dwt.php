@@ -47,8 +47,10 @@
 					{/if}
 					
                 	{if $media_data.wait_upload_article eq 1}
-                	<a class="btn btn-outline-info plus_or_reply float-right m_r10 upload_multi_articles" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/upload_multi_articles')}&id={$parent_id}"><i class="ft-arrow-up"></i> 发布素材</a>
+                	<a class="btn btn-outline-info plus_or_reply float-right m_r10 article_handle" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/upload_multi_articles')}&id={$parent_id}"><i class="ft-arrow-up"></i> 发布素材</a>
                 	{/if}
+                	
+                	<a class="btn btn-outline-info plus_or_reply float-right m_r10 article_handle" href="javascript:;" data-url="{RC_Uri::url('wechat/platform_material/get_wechat_article')}&id={$parent_id}"><i class="ft-arrow-down"></i> 获取最新素材</a>
                 </h4>
             </div>
             <div class="col-lg-12">

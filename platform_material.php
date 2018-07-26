@@ -664,6 +664,14 @@ class platform_material extends ecjia_platform
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
+    
+    //获取素材
+    public function get_wechat_article () {
+    	$this->admin_priv('wechat_material_update', ecjia::MSGTYPE_JSON);
+    	
+    	$id = !empty($_GET['id']) ? $_GET['id'] : 0;
+
+    }
 
     /**
      * 删除图文素材

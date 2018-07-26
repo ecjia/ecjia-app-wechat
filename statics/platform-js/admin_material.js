@@ -455,7 +455,7 @@
 		},
 
 		upload_multi_articles: function () {
-			$('.upload_multi_articles').off('click').on('click', function (e) {
+			$('.article_handle').off('click').on('click', function (e) {
 				e.preventDefault();
 				var url = $(this).attr('data-url');
 				$.post(url, function (data) {
