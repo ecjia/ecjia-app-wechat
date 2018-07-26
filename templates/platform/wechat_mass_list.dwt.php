@@ -122,9 +122,9 @@
 								{/if}
 							</td>
 							<td>  
-								{$item.status}<br />
-			                    成功：{$item.sentcount}{lang key='wechat::wechat.people'}<br />
-                                失败：{$item.errorcount}{lang key='wechat::wechat.people'}
+                                <strong>{$item.status}</strong><br />
+			                    <i>成功：{$item.sentcount}{lang key='wechat::wechat.people'}</i><br />
+                                <i>失败：{$item.errorcount}{lang key='wechat::wechat.people'}</i>
 		                    </td>
 		                    <td>{$item.send_time}</td>
 		                    <td>
