@@ -397,7 +397,7 @@ class platform_material extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
         
         //更新永久图文素材
-        $model = WechatMediaModel::where('wechat_id', $wechat_id)->find($id);
+        $model = WechatMediaModel::where('wechat_id', $wechat_id)->where('type', 'news')->find($id);
         if (empty($model)) {
         	return $this->showmessage('图文素材ID不存在。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
