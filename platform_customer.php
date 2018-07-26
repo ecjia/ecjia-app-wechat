@@ -555,6 +555,7 @@ class platform_customer extends ecjia_platform
     {
         $kf_account = !empty($_POST['kf_account']) ? $_POST['kf_account'] : '';
         $kf_wx = !empty($_POST['kf_wx']) ? trim($_POST['kf_wx']) : '';
+        $id = intval($_GET['id']);
 
         if (empty($kf_wx)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.bind_wx_require'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -571,9 +572,14 @@ class platform_customer extends ecjia_platform
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+		RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('invite_wx' => $kf_wx, 'invite_status' => ''));
 
-        $this->load_kf_list();
-        return $this->showmessage(RC_Lang::get('wechat::wechat.invite_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_customer/init')));
+		$this->load_kf_list();
+        $pjaxurl = RC_Uri::url('wechat/platform_customer/init');
+        if (!empty($id)) {
+        	$pjaxurl = RC_Uri::url('wechat/platform_customer/edit', array('id' => $id));
+        }
+        return $this->showmessage(RC_Lang::get('wechat::wechat.invite_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
     }
 
     /**

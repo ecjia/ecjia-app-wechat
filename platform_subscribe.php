@@ -638,10 +638,10 @@ class platform_subscribe extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.message_content_required'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-//         $model = \Ecjia\App\Wechat\Models\WechatCustomMessageModel::where('uid', $uid)->where('iswechat', 0)->orderBy('send_time', 'DESC')->first();
-//         if (! empty($model) && (RC_Time::gmtime() - $model->send_time) > 48*3600 ) {
-//             return $this->showmessage('由于该用户48小时未与你互动，你不能再主动发消息给他。直到用户下次主动发消息给你才可以对其进行回复。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-//         }
+        $model = \Ecjia\App\Wechat\Models\WechatCustomMessageModel::where('uid', $uid)->where('iswechat', 0)->orderBy('send_time', 'DESC')->first();
+        if (! empty($model) && (RC_Time::gmtime() - $model->send_time) > 48*3600 ) {
+            return $this->showmessage('由于该用户48小时未与你互动，你不能再主动发消息给他。直到用户下次主动发消息给你才可以对其进行回复。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
 
         try {
             $wechat_id = $this->platformAccount->getAccountID();
