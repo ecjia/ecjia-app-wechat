@@ -78,8 +78,8 @@
 					</thead>
 					<tbody>
 						<!-- {foreach from=$list.item item=val} -->
-						<tr class="big">
-							<td><img class="thumbnail" src="{$val.kf_headimgurl}"></td>
+						<tr>
+							<td class="big"><img class="thumbnail" src="{$val.kf_headimgurl}"></td>
 							<td class="hide-edit-area">
 								{$val.kf_account}
 								<div class="edit-list">
@@ -91,34 +91,31 @@
 							</td>
 		
 							<td>
-								{if $val.status eq 1}
-									{if $val.kf_wx}
-										{$val.kf_wx}
-									{elseif $val.invite_wx}
-										
-										{if $val.invite_status eq 'waiting'}
-											{$val.invite_wx}<br>
-											<span class="ecjiafc-999">
-											<!-- todo -->
-											{lang key='wechat::wechat.invite_waiting'}<a class="hint--bottom hint--rounded" data-hint="绑定邀请已发送至 {$val.invite_wx} 的微信，请去微信客户端确认后即可绑定"><i class="fontello-icon-help-circled"></i></a>
-											</span>
-										{elseif $val.invite_status eq 'rejected'}
-											<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a><br>
-											<span class="ecjiafc-999">
-											{lang key='wechat::wechat.invite_rejected'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.rejected_rebind_notice'}"><i class="fontello-icon-help-circled"></i></a>
-											</span>
-										{elseif $val.invite_status eq 'expired'}
-											<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a><br>
-											{lang key='wechat::wechat.invite_expired'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.expired_rebind_notice'}"><i class="fontello-icon-help-circled"></i></a>
-										{/if}
-									{else}
-										<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.binding_wx'}</a><br>
+								{if $val.invite_wx neq ''}
+									{if $val.invite_status eq 'waiting'}
+										{$val.invite_wx}<br />
 										<span class="ecjiafc-999">
-											{lang key='wechat::wechat.not_bind'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.complete_bind_notice'}"><i class="fontello-icon-help-circled"></i></a>
+										{lang key='wechat::wechat.invite_waiting'}<a class="hint--bottom hint--rounded" data-hint="绑定邀请已发送至 {$val.invite_wx} 的微信，请去微信客户端确认后即可绑定"><i class="fontello-icon-help-circled"></i></a>
 										</span>
+									{elseif $val.invite_status eq 'rejected'}
+										<span class="ecjiafc-999">
+										{lang key='wechat::wechat.invite_rejected'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.rejected_rebind_notice'}"><i class="fontello-icon-help-circled"></i></a>
+										</span><br />
+										<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
+									{elseif $val.invite_status eq 'expired'}
+										<span class="ecjiafc-999">
+											{lang key='wechat::wechat.invite_expired'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.expired_rebind_notice'}"><i class="fontello-icon-help-circled"></i></a>
+										</span><br />
+										<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
+									{else}
+										{$val.invite_wx}<br />
+										<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">更换绑定微信号</a>
 									{/if}
 								{else}
-									<span class="ecjiafc-999">{lang key='wechat::wechat.kf_account_disabled'}</span>
+									<span class="ecjiafc-999">
+										{lang key='wechat::wechat.not_bind'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.complete_bind_notice'}"><i class="fontello-icon-help-circled"></i></a>
+									</span><br />
+									<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.binding_wx'}</a>
 								{/if}
 							</td>
 							<td>
@@ -177,7 +174,7 @@
 						<div class="form-group row">
 							<label class="col-md-3 label-control text-right">微信号：</label>
 							<div class="col-md-8 controls">
-								<input class="form-control" type="text" name="kf_wx" value="{$smarty.get.kf_wx}" autocomplete="off" placeholder="{lang key='wechat::wechat.label_kf_wx_required'}"/>
+								<input class="form-control" type="text" name="kf_wx" value="{$smarty.get.kf_wx}" autocomplete="off" placeholder="请输入需要绑定的客服人员微信号"/>
 							</div>
 							<div class="col-md-1"><span class="input-must">*</span></div>
 						</div>
