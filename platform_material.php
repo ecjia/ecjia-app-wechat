@@ -685,7 +685,6 @@ class platform_material extends ecjia_platform
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
             $rs = $wechat->material->get($model->media_id);
-            dd($rs);
 
             $data = [
                 'item' => [
@@ -698,7 +697,7 @@ class platform_material extends ecjia_platform
                 'total_count' => 1,
                 'item_count' => 1
             ];
-
+            
             with(new \Ecjia\App\Wechat\Synchronizes\NewsMaterialStorage($wechat_id, 'news', $data, $wechat))->save();
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
