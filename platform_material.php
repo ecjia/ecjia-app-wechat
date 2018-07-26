@@ -700,6 +700,8 @@ class platform_material extends ecjia_platform
 
             with(new \Ecjia\App\Wechat\Synchronizes\NewsMaterialStorage($wechat_id, 'news', collect($data), $wechat))->save();
 
+            return $this->showmessage('获取素材成功！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_material/edit', array('id' => $id))));
+            
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         } catch (\BadMethodCallException $e) {
