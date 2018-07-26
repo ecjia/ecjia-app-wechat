@@ -187,31 +187,34 @@ class platform_mass_message extends ecjia_platform
     {
         $this->admin_priv('wechat_message_manage', ecjia::MSGTYPE_JSON);
 
-        $uuid = platform_account::getCurrentUUID('wechat');
-        $wechat = wechat_method::wechat_instance($uuid);
+        $id = intval($this->request->input('id'));
 
-        $wechat_id = $platform_account->getAccountID();
-
-        $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
-        $msg_id = RC_DB::table('wechat_mass_history')->where('id', $id)->pluck('msg_id');
-
-        if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
-        } else {
-            $uuid = $this->platformAccount->getUUID();
-            $wechat = wechat_method::wechat_instance($uuid);
-            if (!empty($msg_id)) {
-                try {
-                    $rs = $wechat->deleteMass($msg_id);
-                    if (is_ecjia_error($rs)) {
-                        return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                    }
-                } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-                    return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                }
-            }
-            RC_DB::table('wechat_mass_history')->where('id', $id)->update(array('status' => '4'));
+        if (empty($id)) {
+            return $this->showmessage('ID参数缺少', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
+
+        $wechat_id = $this->platformAccount->getAccountID();
+        $model = \Ecjia\App\Wechat\Models\WechatMassHistoryModel::where('wechat_id', $wechat_id)->where('id', $id)->first();
+
+        if (! empty($model)) {
+            try {
+
+                if ($model->msg_id) {
+                    $uuid = $this->platformAccount->getUUID();
+                    $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+
+                    $wechat->broadcast->delete($model->msg_id);
+                }
+
+            } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+                //微信服务器上删除失败不报错
+                RC_Logger::getLogger('wechat')->error('微信服务器上删除失败:'.$e->getMessage());
+                //return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+
+            $model->delete();
+        }
+
         return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
     
@@ -276,9 +279,6 @@ class platform_mass_message extends ecjia_platform
         if (!empty($list)) {
             foreach ($list as $key => $val) {
             	$list[$key]['send_time'] = RC_Time::local_date(ecjia::config('time_format'), $val['send_time']);
-            	if (!empty($val['iswechat'])) {
-            		$list[$key]['nickname'] = $platform_name;
-            	}
             	$list[$key]['media_content'] = unserialize($val['content'])['media_content'];
             	if ($val['type'] == 'voice') {
             		$list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
