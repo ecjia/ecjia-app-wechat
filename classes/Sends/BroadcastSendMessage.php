@@ -134,7 +134,7 @@ class BroadcastSendMessage
             $content['img_url'] = \RC_Upload::upload_url($model->file);
         }
 
-        WechatMassHistoryModel::massSendRecord($this->wechat_id, $media_id, 'image', $content, $result);
+        WechatMassHistoryModel::massSendRecord($this->wechat_id, $model->id, 'image', $content, $result);
 
         $content['type'] = 'image';
         return $content;
@@ -157,7 +157,7 @@ class BroadcastSendMessage
             $content['voice_url'] = \RC_Upload::upload_url($model->file);
         }
 
-        WechatMassHistoryModel::massSendRecord($this->wechat_id, $media_id, 'voice', $content, $result);
+        WechatMassHistoryModel::massSendRecord($this->wechat_id, $model->id, 'voice', $content, $result);
 
         $content['type'] = 'voice';
         return $content;
@@ -186,7 +186,7 @@ class BroadcastSendMessage
             $content['video_url'] = \RC_Upload::upload_url($model->file);
         }
 
-        WechatMassHistoryModel::massSendRecord($this->wechat_id, $media_id, 'mpvideo', $content, $result);
+        WechatMassHistoryModel::massSendRecord($this->wechat_id, $model->id, 'mpvideo', $content, $result);
 
         $content['type'] = 'mpvideo';
         return $content;
@@ -252,7 +252,7 @@ class BroadcastSendMessage
             ]);
         }
 
-        WechatMassHistoryModel::massSendRecord($this->wechat_id, $media_id, 'mpnews', $content, $result);
+        WechatMassHistoryModel::massSendRecord($this->wechat_id, $model->id, 'mpnews', $content, $result);
 
         $content['type'] = 'mpnews';
         return $content;
