@@ -10,6 +10,7 @@ namespace Ecjia\App\Wechat\Sends;
 
 use Ecjia\App\Wechat\WechatRecord;
 use Ecjia\App\Wechat\WechatMediaReply;
+use Royalcms\Component\WeChat\Message\Article;
 use Royalcms\Component\WeChat\Message\Text;
 use Royalcms\Component\WeChat\Message\Image;
 use Royalcms\Component\WeChat\Message\Voice;
@@ -162,9 +163,31 @@ class SendCustomMessage
     /**
      * 发送图文消息（点击跳转到外链）
      */
-    public function sendNewsMessage()
+    public function sendNewsMessage($title, $description, $url, $picurl)
     {
+        $message = new News([
+            'title'         => $title,
+            'description'   => $description,
+            'url'           => $url,
+            'image'         => $picurl,
+        ]);
 
+        $result = $this->wechat->staff->message($message)->to($this->openid)->send();
+
+        $content['articles'] = [
+            [
+                'title'         => $title,
+                'description'   => $description,
+                'url'           => $url,
+                'picurl'        => $picurl,
+            ]
+        ];
+
+        WechatRecord::replyMsg($this->openid, '发送图文消息（点击跳转到外链）', 'news', $content);
+
+        $content['type'] = 'news';
+
+        return $content;
     }
 
     /**
