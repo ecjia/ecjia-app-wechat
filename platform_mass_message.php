@@ -149,7 +149,7 @@ class platform_mass_message extends ecjia_platform
                 array('pjaxurl' => RC_Uri::url('wechat/platform_mass_message/init')));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -246,7 +246,7 @@ class platform_mass_message extends ecjia_platform
             return $this->showmessage('发送预览成功，请留意你的手机微信', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
