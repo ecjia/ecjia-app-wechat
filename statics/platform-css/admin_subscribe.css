@@ -113,6 +113,10 @@
     height: auto
 }
 
+.modal-body.height200 {
+	height: 200px;
+}
+
 .tag_popover .popover_inner {
     padding: 0 0 40px 10px;
     word-wrap: break-word;

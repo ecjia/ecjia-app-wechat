@@ -305,7 +305,7 @@ class platform_customer extends ecjia_platform
                     $wechat->staff->delete($kf_account);
                 } else {
                     //微信端更新客服账号
-                    $wechat->staff->delete($kf_account, $nickname);
+                    $wechat->staff->update($kf_account, $nickname);
                 }
                 if (is_ecjia_error($rs)) {
                     return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -605,9 +605,44 @@ class platform_customer extends ecjia_platform
     	return $this->showmessage('获取成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_customer/session')));
     }
     
+    //获取客服会话
+    public function get_session() {
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	 
+    	$uuid = $this->platformAccount->getUUID();
+    	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+    	 
+    	$kf_account = trim($_GET['kf_account']);
+    	 
+    	if (empty($kf_account)) {
+    		return $this->showmessage('请选择客服账号', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    	 
+    	try {
+    		$list = $wechat->staff_session->lists($kf_account)->toArray();
+    	} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+    		return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+
+    	if (!empty($list['sessionlist'])) {
+    		foreach ($list['sessionlist'] as $k => $v) {
+    			$count = RC_DB::table('wechat_session')->where('openid', $v['openid'])->count();
+    			if (empty($count)) {
+    				RC_DB::table('wechat_session')->insert($v);
+    			}
+    		}
+    	}
+    	return $this->showmessage('获取成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+    }
+    
     //创建会话
     public function create_session()
     {
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	
+    	$uuid = $this->platformAccount->getUUID();
+    	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+    	
     	$openid = trim($_POST['openid']);
     	$kf_account = trim($_POST['kf_account']);
     	
@@ -619,11 +654,20 @@ class platform_customer extends ecjia_platform
     		return $this->showmessage('请选择客服账号', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	
-    	$wechat_id = $this->platformAccount->getAccountID();
-    	 
-    	$uuid = $this->platformAccount->getUUID();
-    	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-    	
+        try {
+            $wechat->staff_session->create($kf_account, $openid);
+        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        
+        $data = array(
+        	'wechat_id' 	=> $wechat_id,
+        	'kf_account'	=> $kf_account,
+        	'openid'		=> $openid,
+        	'createtime'	=> RC_Time::gmtime(),
+        	'status'		=> 2
+        );
+        RC_DB::table('wechat_session')->insert($data);
     	return $this->showmessage('创建成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 

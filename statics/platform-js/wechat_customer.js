@@ -4,6 +4,7 @@
 		init : function() {
 			app.wechat_customer.submit_form();
 			app.wechat_customer.bind_wx();
+			app.wechat_customer.get_session();
 			
 			$('.send_msg').on('click', function(e) {
 				app.wechat_customer.sendMsg();
@@ -139,6 +140,17 @@
 			}
 			var options = $.extend(ecjia.platform.defaultOptions.validate, option);
 			$form.validate(options);
+		},
+		
+		get_session: function() {
+			$('.get_session').off('click').on('click', function(e) {
+				e.preventDefault();
+				var $this = $(this),
+					url = $this.attr('href');
+				$.get(url, function(data) {
+					ecjia.platform.showmessage(data);
+				});
+			});
 		},
 		
 		/*

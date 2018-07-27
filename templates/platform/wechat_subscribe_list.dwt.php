@@ -199,16 +199,16 @@
 			<!-- {/if} -->
 			
 			<form class="form" method="post" action="{RC_Uri::url('wechat/platform_customer/create_session')}" name="session_form">
-				<div class="modal-body tag_popover">
+				<div class="modal-body height200">
 					<div class="card-body">
 						<div class="form-group row">
 							<label class="col-lg-3 label-control text-right">选择客服：</label>
 							<div class="col-lg-8 controls">
 								<select name="kf_account" class="select2 form-control w250">
 									<option value="">请选择客服...</option>
-								<!-- {foreach from=$customer_list item=list} -->
+									<!-- {foreach from=$customer_list item=list} -->
 									<option value="{$list.kf_account}">{$list.kf_nick}</option>
-								<!-- {/foreach} -->
+									<!-- {/foreach} -->
 								</select>
 							</div>
 						</div>
