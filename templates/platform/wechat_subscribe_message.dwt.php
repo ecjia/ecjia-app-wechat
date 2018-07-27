@@ -246,7 +246,6 @@
 						<span class="word_info">{lang key='wechat::wechat.word_info'}</span>
 						<input type="hidden" name="chat_user" id="chat_user" value="{$info.uid}" />
 						<input type="hidden" name="openid" id="openid" value="{$info.openid}" />
-						<input type="hidden" name="uid" id="uid" value="{$info.uid}" />
 						<input type="hidden" name="nickname" id="nickname" value="{$info.nickname}" />
 						<input type="hidden" name="account_name" id="account_name" value="{$account_name}" />
 						<a class="btn f_r btn-info send_msg" href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>				
