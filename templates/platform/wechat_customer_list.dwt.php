@@ -114,6 +114,8 @@
 									{/if}
 								{else}
 									<span class="ecjiafc-999">{lang key='wechat::wechat.kf_account_disabled'}</span>
+									<br />
+									<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
 								{/if}
 							</td>
 							<td>
@@ -127,9 +129,8 @@
 								{/if}
 							</td>
 							<td>
-								<!-- todo -->
-		                        	<i class="{if $val.status eq 1}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggle_CustomerState" data-url="{RC_Uri::url('wechat/platform_customer/toggle_show')}" data-id="{$val.id}" data-msg="{if $val.status}关闭客服[{$val.kf_account}]将在微信端删除该客服，{else}开启客服[{$val.kf_account}]将在微信端添加该客服，{/if}您确定要这么做吗？"></i>
-								</td>
+	                        	<i class="{if $val.status eq 1}fa fa-check cursor_pointer{else}fa fa-times cursor_pointer{/if}" data-trigger="toggle_CustomerState" data-url="{RC_Uri::url('wechat/platform_customer/toggle_show')}" data-id="{$val.id}" data-msg="{if $val.status}关闭客服[{$val.kf_account}]将在微信端删除该客服，{else}开启客服[{$val.kf_account}]将在微信端添加该客服，{/if}您确定要这么做吗？"></i>
+							</td>
 							</tr>
 							<!--  {foreachelse} -->
 						<tr><td class="no-records" colspan="6">{lang key='system::system.no_records'}</td></tr>

@@ -39,7 +39,7 @@
 				var $this   = $(this);
 				var url     = $this.attr('data-url');
 				var id      = $this.attr('data-id');
-				var val     = $this.hasClass('fontello-icon-cancel') ? 1 : 0;
+				var val     = $this.hasClass('fa-times') ? 1 : 0;
 				var type    = $this.attr('data-type') ? $this.attr('data-type') : "POST";
 
 				var option  = {obj : $this, url : url, id : id, val : val, type : type};
@@ -52,7 +52,7 @@
 						type: option.type,
 						dataType: "json",
 						success: function(data){
-							data.content ? option.obj.removeClass('fontello-icon-cancel').addClass('fontello-icon-ok') : option.obj.removeClass('fontello-icon-ok').addClass('fontello-icon-cancel');
+							data.content ? option.obj.removeClass('fa-times').addClass('fa-check') : option.obj.removeClass('fa-check').addClass('fa-times');
 							data.pjaxurl ? ecjia.platform.showmessage(data) : ecjia.platform.showmessage(js_lang.status_edit_success);
 						}
 					});
