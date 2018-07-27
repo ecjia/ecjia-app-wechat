@@ -114,6 +114,8 @@
 									{/if}
 								{else}
 									<span class="ecjiafc-999">{lang key='wechat::wechat.kf_account_disabled'}</span>
+									<br />
+									<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
 								{/if}
 							</td>
 							<td>
