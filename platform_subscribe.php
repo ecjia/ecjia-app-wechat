@@ -507,6 +507,92 @@ class platform_subscribe extends ecjia_platform
         }
     }
 
+    /**
+     * 获取黑名单用户信息
+     */
+    public function get_blackuserinfo()
+    {
+    	$this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
+    
+    	$uuid = $this->platformAccount->getUUID();
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+    
+    	if (is_ecjia_error($wechat_id)) {
+    		return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    	//读取上次获取用户位置
+    	$p = RC_Cache::app_cache_get('wechat_blackuser_position_' . $wechat_id, 'wechat');
+    
+    	if ($p == false) {
+    		$p = !empty($_GET['p']) ? intval($_GET['p']) : 0;
+    	}
+    	//删除缓存
+    	if (empty($p)) {
+    		RC_Cache::app_cache_delete('wechat_blackuser_list_' . $wechat_id, 'wechat');
+    	}
+    
+    	//读取缓存
+    	$wechat_user_list = RC_Cache::app_cache_get('wechat_blackuser_list_' . $wechat_id, 'wechat');
+    	if ($wechat_user_list == false) {
+    
+    		try {
+    			$wechat_user = $wechat->user_tag->usersOfBlack()->toArray();
+    			if (is_ecjia_error($wechat_user)) {
+    				return $this->showmessage(wechat_method::wechat_error($wechat_user->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    			}
+    			if ($wechat_user['total'] <= 10000) {
+    				$wechat_user_list = $wechat_user['data']['openid'];
+    			} else {
+    				$num = ceil($wechat_user['total'] / 10000);
+    				for ($i = 1; $i < $num; $i++) {
+    					$wechat_user1 = $wechat->user_tag->usersOfBlack($wechat_user['next_openid'])->toArray();
+    					if (is_ecjia_error($wechat_user1)) {
+    						return $this->showmessage(wechat_method::wechat_error($wechat_user1->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    					}
+    					$wechat_user['next_openid'] = $wechat_user1['next_openid'];
+    					$wechat_user['data']['openid'] = array_merge($wechat_user['data']['openid'], $wechat_user1['data']['openid']);
+    				}
+    			}
+    			$wechat_user_list = $wechat_user['data']['openid'];
+    			//设置缓存
+    			RC_Cache::app_cache_set('wechat_blackuser_list_' . $wechat_id, $wechat_user_list, 'wechat');
+    
+    		} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+    			return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		}
+    
+    	}
+    
+    	$user_list = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->lists('openid');
+    	if (empty($user_list)) {
+    		$user_list = array();
+    	}
+    
+    	$arr1 = $arr2 = array();
+    	$list = array_slice($wechat_user_list, $p, 100);
+    
+    	$total = count($wechat_user_list);
+    	$counts = count($list);
+    
+    	$p += $counts;
+    
+    	if (!empty($list)) {
+    		RC_DB::table('wechat_user')->whereIn('opendid', $list)->update('group_id', 1);
+    	}
+    	
+    	if ($p < $total) {
+    		RC_Cache::app_cache_set('wechat_blackuser_position_' . $wechat_id, $p, 'wechat');
+    		return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.get_user_already'), $p), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url("wechat/platform_subscribe/get_blackuserinfo"), 'notice' => 1, 'p' => $p));
+    	} else {
+    		RC_Cache::app_cache_delete('wechat_blackuser_position_' . $wechat_id, 'wechat');
+    		RC_Cache::app_cache_delete('wechat_blackuser_list_' . $wechat_id, 'wechat');
+    
+    		ecjia_admin::admin_log(RC_Lang::get('wechat::wechat.get_user_info'), 'setup', 'users_info');
+    		return $this->showmessage(RC_Lang::get('wechat::wechat.get_userinfo_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/back_list', array('action' => 'get_list'))));
+    	}
+    }
+    
     //用户消息记录
     public function subscribe_message()
     {

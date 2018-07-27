@@ -11,6 +11,21 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                	黑名单同步操作
+                </h4>
+            </div>
+            <div class="card-body">
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_subscribe/get_blackuserinfo")}' data-value="get_userinfo">{lang key='wechat::wechat.get_user_info'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_user_info_notice'}</span></div><br/>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
 			<div class="card-header">
 				<h4 class="card-title">
                 	{$ur_here}
