@@ -574,11 +574,10 @@ class platform_subscribe extends ecjia_platform
     
     	$total = count($wechat_user_list);
     	$counts = count($list);
-    
     	$p += $counts;
     
     	if (!empty($list)) {
-    		RC_DB::table('wechat_user')->whereIn('opendid', $list)->update('group_id', 1);
+    		RC_DB::table('wechat_user')->whereIn('openid', $list)->update(array('group_id' => 1));
     	}
     	
     	if ($p < $total) {
@@ -803,6 +802,7 @@ class platform_subscribe extends ecjia_platform
         $type = !empty($_GET['type']) ? trim($_GET['type']) : '';
         $page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
         $openid = !empty($_GET['openid']) ? trim($_GET['openid']) : '';
+        $uid = !empty($_GET['uid']) ? trim($_GET['uid']) : '';
         $from = !empty($_GET['from']) ? trim($_GET['from']) : '';
 
         if ($type == 'remove_out') {

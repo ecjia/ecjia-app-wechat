@@ -195,12 +195,12 @@
 										<label class="col-md-5 label-control text-right"></label>
 										<div class="col-md-7 controls p_l0">
 											<!-- {if $info.group_id eq 1} -->
-											<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/black_user","openid={$info.openid}&type=remove_out&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.remove_blacklist'}">{lang key='wechat::wechat.remove_blacklist'}</a>
+											<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/black_user","openid={$info.openid}&uid={$info.uid}&type=remove_out&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.remove_blacklist'}">{lang key='wechat::wechat.remove_blacklist'}</a>
 											<!-- {else} -->
 												<!-- {if $info.subscribe eq 0} -->
 												<a class="btn m_t14" disabled>{lang key='wechat::wechat.add_blacklist'}</a>
 												<!-- {else} -->
-												<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/black_user","openid={$info.openid}&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}">{lang key='wechat::wechat.add_blacklist'}</a>
+												<a class="ajaxremove no-underline btn btn-outline-primary m_t14" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}" href='{RC_Uri::url("wechat/platform_subscribe/black_user","openid={$info.openid}&uid={$info.uid}&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}">{lang key='wechat::wechat.add_blacklist'}</a>
 												<!-- {/if} -->
 											<!-- {/if} -->
 										</div>
@@ -246,6 +246,7 @@
 						<span class="word_info">{lang key='wechat::wechat.word_info'}</span>
 						<input type="hidden" name="chat_user" id="chat_user" value="{$info.uid}" />
 						<input type="hidden" name="openid" id="openid" value="{$info.openid}" />
+						<input type="hidden" name="uid" id="uid" value="{$info.uid}" />
 						<input type="hidden" name="nickname" id="nickname" value="{$info.nickname}" />
 						<input type="hidden" name="account_name" id="account_name" value="{$account_name}" />
 						<a class="btn f_r btn-info send_msg" href="javascript:;">{lang key='wechat::wechat.send_msg'}</a>				

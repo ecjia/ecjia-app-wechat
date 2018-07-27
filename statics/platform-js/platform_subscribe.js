@@ -160,8 +160,6 @@
         			title = '视频预览';
         			$('#show_message').find('.inner_main').html('<video autoplay style="width:100%;height:99%;" src="'+src+'" controls></video')
         		}
-        		console.log(title);
-        		
         		$('#show_message').find('.modal-title').html(title);
         		$('#show_message').modal('show');
         	})
