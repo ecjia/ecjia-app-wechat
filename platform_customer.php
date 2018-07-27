@@ -610,7 +610,7 @@ class platform_customer extends ecjia_platform
     	if (!empty($list['count']) && !empty($list['waitcaselist'])) {
     		foreach ($list['waitcaselist'] as $k => $v) {
     			$v['wechat_id'] = $wechat_id;
-    			RC_DB::table('wechat_session')->insert($v);
+    			RC_DB::table('wechat_customer_session')->insert($v);
     		}
     	}
     	
@@ -638,13 +638,13 @@ class platform_customer extends ecjia_platform
 
     	if (!empty($list['sessionlist'])) {
     		foreach ($list['sessionlist'] as $k => $v) {
-    			$count = RC_DB::table('wechat_session')->where('kf_account', $v['kf_account'])->where('openid', $v['openid'])->count();
+    			$count = RC_DB::table('wechat_customer_session')->where('kf_account', $v['kf_account'])->where('openid', $v['openid'])->count();
     			if (empty($count)) {
     				if (empty($v['kf_account'])) {
     					$v['status'] = 2;
     				}
     				$v['wechat_id'] = $wechat_id;
-    				RC_DB::table('wechat_session')->insert($v);
+    				RC_DB::table('wechat_customer_session')->insert($v);
     			}
     		}
     	}
@@ -683,7 +683,7 @@ class platform_customer extends ecjia_platform
         	'createtime'	=> RC_Time::gmtime(),
         	'status'		=> 2
         );
-        RC_DB::table('wechat_session')->insert($data);
+        RC_DB::table('wechat_customer_session')->insert($data);
     	return $this->showmessage('创建成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
     
@@ -699,7 +699,7 @@ class platform_customer extends ecjia_platform
     		return $this->showmessage('请选择要关闭的会话', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	 
-    	$data = RC_DB::table('wechat_session')->where('wechat_id', $wechat_id)->where('id', $id)->first();
+    	$data = RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->where('id', $id)->first();
     	
     	try {
     		$wechat->staff_session->close($data['kf_account'], $data['openid']);
@@ -707,7 +707,7 @@ class platform_customer extends ecjia_platform
     		return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	
-    	RC_DB::table('wechat_session')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('status' => 3));
+    	RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('status' => 3));
     	return $this->showmessage('关闭成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
