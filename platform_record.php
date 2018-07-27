@@ -417,7 +417,7 @@ class platform_record extends ecjia_platform
         $this->admin_priv('wechat_record_manage', ecjia::MSGTYPE_JSON);
 
         $uuid = $this->platformAccount->getUUID();
-        $wechat = wechat_method::wechat_instance($uuid);
+        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
         $wechat_id = $this->platformAccount->getAccountID();
         if (is_ecjia_error($wechat_id)) {
@@ -433,10 +433,7 @@ class platform_record extends ecjia_platform
         try {
             for ($j = 1; $j <= 5; $j++) {
                 for ($i = 1;; $i++) {
-                    $info = $wechat->getMsgrecord($start_time, $end_time, $i, 50);
-                    if (is_ecjia_error($info)) {
-                        return $this->showmessage(wechat_method::wechat_error($info->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                    }
+                    $info = $wechat->staff->records($start_time, $end_time, $i, 50);
                     $arr = array();
                     if (!empty($info['recordlist'])) {
                         foreach ($info['recordlist'] as $key => $val) {

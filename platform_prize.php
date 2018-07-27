@@ -182,13 +182,11 @@ class platform_prize extends ecjia_platform
             ),
         );
         $uuid = $this->platformAccount->getUUID();
-        $wechat = wechat_method::wechat_instance($uuid);
+        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
         try {
-            $rs = $wechat->sendCustomMessage($msg);
-            if (is_ecjia_error($rs)) {
-                return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
+            with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendTextMessage($data['msg']);
+            
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
