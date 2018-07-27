@@ -78,9 +78,9 @@ class platform_customer extends ecjia_platform
         RC_Style::enqueue_style('ecjia-platform-bootstrap-fileupload-css');
         
         RC_Script::localize_script('wechat_customer', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('wechat::wechat.customer'), RC_Uri::url('wechat/platform_customer/init')));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('客服管理', RC_Uri::url('wechat/platform_customer/init')));
 
-        ecjia_platform_screen::get_current_screen()->set_subject('多客服账号');
+        ecjia_platform_screen::get_current_screen()->set_subject('客服管理');
     }
 
     /**
@@ -563,6 +563,68 @@ class platform_customer extends ecjia_platform
         	$pjaxurl = RC_Uri::url('wechat/platform_customer/edit', array('id' => $id));
         }
         return $this->showmessage(RC_Lang::get('wechat::wechat.invite_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
+    }
+    
+    //客服会话
+    public function session()
+    {
+    	$this->admin_priv('wechat_customer_session_manage');
+    	
+    	ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+    	ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('客服会话'));
+    	$this->assign('ur_here', '客服会话');
+    	
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	
+    	if (is_ecjia_error($wechat_id)) {
+    		$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
+    	} else {
+    		$this->assign('action', RC_Uri::url('wechat/platform_record/init'));
+    		
+    	
+    		//获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
+    		$types = $this->platformAccount->getType();
+    		$this->assign('type', $types);
+    		$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
+    	}
+    	
+    	$this->display('wechat_customer_session.dwt');
+    }
+    
+    //获取未接入的客服会话
+    public function get_customer_session()
+    {
+    	$this->admin_priv('wechat_customer_session_update', ecjia::MSGTYPE_JSON);
+    	
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	
+    	$uuid = $this->platformAccount->getUUID();
+    	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+
+    	
+    	return $this->showmessage('获取成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_customer/session')));
+    }
+    
+    //创建会话
+    public function create_session()
+    {
+    	$openid = trim($_POST['openid']);
+    	$kf_account = trim($_POST['kf_account']);
+    	
+    	if (empty($openid)) {
+    		return $this->showmessage('请选择用户', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    	
+    	if (empty($kf_account)) {
+    		return $this->showmessage('请选择客服账号', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    	
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	 
+    	$uuid = $this->platformAccount->getUUID();
+    	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+    	
+    	return $this->showmessage('创建成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**

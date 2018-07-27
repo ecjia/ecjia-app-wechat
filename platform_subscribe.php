@@ -66,9 +66,7 @@ class platform_subscribe extends ecjia_platform
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
         RC_Script::enqueue_script('smoke');
-        RC_Style::enqueue_style('chosen');
         RC_Style::enqueue_style('uniform-aristo');
-        RC_Script::enqueue_script('jquery-chosen');
         RC_Style::enqueue_style('bootstrap-responsive');
 
         RC_Script::enqueue_script('platform_subscribe', RC_App::apps_url('statics/platform-js/platform_subscribe.js', __FILE__), array(), false, true);
@@ -188,6 +186,10 @@ class platform_subscribe extends ecjia_platform
             $types = $this->platformAccount->getType();
             $this->assign('type', $types);
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
+            $this->assign('custom_type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
+            
+            $customer_list = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('online_status', 1)->get();
+            $this->assign('customer_list', $customer_list);
         }
 
         $this->display('wechat_subscribe_list.dwt');

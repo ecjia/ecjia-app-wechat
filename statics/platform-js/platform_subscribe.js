@@ -47,7 +47,6 @@
             });
 
             $(".set-label-btn").off('click').on('click', function(e) {
-                $('#set_label').modal('show');
                 var openid = $(this).attr('data-openid');
                 var uid = $(this).attr('data-uid');
                 $('input[name="openid"]').val(openid);
@@ -58,11 +57,11 @@
                 };
                 $('.popover_tag_list').html('');
                 $.post(searchURL, filters, function(data) {
+                	$('#set_label').modal('show');
                     app.subscribe_message.load_opt(data);
                 }, "JSON");
-                $('#set_label').modal('show');
             });
-
+            
             $(".set_label").off('click').on('click', function(e) {
                 var $form = $("form[name='label_form']");
                 $form.ajaxSubmit({
@@ -289,6 +288,8 @@
             });
 
             app.admin_subscribe.batch_set_label();
+            app.admin_subscribe.create_session();
+            app.admin_subscribe.session_form();
         },
 
         get_userinfo: function(url) {
@@ -439,6 +440,38 @@
                     $(".label_block").hide();
                 }
             });
+        },
+        
+        create_session: function() {
+            $(".create_session").off('click').on('click', function(e) {
+                var openid = $(this).attr('data-openid');
+                $('input[name="openid"]').val(openid);
+                $('#create_session').modal('show');
+            });
+        },
+        
+        session_form: function() {
+			var $form = $("form[name='session_form']");
+			var option = {
+				rules : {
+					kf_account : { required : true }
+				},
+				messages : {
+					kf_account : { required : '请选择客服账号' }
+				},
+				submitHandler : function() {
+					$form.ajaxSubmit({
+						dataType : "json",
+						success : function(data) {
+							$('#create_session').modal('hide');
+							$(".modal-backdrop").remove();
+							ecjia.platform.showmessage(data);
+						}
+					});
+				}
+			}
+			var options = $.extend(ecjia.platform.defaultOptions.validate, option);
+			$form.validate(options);
         },
     };
 })(ecjia.platform, jQuery);

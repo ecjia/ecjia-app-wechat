@@ -104,7 +104,10 @@ class wechat_platform_purview_api extends Component_Event_Api {
         	array('action_name' => RC_Lang::get('wechat::wechat.service_record_manage'), 'action_code' => 'wechat_record_manage', 'relevance'   => ''),
         		
         	array('action_name' => RC_Lang::get('wechat::wechat.draw_record'), 'action_code' => 'wechat_prize_manage', 'relevance'   => ''),
-//         	array('action_name' => RC_Lang::get('wechat::wechat.api_request_manage'), 'action_code' => 'wechat_request_manage', 'relevance'   => ''),
+        		
+        	array('action_name' => '客服会话管理', 'action_code' => 'wechat_customer_session_manage', 'relevance'   => ''),
+        	array('action_name' => '客服会话更新', 'action_code' => 'wechat_customer_session_update', 'relevance'   => ''),
+        	array('action_name' => '客服会话删除', 'action_code' => 'wechat_customer_session_delete', 'relevance'   => ''),
         );
         return $purviews;
     }

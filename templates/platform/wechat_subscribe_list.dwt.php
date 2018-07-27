@@ -111,6 +111,10 @@
 										<!-- {if $val.group_id neq 1 && $val.subscribe neq 0} -->
 											<a class="set-label-btn cursor_pointer" href="javascript:;" data-openid="{$val.openid}" data-uid="{$val.uid}" data-url="{$get_checked}">{lang key='wechat::wechat.set_tag'}</a>&nbsp;|&nbsp;
 										<!-- {/if} -->
+										{if $customer_list}
+										<a class="create_session cursor_pointer" href="javascript:;" data-openid="{$val.openid}">创建会话</a>&nbsp;|&nbsp;
+										{/if}
+										
 										<a class="data-pjax" href='{url path="wechat/platform_subscribe/subscribe_message" args="uid={$val.uid}{if $smarty.get.page}&page={$smarty.get.page}{/if}"}' title="{lang key='wechat::wechat.message_record'}">{lang key='wechat::wechat.message_record'}</a>&nbsp;|&nbsp;
 										<a class="ajaxremove cursor_pointer" href='{RC_Uri::url("wechat/platform_subscribe/black_user","openid={$val.openid}&from=list&page={$smarty.get.page}")}' title="{lang key='wechat::wechat.add_blacklist'}" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.add_blacklist_confirm'}">加入黑名单</a>
 									</div>
@@ -172,4 +176,52 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade text-left" id="create_session">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">创建会话</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<!-- {if $errormsg} -->
+		    <div class="alert alert-danger">
+	            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+	        </div>
+			<!-- {/if} -->
+			
+			<!-- {if $type neq 2} -->
+			<div class="alert alert-danger">
+				<strong>{lang key='wechat::wechat.label_notice'}</strong>{$custom_type_error}
+			</div>
+			<!-- {/if} -->
+			
+			<form class="form" method="post" action="{RC_Uri::url('wechat/platform_customer/create_session')}" name="session_form">
+				<div class="modal-body tag_popover">
+					<div class="card-body">
+						<div class="form-group row">
+							<label class="col-lg-3 label-control text-right">选择客服：</label>
+							<div class="col-lg-8 controls">
+								<select name="kf_account" class="select2 form-control w250">
+									<option value="">请选择客服...</option>
+								<!-- {foreach from=$customer_list item=list} -->
+									<option value="{$list.kf_account}">{$list.kf_nick}</option>
+								<!-- {/foreach} -->
+								</select>
+							</div>
+						</div>
+					</div>
+		   		</div>
+		   	
+			   	<div class="modal-footer justify-content-center">
+			   		<input type="hidden" name="openid" />
+					<button type="submit" class="btn btn-outline-primary" {if $errormsg || $type neq 2}disabled{/if}>{lang key='wechat::wechat.ok'}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <!-- {/block} -->
