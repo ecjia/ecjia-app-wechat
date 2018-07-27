@@ -121,7 +121,7 @@
 								</td>
 								<td>{$val['province']} - {$val['city']}</td>
 								<td>{if $val['user_name']}{$val.user_name}{else}<span class="unbind_user">未绑定</span>{/if}</td>
-								<td>{RC_Time::local_date('Y-m-d H:i:s', ($val['subscribe_time']-8*3600))}</td>
+								<td>{date('Y-m-d H:i:s', ($val['subscribe_time']))}</td>
 							</tr>
 							<!--  {foreachelse} -->
 							<tr><td class="no-records" colspan="6">{lang key='system::system.no_records'}</td></tr>

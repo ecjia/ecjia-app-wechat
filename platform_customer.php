@@ -579,14 +579,14 @@ class platform_customer extends ecjia_platform
     	if (is_ecjia_error($wechat_id)) {
     		$this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
     	} else {
-    		$this->assign('action', RC_Uri::url('wechat/platform_record/init'));
-    		
-    	
     		//获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
     		$types = $this->platformAccount->getType();
     		$this->assign('type', $types);
     		$this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
     	}
+    	
+    	$list = $this->get_session_list();
+    	$this->assign('list', $list);
     	
     	$this->display('wechat_customer_session.dwt');
     }
@@ -601,6 +601,18 @@ class platform_customer extends ecjia_platform
     	$uuid = $this->platformAccount->getUUID();
     	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
+    	try {
+    		$list = $wechat->staff_session->waiters()->toArray();
+    	} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+    		return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    	
+    	if (!empty($list['count']) && !empty($list['waitcaselist'])) {
+    		foreach ($list['waitcaselist'] as $k => $v) {
+    			$v['wechat_id'] = $wechat_id;
+    			RC_DB::table('wechat_session')->insert($v);
+    		}
+    	}
     	
     	return $this->showmessage('获取成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_customer/session')));
     }
@@ -626,8 +638,12 @@ class platform_customer extends ecjia_platform
 
     	if (!empty($list['sessionlist'])) {
     		foreach ($list['sessionlist'] as $k => $v) {
-    			$count = RC_DB::table('wechat_session')->where('openid', $v['openid'])->count();
+    			$count = RC_DB::table('wechat_session')->where('kf_account', $v['kf_account'])->where('openid', $v['openid'])->count();
     			if (empty($count)) {
+    				if (empty($v['kf_account'])) {
+    					$v['status'] = 2;
+    				}
+    				$v['wechat_id'] = $wechat_id;
     				RC_DB::table('wechat_session')->insert($v);
     			}
     		}
@@ -669,6 +685,30 @@ class platform_customer extends ecjia_platform
         );
         RC_DB::table('wechat_session')->insert($data);
     	return $this->showmessage('创建成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+    }
+    
+    //关闭会话
+    public function close_session() {
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	 
+    	$uuid = $this->platformAccount->getUUID();
+    	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+    	 
+    	$id = intval($_GET['id']);
+    	if (empty($id)) {
+    		return $this->showmessage('请选择要关闭的会话', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    	 
+    	$data = RC_DB::table('wechat_session')->where('wechat_id', $wechat_id)->where('id', $id)->first();
+    	
+    	try {
+    		$wechat->staff_session->close($data['kf_account'], $data['openid']);
+    	} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+    		return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    	
+    	RC_DB::table('wechat_session')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('status' => 3));
+    	return $this->showmessage('关闭成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**
@@ -787,6 +827,27 @@ class platform_customer extends ecjia_platform
             }
         }
         return true;
+    }
+    
+    private function get_session_list() {
+    	$wechat_id = $this->platformAccount->getAccountID();
+    	$db_session = RC_DB::table('wechat_session as w')
+    		->leftJoin('wechat_user as u', RC_DB::raw('w.openid'), '=', RC_DB::raw('u.openid'))
+    		->where(RC_DB::raw('w.wechat_id'), $wechat_id);
+    	$status = isset($_GET['status']) ? intval($_GET['status']) : 1;
+    	
+    	$total_count = $db_session->select(
+    			RC_DB::raw("SUM(w.status = 1) AS going"),
+    			RC_DB::raw("SUM(w.status = 2) AS wait"),
+    			RC_DB::raw("SUM(w.status = 3) AS close"))->first();
+    	
+    	$db_session->where(RC_DB::raw('w.status'), $status);
+    	
+    	$count = $db_session->count();
+    	$page = new ecjia_platform_page($count, 15, 5);
+    	$list = $db_session->select(RC_DB::raw('w.*'), RC_DB::raw('u.nickname'))->orderBy('id', 'desc')->take(15)->skip($page->start_id-1)->get();
+    	
+    	return array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc(), 'count' => $total_count);
     }
 }
 
