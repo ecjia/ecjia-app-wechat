@@ -356,9 +356,10 @@ class platform_customer extends ecjia_platform
 
         $uuid = $this->platformAccount->getUUID();
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-
+        $wechat_id = $this->platformAccount->getAccountID();
+        
         $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
-        $info = RC_DB::table('wechat_customer')->where('id', $id)->first();
+        $info = RC_DB::table('wechat_customer')->where('id', $id)->where('wechat_id', $wechat_id)->first();
 
         if ($info['status'] == 1) {
             //微信端删除客服账号
@@ -371,7 +372,7 @@ class platform_customer extends ecjia_platform
         $disk = RC_Filesystem::disk();
         $disk->delete(RC_Upload::upload_path() . $info['kf_headimgurl']);
 
-        RC_DB::table('wechat_customer')->where('id', $id)->delete();
+        RC_DB::table('wechat_customer')->where('id', $id)->where('wechat_id', $wechat_id)->delete();
 
         ecjia_admin::admin_log($info['kf_account'], 'remove', 'customer');
         return $this->showmessage(RC_Lang::get('wechat::wechat.remove_customer_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -450,10 +451,11 @@ class platform_customer extends ecjia_platform
 
         $uuid = $this->platformAccount->getUUID();
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-
+        $wechat_id = $this->platformAccount->getAccountID();
+        
         $id = intval($_POST['id']);
         $val = intval($_POST['val']);
-        $info = RC_DB::table('wechat_customer')->where('id', $id)->first();
+        $info = RC_DB::table('wechat_customer')->where('id', $id)->where('wechat_id', $wechat_id)->first();
 
         try {
             if ($val == 1) {
@@ -477,7 +479,7 @@ class platform_customer extends ecjia_platform
             'invite_expire_time' => 0,
             'invite_status' => '',
         );
-        RC_DB::table('wechat_customer')->where('id', $id)->update($data);
+        RC_DB::table('wechat_customer')->where('id', $id)->where('wechat_id', $wechat_id)->update($data);
         return $this->showmessage(RC_Lang::get('wechat::wechat.switch_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_customer/init')));
     }
 
@@ -533,7 +535,8 @@ class platform_customer extends ecjia_platform
         $kf_account = !empty($_POST['kf_account']) ? $_POST['kf_account'] : '';
         $kf_wx = !empty($_POST['kf_wx']) ? trim($_POST['kf_wx']) : '';
         $id = intval($_GET['id']);
-
+        $wechat_id = $this->platformAccount->getAccountID();
+        
         if (empty($kf_wx)) {
             return $this->showmessage(RC_Lang::get('wechat::wechat.bind_wx_require'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -541,12 +544,18 @@ class platform_customer extends ecjia_platform
         $uuid = $this->platformAccount->getUUID();
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
+        $data = RC_DB::table('wechat_customer')->where('kf_account', $kf_account)->where('wechat_id', $wechat_id)->first();
+        
         try {
+        	if (empty($data['status'])) {
+        		$wechat->staff->create($kf_account, $data['kf_nick']);
+        	}
             $wechat->staff->invite($kf_account, $kf_wx);
+            
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-		RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('invite_wx' => $kf_wx, 'invite_status' => ''));
+		RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('kf_account', $kf_account)->update(array('invite_wx' => $kf_wx, 'invite_status' => '', 'status' => 1));
 
 		$this->load_kf_list();
         $pjaxurl = RC_Uri::url('wechat/platform_customer/init');
@@ -607,7 +616,7 @@ class platform_customer extends ecjia_platform
         $kf_account_list = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->lists('kf_account');
 
         try {
-            $wechat->staff->lists();
+            $list = $wechat->staff->lists();
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             die();

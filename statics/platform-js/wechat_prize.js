@@ -63,8 +63,9 @@
                         $form.ajaxSubmit({
                             dataType : "json",
                             success : function(data) {
-                                ecjia.platform.showmessage(data);
                                 $('#send_message').modal('hide');
+                                $(".modal-backdrop").remove();
+                                ecjia.platform.showmessage(data);
                             }
                         });
                     }

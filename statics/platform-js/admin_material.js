@@ -437,6 +437,7 @@
 					$('.choose_material').before(html);
 				}
 				$('#choose_material').modal('hide');
+				$(".modal-backdrop").remove();
 			});
 		},
 

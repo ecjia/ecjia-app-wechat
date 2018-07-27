@@ -90,6 +90,7 @@
 							return false;
 						}
 						$('#preview_msg').modal('hide');
+						$(".modal-backdrop").remove();
 						ecjia.platform.showmessage(data);
 					})
 				}

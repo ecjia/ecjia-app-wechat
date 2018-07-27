@@ -57,6 +57,7 @@
 				$('.js_appmsgArea .create-type__list').hide();
 				$('.js_appmsgArea').append(inner_html);
 				$('#choose_material').modal('hide');
+				$(".modal-backdrop").remove();
 				app.choose_material.link_del();
 			});
 		},

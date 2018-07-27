@@ -125,10 +125,13 @@
 					'kf_wx' : { required : js_lang.kf_wx_required },
 				},
 				submitHandler : function() {
+					$form.find('.btn.btn-outline-primary').val('请求中...').prop('disabled', true);
 					$form.ajaxSubmit({
 						dataType : "json",
 						success : function(data) {
+							$form.find('.btn.btn-outline-primary').val('邀请绑定').prop('disabled', false);
 							$('#bind_wx').modal('hide');
+							$(".modal-backdrop").remove();
 							ecjia.platform.showmessage(data);
 						}
 					});
