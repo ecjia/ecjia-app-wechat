@@ -47,7 +47,8 @@
 
 namespace Ecjia\App\Wechat;
 
-class ErrorCodes {
+class WechatErrorCodes
+{
     
     protected static $error_codes = array(
         '-1'    => '系统繁忙，此时请开发者稍候再试',
@@ -140,6 +141,7 @@ class ErrorCodes {
         '48001' => 'api功能未授权，请确认公众号已获得该接口，可以在公众平台官网-开发者中心页中查看接口权限',
         '50001' => '用户未授权该api',
         '50002' => '用户受限，可能是违规后接口被封禁',
+
         '61451' => '参数错误(invalid parameter)',
         '61452' => '无效客服账号(invalid kf_account)',
         '61453' => '客服帐号已存在(kf_account exsited)',
@@ -150,6 +152,18 @@ class ErrorCodes {
         '61450' => '系统错误(system error)',
         '61500' => '日期格式错误',
         '61501' => '日期范围错误',
+
+        //客服接口
+        '65400' => 'API不可用，即没有开通/升级到新版客服',
+        '65401' => '无效客服帐号',
+        '65407' => '邀请对象已经是本公众号客服',
+        '65408' => '本公众号已发送邀请给该微信号',
+        '65409' => '无效的微信号',
+        '65410' => '邀请对象绑定公众号客服数量达到上限（目前每个微信号最多可以绑定5个公众号客服帐号）',
+        '65411' => '该帐号已经有一个等待确认的邀请，不能重复邀请',
+        '65412' => '该帐号已经绑定微信号，不能进行邀请',
+
+
         '9001001' => 'POST数据参数不合法',
         '9001002' => '远端服务不可用',
         '9001003' => 'Ticket不合法',
@@ -180,8 +194,11 @@ class ErrorCodes {
     );
     
     
-    public static function getError($code) {
-        return array_get(self::$error_codes, $code, '未知错误');
+    public static function getError($code, $default = null) {
+        if (is_null($default)) {
+            $default = '未知错误';
+        }
+        return array_get(self::$error_codes, $code, $default);
     }
     
 }

@@ -457,7 +457,7 @@ class platform_record extends ecjia_platform
                 $end_time = $end_time + $j * 24 * 3600;
             }
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         if ($p > 0 && !empty($id_list)) {

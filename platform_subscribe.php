@@ -258,7 +258,7 @@ class platform_subscribe extends ecjia_platform
                 }
             }
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -284,7 +284,7 @@ class platform_subscribe extends ecjia_platform
             //微信端删除
             $wechat->user_tag->delete($tag_id);
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         //本地删除
@@ -364,7 +364,7 @@ class platform_subscribe extends ecjia_platform
                 RC_Cache::app_cache_set('wechat_user_list_' . $wechat_id, $wechat_user_list, 'wechat');
 
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
 
         }
@@ -481,7 +481,7 @@ class platform_subscribe extends ecjia_platform
                 }
 
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
 
         }
@@ -550,7 +550,7 @@ class platform_subscribe extends ecjia_platform
     			RC_Cache::app_cache_set('wechat_blackuser_list_' . $wechat_id, $wechat_user_list, 'wechat');
     
     		} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-    			return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    			return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     		}
     
     	}
@@ -734,7 +734,7 @@ class platform_subscribe extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.send_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('send_time' => RC_Time::local_date(ecjia::config('time_format'), RC_Time::gmtime())));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -765,7 +765,7 @@ class platform_subscribe extends ecjia_platform
             //微信端更新
             $wechat->user->remark($openid, $remark);
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $data = array('remark' => $remark);
@@ -813,7 +813,7 @@ class platform_subscribe extends ecjia_platform
                 return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         ecjia_admin::admin_log($sn, 'setup', 'users_info');
@@ -853,7 +853,7 @@ class platform_subscribe extends ecjia_platform
     			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     		}
     	} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-    		return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	
     	ecjia_admin::admin_log($sn, 'setup', 'users_info');
@@ -989,7 +989,7 @@ class platform_subscribe extends ecjia_platform
                 }
             }
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $this->get_user_tags();
@@ -1209,7 +1209,7 @@ class platform_subscribe extends ecjia_platform
             }
             return true;
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 

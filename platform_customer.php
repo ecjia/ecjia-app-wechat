@@ -195,7 +195,7 @@ class platform_customer extends ecjia_platform
             try {
                 $wechat->staff->create($kf_account, $nickname);
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
 
@@ -334,7 +334,7 @@ class platform_customer extends ecjia_platform
             }
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $data = array(
@@ -365,7 +365,7 @@ class platform_customer extends ecjia_platform
             try {
                 $wechat->staff->delete($info['kf_account']);
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
         $disk = RC_Filesystem::disk();
@@ -402,7 +402,7 @@ class platform_customer extends ecjia_platform
         try {
             $list = $wechat->staff->onlines();
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $db_wechat_customer = RC_DB::table('wechat_customer');
@@ -466,7 +466,7 @@ class platform_customer extends ecjia_platform
                 $action = 'stop';
             }
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         ecjia_admin::admin_log($info['kf_account'], $action, 'customer');
@@ -501,7 +501,7 @@ class platform_customer extends ecjia_platform
             try {
                 $wechat->staff->update($info['kf_account'], $data['kf_nick']);
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-                return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
         RC_DB::table('wechat_customer')->where('id', $id)->update($data);
@@ -544,7 +544,7 @@ class platform_customer extends ecjia_platform
         try {
             $wechat->staff->invite($kf_account, $kf_wx);
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 		RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('invite_wx' => $kf_wx, 'invite_status' => ''));
 
@@ -609,7 +609,7 @@ class platform_customer extends ecjia_platform
         try {
             $wechat->staff->lists();
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-            return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             die();
         }
 
