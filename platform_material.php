@@ -167,9 +167,11 @@ class platform_material extends ecjia_platform
         
         $this->assign('ur_here', $ur_here);
         $this->assign('action_link', $action_link);
-        $this->assign('get_material_link', $get_material_link);
+        
+        if ($material == 1) {
+        	$this->assign('get_material_link', $get_material_link);
+        }
         $this->assign('form_action', $form_action);
-
         $this->assign('warn', 'warn');
 
         $wechat_type = $this->platformAccount->getType();
