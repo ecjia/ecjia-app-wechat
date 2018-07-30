@@ -1635,10 +1635,11 @@ class platform_material extends ecjia_platform
 
         $wechat_media_model = Ecjia\App\Wechat\Models\WechatMediaModel::where('wechat_id', $wechat_id);
 
-
+		$pageSize = 15;
         if ($type == 'image') {
             $wechat_media_model->where('type', 'image');
         } elseif ($type == 'news') {
+        	$pageSize = 12;
             $wechat_media_model->where('type', 'news')->where('parent_id', 0);
         } else {
             $wechat_media_model->where('type', $type);
@@ -1660,8 +1661,8 @@ class platform_material extends ecjia_platform
         }
 
         $count = $sumdata->$type;
-        $page = new ecjia_platform_page($count, 12, 5);
-        $data = $wechat_media_model->orderBy('sort', 'asc')->orderBy('id', 'desc')->take(12)->skip($page->start_id - 1)->get();
+        $page = new ecjia_platform_page($count, $pageSize, 5);
+        $data = $wechat_media_model->orderBy('sort', 'asc')->orderBy('id', 'desc')->take($pageSize)->skip($page->start_id - 1)->get();
 
         $newData = $data->map(function($item) {
             $item->add_time = RC_Time::local_date(RC_Lang::get('wechat::wechat.date_nj'), $item->add_time);

@@ -609,8 +609,14 @@ class platform_customer extends ecjia_platform
     	
     	if (!empty($list['count']) && !empty($list['waitcaselist'])) {
     		foreach ($list['waitcaselist'] as $k => $v) {
-    			$v['wechat_id'] = $wechat_id;
-    			RC_DB::table('wechat_customer_session')->insert($v);
+    			$count = RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->where('openid', $v['openid'])->count();
+    			if (empty($count)) {
+    				$v['wechat_id'] = $wechat_id;
+    				$v['status'] = 2;
+    				RC_DB::table('wechat_customer_session')->insert($v);
+    			} else {
+    				RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->where('openid', $v['openid'])->update(array('create_time' => $v['createtime'], 'status' => 2));
+    			}
     		}
     	}
     	
@@ -638,13 +644,13 @@ class platform_customer extends ecjia_platform
 
     	if (!empty($list['sessionlist'])) {
     		foreach ($list['sessionlist'] as $k => $v) {
-    			$count = RC_DB::table('wechat_customer_session')->where('kf_account', $v['kf_account'])->where('openid', $v['openid'])->count();
+    			$count = RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->where('kf_account', $kf_account)->where('openid', $v['openid'])->count();
+    			$v['status'] = 1;
+    			$v['wechat_id'] = $wechat_id;
     			if (empty($count)) {
-    				if (empty($v['kf_account'])) {
-    					$v['status'] = 2;
-    				}
-    				$v['wechat_id'] = $wechat_id;
     				RC_DB::table('wechat_customer_session')->insert($v);
+    			} else {
+    				RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->where('kf_account', $kf_account)->where('openid', $v['openid'])->update(array('status' => 1));
     			}
     		}
     	}
@@ -840,6 +846,15 @@ class platform_customer extends ecjia_platform
     			RC_DB::raw("SUM(w.status = 1) AS going"),
     			RC_DB::raw("SUM(w.status = 2) AS wait"),
     			RC_DB::raw("SUM(w.status = 3) AS close"))->first();
+		if (empty($total_count['going'])) {
+			$total_count['going'] = 0;
+		}
+		if (empty($total_count['wait'])) {
+			$total_count['wait'] = 0;
+		}
+		if (empty($total_count['close'])) {
+			$total_count['close'] = 0;
+		}
     	
     	$db_session->where(RC_DB::raw('w.status'), $status);
     	
