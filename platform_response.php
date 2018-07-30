@@ -143,6 +143,8 @@ class platform_response extends ecjia_platform
                         }
                     }
                 }
+            } else {
+           		$subscribe['reply_type'] = 'text';
             }
             $this->assign('subscribe', $subscribe);
         }
@@ -385,6 +387,8 @@ class platform_response extends ecjia_platform
                         }
                     }
                 }
+            } else {
+           		$subscribe['reply_type'] = 'text';
             }
             $this->assign('subscribe', $subscribe);
         }
