@@ -59,7 +59,6 @@ class platform_material extends ecjia_platform
 
         RC_Lang::load('wechat');
         RC_Loader::load_app_class('platform_account', 'platform', false);
-        RC_Loader::load_app_class('wechat_method', 'wechat', false);
 
         RC_Loader::load_app_func('global');
         Ecjia\App\Wechat\Helper::assign_adminlog_content();

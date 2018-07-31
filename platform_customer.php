@@ -60,7 +60,6 @@ class platform_customer extends ecjia_platform
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
         RC_Loader::load_app_class('platform_account', 'platform', false);
-        RC_Loader::load_app_class('wechat_method', 'wechat', false);
 
         /* 加载全局 js/css */
         RC_Script::enqueue_script('jquery-validate');
@@ -307,9 +306,6 @@ class platform_customer extends ecjia_platform
                 } else {
                     //微信端更新客服账号
                     $wechat->staff->update($kf_account, $nickname);
-                }
-                if (is_ecjia_error($rs)) {
-                    return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
             }
 

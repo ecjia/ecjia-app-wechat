@@ -61,7 +61,6 @@ class platform_subscribe extends ecjia_platform
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
         RC_Loader::load_app_class('platform_account', 'platform', false);
-        RC_Loader::load_app_class('wechat_method', 'wechat', false);
 
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
@@ -345,18 +344,12 @@ class platform_subscribe extends ecjia_platform
 
             try {
                 $wechat_user = $wechat->user->lists()->toArray();
-                if (is_ecjia_error($wechat_user)) {
-                    return $this->showmessage(wechat_method::wechat_error($wechat_user->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                }
                 if ($wechat_user['total'] <= 10000) {
                     $wechat_user_list = $wechat_user['data']['openid'];
                 } else {
                     $num = ceil($wechat_user['total'] / 10000);
                     for ($i = 1; $i < $num; $i++) {
                         $wechat_user1 = $wechat->user->lists($wechat_user['next_openid'])->toArray();
-                        if (is_ecjia_error($wechat_user1)) {
-                            return $this->showmessage(wechat_method::wechat_error($wechat_user1->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                        }
                         $wechat_user['next_openid'] = $wechat_user1['next_openid'];
                         $wechat_user['data']['openid'] = array_merge($wechat_user['data']['openid'], $wechat_user1['data']['openid']);
                     }
@@ -424,9 +417,6 @@ class platform_subscribe extends ecjia_platform
 
             try {
                 $info2 = $wechat->user->batchGet($arr1)->toArray();
-                if (is_ecjia_error($info2)) {
-                    return $this->showmessage(wechat_method::wechat_error($info2->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                }
 
                 foreach ($info2['user_info_list'] as $key => $v) {
                     $info2['user_info_list'][$key]['wechat_id'] = $wechat_id;
@@ -455,9 +445,6 @@ class platform_subscribe extends ecjia_platform
 
             try {
                 $info3 = $wechat->user->batchGet($arr2)->toArray();
-                if (is_ecjia_error($info3)) {
-                    return $this->showmessage(wechat_method::wechat_error($info3->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                }
                 foreach ($info3['user_info_list'] as $key => $v) {
                     $info3['user_info_list'][$key]['subscribe'] = 1;
                     $info3['user_info_list'][$key]['headimgurl'] = is_ssl() && !empty($v['headimgurl']) ? str_replace('http://', 'https://', $v['headimgurl']) : $v['headimgurl'];
@@ -531,18 +518,12 @@ class platform_subscribe extends ecjia_platform
 
             try {
                 $wechat_user = $wechat->user_tag->usersOfBlack()->toArray();
-                if (is_ecjia_error($wechat_user)) {
-                    return $this->showmessage(wechat_method::wechat_error($wechat_user->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                }
                 if ($wechat_user['total'] <= 10000) {
                     $wechat_user_list = $wechat_user['data']['openid'];
                 } else {
                     $num = ceil($wechat_user['total'] / 10000);
                     for ($i = 1; $i < $num; $i++) {
                         $wechat_user1 = $wechat->user_tag->usersOfBlack($wechat_user['next_openid'])->toArray();
-                        if (is_ecjia_error($wechat_user1)) {
-                            return $this->showmessage(wechat_method::wechat_error($wechat_user1->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-                        }
                         $wechat_user['next_openid'] = $wechat_user1['next_openid'];
                         $wechat_user['data']['openid'] = array_merge($wechat_user['data']['openid'], $wechat_user1['data']['openid']);
                     }
@@ -811,9 +792,6 @@ class platform_subscribe extends ecjia_platform
         try {
             //微信端更新
             $rs = $wechat->user_tag->batchBlackUsers(array($openid));
-            if (is_ecjia_error($rs)) {
-                return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -851,9 +829,6 @@ class platform_subscribe extends ecjia_platform
         try {
             //微信端更新
             $rs = $wechat->user_tag->batchUnblackUsers(array($openid));
-            if (is_ecjia_error($rs)) {
-                return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -1196,9 +1171,6 @@ class platform_subscribe extends ecjia_platform
         try {
             $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
             $list = $wechat->user_tag->lists()->toArray();
-            if (is_ecjia_error($list)) {
-                return $this->showmessage(wechat_method::wechat_error($list->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-            }
             if (!empty($list['tags'])) {
                 RC_DB::table('wechat_tag')->where('wechat_id', $wechat_id)->delete();
 

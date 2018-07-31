@@ -60,7 +60,6 @@ class platform_prize extends ecjia_platform
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
         RC_Loader::load_app_class('platform_account', 'platform', false);
-        RC_Loader::load_app_class('wechat_method', 'wechat', false);
 
         /* 加载全局 js/css */
         RC_Script::enqueue_script('jquery-validate');

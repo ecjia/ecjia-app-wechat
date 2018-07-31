@@ -60,7 +60,6 @@ class platform_message extends ecjia_platform
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
         RC_Loader::load_app_class('platform_account', 'platform', false);
-        RC_Loader::load_app_class('wechat_method', 'wechat', false);
 
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
