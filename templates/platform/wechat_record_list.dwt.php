@@ -34,7 +34,7 @@
             		<button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_record/get_customer_record")}' data-value="get_record">
             			{lang key='wechat::wechat.get_message_record'}
             		</button>
-            		<span style="margin-left: 20px;">通过点击该按钮可以获取客服{$time.start_time} 至 {$time.end_time}的聊天记录到本地。</span>
+                    <span style="margin-left: 20px;">通过点击该按钮可以获取客服<strong>{$time.start_time}</strong> 至 <strong>{$time.end_time}</strong>的聊天记录到本地。</span>
             	</div><br/>
 			</div>
 		</div>
