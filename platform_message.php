@@ -108,8 +108,6 @@ class platform_message extends ecjia_platform
     //获取消息列表
     public function get_message_list()
     {
-        $custom_message_viewdb = RC_Loader::load_app_model('wechat_custom_message_viewmodel');
-
         $wechat_id = $this->platformAccount->getAccountID();
 
         $where = 'wu.subscribe = 1 and m.iswechat = 0 and wu.wechat_id = ' . $wechat_id;
@@ -155,13 +153,49 @@ class platform_message extends ecjia_platform
         }
         $where .= ' and m.send_time > ' . $start_date . ' and m.send_time < ' . $end_date;
 
-        $filter['last_five_days'] = count($custom_message_viewdb->join('wechat_user')->field('max(m.id) as id')->where($where1)->group('m.uid')->select());
-        $filter['today'] = count($custom_message_viewdb->join('wechat_user')->field('max(m.id) as id')->where($where2)->group('m.uid')->select());
-        $filter['yesterday'] = count($custom_message_viewdb->join('wechat_user')->field('max(m.id) as id')->where($where3)->group('m.uid')->select());
-        $filter['the_day_before_yesterday'] = count($custom_message_viewdb->join('wechat_user')->field('max(m.id) as id')->where($where4)->group('m.uid')->select());
-        $filter['earlier'] = count($custom_message_viewdb->join('wechat_user')->field('max(m.id) as id')->where($where5)->group('m.uid')->select());
+        $filter['last_five_days'] = count(
+            RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+                ->selectRaw('max(m.id) as id')
+                ->whereRaw($where1)
+                ->groupBy(RC_DB::raw('m.uid'))
+                ->get()
+        );
+        $filter['today'] = count(
+            RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+                ->selectRaw('max(m.id) as id')
+                ->whereRaw($where2)
+                ->groupBy(RC_DB::raw('m.uid'))
+                ->get()
+        );
+        $filter['yesterday'] = count(
+            RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+                ->selectRaw('max(m.id) as id')
+                ->whereRaw($where3)
+                ->groupBy(RC_DB::raw('m.uid'))
+                ->get()
+        );
+        $filter['the_day_before_yesterday'] = count(
+            RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+                ->selectRaw('max(m.id) as id')
+                ->whereRaw($where4)
+                ->groupBy(RC_DB::raw('m.uid'))
+                ->get()
+        );
+        $filter['earlier'] = count(
+            RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+                ->selectRaw('max(m.id) as id')
+                ->whereRaw($where5)
+                ->groupBy(RC_DB::raw('m.uid'))
+                ->get()
+        );
 
-        $count = count($custom_message_viewdb->join('wechat_user')->field('max(m.id) as id')->where($where)->group('m.uid')->select());
+        $count = count(
+            RC_DB::table('wechat_custom_message as m')->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
+                ->selectRaw('max(m.id) as id')
+                ->whereRaw($where)
+                ->groupBy(RC_DB::raw('m.uid'))
+                ->get()
+        );
         $page = new ecjia_platform_page($count, 10, 5);
 
         $list = RC_DB::table('wechat_custom_message as m')
@@ -176,7 +210,7 @@ class platform_message extends ecjia_platform
         $row = array();
         if (!empty($list)) {
             foreach ($list as $key => $val) {
-                $info = $custom_message_viewdb->join(null)->find(array('id' => $val['id']));
+                $info = RC_DB::table('wechat_custom_message')->where('id', $val['id'])->first();
                 $list[$key]['send_time'] = RC_Time::local_date(ecjia::config('time_format'), $info['send_time']);
                 $list[$key]['msg'] = $info['msg'];
                 $list[$key]['uid'] = $info['uid'];

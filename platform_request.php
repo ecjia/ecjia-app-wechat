@@ -136,8 +136,6 @@ class platform_request extends ecjia_platform
 
     private function get_list()
     {
-        $db_request = RC_Loader::load_app_model('wechat_request_times_model');
-
         $wechat_id = $this->platformAccount->getAccountID();
 
         $where = "wechat_id = '$wechat_id'";
@@ -157,7 +155,7 @@ class platform_request extends ecjia_platform
             $where .= " AND day > '$start_date' AND day < '$end_date' ";
         }
 
-        $data = $db_request->where($where)->order('last_time asc')->select();
+        $data = RC_DB::table('wechat_request_times')->whereRaw($where)->orderBy('last_time', 'desc')->get();
         if (!empty($data)) {
             foreach ($data as $k => $v) {
                 if (isset($v['day'])) {
