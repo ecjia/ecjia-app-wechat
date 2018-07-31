@@ -110,7 +110,6 @@ class platform_message extends ecjia_platform
     public function get_message_list()
     {
         $custom_message_viewdb = RC_Loader::load_app_model('wechat_custom_message_viewmodel');
-        $wechat_user_db = RC_Loader::load_app_model('wechat_user_model');
 
         $wechat_id = $this->platformAccount->getAccountID();
 
