@@ -249,9 +249,8 @@ class mobile_userbind extends EcjiaWechatUserController
 
             // 开启积分赠送
             if (isset($point_status) && $point_status == 1) {
-                $wechat_point_db = RC_Loader::load_app_model('wechat_point_model', 'wechat');
                 $where = 'openid = "' . $openid . '" and createtime > (UNIX_TIMESTAMP(NOW())- ' . $point_interval . ') and keywords = "' . $info['ext_code'] . '" ';
-                $num = $wechat_point_db->where($where)->count('*');
+                $num = RC_DB::table('wechat_point')->whereRaw($where)->count();
                 if ($num < $point_num) {
                     $this->do_point($openid, $info, $point_value, $getUserId);
                 }
