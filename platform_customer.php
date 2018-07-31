@@ -608,7 +608,7 @@ class platform_customer extends ecjia_platform
 
             with(new \Ecjia\App\Wechat\Synchronizes\WaitCustomerSessionStorage($wechat_id, collect($list)))->save();
 
-            return $this->showmessage('获取成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_customer/session')));
+            return $this->showmessage('获取成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_customer/session', array('status' => $status))));
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
