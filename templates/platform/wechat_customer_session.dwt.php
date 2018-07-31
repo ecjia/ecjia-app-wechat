@@ -30,7 +30,7 @@
                 </h4>
             </div>
             <div class="card-body">
-            	<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_customer/get_customer_session")}' data-value="get_customer_session">获取客服会话</button><span style="margin-left: 20px;">通过点击该按钮可以获取未接入会话列表。</span></div><br/>
+            	<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_customer/get_customer_session")}&status={$smarty.get.status}' data-value="get_customer_session">获取客服会话</button><span style="margin-left: 20px;">通过点击该按钮可以获取未接入会话列表。</span></div><br/>
 			</div>
 		</div>
 	</div>
@@ -45,12 +45,12 @@
      		<div class="card-body">
      			<ul class="nav nav-pills float-left">
      				<li class="nav-item">
-						<a class="nav-link data-pjax {if $smarty.get.status eq 1 || !$smarty.get.status}active{/if}" href='{url path="wechat/platform_customer/session" args="status=1"}'>会话中
-						<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$list.count.going}</span></a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link data-pjax {if $smarty.get.status eq 2}active{/if}" href='{url path="wechat/platform_customer/session" args="status=2"}'>待接入
+						<a class="nav-link data-pjax {if $smarty.get.status eq 2 || !$smarty.get.status}active{/if}" href='{url path="wechat/platform_customer/session" args="status=2"}'>待接入
 						<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$list.count.wait}</span></a>
+					</li>
+     				<li class="nav-item">
+						<a class="nav-link data-pjax {if $smarty.get.status eq 1}active{/if}" href='{url path="wechat/platform_customer/session" args="status=1"}'>会话中
+						<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$list.count.going}</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link data-pjax {if $smarty.get.status eq 3}active{/if}" href='{url path="wechat/platform_customer/session" args="status=3"}'>已关闭
@@ -91,8 +91,8 @@
 								{/if}
 							</td>
 							<td>
-								{if $val.lastest_time}
-								{date('Y-m-d H:i:s', ($val['lastest_time']))}
+								{if $val.latest_time}
+								{date('Y-m-d H:i:s', ($val['latest_time']))}
 								{/if}
 							</td>
 							<td>

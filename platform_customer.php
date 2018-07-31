@@ -601,7 +601,8 @@ class platform_customer extends ecjia_platform
 
         $uuid = $this->platformAccount->getUUID();
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-
+		$status = intval($_GET['status']);
+		
         try {
             $list = $wechat->staff_session->waiters()->toArray();
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
@@ -616,11 +617,11 @@ class platform_customer extends ecjia_platform
                     $v['status'] = 2;
                     RC_DB::table('wechat_customer_session')->insert($v);
                 } else {
-                    RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->where('openid', $v['openid'])->update(array('create_time' => $v['createtime'], 'status' => 2));
+                    RC_DB::table('wechat_customer_session')->where('wechat_id', $wechat_id)->where('openid', $v['openid'])->update(array('create_time' => $v['createtime'], 'status' => 2, 'latest_time' => $v['latest_time']));
                 }
             }
         }
-        return $this->showmessage('获取成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_customer/session')));
+        return $this->showmessage('获取成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_customer/session', array('status' => $status))));
     }
 
     //获取客服会话
