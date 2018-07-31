@@ -104,17 +104,9 @@ class platform_record extends ecjia_platform
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
 
-        $start_time = RC_Cache::app_cache_get('wechat_customer_record_position_' . $wechat_id, 'wechat');
+        $recordStorage = new Ecjia\App\Wechat\Synchronizes\CustomerRecordStorage($wechat_id);
 
-        if (empty($start_time)) {
-            $data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
-            if (empty($data)) {
-                $start_time = mktime(0, 0, 0, date('m'), date('d') - 7, date('Y'));
-            } else {
-                $start_time = $data['time'];
-            }
-        }
-        $end_time = ($start_time + 24 * 3600) - 1;
+        list($start_time, $end_time) = $recordStorage->getStartTimeAndEndTime();
 
         $time['start_time'] = date('Y-m-d H:i', $start_time);
         $time['end_time'] = date('Y-m-d H:i', $end_time);
@@ -434,46 +426,30 @@ class platform_record extends ecjia_platform
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
         $wechat_id = $this->platformAccount->getAccountID();
-        if (is_ecjia_error($wechat_id)) {
-            return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
-        //读取上次获取用户位置
-        $start_time = RC_Cache::app_cache_get('wechat_customer_record_position_' . $wechat_id, 'wechat');
-
-        if (empty($start_time)) {
-            $data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
-            if (empty($data)) {
-                $start_time = mktime(0, 0, 0, date('m'), date('d') - 7, date('Y'));
-            } else {
-                $start_time = $data['time'];
-            }
-        }
-        $end_time = ($start_time + 24 * 3600) - 1;
 
         try {
-            $list = $wechat->staff->records($start_time, $end_time, 1, 10000)->toArray();
-            if ($list['number'] > 0) {
-                $new_list = [];
-                foreach ($list['recordlist'] as $k => $v) {
-                    $new_list[$k]['wechat_id'] = $wechat_id;
-                    $new_list[$k]['kf_account'] = $v['worker'];
-                    $new_list[$k]['openid'] = $v['openid'];
-                    $new_list[$k]['opercode'] = $v['opercode'];
-                    $new_list[$k]['text'] = $v['text'];
-                    $new_list[$k]['time'] = $v['time'];
-                }
-                RC_DB::table('wechat_customer_record')->insert($new_list);
+            $recordStorage = new Ecjia\App\Wechat\Synchronizes\CustomerRecordStorage($wechat_id);
 
-                RC_Cache::app_cache_delete('wechat_customer_record_position_' . $wechat_id, 'wechat');
+            list($start_time, $end_time) = $recordStorage->getStartTimeAndEndTime();
+
+            $list = $wechat->staff->records($start_time, $end_time, 1, 10000)->toArray();
+
+            $recordStorage->setData(collect($list));
+
+            if ($list['number'] > 0) {
+                $recordStorage->save();
             } else {
                 if ($start_time < SYS_TIME && SYS_TIME < $end_time) {
                     return $this->showmessage('当前没有更多数据', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
                 }
+
                 if ($end_time > SYS_TIME) {
                     $end_time = SYS_TIME;
                 }
-                RC_Cache::app_cache_set('wechat_customer_record_position_' . $wechat_id, $end_time, 'wechat');
+
+                $recordStorage->setNextStartTime($end_time);
             }
+
             return $this->showmessage('获取完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
