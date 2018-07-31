@@ -204,36 +204,6 @@ class wechat_method {
         }
     	return null;
     }
-    
-//     public static function wechat_id($uuid = null) {
-//         if (!$uuid) {
-//             $uuid = trim($_GET['uuid']);
-//         }
-//         $account = platform_account::make($uuid);
-//         $wechat_id = $account->getAccountID();
-//         return $wechat_id;
-//     }
-    
-//     public static function record_msg($fromusername, $keywords, $iswechat = 0){
-//     	$wechatuser_db = RC_Loader::load_app_model('wechat_user_model', 'wechat');
-//     	$wechat_custom_message_db = RC_Loader::load_app_model('wechat_custom_message_model', 'wechat');
-    
-//     	$uid = $wechatuser_db->where(array('openid'=>$fromusername))->get_field('uid');
-//     	if ($uid) {
-//     		$data = array(
-//     			'uid'  	     => $uid,
-//     			'msg'  	     => $keywords,
-//     			'send_time'  => RC_Time::gmtime(),
-//     			'iswechat'   => 0,
-//     		);
-//     		//是公众号回复
-//     		if($iswechat){
-//     			$data['iswechat'] = 1;
-//     		}
-//     		$wechat_custom_message_db->insert($data);
-//     	}
-//     }
-
 }
 
 // end
