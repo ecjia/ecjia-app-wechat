@@ -688,7 +688,7 @@ class platform_customer extends ecjia_platform
             'kf_account' => $kf_account,
             'openid' => $openid,
             'create_time' => RC_Time::gmtime(),
-            'status' => 2,
+            'status' => 1,
         );
         RC_DB::table('wechat_customer_session')->insert($data);
         return $this->showmessage('创建成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
