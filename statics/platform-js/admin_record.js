@@ -80,7 +80,7 @@
 			msg_cloned.find('.chat_user_name').html(options.chat_user);
 			msg_cloned.find('.media-text').html(options.tr_msg);
 
-			!options.is_myself && msg_cloned.removeClass('chat-msg-mine').addClass('chat-msg-you');
+			!options.is_myself && msg_cloned.removeClass('chat-msg-you').addClass('chat-msg-mine');
 			msg_cloned.removeClass('msg_clone').show();
 			$('.chat_msg.media-list').stop().animate({
 				scrollTop: options.oldstart ? msg_cloned.offset().top : 9999999

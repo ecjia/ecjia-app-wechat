@@ -103,23 +103,23 @@ class platform_record extends ecjia_platform
             $this->assign('type', $types);
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
-        
-     	$start_time = RC_Cache::app_cache_get('wechat_customer_record_position_' . $wechat_id, 'wechat');
 
-		if (empty($start_time)) {
-			$data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
-			if (empty($data)) {
-				$start_time = mktime(0, 0, 0, date('m'), date('d')-7, date('Y'));
-			} else {
-				$start_time = $data['time'];
-			}
-		}
-		$end_time = ($start_time + 24*3600) - 1;
-		
-		$time['start_time'] = date('Y-m-d H:i', $start_time);
-		$time['end_time'] = date('Y-m-d H:i', $end_time);
+        $start_time = RC_Cache::app_cache_get('wechat_customer_record_position_' . $wechat_id, 'wechat');
+
+        if (empty($start_time)) {
+            $data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
+            if (empty($data)) {
+                $start_time = mktime(0, 0, 0, date('m'), date('d') - 7, date('Y'));
+            } else {
+                $start_time = $data['time'];
+            }
+        }
+        $end_time = ($start_time + 24 * 3600) - 1;
+
+        $time['start_time'] = date('Y-m-d H:i', $start_time);
+        $time['end_time'] = date('Y-m-d H:i', $end_time);
         $this->assign('time', $time);
-        
+
         $this->display('wechat_record_list.dwt');
     }
 
@@ -197,89 +197,89 @@ class platform_record extends ecjia_platform
             $where .= " and cr.kf_account = " . "'$filter[kf_account]'";
         }
 
-//         $time_1 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
-//         $time_2 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
-//         $time_3 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-//         $time_4 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+        $time_1 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
+        $time_2 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+        $time_3 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        $time_4 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
 
-//         $time_5 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-//         $time_6 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        $time_5 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+        $time_6 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 
-//         $time_7 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
-//         $time_8 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+        $time_7 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
+        $time_8 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
 
-//         $time_9 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
+        $time_9 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
 
-//         $where1 = $where . ' and cr.time > ' . $time_1 . ' and cr.time < ' . $time_2;
-//         $where2 = $where . ' and cr.time > ' . $time_3 . ' and cr.time < ' . $time_4;
-//         $where3 = $where . ' and cr.time > ' . $time_5 . ' and cr.time < ' . $time_6;
-//         $where4 = $where . ' and cr.time > ' . $time_7 . ' and cr.time < ' . $time_8;
-//         $where5 = $where . ' and cr.time > 0' . ' and cr.time < ' . $time_9;
+        $where1 = $where . ' and cr.time > ' . $time_1 . ' and cr.time < ' . $time_2;
+        $where2 = $where . ' and cr.time > ' . $time_3 . ' and cr.time < ' . $time_4;
+        $where3 = $where . ' and cr.time > ' . $time_5 . ' and cr.time < ' . $time_6;
+        $where4 = $where . ' and cr.time > ' . $time_7 . ' and cr.time < ' . $time_8;
+        $where5 = $where . ' and cr.time > 0' . ' and cr.time < ' . $time_9;
 
-//         switch ($filter['status']) {
-//             case '1':
-//                 $start_date = $time_1;
-//                 $end_date = $time_2;
-//                 break;
-//             case '2':
-//                 $start_date = $time_3;
-//                 $end_date = $time_4;
-//                 break;
-//             case '3':
-//                 $start_date = $time_5;
-//                 $end_date = $time_6;
-//                 break;
-//             case '4':
-//                 $start_date = $time_7;
-//                 $end_date = $time_8;
-//                 break;
-//             case '5':
-//                 $start_date = 0;
-//                 $end_date = $time_9;
-//                 break;
-//         }
-//         $where .= ' and cr.time > ' . $start_date . ' and cr.time < ' . $end_date;
+        switch ($filter['status']) {
+            case '1':
+                $start_date = $time_1;
+                $end_date = $time_2;
+                break;
+            case '2':
+                $start_date = $time_3;
+                $end_date = $time_4;
+                break;
+            case '3':
+                $start_date = $time_5;
+                $end_date = $time_6;
+                break;
+            case '4':
+                $start_date = $time_7;
+                $end_date = $time_8;
+                break;
+            case '5':
+                $start_date = 0;
+                $end_date = $time_9;
+                break;
+        }
+        $where .= ' and cr.time > ' . $start_date . ' and cr.time < ' . $end_date;
 
-//         $filter['last_five_days'] = count(RC_DB::table('wechat_customer_record as cr')
-//                 ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
-//                 ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
-//                 ->select(RC_DB::raw('max(cr.id) as id'))
-//                 ->whereRaw($where1)
-//                 ->groupBy(RC_DB::raw('cr.openid'))
-//                 ->get()
-//         );
-//         $filter['today'] = count(RC_DB::table('wechat_customer_record as cr')
-//                 ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
-//                 ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
-//                 ->select(RC_DB::raw('max(cr.id) as id'))
-//                 ->whereRaw($where2)
-//                 ->groupBy(RC_DB::raw('cr.openid'))
-//                 ->get()
-//         );
-//         $filter['yesterday'] = count(RC_DB::table('wechat_customer_record as cr')
-//                 ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
-//                 ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
-//                 ->select(RC_DB::raw('max(cr.id) as id'))
-//                 ->whereRaw($where3)
-//                 ->groupBy(RC_DB::raw('cr.openid'))
-//                 ->get()
-//         );
-//         $filter['the_day_before_yesterday'] = count(RC_DB::table('wechat_customer_record as cr')
-//                 ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
-//                 ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
-//                 ->select(RC_DB::raw('max(cr.id) as id'))
-//                 ->whereRaw($where4)
-//                 ->groupBy(RC_DB::raw('cr.openid'))
-//                 ->get()
-//         );
-//         $filter['earlier'] = count(RC_DB::table('wechat_customer_record as cr')
-//                 ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
-//                 ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
-//                 ->select(RC_DB::raw('max(cr.id) as id'))
-//                 ->whereRaw($where5)
-//                 ->groupBy(RC_DB::raw('cr.openid'))
-//                 ->get()
-//         );
+        $filter['last_five_days'] = count(RC_DB::table('wechat_customer_record as cr')
+                ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
+                ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
+                ->select(RC_DB::raw('max(cr.id) as id'))
+                ->whereRaw($where1)
+                ->groupBy(RC_DB::raw('cr.openid'))
+                ->get()
+        );
+        $filter['today'] = count(RC_DB::table('wechat_customer_record as cr')
+                ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
+                ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
+                ->select(RC_DB::raw('max(cr.id) as id'))
+                ->whereRaw($where2)
+                ->groupBy(RC_DB::raw('cr.openid'))
+                ->get()
+        );
+        $filter['yesterday'] = count(RC_DB::table('wechat_customer_record as cr')
+                ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
+                ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
+                ->select(RC_DB::raw('max(cr.id) as id'))
+                ->whereRaw($where3)
+                ->groupBy(RC_DB::raw('cr.openid'))
+                ->get()
+        );
+        $filter['the_day_before_yesterday'] = count(RC_DB::table('wechat_customer_record as cr')
+                ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
+                ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
+                ->select(RC_DB::raw('max(cr.id) as id'))
+                ->whereRaw($where4)
+                ->groupBy(RC_DB::raw('cr.openid'))
+                ->get()
+        );
+        $filter['earlier'] = count(RC_DB::table('wechat_customer_record as cr')
+                ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
+                ->leftJoin('wechat_customer as c', RC_DB::raw('c.kf_account'), '=', RC_DB::raw('cr.kf_account'))
+                ->select(RC_DB::raw('max(cr.id) as id'))
+                ->whereRaw($where5)
+                ->groupBy(RC_DB::raw('cr.openid'))
+                ->get()
+        );
 
         $total = RC_DB::table('wechat_customer_record as cr')
             ->leftJoin('wechat_user as wu', RC_DB::raw('wu.openid'), '=', RC_DB::raw('cr.openid'))
@@ -439,43 +439,43 @@ class platform_record extends ecjia_platform
         }
         //读取上次获取用户位置
         $start_time = RC_Cache::app_cache_get('wechat_customer_record_position_' . $wechat_id, 'wechat');
-        
-		if (empty($start_time)) {
-			$data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
-			if (empty($data)) {
-				$start_time = mktime(0, 0, 0, date('m'), date('d')-7, date('Y'));
-			} else {
-				$start_time = $data['time'];
-			}
-		}
-		$end_time = ($start_time + 24*3600) - 1;
-		
+
+        if (empty($start_time)) {
+            $data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
+            if (empty($data)) {
+                $start_time = mktime(0, 0, 0, date('m'), date('d') - 7, date('Y'));
+            } else {
+                $start_time = $data['time'];
+            }
+        }
+        $end_time = ($start_time + 24 * 3600) - 1;
+
         try {
-        	$list = $wechat->staff->records($start_time, $end_time, 1, 10000)->toArray();
-        	if ($list['number'] > 0) {
-        		$new_list = [];
-        		foreach ($list['recordlist'] as $k => $v) {
-        			$new_list[$k]['wechat_id'] = $wechat_id;
-        			$new_list[$k]['kf_account'] = $v['worker'];
-        			$new_list[$k]['openid'] = $v['openid'];
-        			$new_list[$k]['opercode'] = $v['opercode'];
-        			$new_list[$k]['text'] = $v['text'];
-        			$new_list[$k]['time'] = $v['time'];
-        		}
-        		RC_DB::table('wechat_customer_record')->insert($new_list);
-        		 
-        		RC_Cache::app_cache_delete('wechat_customer_record_position_' . $wechat_id, 'wechat');
-        	} else {
-        		if ($start_time < SYS_TIME && SYS_TIME < $end_time) {
-        			return $this->showmessage('当前没有更多数据', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
-        		}
-        		if ($end_time > SYS_TIME) {
-        			$end_time = SYS_TIME;
-        		}
-        		RC_Cache::app_cache_set('wechat_customer_record_position_' . $wechat_id, $end_time, 'wechat');
-        	}
-        	return $this->showmessage('获取完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
-        	
+            $list = $wechat->staff->records($start_time, $end_time, 1, 10000)->toArray();
+            if ($list['number'] > 0) {
+                $new_list = [];
+                foreach ($list['recordlist'] as $k => $v) {
+                    $new_list[$k]['wechat_id'] = $wechat_id;
+                    $new_list[$k]['kf_account'] = $v['worker'];
+                    $new_list[$k]['openid'] = $v['openid'];
+                    $new_list[$k]['opercode'] = $v['opercode'];
+                    $new_list[$k]['text'] = $v['text'];
+                    $new_list[$k]['time'] = $v['time'];
+                }
+                RC_DB::table('wechat_customer_record')->insert($new_list);
+
+                RC_Cache::app_cache_delete('wechat_customer_record_position_' . $wechat_id, 'wechat');
+            } else {
+                if ($start_time < SYS_TIME && SYS_TIME < $end_time) {
+                    return $this->showmessage('当前没有更多数据', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
+                }
+                if ($end_time > SYS_TIME) {
+                    $end_time = SYS_TIME;
+                }
+                RC_Cache::app_cache_set('wechat_customer_record_position_' . $wechat_id, $end_time, 'wechat');
+            }
+            return $this->showmessage('获取完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
+
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }

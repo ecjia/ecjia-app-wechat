@@ -48,7 +48,6 @@
                 <h4 class="card-title">{$ur_here}</h4>
             </div>
      		<div class="card-body">
-     			<!-- 
      			<ul class="nav nav-pills float-left">
      				<li class="nav-item">
 						<a class="nav-link data-pjax {if $list.filter.status eq 1}active{/if}" href='{url path="wechat/platform_record/init" args="
@@ -68,7 +67,6 @@
 						<a class="nav-link data-pjax {if $list.filter.status eq 5}active{/if}" href='{url path="wechat/platform_record/init" args="status=5{if $smarty.get.kf_account}&kf_account={$smarty.get.kf_account}{/if}"}'>{lang key='wechat::wechat.earlier'}<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{if $list.filter.earlier}{$list.filter.earlier}{else}0{/if}</span></a>
 					</li>
 				</ul>
-				-->
 				
 				<div class="choost_list float-right" data-url="{$action}">
 					<select name="kf_account" class="select2 w250 form-control">
