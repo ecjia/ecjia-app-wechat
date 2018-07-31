@@ -1,5 +1,6 @@
 // JavaScript Document
-; (function (app, $) {
+;
+(function (app, $) {
 	app.material = {
 		init: function () {
 			var action = $(".fileupload").attr('data-action');
@@ -39,7 +40,10 @@
 					url = $this.attr('data-saveurl'),
 					id = $this.attr('data-imgid'),
 					val = $this.parent().find('.edit-inline').val(),
-					info = { id: id, val: val };
+					info = {
+						id: id,
+						val: val
+					};
 
 				$.get(url, info, function (data) {
 					$this.parent().find('.edit_title').html(val);
@@ -147,7 +151,13 @@
 					$childobj = $($this.attr('data-child')),
 					$childobj_clonearea = $($this.attr('data-child-clone-area')),
 					form_action = $('input[name="add_url"]').val();
-				option = { parentobj: $parentobj, parentobj_clonearea: $parentobj_clonearea, before: before, childobj: $childobj, childobj_clonearea: $childobj_clonearea };
+				option = {
+					parentobj: $parentobj,
+					parentobj_clonearea: $parentobj_clonearea,
+					before: before,
+					childobj: $childobj,
+					childobj_clonearea: $childobj_clonearea
+				};
 				!$parentobj ? console.log(js_lang.clone_no_parent) : app.material_edit.clone_obj(option);
 				$('form[name="theForm"]').attr('action', form_action);
 
@@ -189,11 +199,14 @@
 			tmpObj.removeClass('hide');
 			tmpObj.removeClass('mobile_news_auxiliary_clone');
 
-			(options.before == 'before') ? options.parentobj_clonearea.before(tmpObj) : options.parentobj_clonearea.after(tmpObj);
+			(options.before == 'before') ? options.parentobj_clonearea.before(tmpObj): options.parentobj_clonearea.after(tmpObj);
 			if (options.childobj && options.childobj_clonearea) {
 				var size = options.childobj_clonearea.children('div').length + 2;
 				if (size >= 9) {
-					var error = { 'message': js_lang.images_most8, 'state': 'error' };
+					var error = {
+						'message': js_lang.images_most8,
+						'state': 'error'
+					};
 					ecjia.platform.showmessage(error);
 					return false;
 				}
@@ -302,7 +315,10 @@
 							});
 						}, 'json');
 					}
-				}, { ok: js_lang.ok, cancel: js_lang.cancel });
+				}, {
+					ok: js_lang.ok,
+					cancel: js_lang.cancel
+				});
 			});
 
 			$('[data-toggle="remove_edit_mask"]').off('click').on('click', function () {
@@ -364,10 +380,14 @@
 			var $form = $("form[name='theForm']");
 			var option = {
 				rules: {
-					title: { required: true },
+					title: {
+						required: true
+					},
 				},
 				messages: {
-					title: { required: js_lang.title_placeholder_graphic },
+					title: {
+						required: js_lang.title_placeholder_graphic
+					},
 				},
 				submitHandler: function () {
 					$form.ajaxSubmit({

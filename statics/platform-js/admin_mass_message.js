@@ -1,16 +1,17 @@
 // JavaScript Document
-;(function(app, $) {
+;
+(function (app, $) {
 	app.mass_message = {
-		init : function() {
-			$(".ajaxswitch").off('click').on('click', function(e){
+		init: function () {
+			$(".ajaxswitch").off('click').on('click', function (e) {
 				e.preventDefault();
 				var url = $(this).attr('href');
-				$.get(url, function(data){
+				$.get(url, function (data) {
 					ecjia.platform.showmessage(data);
 				}, 'json');
-			});	
-			
-			$("select[name='mass_type']").change(function(e){
+			});
+
+			$("select[name='mass_type']").change(function (e) {
 				e.preventDefault();
 				var mass_type = $("select[name='mass_type'] option:selected").val();
 				if (mass_type == 'by_group') {
@@ -19,26 +20,34 @@
 					$('.by_group').addClass('d-none');
 				}
 			});
-			
+
 			app.mass_message.theForm();
 			app.mass_message.preview_msg();
 		},
 		//添加必填项js
-		theForm : function() {
+		theForm: function () {
 			var $form = $("form[name='theForm']");
 			var option = {
-				rules : {
-					rule_name : {required : true},
-					rule_keywords : {required : true}
+				rules: {
+					rule_name: {
+						required: true
+					},
+					rule_keywords: {
+						required: true
+					}
 				},
-				messages : {
-					rule_name : {required : js_lang.rule_name_required},
-					rule_keywords : {required : js_lang.rule_keywords_required}
+				messages: {
+					rule_name: {
+						required: js_lang.rule_name_required
+					},
+					rule_keywords: {
+						required: js_lang.rule_keywords_required
+					}
 				},
-				submitHandler:function(){
+				submitHandler: function () {
 					$form.ajaxSubmit({
-						dataType : "json",
-						success : function(data) {
+						dataType: "json",
+						success: function (data) {
 							ecjia.platform.showmessage(data);
 						}
 					});
@@ -47,27 +56,31 @@
 			var options = $.extend(ecjia.platform.defaultOptions.validate, option);
 			$form.validate(options);
 		},
-		
-		preview_msg: function() {
-			$('.preview_msg').off('click').on('click', function() {
+
+		preview_msg: function () {
+			$('.preview_msg').off('click').on('click', function () {
 				var type = $('input[name="content_type"]').val();
 				if (type == 'text') {
 					var content = $('textarea[name="content"]').val();
 					if (content == '') {
-						smoke.alert('请先输入要预览的内容', { ok: '确定', });
+						smoke.alert('请先输入要预览的内容', {
+							ok: '确定',
+						});
 						return false;
 					}
 				} else {
 					var media_id = $('input[name="media_id"]').val();
 					if (media_id == '' || media_id == undefined) {
-						smoke.alert('请先选择要预览的素材', { ok: '确定', });
+						smoke.alert('请先选择要预览的素材', {
+							ok: '确定',
+						});
 						return false;
 					}
 				}
 				$('#preview_msg').modal('show');
 			});
-			
-			$('.confirm-send').off('click').on('click', function() {
+
+			$('.confirm-send').off('click').on('click', function () {
 				var type = $('input[name="content_type"]').val();
 				var content = $('textarea[name="content"]').val();
 				var media_id = $('input[name="media_id"]').val();
@@ -84,7 +97,7 @@
 						media_id: media_id,
 						wechat_account: wechat_account
 					}
-					$.post(url, info, function(data) {
+					$.post(url, info, function (data) {
 						if (data.stats == 'error') {
 							$('.frm_msg.fail').css('display', 'block').html(data.message);
 							return false;
@@ -96,7 +109,7 @@
 				}
 			});
 		},
-		
+
 	}
 })(ecjia.platform, jQuery);
 
