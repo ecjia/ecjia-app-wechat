@@ -109,7 +109,7 @@ class platform_record extends ecjia_platform
 		if (empty($start_time)) {
 			$data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
 			if (empty($data)) {
-				$start_time = mktime(0, 0, 0, date('m'), date('d')-30, date('Y'));
+				$start_time = mktime(0, 0, 0, date('m'), date('d')-7, date('Y'));
 			} else {
 				$start_time = $data['time'];
 			}
@@ -443,7 +443,7 @@ class platform_record extends ecjia_platform
 		if (empty($start_time)) {
 			$data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
 			if (empty($data)) {
-				$start_time = mktime(0, 0, 0, date('m'), date('d')-30, date('Y'));
+				$start_time = mktime(0, 0, 0, date('m'), date('d')-7, date('Y'));
 			} else {
 				$start_time = $data['time'];
 			}
