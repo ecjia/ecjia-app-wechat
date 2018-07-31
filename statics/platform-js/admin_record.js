@@ -58,11 +58,13 @@
 				}
 			});
 
-			$(".ajaxmenu").on('click', function (e) {
+			$(".ajaxmenu").off('click').on('click', function (e) {
 				e.preventDefault();
 				var $this = $(this);
+				if ($this.hasClass('disabled')) {
+					return false;
+				}
 				$this.html('正在获取中...').addClass('disabled');
-
 				var url = $(this).attr('data-url');
 				app.admin_record.get_record(url);
 			});
@@ -88,10 +90,6 @@
 		get_record: function (url) {
 			$.get(url, function(data) {
 				ecjia.platform.showmessage(data);
-				if (data.start) {
-					var url = data.url;
-					app.admin_record.get_record(url + '&start=' + data.start);
-				}
 			});
 		},
 	};

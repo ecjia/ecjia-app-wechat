@@ -74,7 +74,7 @@ return array(
 	'auto_reply'	        => '自动回复',
 	'reply_keyword'	        => '关键词回复',
 	
-	'service_record'	    => '客服会话记录',
+	'service_record'	    => '客服聊天记录',
 	
 	'channel_code'	        => '渠道二维码',
 	'channel_code_list'	    => '渠道二维码列表',
@@ -119,7 +119,7 @@ return array(
 	'service_add'	        => '客服添加',
 	'service_edit'	        => '客服编辑',
 	'service_del'	        => '客服删除',
-	'service_record_manage'	=> '客服会话记录管理',
+	'service_record_manage'	=> '客服聊天记录管理',
 	
 	'api_request_manage'	=> 'Api请求统计管理',
 		
@@ -481,7 +481,7 @@ return array(
 		'Monday'                => '星期日',
 		'num'                  	=> '次',
 		'num_time'              => '次数',
-		'get_message_record'	=> '获取客服会话记录',
+		'get_message_record'	=> '获取客服聊天记录',
 		
 		'menu_name_required'	=> '请填写菜单名称',
 		'menu_url_required'		=> '请输入外链URL',
@@ -630,13 +630,13 @@ return array(
 	'pwd_rand_help'			=> '密码前缀+随机密码 生成：ecmoban231。不填写则默认为3位',
 	'register_remind_help'	=> '例：默认用户名：[$username]，默认密码：[$password]，变量请用示例中的。微信中换行用 \r\n',
 	
-	//客服会话记录
-	'customer_chat_record'		=> '客服会话记录',
+	//客服聊天记录
+	'customer_chat_record'		=> '客服聊天记录',
 	'customer_message_record'	=> '客服消息记录',
-	'get_message_record_success'=> '获取客服会话记录成功',
-	'chat_record_synchro'		=> '会话记录同步操作',
-	'get_message_record'		=> '获取客服会话记录',
-	'get_message_record_notice' => '通过点击该按钮可以获取客服最近5天的会话记录到本地。',
+	'get_message_record_success'=> '获取客服聊天记录成功',
+	'chat_record_synchro'		=> '客服聊天记录同步操作',
+	'get_message_record'		=> '获取客服聊天记录',
+	'get_message_record_notice' => '通过点击该按钮可以获取客服最近5天的聊天记录到本地。',
 	'last_five_days'			=> '最近五天',	
 	'today'						=> '今天',
 	'yesterday'					=> '昨天',
