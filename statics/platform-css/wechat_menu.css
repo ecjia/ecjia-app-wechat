@@ -1,5 +1,4 @@
 @charset "utf-8";
-
 * {
 	box-sizing: border-box;
 }
@@ -28,14 +27,14 @@ li {
 }
 
 .weixin-menu-right-content {
-    min-height: 540px;
-    margin: 0 0 0 342px;
-    color: #666;
+	min-height: 540px;
+	margin: 0 0 0 342px;
+	color: #666;
 }
 
 .menu_initial_tips {
 	text-align: center;
-    padding-top: 200px;
+	padding-top: 200px;
 	color: #8d8d8d;
 }
 
@@ -91,8 +90,7 @@ li {
 	left: 0px;
 }
 
-.weixin-preview .weixin-bd {
-}
+.weixin-preview .weixin-bd {}
 
 .weixin-preview .weixin-menu {
 	position: absolute;
@@ -106,7 +104,9 @@ li {
 	padding-left: 43px;
 	margin-bottom: 0px;
 }
+
 /*一级*/
+
 .weixin-preview .weixin-menu .menu-item {
 	position: relative;
 	float: left;
@@ -122,15 +122,15 @@ li {
 .weixin-preview .weixin-menu .menu-item.size1of1 {
 	width: 100%;
 	border: 1px solid #44b549;
-    color: #44b549;
+	color: #44b549;
 }
 
 .weixin-preview .weixin-menu .icon14_menu_add {
 	width: 14px;
-    height: 14px;
-    vertical-align: middle;
-    display: inline-block;
-    margin-top: -2px;
+	height: 14px;
+	vertical-align: middle;
+	display: inline-block;
+	margin-top: -2px;
 	background: url(../images/index_z354723.png) 0 0 no-repeat;
 }
 
@@ -146,11 +146,13 @@ li {
 	width: 50%;
 }
 
-.weixin-preview .weixin-menu .menu-item.size_2, .weixin-preview .weixin-menu .menu-item.size_3 {
+.weixin-preview .weixin-menu .menu-item.size_2,
+.weixin-preview .weixin-menu .menu-item.size_3 {
 	width: 33.33%;
 }
 
 /*二级*/
+
 .weixin-preview .weixin-sub-menu {
 	position: absolute;
 	bottom: 60px;
@@ -178,7 +180,7 @@ li {
 	position: relative;
 	color: #616161;
 	padding: 0 .5em;
-	border-top: none;	
+	border-top: none;
 }
 
 .weixin-preview .menu-arrow {
@@ -188,32 +190,33 @@ li {
 }
 
 .weixin-preview .arrow_in {
-    bottom: -5px;
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-width: 6px;
-    border-style: dashed;
-    border-color: transparent;
-    border-bottom-width: 0;
-    border-top-color: #fafafa;
-    border-top-style: solid;
+	bottom: -5px;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-width: 6px;
+	border-style: dashed;
+	border-color: transparent;
+	border-bottom-width: 0;
+	border-top-color: #fafafa;
+	border-top-style: solid;
 }
 
 .weixin-preview .arrow_out {
-    bottom: -6px;
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-width: 6px;
-    border-style: dashed;
-    border-color: transparent;
-    border-bottom-width: 0;
-    border-top-color: #d0d0d0;
-    border-top-style: solid;
+	bottom: -6px;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-width: 6px;
+	border-style: dashed;
+	border-color: transparent;
+	border-bottom-width: 0;
+	border-top-color: #d0d0d0;
+	border-top-style: solid;
 }
 
-.weixin-preview .menu-item .menu-item-title,.weixin-preview .menu-sub-item .menu-item-title {
+.weixin-preview .menu-item .menu-item-title,
+.weixin-preview .menu-sub-item .menu-item-title {
 	width: 100%;
 	overflow: hidden;
 	white-space: nowrap;
@@ -233,7 +236,8 @@ li {
 	border-top-width: 0;
 }
 
-.weixin-preview .menu-item.current,.weixin-preview .menu-sub-item.current {
+.weixin-preview .menu-item.current,
+.weixin-preview .menu-sub-item.current {
 	border: 1px solid #44b549;
 	background: #fff;
 	color: #44b549;
@@ -281,6 +285,7 @@ li {
 }
 
 /*菜单内容*/
+
 .weixin-menu-detail {
 	background-color: #f4f5f9;
 	border: 1px solid #e7e7eb;
