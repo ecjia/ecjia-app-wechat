@@ -61,20 +61,10 @@
 			$(".ajaxmenu").on('click', function (e) {
 				e.preventDefault();
 				var $this = $(this);
-				$this.html(js_lang.getting).addClass('disabled');
+				$this.html('正在获取中...').addClass('disabled');
 
-				var info = js_lang.get_message_record;
 				var url = $(this).attr('data-url');
-				var message = $(this).attr('data-msg');
-				$.ajax({
-					type: "get",
-					url: url,
-					dataType: "json",
-					success: function (data) {
-						$this.html(info).removeClass('disabled');
-						ecjia.platform.showmessage(data);
-					}
-				});
+				app.admin_record.get_record(url);
 			});
 		},
 
@@ -95,17 +85,12 @@
 			}, 1000);
 		},
 
-		get_userinfo: function (url) {
-			$.ajax({
-				type: "get",
-				url: url,
-				dataType: "json",
-				success: function (data) {
-					ecjia.platform.showmessage(data);
-					if (data.notice == 1) {
-						var url = data.url;
-						app.admin_record.get_userinfo(url + '&p=' + data.p);
-					}
+		get_record: function (url) {
+			$.get(url, function(data) {
+				ecjia.platform.showmessage(data);
+				if (data.start) {
+					var url = data.url;
+					app.admin_record.get_record(url + '&start=' + data.start);
 				}
 			});
 		},
