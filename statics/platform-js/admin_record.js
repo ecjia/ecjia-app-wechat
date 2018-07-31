@@ -89,6 +89,7 @@
 
 		get_record: function (url) {
 			$.get(url, function(data) {
+				$(".ajaxmenu").html('获取客服聊天记录').removeClass('disabled');
 				ecjia.platform.showmessage(data);
 			});
 		},

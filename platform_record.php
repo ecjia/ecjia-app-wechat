@@ -104,17 +104,20 @@ class platform_record extends ecjia_platform
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
         }
         
-        $data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
+     	$start_time = RC_Cache::app_cache_get('wechat_customer_record_position_' . $wechat_id, 'wechat');
 
-        $start = 0;
-        $p = RC_Cache::app_cache_get('wechat_customer_record_position_' . $wechat_id, 'wechat');
-        if ($p && $p > 0) {
-        	$start = $p;
-        } else {
-      		$start = 30;
-        }
-        $time['start_time'] = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - $start, date('Y')));
-        $time['end_time'] = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - ($start-1), date('Y')));
+		if (empty($start_time)) {
+			$data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
+			if (empty($data)) {
+				$start_time = mktime(0, 0, 0, date('m'), date('d')-30, date('Y'));
+			} else {
+				$start_time = $data['time'];
+			}
+		}
+		$end_time = ($start_time + 24*3600) - 1;
+		
+		$time['start_time'] = date('Y-m-d H:i', $start_time);
+		$time['end_time'] = date('Y-m-d H:i', $end_time);
         $this->assign('time', $time);
         
         $this->display('wechat_record_list.dwt');
@@ -435,37 +438,47 @@ class platform_record extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         //读取上次获取用户位置
-        $p = RC_Cache::app_cache_get('wechat_customer_record_position_' . $wechat_id, 'wechat');
-
-        if ($p && $p > 0) {
-        	$start = $p;
-        } else {
-        	$start = 30;
-        }
-        $start_time = mktime(0, 0, 0, date('m'), date('d') - $start, date('Y'));
-        $end_time = mktime(0, 0, 0, date('m'), date('d') - ($start-1), date('Y'));
+        $start_time = RC_Cache::app_cache_get('wechat_customer_record_position_' . $wechat_id, 'wechat');
         
+		if (empty($start_time)) {
+			$data = RC_DB::table('wechat_customer_record')->where('wechat_id', $wechat_id)->orderBy('id', 'desc')->first();
+			if (empty($data)) {
+				$start_time = mktime(0, 0, 0, date('m'), date('d')-30, date('Y'));
+			} else {
+				$start_time = $data['time'];
+			}
+		}
+		$end_time = ($start_time + 24*3600) - 1;
+		
         try {
         	$list = $wechat->staff->records($start_time, $end_time, 1, 10000)->toArray();
+        	if ($list['number'] > 0) {
+        		$new_list = [];
+        		foreach ($list['recordlist'] as $k => $v) {
+        			$new_list[$k]['wechat_id'] = $wechat_id;
+        			$new_list[$k]['kf_account'] = $v['worker'];
+        			$new_list[$k]['openid'] = $v['openid'];
+        			$new_list[$k]['opercode'] = $v['opercode'];
+        			$new_list[$k]['text'] = $v['text'];
+        			$new_list[$k]['time'] = $v['time'];
+        		}
+        		RC_DB::table('wechat_customer_record')->insert($new_list);
+        		 
+        		RC_Cache::app_cache_delete('wechat_customer_record_position_' . $wechat_id, 'wechat');
+        	} else {
+        		if ($start_time < SYS_TIME && SYS_TIME < $end_time) {
+        			return $this->showmessage('当前没有更多数据', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
+        		}
+        		if ($end_time > SYS_TIME) {
+        			$end_time = SYS_TIME;
+        		}
+        		RC_Cache::app_cache_set('wechat_customer_record_position_' . $wechat_id, $end_time, 'wechat');
+        	}
+        	return $this->showmessage('获取完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
+        	
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-
-        if (!empty($list['recordlist'])) {
-        	$new_list = [];
-        	foreach ($list['recordlist'] as $k => $v) {
-        		$v['wechat_id'] = $wechat_id;
-        		$v['kf_account'] = $v['worker'];
-        		unset($v['worker']);
-        		$new_list[] = $v;
-        	}
-        	RC_DB::table('wechat_customer_record')->insert($new_list);
-        	RC_Cache::app_cache_delete('wechat_customer_record_position_' . $wechat_id, 'wechat');
-        } else {
-        	$start -= 1;
-        	RC_Cache::app_cache_set('wechat_customer_record_position_' . $wechat_id, $start, 'wechat');
-        }
-        return $this->showmessage('获取完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
     }
 }
 
