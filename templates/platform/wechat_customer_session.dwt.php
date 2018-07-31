@@ -58,7 +58,7 @@
 					</li>
 				</ul>
 			</div>
-			
+
             <div class="col-md-12">
 				<table class="table table-hide-edit">
 					<thead>
@@ -86,8 +86,8 @@
 								{/if}
 							</td>
 							<td>
-								{if $val.createtime}
-								{date('Y-m-d H:i:s', ($val['createtime']))}
+								{if $val.create_time}
+								{date('Y-m-d H:i:s', ($val['create_time']))}
 								{/if}
 							</td>
 							<td>
@@ -108,7 +108,7 @@
 						<!-- {/foreach} -->
 					</tbody>
 				</table>
-				 <!-- {$list.page} -->						
+				 <!-- {$list.page} -->
             </div>
         </div>
     </div>

@@ -66,8 +66,8 @@ class platform_prize extends ecjia_platform
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
         RC_Script::enqueue_script('smoke');
-		RC_Style::enqueue_style('uniform-aristo');
-		
+        RC_Style::enqueue_style('uniform-aristo');
+
         RC_Script::enqueue_script('wechat_prize', RC_App::apps_url('statics/platform-js/wechat_prize.js', __FILE__), array(), false, true);
         RC_Script::localize_script('wechat_prize', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 
@@ -127,7 +127,7 @@ class platform_prize extends ecjia_platform
             $data['issue_status'] = 1;
             $message = RC_Lang::get('wechat::wechat.provide_succeed');
         }
-        
+
         RC_DB::table('wechat_prize')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
         return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $url));
     }
@@ -143,7 +143,7 @@ class platform_prize extends ecjia_platform
         $id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 
         RC_DB::table('wechat_prize')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
-      	return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+        return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**
@@ -186,7 +186,7 @@ class platform_prize extends ecjia_platform
 
         try {
             with(new Ecjia\App\Wechat\Sends\SendCustomMessage($wechat, $wechat_id, $openid))->sendTextMessage($data['msg']);
-            
+
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
@@ -210,15 +210,15 @@ class platform_prize extends ecjia_platform
     {
         $wechat_id = $this->platformAccount->getAccountID();
         $db = RC_DB::table('wechat_prize')->where('wechat_id', $wechat_id)->where('prize_type', 1);
-        
+
         $activity_type = !empty($_GET['type']) ? trim($_GET['type']) : '';
         if ($activity_type) {
             $db->where('activity_type', $activity_type);
         }
         $count = $db->count();
         $page = new ecjia_platform_page($count, 10, 5);
-		$data = $db->orderBy('dateline', 'desc')->take(10)->skip($page->start_id-1)->get();
-		
+        $data = $db->orderBy('dateline', 'desc')->take(10)->skip($page->start_id - 1)->get();
+
         $arr = array();
         if (isset($data)) {
             foreach ($data as $row) {

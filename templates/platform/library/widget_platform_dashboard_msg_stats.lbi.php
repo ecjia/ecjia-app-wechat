@@ -1,4 +1,4 @@
-<?php defined('IN_ECJIA') or exit('No permission resources.');?> 
+<?php defined('IN_ECJIA') or exit('No permission resources.');?>
 <div class="card weui-desktop-panel weui-desktop-panel_overview">
  	<div class="card-header">
         <h4 class="card-title">用户发送消息</h4>
@@ -13,7 +13,7 @@
 					<em class="weui-desktop-mass__time">{$v.send_time_formated}</em>
 				</div>
 				{/if}
-				
+
 				<div class="weui-desktop-mass__content">
 					<a href="{RC_Uri::url('wechat/platform_subscribe/subscribe_message')}&uid={$v.uid}" target="_blank">
 						<div class="weui-desktop-mass-media weui-desktop-mass-appmsg">
@@ -29,6 +29,6 @@
 				<!-- {/foreach} -->
 			</li>
 			<!-- {/foreach} -->
-		</ul>	
+		</ul>
 	</div>
  </div>

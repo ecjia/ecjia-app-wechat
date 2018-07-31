@@ -35,7 +35,7 @@
                 {/if}
             <!-- {/foreach} -->
             </div>
-            
+
         </ul>
     </div>
     <!-- {else} -->

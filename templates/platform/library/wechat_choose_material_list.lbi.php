@@ -12,7 +12,7 @@
 	                {/if}
 	            <!-- {/foreach} -->
 	            </div>
-	
+
 	            <div class="weui-desktop-media__list-col">
 	            <!-- {foreach from=$list item=articles key=k} -->
 	                {if ($k+3) % 4 == 0}
@@ -20,7 +20,7 @@
 	                {/if}
 	            <!-- {/foreach} -->
 	            </div>
-	
+
 	            <div class="weui-desktop-media__list-col">
 	            <!-- {foreach from=$list item=articles key=k} -->
 	                {if ($k+2) % 4 == 0}
@@ -28,7 +28,7 @@
 	                {/if}
 	            <!-- {/foreach} -->
 	            </div>
-	
+
 	            <div class="weui-desktop-media__list-col">
 	            <!-- {foreach from=$list item=articles key=k} -->
 	                {if ($k+1) % 4 == 0}

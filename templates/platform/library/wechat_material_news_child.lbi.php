@@ -8,7 +8,7 @@
             <span>{$articles.title}</span>
         </div>
     </div>
-    
+
     <!-- {foreach from=$articles.articles key=key item=val} -->
     <div class="article_list">
         <div class="f_l">{if $val.title}{$val.title}{else}{lang key='wechat::wechat.no_title'}{/if}</div>

@@ -69,7 +69,7 @@ class platform_mass_message extends ecjia_platform
 
         RC_Script::enqueue_script('admin_mass_message', RC_App::apps_url('statics/platform-js/admin_mass_message.js', __FILE__), array(), false, true);
         RC_Script::enqueue_script('choose_material', RC_App::apps_url('statics/platform-js/choose_material.js', __FILE__), array(), false, true);
-        
+
         RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
 
         RC_Script::localize_script('admin_mass_message', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
@@ -111,11 +111,11 @@ class platform_mass_message extends ecjia_platform
     {
         $this->admin_priv('wechat_message_manage');
 
-        $tag_id         = $this->request->input('tag_id', null);
-        $mass_type      = $this->request->input('mass_type');
-        $media_id       = $this->request->input('media_id', 0);
-        $content_type   = $this->request->input('content_type');
-        $content        = $this->request->input('content');
+        $tag_id = $this->request->input('tag_id', null);
+        $mass_type = $this->request->input('mass_type');
+        $media_id = $this->request->input('media_id', 0);
+        $content_type = $this->request->input('content_type');
+        $content = $this->request->input('content');
 
         //发送文本
         if ($content_type == 'text') {
@@ -196,7 +196,7 @@ class platform_mass_message extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
         $model = \Ecjia\App\Wechat\Models\WechatMassHistoryModel::where('wechat_id', $wechat_id)->where('id', $id)->first();
 
-        if (! empty($model)) {
+        if (!empty($model)) {
             try {
 
                 if ($model->msg_id) {
@@ -208,7 +208,7 @@ class platform_mass_message extends ecjia_platform
 
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
                 //微信服务器上删除失败不报错
-                RC_Logger::getLogger('wechat')->error('微信服务器上删除失败:'.$e->getMessage());
+                RC_Logger::getLogger('wechat')->error('微信服务器上删除失败:' . $e->getMessage());
                 //return $this->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
 
@@ -217,15 +217,16 @@ class platform_mass_message extends ecjia_platform
 
         return $this->showmessage(RC_Lang::get('wechat::wechat.remove_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
-    
+
     /**
      * 预览群发消息
      */
-    public function preview_msg() {
-    	$type = trim($this->request->input('type'));   //素材类型 text image voice video news
-    	$media_id = intval($this->request->input('media_id')); //素材id  1/2/3
-    	$content = trim($this->request->input('content')); //为text类型是 文本消息
-    	$wechat_account = trim($this->request->input('wechat_account')); //微信号
+    public function preview_msg()
+    {
+        $type = trim($this->request->input('type')); //素材类型 text image voice video news
+        $media_id = intval($this->request->input('media_id')); //素材id  1/2/3
+        $content = trim($this->request->input('content')); //为text类型是 文本消息
+        $wechat_account = trim($this->request->input('wechat_account')); //微信号
 
         if (empty($wechat_account)) {
             return $this->showmessage('请输入要预览的微信帐号', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -258,38 +259,38 @@ class platform_mass_message extends ecjia_platform
         $count = $db_mass_history->count();
         $page = new ecjia_platform_page($count, 10, 5);
         $list = $db_mass_history->select('*')->orderBy('send_time', 'desc')->take(10)->skip($page->start_id - 1)->get();
-        
+
         $status_list = array(
-        	'send success' 	=> '发送成功',
-        	'send fail'    	=> '发送失败',
-        	'err(10001)' 	=> '涉嫌广告',
-        	'err(20001)' 	=> '涉嫌政治',
-        	'err(20004)' 	=> '涉嫌社会',
-        	'err(20002)' 	=> '涉嫌色情',
-        	'err(20006)' 	=> '涉嫌违法犯罪',
-        	'err(20008)' 	=> '涉嫌欺诈',
-        	'err(20013)' 	=> '涉嫌版权',
-        	'err(22000)' 	=> '涉嫌互推(互相宣传)',
-        	'err(21000)' 	=> '涉嫌其他',
-        	'err(30001)' 	=> '原创校验出现系统错误且用户选择了被判为转载就不群发',
-        	'err(30002)' 	=> '原创校验被判定为不能群发',
-        	'err(30003)' 	=> '原创校验被判定为转载文且用户选择了被判为转载就不群发',
+            'send success' => '发送成功',
+            'send fail' => '发送失败',
+            'err(10001)' => '涉嫌广告',
+            'err(20001)' => '涉嫌政治',
+            'err(20004)' => '涉嫌社会',
+            'err(20002)' => '涉嫌色情',
+            'err(20006)' => '涉嫌违法犯罪',
+            'err(20008)' => '涉嫌欺诈',
+            'err(20013)' => '涉嫌版权',
+            'err(22000)' => '涉嫌互推(互相宣传)',
+            'err(21000)' => '涉嫌其他',
+            'err(30001)' => '原创校验出现系统错误且用户选择了被判为转载就不群发',
+            'err(30002)' => '原创校验被判定为不能群发',
+            'err(30003)' => '原创校验被判定为转载文且用户选择了被判为转载就不群发',
         );
-        
+
         if (!empty($list)) {
             foreach ($list as $key => $val) {
-            	$list[$key]['send_time'] = RC_Time::local_date(ecjia::config('time_format'), $val['send_time']);
-            	$list[$key]['media_content'] = unserialize($val['content'])['media_content'];
-            	if ($val['type'] == 'voice') {
-            		$list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
-            	}
-            	
-            	if ($val['type'] == 'video') {
-            		$list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/video.png', __FILE__);
-            	}
-            	if (array_get($val['status'], $status_list)) {
-            		$list[$key]['status'] = $status_list[$val['status']];
-            	}
+                $list[$key]['send_time'] = RC_Time::local_date(ecjia::config('time_format'), $val['send_time']);
+                $list[$key]['media_content'] = unserialize($val['content'])['media_content'];
+                if ($val['type'] == 'voice') {
+                    $list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
+                }
+
+                if ($val['type'] == 'video') {
+                    $list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/video.png', __FILE__);
+                }
+                if (array_get($val['status'], $status_list)) {
+                    $list[$key]['status'] = $status_list[$val['status']];
+                }
             }
         }
         return array('list' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc());

@@ -32,37 +32,6 @@
 	<p>在返回成功时，意味着群发任务提交成功，并不意味着此时群发已经结束，所以，仍有可能在后续的发送过程中出现异常情况导致用户未收到消息，如消息有时会进行审核、服务器不稳定等。此外，群发任务一般需要较长的时间才能全部发送完毕，请耐心等待。</p>
 </div>
 
-<div class="modal fade text-left" id="add_material">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="modal-title">{lang key='wechat::wechat.select_material'}</h3>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				  <span aria-hidden="true">×</span>
-				</button>
-			</div>
-			
-			<div class="form material_choose" data-url="{url path='wechat/platform_mass_message/get_material_info'}">
-				<div class="material_choose_list">
-                    <div class="material_select m_0">
-                        <table class="table smpl_tbl dataTable m_b0">
-                            <thead>
-                            </thead>
-                            <tbody class="material_select_tbody">
-                            </tbody>
-                        </table>
-					</div>
-				</div>
-		   	
-			   	<div class="modal-footer justify-content-center">
-			   		<input type="hidden" name="openid" />
-					<input type="button" class="btn btn-outline-primary material_verify" {if $errormsg}disabled="disabled"{/if} value="{lang key='wechat::wechat.ok'}" />
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-	
 <div class="row">
     <div class="col-12">
         <div class="card">

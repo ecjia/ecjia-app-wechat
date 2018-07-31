@@ -1,4 +1,4 @@
-<?php defined('IN_ECJIA') or exit('No permission resources.');?> 
+<?php defined('IN_ECJIA') or exit('No permission resources.');?>
 <div class="card weui-desktop-panel weui-desktop-panel_overview">
  	<div class="card-header">
         <h4 class="card-title">账号整体情况</h4>

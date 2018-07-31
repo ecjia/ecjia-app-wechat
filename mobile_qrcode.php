@@ -66,9 +66,9 @@ class mobile_qrcode extends EcjiaWechatUserController
     {
         $openid = trim($_GET['openid']);
         $uuid = trim($_GET['uuid']);
-        
+
         if (empty($openid) || empty($uuid)) {
-        	return $this->displayContent('openid或uuid参数不能为空');
+            return $this->displayContent('openid或uuid参数不能为空');
         }
 
         $qrcode = new \Ecjia\App\Wechat\WechatQrcode($uuid);
@@ -77,31 +77,32 @@ class mobile_qrcode extends EcjiaWechatUserController
             return $this->displayContent($url->get_error_code());
         }
         $this->assign('url', $url);
-        
+
         $type = $qrcode->getWechatUUID()->getAccount()->getTypeCode();
         if ($type != 'service') {
-        	return $this->displayContent('推广二维码仅支持服务号类型的公众号');
+            return $this->displayContent('推广二维码仅支持服务号类型的公众号');
         }
-        
+
         $name = $qrcode->getWechatUUID()->getAccount()->getAccountName();
         $this->assign('name', $name);
-        
+
         $user_info = RC_DB::table('wechat_user')->where('openid', $openid)->first();
         $this->assign('user_info', $user_info);
-        
+
         $db = RC_DB::table('wechat_user as w')
-        	->leftJoin('wechat_user as u', RC_DB::raw('w.uid'), '=', RC_DB::raw('u.popularize_uid'))
-        	->where(RC_DB::raw('w.popularize_uid'), $user_info['uid']);
+            ->leftJoin('wechat_user as u', RC_DB::raw('w.uid'), '=', RC_DB::raw('u.popularize_uid'))
+            ->where(RC_DB::raw('w.popularize_uid'), $user_info['uid']);
+        
         $count = $db->count();
         $user_list = $db
-        	->select(RC_DB::raw('w.*'))
-        	->orderBy(RC_DB::raw('w.subscribe_time'), 'desc')
-        	->take(20)
-        	->get();
-        
+            ->select(RC_DB::raw('w.*'))
+            ->orderBy(RC_DB::raw('w.subscribe_time'), 'desc')
+            ->take(20)
+            ->get();
+
         $this->assign('count', $count);
         $this->assign('user_list', $user_list);
-        
+
         $this->display(
             RC_Package::package('app::wechat')->loadTemplate('front/qrcode.dwt', true)
         );

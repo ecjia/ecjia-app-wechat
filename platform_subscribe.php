@@ -71,7 +71,7 @@ class platform_subscribe extends ecjia_platform
 
         RC_Script::enqueue_script('platform_subscribe', RC_App::apps_url('statics/platform-js/platform_subscribe.js', __FILE__), array(), false, true);
         RC_Script::enqueue_script('choose_material', RC_App::apps_url('statics/platform-js/choose_material.js', __FILE__), array(), false, true);
-        
+
         RC_Style::enqueue_style('platform_subscribe', RC_App::apps_url('statics/platform-css/admin_subscribe.css', __FILE__));
         RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
         RC_Script::localize_script('platform_subscribe', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
@@ -128,7 +128,7 @@ class platform_subscribe extends ecjia_platform
             //全部用户
             if (empty($tag_id)) {
                 $where .= " and u.subscribe = 1 and u.group_id != 1";
-            //标签用户
+                //标签用户
             } else {
                 $user_list = RC_DB::table('wechat_user_tag')->where('tagid', $tag_id)->lists('userid');
                 if (empty($user_list)) {
@@ -187,7 +187,7 @@ class platform_subscribe extends ecjia_platform
             $this->assign('type', $types);
             $this->assign('type_error', sprintf(RC_Lang::get('wechat::wechat.notice_certification_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $types)));
             $this->assign('custom_type_error', sprintf(RC_Lang::get('wechat::wechat.notice_service_info'), RC_Lang::get('wechat::wechat.wechat_type.' . $type)));
-            
+
             $customer_list = RC_DB::table('wechat_customer')->where('wechat_id', $wechat_id)->where('online_status', 1)->get();
             $this->assign('customer_list', $customer_list);
         }
@@ -505,95 +505,95 @@ class platform_subscribe extends ecjia_platform
      */
     public function get_blackuserinfo()
     {
-    	$this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
-    
-    	$uuid = $this->platformAccount->getUUID();
-    	$wechat_id = $this->platformAccount->getAccountID();
-    	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-    
-    	if (is_ecjia_error($wechat_id)) {
-    		return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    	}
-    	//读取上次获取用户位置
-    	$p = RC_Cache::app_cache_get('wechat_blackuser_position_' . $wechat_id, 'wechat');
-    
-    	if ($p == false) {
-    		$p = !empty($_GET['p']) ? intval($_GET['p']) : 0;
-    	}
-    	//删除缓存
-    	if (empty($p)) {
-    		RC_Cache::app_cache_delete('wechat_blackuser_list_' . $wechat_id, 'wechat');
-    	}
-    
-    	//读取缓存
-    	$wechat_user_list = RC_Cache::app_cache_get('wechat_blackuser_list_' . $wechat_id, 'wechat');
-    	if ($wechat_user_list == false) {
-    
-    		try {
-    			$wechat_user = $wechat->user_tag->usersOfBlack()->toArray();
-    			if (is_ecjia_error($wechat_user)) {
-    				return $this->showmessage(wechat_method::wechat_error($wechat_user->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    			}
-    			if ($wechat_user['total'] <= 10000) {
-    				$wechat_user_list = $wechat_user['data']['openid'];
-    			} else {
-    				$num = ceil($wechat_user['total'] / 10000);
-    				for ($i = 1; $i < $num; $i++) {
-    					$wechat_user1 = $wechat->user_tag->usersOfBlack($wechat_user['next_openid'])->toArray();
-    					if (is_ecjia_error($wechat_user1)) {
-    						return $this->showmessage(wechat_method::wechat_error($wechat_user1->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    					}
-    					$wechat_user['next_openid'] = $wechat_user1['next_openid'];
-    					$wechat_user['data']['openid'] = array_merge($wechat_user['data']['openid'], $wechat_user1['data']['openid']);
-    				}
-    			}
-    			$wechat_user_list = $wechat_user['data']['openid'];
-    			//设置缓存
-    			RC_Cache::app_cache_set('wechat_blackuser_list_' . $wechat_id, $wechat_user_list, 'wechat');
-    
-    		} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-    			return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    		}
-    
-    	}
-    
-    	$user_list = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->lists('openid');
-    	if (empty($user_list)) {
-    		$user_list = array();
-    	}
-    
-    	$arr1 = $arr2 = array();
-    	$list = array_slice($wechat_user_list, $p, 100);
-    
-    	$total = count($wechat_user_list);
-    	$counts = count($list);
-    	$p += $counts;
-    
-    	if (!empty($list)) {
-    		RC_DB::table('wechat_user')->whereIn('openid', $list)->update(array('group_id' => 1));
-    	}
-    	
-    	if ($p < $total) {
-    		RC_Cache::app_cache_set('wechat_blackuser_position_' . $wechat_id, $p, 'wechat');
-    		return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.get_user_already'), $p), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url("wechat/platform_subscribe/get_blackuserinfo"), 'notice' => 1, 'p' => $p));
-    	} else {
-    		RC_Cache::app_cache_delete('wechat_blackuser_position_' . $wechat_id, 'wechat');
-    		RC_Cache::app_cache_delete('wechat_blackuser_list_' . $wechat_id, 'wechat');
-    
-    		ecjia_admin::admin_log(RC_Lang::get('wechat::wechat.get_user_info'), 'setup', 'users_info');
-    		return $this->showmessage(RC_Lang::get('wechat::wechat.get_userinfo_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/back_list', array('action' => 'get_list'))));
-    	}
+        $this->admin_priv('wechat_subscribe_manage', ecjia::MSGTYPE_JSON);
+
+        $uuid = $this->platformAccount->getUUID();
+        $wechat_id = $this->platformAccount->getAccountID();
+        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+
+        if (is_ecjia_error($wechat_id)) {
+            return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        //读取上次获取用户位置
+        $p = RC_Cache::app_cache_get('wechat_blackuser_position_' . $wechat_id, 'wechat');
+
+        if ($p == false) {
+            $p = !empty($_GET['p']) ? intval($_GET['p']) : 0;
+        }
+        //删除缓存
+        if (empty($p)) {
+            RC_Cache::app_cache_delete('wechat_blackuser_list_' . $wechat_id, 'wechat');
+        }
+
+        //读取缓存
+        $wechat_user_list = RC_Cache::app_cache_get('wechat_blackuser_list_' . $wechat_id, 'wechat');
+        if ($wechat_user_list == false) {
+
+            try {
+                $wechat_user = $wechat->user_tag->usersOfBlack()->toArray();
+                if (is_ecjia_error($wechat_user)) {
+                    return $this->showmessage(wechat_method::wechat_error($wechat_user->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                }
+                if ($wechat_user['total'] <= 10000) {
+                    $wechat_user_list = $wechat_user['data']['openid'];
+                } else {
+                    $num = ceil($wechat_user['total'] / 10000);
+                    for ($i = 1; $i < $num; $i++) {
+                        $wechat_user1 = $wechat->user_tag->usersOfBlack($wechat_user['next_openid'])->toArray();
+                        if (is_ecjia_error($wechat_user1)) {
+                            return $this->showmessage(wechat_method::wechat_error($wechat_user1->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                        }
+                        $wechat_user['next_openid'] = $wechat_user1['next_openid'];
+                        $wechat_user['data']['openid'] = array_merge($wechat_user['data']['openid'], $wechat_user1['data']['openid']);
+                    }
+                }
+                $wechat_user_list = $wechat_user['data']['openid'];
+                //设置缓存
+                RC_Cache::app_cache_set('wechat_blackuser_list_' . $wechat_id, $wechat_user_list, 'wechat');
+
+            } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+                return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+
+        }
+
+        $user_list = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->lists('openid');
+        if (empty($user_list)) {
+            $user_list = array();
+        }
+
+        $arr1 = $arr2 = array();
+        $list = array_slice($wechat_user_list, $p, 100);
+
+        $total = count($wechat_user_list);
+        $counts = count($list);
+        $p += $counts;
+
+        if (!empty($list)) {
+            RC_DB::table('wechat_user')->whereIn('openid', $list)->update(array('group_id' => 1));
+        }
+
+        if ($p < $total) {
+            RC_Cache::app_cache_set('wechat_blackuser_position_' . $wechat_id, $p, 'wechat');
+            return $this->showmessage(sprintf(RC_Lang::get('wechat::wechat.get_user_already'), $p), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url("wechat/platform_subscribe/get_blackuserinfo"), 'notice' => 1, 'p' => $p));
+        } else {
+            RC_Cache::app_cache_delete('wechat_blackuser_position_' . $wechat_id, 'wechat');
+            RC_Cache::app_cache_delete('wechat_blackuser_list_' . $wechat_id, 'wechat');
+
+            ecjia_admin::admin_log(RC_Lang::get('wechat::wechat.get_user_info'), 'setup', 'users_info');
+            return $this->showmessage(RC_Lang::get('wechat::wechat.get_userinfo_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/back_list', array('action' => 'get_list'))));
+        }
     }
-    
+
     //用户消息记录
     public function subscribe_message()
     {
         $this->admin_priv('wechat_subscribe_message_manage');
 
         $wechat_id = $this->platformAccount->getAccountID();
-		$account_name = $this->platformAccount->getAccountName();
+        $account_name = $this->platformAccount->getAccountName();
         $this->assign('account_name', $account_name);
-        
+
         $page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
         $this->assign('ur_here', RC_Lang::get('wechat::wechat.user_message_record'));
 
@@ -679,19 +679,19 @@ class platform_subscribe extends ecjia_platform
         $list = $this->get_message_list();
         $message = count($list['item']) < 10 ? RC_Lang::get('wechat::wechat.no_more_message') : RC_Lang::get('wechat::wechat.searched');
         if (!empty($list['item'])) {
-        	foreach ($list['item'] as $k => $v) {
-        		if ($v['type'] != 'text') {
-        			$this->assign('type', $v['type']);
-        			if ($v['type'] == 'voice') {
-        				$v['media_content']['img_url'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
-        			}
-        			if ($v['type'] == 'video') {
-        				$v['media_content']['img_url'] = RC_App::apps_url('statics/images/video.png', __FILE__);
-        			}
-        			$this->assign('media_content', $v['media_content']);
-        			$list['item'][$k]['media_content_html'] = $this->fetch('library/wechat_subscribe_message.lbi');
-        		}
-        	}
+            foreach ($list['item'] as $k => $v) {
+                if ($v['type'] != 'text') {
+                    $this->assign('type', $v['type']);
+                    if ($v['type'] == 'voice') {
+                        $v['media_content']['img_url'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
+                    }
+                    if ($v['type'] == 'video') {
+                        $v['media_content']['img_url'] = RC_App::apps_url('statics/images/video.png', __FILE__);
+                    }
+                    $this->assign('media_content', $v['media_content']);
+                    $list['item'][$k]['media_content_html'] = $this->fetch('library/wechat_subscribe_message.lbi');
+                }
+            }
             return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('msg_list' => $list['item'], 'last_id' => $list['last_id']));
         } else {
             return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -717,7 +717,7 @@ class platform_subscribe extends ecjia_platform
         }
 
         $model = \Ecjia\App\Wechat\Models\WechatCustomMessageModel::where('uid', $uid)->where('iswechat', 0)->orderBy('send_time', 'DESC')->first();
-        if (! empty($model) && (RC_Time::gmtime() - $model->send_time) > 48*3600 ) {
+        if (!empty($model) && (RC_Time::gmtime() - $model->send_time) > 48 * 3600) {
             return $this->showmessage('由于该用户48小时未与你互动，你不能再主动发消息给他。直到用户下次主动发消息给你才可以对其进行回复。', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
@@ -746,7 +746,7 @@ class platform_subscribe extends ecjia_platform
 
         $uuid = $this->platformAccount->getUUID();
         $wechat_id = $this->platformAccount->getAccountID();
-        
+
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
 
         if (is_ecjia_error($wechat_id)) {
@@ -789,7 +789,7 @@ class platform_subscribe extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-        
+
         $type = !empty($_GET['type']) ? trim($_GET['type']) : '';
         $page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
         $openid = !empty($_GET['openid']) ? trim($_GET['openid']) : '';
@@ -822,46 +822,46 @@ class platform_subscribe extends ecjia_platform
         RC_DB::table('wechat_user')->where('openid', $openid)->where('wechat_id', $wechat_id)->update($data);
 
 //         $this->get_user_tags();
-		$pjaxurl = RC_Uri::url('wechat/platform_subscribe/subscribe_message', array('uid' => $uid, 'page' => $page));
-		if ($from == 'list') {
-			$pjaxurl = RC_Uri::url('wechat/platform_subscribe/init', array('page' => $page));
-		}
+        $pjaxurl = RC_Uri::url('wechat/platform_subscribe/subscribe_message', array('uid' => $uid, 'page' => $page));
+        if ($from == 'list') {
+            $pjaxurl = RC_Uri::url('wechat/platform_subscribe/init', array('page' => $page));
+        }
         return $this->showmessage($success_msg, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
     }
-    
-    public function unblack_user() 
+
+    public function unblack_user()
     {
-    	$this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
-    	
-    	$uuid = $this->platformAccount->getUUID();
-    	$wechat_id = $this->platformAccount->getAccountID();
-    	
-    	if (is_ecjia_error($wechat_id)) {
-    		return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    	}
-    	$wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-    	
-    	$openid = !empty($_GET['openid']) ? trim($_GET['openid']) : '';
-    	
-    	$data['group_id'] = 0;
-    	$sn = RC_Lang::get('wechat::wechat.remove_blacklist');
-    	$success_msg = RC_Lang::get('wechat::wechat.remove_blacklist_success');
-    	$error_msg = RC_Lang::get('wechat::wechat.remove_blacklist_error');
-    	
-    	try {
-    		//微信端更新
-    		$rs = $wechat->user_tag->batchUnblackUsers(array($openid));
-    		if (is_ecjia_error($rs)) {
-    			return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    		}
-    	} catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
-    		return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    	}
-    	
-    	ecjia_admin::admin_log($sn, 'setup', 'users_info');
-    	RC_DB::table('wechat_user')->where('openid', $openid)->where('wechat_id', $wechat_id)->update($data);
-    	
-    	return $this->showmessage($success_msg, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/back_list')));
+        $this->admin_priv('wechat_subscribe_update', ecjia::MSGTYPE_JSON);
+
+        $uuid = $this->platformAccount->getUUID();
+        $wechat_id = $this->platformAccount->getAccountID();
+
+        if (is_ecjia_error($wechat_id)) {
+            return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
+
+        $openid = !empty($_GET['openid']) ? trim($_GET['openid']) : '';
+
+        $data['group_id'] = 0;
+        $sn = RC_Lang::get('wechat::wechat.remove_blacklist');
+        $success_msg = RC_Lang::get('wechat::wechat.remove_blacklist_success');
+        $error_msg = RC_Lang::get('wechat::wechat.remove_blacklist_error');
+
+        try {
+            //微信端更新
+            $rs = $wechat->user_tag->batchUnblackUsers(array($openid));
+            if (is_ecjia_error($rs)) {
+                return $this->showmessage(wechat_method::wechat_error($rs->get_error_code()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
+        } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
+            return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
+        ecjia_admin::admin_log($sn, 'setup', 'users_info');
+        RC_DB::table('wechat_user')->where('openid', $openid)->where('wechat_id', $wechat_id)->update($data);
+
+        return $this->showmessage($success_msg, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_subscribe/back_list')));
     }
 
     //获取消息列表
@@ -895,11 +895,11 @@ class platform_subscribe extends ecjia_platform
                 }
                 $list[$key]['media_content'] = unserialize($val['media_content']);
                 if ($val['type'] == 'voice') {
-                	$list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
+                    $list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/voice.png', __FILE__);
                 }
-                
+
                 if ($val['type'] == 'video') {
-                	$list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/video.png', __FILE__);
+                    $list[$key]['media_content']['img_url'] = RC_App::apps_url('statics/images/video.png', __FILE__);
                 }
             }
             $end_list = end($list);
@@ -922,7 +922,7 @@ class platform_subscribe extends ecjia_platform
             return $this->showmessage(RC_Lang::get('wechat::wechat.add_platform_first'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
-        
+
         $action = !empty($_GET['action']) ? $_GET['action'] : '';
         $uid = !empty($_POST['uid']) ? $_POST['uid'] : '';
         $openid = !empty($_POST['openid']) ? $_POST['openid'] : '';
@@ -973,12 +973,12 @@ class platform_subscribe extends ecjia_platform
             //取消用户标签
             if (!empty($openids_tag['tagid'])) {
                 foreach ($openids_tag['tagid'] as $k => $v) {
-                	if (!empty($openids_tag['openid'])) {
-                		$wechat->user_tag->batchUntagUsers($openids_tag['openid'], $v);
-                	}
+                    if (!empty($openids_tag['openid'])) {
+                        $wechat->user_tag->batchUntagUsers($openids_tag['openid'], $v);
+                    }
                 }
                 if (!empty($openids_tag['uid'])) {
-                	RC_DB::table('wechat_user_tag')->whereIn('userid', $openids_tag['uid'])->delete();
+                    RC_DB::table('wechat_user_tag')->whereIn('userid', $openids_tag['uid'])->delete();
                 }
 
                 if (!empty($tag_id)) {
@@ -1125,60 +1125,61 @@ class platform_subscribe extends ecjia_platform
 
         $this->display('wechat_unsubscribe_list.dwt');
     }
-    
-    public function back_list() {
-    	$this->admin_priv('wechat_subscribe_manage');
-    	
-    	ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-    	ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('黑名单'));
-    	
-    	$this->assign('ur_here', '黑名单');
-    	$this->assign('form_action', RC_Uri::url('wechat/platform_subscribe/back_list'));
-    	
-    	$wechat_id = $this->platformAccount->getAccountID();
-    	//微信id、type、关键字
-    	$where = "u.wechat_id = $wechat_id";
-    	$type = isset($_GET['type']) ? $_GET['type'] : 'all';
-    	$keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
-    	
-    	//关键字搜索
-    	if (!empty($keywords)) {
-    		$where .= ' and (u.nickname like "%' . $keywords . '%" or u.province like "%' . $keywords . '%" or u.city like "%' . $keywords . '%")';
-    	}
-    	
-    	$where .= " and u.subscribe = 1 and u.group_id = 1";
-    	//用户列表
-    	$total = RC_DB::table('wechat_user as u')->whereRaw($where)->count();
-    	$page = new ecjia_platform_page($total, 10, 5);
-    	
-    	$list = RC_DB::table('wechat_user as u')
-	    	->leftJoin('users as us', RC_DB::raw('us.user_id'), '=', RC_DB::raw('u.ect_uid'))
-	    	->select(RC_DB::raw('u.*'), RC_DB::raw('us.user_name'))
-	    	->whereRaw($where)
-	    	->orderBy(RC_DB::raw('u.subscribe_time'), 'desc')
-	    	->take(10)
-	    	->skip($page->start_id - 1)
-	    	->get();
-    	
-    	if (!empty($list)) {
-    		foreach ($list as $k => $v) {
-    			if ($v['group_id'] == 1) {
-    				$tag_list = RC_DB::table('wechat_user_tag')->where('userid', $v['uid'])->lists('tagid');
-    				$db_wechat_tag = RC_DB::table('wechat_tag');
-    				$name_list = [];
-    				if (!empty($tag_list)) {
-    					$name_list = $db_wechat_tag->whereIn('tag_id', $tag_list)->where('wechat_id', $wechat_id)->orderBy('tag_id', 'desc')->lists('name');
-    				}
-    				if (!empty($name_list)) {
-    					$list[$k]['tag_name'] = implode('，', $name_list);
-    				}
-    			}
-    		}
-    	}
-    	$arr = array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc());
-    	$this->assign('list', $arr);
-    	
-    	$this->display('wechat_black_list.dwt');
+
+    public function back_list()
+    {
+        $this->admin_priv('wechat_subscribe_manage');
+
+        ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('黑名单'));
+
+        $this->assign('ur_here', '黑名单');
+        $this->assign('form_action', RC_Uri::url('wechat/platform_subscribe/back_list'));
+
+        $wechat_id = $this->platformAccount->getAccountID();
+        //微信id、type、关键字
+        $where = "u.wechat_id = $wechat_id";
+        $type = isset($_GET['type']) ? $_GET['type'] : 'all';
+        $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
+
+        //关键字搜索
+        if (!empty($keywords)) {
+            $where .= ' and (u.nickname like "%' . $keywords . '%" or u.province like "%' . $keywords . '%" or u.city like "%' . $keywords . '%")';
+        }
+
+        $where .= " and u.subscribe = 1 and u.group_id = 1";
+        //用户列表
+        $total = RC_DB::table('wechat_user as u')->whereRaw($where)->count();
+        $page = new ecjia_platform_page($total, 10, 5);
+
+        $list = RC_DB::table('wechat_user as u')
+            ->leftJoin('users as us', RC_DB::raw('us.user_id'), '=', RC_DB::raw('u.ect_uid'))
+            ->select(RC_DB::raw('u.*'), RC_DB::raw('us.user_name'))
+            ->whereRaw($where)
+            ->orderBy(RC_DB::raw('u.subscribe_time'), 'desc')
+            ->take(10)
+            ->skip($page->start_id - 1)
+            ->get();
+
+        if (!empty($list)) {
+            foreach ($list as $k => $v) {
+                if ($v['group_id'] == 1) {
+                    $tag_list = RC_DB::table('wechat_user_tag')->where('userid', $v['uid'])->lists('tagid');
+                    $db_wechat_tag = RC_DB::table('wechat_tag');
+                    $name_list = [];
+                    if (!empty($tag_list)) {
+                        $name_list = $db_wechat_tag->whereIn('tag_id', $tag_list)->where('wechat_id', $wechat_id)->orderBy('tag_id', 'desc')->lists('name');
+                    }
+                    if (!empty($name_list)) {
+                        $list[$k]['tag_name'] = implode('，', $name_list);
+                    }
+                }
+            }
+        }
+        $arr = array('item' => $list, 'page' => $page->show(5), 'desc' => $page->page_desc());
+        $this->assign('list', $arr);
+
+        $this->display('wechat_black_list.dwt');
     }
 
     //获取用户标签

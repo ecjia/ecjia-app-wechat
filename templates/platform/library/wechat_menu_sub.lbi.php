@@ -17,7 +17,7 @@
 		</div>
 		<span class="input-must">*</span>
 	</div>
-	
+
 	<div class="menu-input-group">
 		<div class="menu-label col-lg-3">菜单类型：</div>
 		<div class="menu-input col-lg-8">
@@ -26,7 +26,7 @@
 			<input id="type_miniprogram" type="radio" name="type" value="miniprogram" {if $wechat_menus.type eq 'miniprogram'}checked{/if}><label for="type_miniprogram"><span>跳转小程序</span></label>
 		</div>
 	</div>
-	
+
 	<div class="menu-input-group div-input" id="keydiv">
 		<div class="menu-label col-lg-3">菜单关键词：</div>
 		<div class="menu-input col-lg-8">
@@ -39,13 +39,13 @@
 				</optgroup>
 				<!-- {/foreach} -->
 			</select>
-			
+
 			<p class="menu-tips hide" style="color:#e15f63" v-show="menuNameBounds">
 				请设置菜单关键词
 			</p>
 		</div>
 	</div>
-	
+
 	<div class="menu-input-group div-input" id="urldiv">
 		<div class="menu-label col-lg-3">外链url：</div>
 		<div class="menu-input col-lg-8">
@@ -53,7 +53,7 @@
 			<p class="menu-tips" style="color:#e15f63; display: none;">请设置外联url</p>
 		</div>
 	</div>
-	
+
 	<div class="menu-input-group div-input" id="weappdiv">
 		<div class="menu-label col-lg-3">选择小程序：</div>
 		<div class="menu-input col-lg-8">
@@ -66,7 +66,7 @@
 			<p class="menu-tips" style="color:#e15f63; display: none;">请选择小程序</p>
 		</div>
 	</div>
-	
+
 	<div class="menu-input-group">
 		<div class="menu-label col-lg-3">是否开启：</div>
 		<div class="menu-input col-lg-8">
@@ -74,7 +74,7 @@
 			<input id="status_0" type="radio" name="status" value="0" {if $wechat_menus.status eq 0}checked{/if}><label for="status_0"><span>否</span></label>
 		</div>
 	</div>
-	
+
 	<div class="menu-input-group">
 		<div class="menu-label col-lg-3">排序：</div>
 		<div class="menu-input col-lg-8">
@@ -88,6 +88,6 @@
 			<input type="submit" class="btn btn-outline-primary btn-save" value="保存" />
 		</div>
 	</div>
-	
+
 	<input type="hidden" name="id" value="{$id}">
 </div>

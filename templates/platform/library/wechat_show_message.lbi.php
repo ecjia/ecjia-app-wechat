@@ -7,10 +7,10 @@
 				  <span aria-hidden="true">×</span>
 				</button>
 			</div>
-			
+
 			<div class="inner_main">
 			</div>
-			
+
 			<div class="modal-footer justify-content-center">
 				<input type="button" class="btn btn-outline-primary" data-dismiss="modal" aria-label="Close" value="关闭" />
 			</div>

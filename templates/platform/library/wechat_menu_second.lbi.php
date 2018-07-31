@@ -17,7 +17,7 @@
 		</div>
 		<span class="input-must">*</span>
 	</div>
-	
+
 	<div class="menu-input-group">
 		<div class="menu-label col-lg-3">是否开启：</div>
 		<div class="menu-input col-lg-8">
@@ -25,16 +25,16 @@
 			<input id="status_0" type="radio" name="status" value="0" {if $wechat_menus.status eq 0}checked{/if}><label for="status_0"><span>否</span></label>
 		</div>
 	</div>
-	
+
 	<div class="menu-input-group">
 		<div class="menu-label col-lg-3">排序：</div>
 		<div class="menu-input col-lg-8">
 			<input class="form-control" type="text" name="sort" value="{$wechat_menus.sort}" />
 		</div>
 	</div>
-	
+
 	<input type="hidden" name="id" value="{$id}">
-	
+
 	<div class="menu-input-group">
 		<div class="menu-label col-lg-3"></div>
 		<div class="menu-input col-lg-8">

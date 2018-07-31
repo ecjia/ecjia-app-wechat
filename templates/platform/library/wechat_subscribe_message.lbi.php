@@ -13,7 +13,7 @@
 {if $type eq 'video'}
 <div class="img_preview">
 	<img class="preview_img margin_10" src="{$media_content.img_url}" title="点击播放" data-src="{$media_content.video_url}" data-type="video"></img>
-</div>											
+</div>
 {/if}
 
 {if $type eq 'mpnews'}

@@ -7,14 +7,14 @@
     	{/if}
         <span>{$list.name}</span>
     </div>
-    
+
     <ul class="weixin-sub-menu {if $pid neq $list.id && $id neq $list.id}hide{/if}">
     	<!-- {foreach from=$list.sub_button item=sub name=s} -->
     	<li class="menu-sub-item {if $id eq $sub.id}current{/if}">
     		<div class="menu-item-title" data-toggle="edit-menu" data-id="{$sub.id}" data-pid="{$sub.pid}">{$sub.name}</div>
     	</li>
     	<!-- {/foreach} -->
-    	
+
     	{if $list.count lt 5}
         <li class="menu-sub-item" data-toggle="add-menu" data-pid="{$list.id}" data-count="{$list.count}">
             <div class="menu-item-title">
