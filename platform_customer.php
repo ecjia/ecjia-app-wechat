@@ -821,7 +821,7 @@ class platform_customer extends ecjia_platform
         $db_session = RC_DB::table('wechat_customer_session as w')
             ->leftJoin('wechat_user as u', RC_DB::raw('w.openid'), '=', RC_DB::raw('u.openid'))
             ->where(RC_DB::raw('w.wechat_id'), $wechat_id);
-        $status = isset($_GET['status']) ? intval($_GET['status']) : 1;
+        $status = isset($_GET['status']) ? intval($_GET['status']) : 2;
 
         $total_count = $db_session->select(
             RC_DB::raw("SUM(w.status = 1) AS going"),
