@@ -575,6 +575,7 @@ class platform_customer extends ecjia_platform
         if (is_ecjia_error($wechat_id)) {
             $this->assign('errormsg', RC_Lang::get('wechat::wechat.add_platform_first'));
         } else {
+        	$this->assign('warn', 'warn');
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
             $types = $this->platformAccount->getType();
             $this->assign('type', $types);
