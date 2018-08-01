@@ -63,8 +63,6 @@ class platform_subscribe extends ecjia_platform
 
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
-        RC_Script::enqueue_script('smoke');
-        RC_Style::enqueue_style('uniform-aristo');
         RC_Style::enqueue_style('bootstrap-responsive');
 
         RC_Script::enqueue_script('platform_subscribe', RC_App::apps_url('statics/platform-js/platform_subscribe.js', __FILE__), array(), false, true);

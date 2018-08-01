@@ -291,7 +291,7 @@
                 var url = $(this).attr('data-url');
                 var message = $(this).attr('data-msg');
                 if (message) {
-                    smoke.confirm(message, function (e) {
+                    ecjia.platform_ui.confirm(message, function (e) {
                         e && $.ajax({
                             type: "get",
                             url: url,
@@ -424,7 +424,7 @@
                         checkboxes.push($(this).val());
                     });
                     if (checkboxes == '') {
-                        smoke.alert(js_lang.pls_select_user, {
+                        ecjia.platform_ui.alert(js_lang.pls_select_user, {
                             ok: '确定',
                         });
                         return false;

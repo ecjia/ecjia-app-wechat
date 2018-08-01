@@ -307,7 +307,7 @@
 					id = $this.attr('data-id'),
 					url = $this.attr('data-href');
 
-				smoke.confirm(msg, function (e) {
+				ecjia.platform_ui.confirm(msg, function (e) {
 					if (e) {
 						$.get(id, url, function (data) {
 							ecjia.pjax(window.location.href, function () {

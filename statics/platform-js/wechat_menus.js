@@ -46,7 +46,7 @@
 				var url = $(this).attr('data-url');
 				var message = $(this).attr('data-msg');
 				if (message) {
-					smoke.confirm(message, function (e) {
+					ecjia.platform_ui.confirm(message, function (e) {
 						e && $.get(url, function (data) {
 							ecjia.platform.showmessage(data);
 						}, 'json');
@@ -78,7 +78,7 @@
 					pid: pid
 				}
 				if (count == 0) {
-					smoke.confirm('添加子菜单后，一级菜单的内容将被清除。确定添加子菜单？', function (e) {
+					ecjia.platform_ui.confirm('添加子菜单后，一级菜单的内容将被清除。确定添加子菜单？', function (e) {
 						if (e) {
 							$.post(url, info, function (data) {
 								$('#weixin-menu').html(data.data);
@@ -138,7 +138,7 @@
 				var info = {
 					id: id
 				}
-				smoke.confirm('您确定要删除该菜单吗？', function (e) {
+				ecjia.platform_ui.confirm('您确定要删除该菜单吗？', function (e) {
 					if (e) {
 						$.post(url, info, function (data) {
 							ecjia.platform.showmessage(data);
@@ -167,7 +167,7 @@
 						var url = $this.attr('data-url');
 						var message = $this.attr('data-msg');
 						if (message) {
-							smoke.confirm(message, function (e) {
+							ecjia.platform_ui.confirm(message, function (e) {
 								e && $.get(url, function (data) {
 									ecjia.platform.showmessage(data);
 								}, 'json');

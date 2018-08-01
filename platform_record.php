@@ -64,8 +64,6 @@ class platform_record extends ecjia_platform
         /* 加载全局 js/css */
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
-        RC_Script::enqueue_script('smoke');
-        RC_Style::enqueue_style('uniform-aristo');
         RC_Script::enqueue_script('bootstrap-placeholder');
 
         RC_Script::enqueue_script('admin_record', RC_App::apps_url('statics/platform-js/admin_record.js', __FILE__));

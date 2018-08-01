@@ -64,10 +64,6 @@ class platform_request extends ecjia_platform
         /* 加载全局 js/css */
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
-        RC_Script::enqueue_script('smoke');
-        RC_Style::enqueue_style('chosen');
-        RC_Style::enqueue_style('uniform-aristo');
-        RC_Script::enqueue_script('jquery-chosen');
 
         RC_Script::enqueue_script('admin_request', RC_App::apps_url('statics/platform-js/admin_request.js', __FILE__), array(), false, true);
         RC_Script::localize_script('admin_request', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));

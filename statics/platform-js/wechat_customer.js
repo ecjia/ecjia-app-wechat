@@ -25,7 +25,7 @@
 				var url = $(this).attr('data-url');
 				var message = $(this).attr('data-msg');
 				if (message) {
-					smoke.confirm(message, function (e) {
+					ecjia.platform_ui.confirm(message, function (e) {
 						e && $.get(url, function (data) {
 							ecjia.platform.showmessage(data);
 						}, 'json');
@@ -56,7 +56,7 @@
 				};
 				e.preventDefault();
 				var message = $(this).attr('data-msg');
-				smoke.confirm(message, function (e) {
+				ecjia.platform_ui.confirm(message, function (e) {
 					e && $.ajax({
 						url: option.url,
 						data: {

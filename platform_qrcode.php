@@ -64,7 +64,6 @@ class platform_qrcode extends ecjia_platform
         /* 加载全局 js/css */
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
-        RC_Script::enqueue_script('smoke');
         RC_Script::enqueue_script('wechat_qrcode', RC_App::apps_url('statics/platform-js/wechat_qrcode.js', __FILE__), array(), false, true);
 
         RC_Script::localize_script('wechat_qrcode', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));

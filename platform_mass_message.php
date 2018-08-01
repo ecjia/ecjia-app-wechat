@@ -62,8 +62,6 @@ class platform_mass_message extends ecjia_platform
 
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
-        RC_Script::enqueue_script('smoke');
-        RC_Style::enqueue_style('uniform-aristo');
 
         RC_Script::enqueue_script('admin_mass_message', RC_App::apps_url('statics/platform-js/admin_mass_message.js', __FILE__), array(), false, true);
         RC_Script::enqueue_script('choose_material', RC_App::apps_url('statics/platform-js/choose_material.js', __FILE__), array(), false, true);

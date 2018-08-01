@@ -63,7 +63,7 @@
 				if (type == 'text') {
 					var content = $('textarea[name="content"]').val();
 					if (content == '') {
-						smoke.alert('请先输入要预览的内容', {
+						ecjia.platform_ui.alert('请先输入要预览的内容', {
 							ok: '确定',
 						});
 						return false;
@@ -71,7 +71,7 @@
 				} else {
 					var media_id = $('input[name="media_id"]').val();
 					if (media_id == '' || media_id == undefined) {
-						smoke.alert('请先选择要预览的素材', {
+						ecjia.platform_ui.alert('请先选择要预览的素材', {
 							ok: '确定',
 						});
 						return false;

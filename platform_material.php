@@ -66,9 +66,6 @@ class platform_material extends ecjia_platform
         RC_Script::enqueue_script('bootstrap-placeholder');
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
-        RC_Script::enqueue_script('smoke');
-        RC_Script::enqueue_script('jquery-chosen');
-        RC_Style::enqueue_style('chosen');
         RC_Script::enqueue_script('jquery-dropper', RC_App::apps_url('statics/platform-js/dropper-upload/jquery.fs.dropper.js', __FILE__), array(), false, true);
 
         RC_Script::enqueue_script('ecjia-platform-bootstrap-fileupload-js');

@@ -64,12 +64,6 @@ class platform_response extends ecjia_platform
         RC_Script::enqueue_script('bootstrap-placeholder');
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
-        RC_Script::enqueue_script('smoke');
-        RC_Script::enqueue_script('jquery-chosen');
-        RC_Style::enqueue_style('chosen');
-        RC_Style::enqueue_style('uniform-aristo');
-        RC_Script::enqueue_script('jquery-imagesloaded');
-        RC_Script::enqueue_script('jquery-colorbox');
 
         RC_Script::enqueue_script('admin_response', RC_App::apps_url('statics/platform-js/admin_response.js', __FILE__), array(), false, true);
         RC_Script::enqueue_script('choose_material', RC_App::apps_url('statics/platform-js/choose_material.js', __FILE__), array(), false, true);
