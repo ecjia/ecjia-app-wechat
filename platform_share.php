@@ -56,7 +56,6 @@ class platform_share extends ecjia_platform
     {
         parent::__construct();
 
-        RC_Lang::load('wechat');
         RC_Loader::load_app_func('global');
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
 

@@ -55,7 +55,6 @@ class platform_mass_message extends ecjia_platform
     {
         parent::__construct();
 
-        RC_Lang::load('wechat');
         RC_Loader::load_app_class('platform_account', 'platform', false);
 
         RC_Loader::load_app_func('global');
