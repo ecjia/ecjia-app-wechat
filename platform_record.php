@@ -186,18 +186,18 @@ class platform_record extends ecjia_platform
             $where .= " and cr.kf_account = " . "'$filter[kf_account]'";
         }
 
-        $time_1 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
-        $time_2 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
-        $time_3 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-        $time_4 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+        $time_1 = mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
+        $time_2 = mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+        $time_3 = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        $time_4 = mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
 
-        $time_5 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-        $time_6 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        $time_5 = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+        $time_6 = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 
-        $time_7 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
-        $time_8 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
+        $time_7 = mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
+        $time_8 = mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
 
-        $time_9 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
+        $time_9 = mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
 
         $where1 = $where . ' and cr.time > ' . $time_1 . ' and cr.time < ' . $time_2;
         $where2 = $where . ' and cr.time > ' . $time_3 . ' and cr.time < ' . $time_4;

@@ -108,15 +108,18 @@ class platform_message extends ecjia_platform
         $where = 'wu.subscribe = 1 and m.iswechat = 0 and wu.wechat_id = ' . $wechat_id;
         $filter['status'] = !empty($_GET['status']) ? intval($_GET['status']) : 1;
 
-        $time_1 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
-        $time_2 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
-        $time_3 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-        $time_4 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
-        $time_5 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-        $time_6 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-        $time_7 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 2, date('Y'));
-        $time_8 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 1, date('Y'));
-        $time_9 = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
+        $m = RC_Time::local_date('m');
+        $d = RC_Time::local_date('d');
+        $y = RC_Time::local_date('y');
+        $time_1 = RC_Time::local_mktime(0, 0, 0, $m, $d - 4, $y);
+        $time_2 = RC_Time::local_mktime(0, 0, 0, $m, $d + 1, $y);
+        $time_3 = RC_Time::local_mktime(0, 0, 0, $m, $d, $y);
+        $time_4 = RC_Time::local_mktime(0, 0, 0, $m, $d + 1, $y);
+        $time_5 = RC_Time::local_mktime(0, 0, 0, $m, $d - 1, $y);
+        $time_6 = RC_Time::local_mktime(0, 0, 0, $m, $d, $y);
+        $time_7 = RC_Time::local_mktime(0, 0, 0, $m, $d - 2, $y);
+        $time_8 = RC_Time::local_mktime(0, 0, 0, $m, $d - 1, $y);
+        $time_9 = RC_Time::local_mktime(0, 0, 0, $m, $d - 4, $y);
 
         $where1 = $where . ' and m.send_time > ' . $time_1 . ' and m.send_time < ' . $time_2;
         $where2 = $where . ' and m.send_time > ' . $time_3 . ' and m.send_time < ' . $time_4;

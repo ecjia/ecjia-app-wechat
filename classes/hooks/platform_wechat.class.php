@@ -55,8 +55,11 @@ class wechat_platform_hooks
         $platformAccount = new Account(session('uuid'));
         $wechat_id = $platformAccount->getAccountID();
 
-        $start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-        $end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+        $m = RC_Time::local_date('m');
+        $d = RC_Time::local_date('d');
+        $y = RC_Time::local_date('y');
+        $start = RC_Time::local_mktime(0, 0, 0, $m, $d, $y);
+        $end = RC_Time::local_mktime(0, 0, 0, $m, $d + 1, $y);
 
         $list = RC_DB::table('wechat_custom_message as m')
             ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
@@ -92,8 +95,11 @@ class wechat_platform_hooks
         $platformAccount = new Account(session('uuid'));
         $wechat_id = $platformAccount->getAccountID();
 
-        $start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-        $end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+        $m = RC_Time::local_date('m');
+        $d = RC_Time::local_date('d');
+        $y = RC_Time::local_date('y');
+        $start = RC_Time::local_mktime(0, 0, 0, $m, $d, $y);
+        $end = RC_Time::local_mktime(0, 0, 0, $m, $d + 1, $y);
         //新消息数量
         $new_msg = RC_DB::table('wechat_custom_message as m')
             ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))
@@ -135,8 +141,11 @@ class wechat_platform_hooks
         $platformAccount = new Account(session('uuid'));
         $wechat_id = $platformAccount->getAccountID();
 
-        $start = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 4, date('Y'));
-        $end = RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y'));
+        $m = RC_Time::local_date('m');
+        $d = RC_Time::local_date('d');
+        $y = RC_Time::local_date('y');
+        $start = RC_Time::local_mktime(0, 0, 0, $m, $d - 4, $y);
+        $end = RC_Time::local_mktime(0, 0, 0, $m, $d + 1, $y);
 
         $list = RC_DB::table('wechat_custom_message as m')
             ->leftJoin('wechat_user as wu', RC_DB::raw('wu.uid'), '=', RC_DB::raw('m.uid'))

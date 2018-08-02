@@ -136,16 +136,20 @@ class platform_request extends ecjia_platform
         $where = "wechat_id = '$wechat_id'";
         $type = !empty($_GET['type']) ? intval($_GET['type']) : 1;
 
+        $m = RC_Time::local_date('m');
+        $d = RC_Time::local_date('d');
+        $y = RC_Time::local_date('y');
+
         //今天
         if ($type == 1) {
-            $start_date = RC_Time::local_date(ecjia::config('date_format'), RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 1, date('Y')));
-            $end_date = RC_Time::local_date(ecjia::config('date_format'), RC_Time::local_mktime(0, 0, 0, date('m'), date('d') + 1, date('Y')));
+            $start_date = RC_Time::local_date(ecjia::config('date_format'), RC_Time::local_mktime(0, 0, 0, $m, $d - 1, $y));
+            $end_date = RC_Time::local_date(ecjia::config('date_format'), RC_Time::local_mktime(0, 0, 0, $m, $d + 1, $y));
 
             $where .= " AND day > '$start_date' AND day < '$end_date' ";
             //昨天
         } elseif ($type == 2) {
-            $start_date = RC_Time::local_date(ecjia::config('date_format'), RC_Time::local_mktime(0, 0, 0, date('m'), date('d') - 2, date('Y')));
-            $end_date = RC_Time::local_date(ecjia::config('date_format'), RC_Time::local_mktime(0, 0, 0, date('m'), date('d'), date('Y')));
+            $start_date = RC_Time::local_date(ecjia::config('date_format'), RC_Time::local_mktime(0, 0, 0, $m, $d - 2, $y));
+            $end_date = RC_Time::local_date(ecjia::config('date_format'), RC_Time::local_mktime(0, 0, 0, $m, $d, $y));
 
             $where .= " AND day > '$start_date' AND day < '$end_date' ";
         }
