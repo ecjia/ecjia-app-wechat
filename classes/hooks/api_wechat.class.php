@@ -101,7 +101,24 @@ if (defined('RC_SITE') && RC_SITE == 'platform')
         return true;
     });
 
+    //add Macroable 获取ECJIA user的user_id快捷方法
+    Ecjia\App\Platform\Plugin\PlatformAbstract::macro('getEcjiaUserId', function ()
+    {
+        return $this->getWechatUser()->getEcjiaUserId();
+    });
 
+
+    //add Macroable 获取WechatUser对象
+    Ecjia\App\Platform\Plugin\PlatformAbstract::macro('getWechatUser', function ()
+    {
+        $wechatUUID = new \Ecjia\App\Wechat\WechatUUID();
+
+        $wechat_id = $wechatUUID->getWechatID();
+
+        $wechat_user = new \Ecjia\App\Wechat\WechatUser($wechat_id, $this->getOpenId());
+
+        return $wechat_user;
+    });
 
 }
 
