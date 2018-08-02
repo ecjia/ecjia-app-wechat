@@ -31,7 +31,7 @@
 					            <div class="frm_control_group">
 					                <label class="frm_label">关注公众号后，才能接收图文消息预览</label>
 					                <span class="frm_input_box">
-					                    <input type="text" class="frm_input jsAccountInput form-control" name="wechat_account" placeholder="请输入微信号/QQ号/手机号">
+					                    <input type="text" class="frm_input jsAccountInput form-control" name="wechat_account" placeholder="请输入微信号">
 					                </span>
 					                <p class="frm_tips">预览功能仅用于公众号查看文章效果，不适用于公众传播，预览链接会在短期内失效</p>
 					                <p class="frm_msg fail jsAccountFail"></p>
