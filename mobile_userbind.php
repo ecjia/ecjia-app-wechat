@@ -80,7 +80,7 @@ class mobile_userbind extends EcjiaWechatUserController
         
         $ect_uid = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('openid', $openid)->pluck('ect_uid');
         if (!empty($ect_uid)) {
-        	return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('user_id' => $ect_uid, 'openid' => $openid, 'uuid' => $uuid)));
+        	return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid)));
         }
 
 //         $data['register_url'] = RC_Uri::url('wechat/mobile_userbind/register', array('uuid' => $uuid, 'openid' => $openid));
@@ -146,7 +146,7 @@ class mobile_userbind extends EcjiaWechatUserController
 
                 // 积分/红包赠送
                 $this->give_point($openid, $info, $getUserId);
-                return ecjia_front::$controller->showmessage('绑定用户成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('user_id' => $user_info['user_id'], 'openid' => $openid, 'uuid' => $uuid))));
+                return ecjia_front::$controller->showmessage('绑定用户成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid))));
             } else {
                 return ecjia_front::$controller->showmessage('绑定用户失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
@@ -440,6 +440,6 @@ class mobile_userbind extends EcjiaWechatUserController
     	$info = RC_DB::table('platform_config')->where('account_id', $wechat_id)->where('ext_code', 'mp_userbind')->first();
     	$this->give_point($openid, $info, $getUserId);
     	
-    	return ecjia_front::$controller->showmessage('恭喜您，关联成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('user_id' => $getUserId, 'openid' => $openid, 'uuid' => $uuid))));
+    	return ecjia_front::$controller->showmessage('恭喜您，关联成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid))));
     }
 }

@@ -64,11 +64,11 @@ class mobile_profile extends EcjiaWechatUserController
     {
         $openid = trim($_GET['openid']);
         $uuid = trim($_GET['uuid']);
-        $user_id = intval($_GET['user_id']);
+//         $user_id = intval($_GET['user_id']);
 
         $wechat_id = with(new Ecjia\App\Wechat\WechatUUID())->getWechatID();
         $wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
-//         $unionid = $wechat_user->getUnionid();
+        $user_id = $wechat_user->getEcjiaUserId();
 
 //         $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
 //         $user_id = $connect_user->getUserId();
@@ -76,6 +76,7 @@ class mobile_profile extends EcjiaWechatUserController
         $_SESSION['wechat_user_id'] = $user_id;
         $_SESSION['wechat_open_id'] = $openid;
         $_SESSION['wechat_uuid'] = $uuid;
+        
         $user_info = RC_DB::table('users')->where('user_id', $user_id)->select('user_name', 'email', 'mobile_phone', 'user_rank')->first();
 
         $db_user_rank = RC_Model::model('user/user_rank_model');
