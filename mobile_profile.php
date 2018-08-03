@@ -64,13 +64,15 @@ class mobile_profile extends EcjiaWechatUserController
     {
         $openid = trim($_GET['openid']);
         $uuid = trim($_GET['uuid']);
+        $user_id = intval($_GET['user_id']);
 
         $wechat_id = with(new Ecjia\App\Wechat\WechatUUID())->getWechatID();
         $wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
-        $unionid = $wechat_user->getUnionid();
+//         $unionid = $wechat_user->getUnionid();
 
-        $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
-        $user_id = $connect_user->getUserId();
+//         $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
+//         $user_id = $connect_user->getUserId();
+
         $_SESSION['wechat_user_id'] = $user_id;
         $_SESSION['wechat_open_id'] = $openid;
         $_SESSION['wechat_uuid'] = $uuid;

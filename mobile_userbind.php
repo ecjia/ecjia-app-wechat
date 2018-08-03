@@ -72,9 +72,15 @@ class mobile_userbind extends EcjiaWechatUserController
         $data['wechat_image'] = $wechat_user->getImage();
         $data['wechat_nickname'] = $wechat_user->getNickname();
 
-        $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
-        if ($connect_user->checkUser()) {
-            return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid)));
+//         $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
+//         if ($connect_user->checkUser()) {
+//             return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid)));
+//         }
+        
+        
+        $ect_uid = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('openid', $openid)->pluck('ect_uid');
+        if (!empty($ect_uid)) {
+        	return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('user_id' => $ect_uid, 'openid' => $openid, 'uuid' => $uuid)));
         }
 
 //         $data['register_url'] = RC_Uri::url('wechat/mobile_userbind/register', array('uuid' => $uuid, 'openid' => $openid));
@@ -82,8 +88,15 @@ class mobile_userbind extends EcjiaWechatUserController
         $data['bind_url'] = RC_Uri::url('wechat/mobile_userbind/bind_login', array('uuid' => $uuid, 'openid' => $openid));
         $this->assign('data', $data);
 
+//         $this->display(
+//             RC_Package::package('app::wechat')->loadTemplate('front/bind.dwt', true)
+//         );
+
+        $this->assign('openid', $openid);
+        $this->assign('uuid', $uuid);
+        
         $this->display(
-            RC_Package::package('app::wechat')->loadTemplate('front/bind.dwt', true)
+      		RC_Package::package('app::wechat')->loadTemplate('front/bind_mobile_register.dwt', true)
         );
     }
 
@@ -366,11 +379,67 @@ class mobile_userbind extends EcjiaWechatUserController
         $mobile = trim($_GET['mobile']);
 
         $this->assign('mobile', $mobile);
-        $this->assign('url', RC_Uri::url('wechat/mobile_userbind/register', array('openid' => $openid, 'uuid' => $uuid, 'mobile' => $mobile)));
+        $this->assign('url', RC_Uri::url('wechat/mobile_userbind/bind_user', array('openid' => $openid, 'uuid' => $uuid, 'mobile' => $mobile)));
         $this->assign('resend_url', RC_Uri::url('wechat/mobile_userbind/get_code', array('type' => 'resend', 'openid' => $openid, 'uuid' => $uuid, 'mobile' => $mobile)));
 
         $this->display(
             RC_Package::package('app::wechat')->loadTemplate('front/bind_enter_code.dwt', true)
         );
+    }
+    
+    public function bind_user()
+    {
+    	$openid = trim($_GET['openid']);
+    	$uuid = trim($_GET['uuid']);
+    	$mobile = trim($_GET['mobile']);
+    	$code = trim($_POST['password']);
+    	
+    	if (empty($code)) {
+    		return ecjia_front::$controller->showmessage('请输入短信验证码', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    	if (RC_Time::gmtime() - $_SESSION['temp_register_code_time'] > 300) {
+    		return ecjia_front::$controller->showmessage('验证码已过期，请重新获取', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    	if ($code != $_SESSION['temp_register_code']) {
+    		return ecjia_front::$controller->showmessage('验证码输入有误，请重新输入', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, array('type' => 'error'));
+    	}
+    	
+    	$wechat_id = with(new Ecjia\App\Platform\Frameworks\Platform\Account($uuid))->getAccountID();
+    	$wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
+    	
+    	//判断用户是否存在
+    	$row = RC_DB::table('users')->where('mobile_phone', $mobile)->first();
+    	if (!empty($row)) {
+    		$getUserId = $row['user_id'];
+    		
+    	} else {
+    		$username = $wechat_user->getNickname();
+    		$unionid = $wechat_user->getUnionid();
+    		$sex = $wechat_user->sex();
+    		$user_profile = $wechat_user->getWechatUser()->toArray();
+    		 
+    		$connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
+//     		$connect_user->saveOpenId('', '', serialize($user_profile), 7200);
+    		/*创建用户*/
+    		$username = $connect_user->getGenerateUserName();
+    		$password = $connect_user->getGeneratePassword();
+    		$email = $connect_user->getGenerateEmail();
+    		 
+    		$user_info = RC_Api::api('user', 'add_user', array('username' => $username, 'password' => $password, 'email' => $email, 'sex' => $sex, 'reg_time' => RC_Time::gmtime()));
+    		 
+    		if (is_ecjia_error($user_info)) {
+    			return ecjia_front::$controller->showmessage($user_info->get_error_message(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		} else {
+    			$getUserId = $user_info['user_id'];
+    			RC_DB::table('users')->where('user_id', $getUserId)->update(array('mobile_phone' => $mobile));
+    		}
+    	}
+    	
+    	RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('openid', $openid)->update(array('ect_uid' => $getUserId));
+    	// 积分/红包赠送
+    	$info = RC_DB::table('platform_config')->where('account_id', $wechat_id)->where('ext_code', 'mp_userbind')->first();
+    	$this->give_point($openid, $info, $getUserId);
+    	
+    	return ecjia_front::$controller->showmessage('恭喜您，关联成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('user_id' => $getUserId, 'openid' => $openid, 'uuid' => $uuid))));
     }
 }
