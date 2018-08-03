@@ -58,16 +58,8 @@ class WechatUser
         return $connect_user;
     }
     
-    /**
-     * 获取EcjiaUser用户数据模型
-     * @return \Royalcms\Component\Database\Eloquent\Model|\Royalcms\Component\Database\Eloquent\Collection|\Ecjia\App\User\Models\UsersModel
-     */
-    public function getEcjiaUser()
-    {
-        return \Ecjia\App\User\Models\UsersModel::find($this->getEcjiaUserId());
-    }
-    
-    public function getUnionid() 
+
+    public function getUnionid()
     {
         return $this->user->unionid;
     }
@@ -103,6 +95,15 @@ class WechatUser
     {
         $this->user->ect_uid = $userid;
         return $this->user->update(array('ect_uid' => $userid));
+    }
+
+    /**
+     * 获取EcjiaUser用户数据模型
+     * @return \Royalcms\Component\Database\Eloquent\Model|\Royalcms\Component\Database\Eloquent\Collection|\Ecjia\App\User\Models\UsersModel
+     */
+    public function getEcjiaUser()
+    {
+        return \Ecjia\App\User\Models\UsersModel::find($this->getEcjiaUserId());
     }
     
     /**
