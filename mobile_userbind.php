@@ -66,6 +66,9 @@ class mobile_userbind extends EcjiaWechatUserController
         $openid = trim($_GET['openid']);
         $uuid = trim($_GET['uuid']);
 
+//         $openid = 'of9uK1cj9edQ3nsUkB3WzZg9kfxU';
+//         $uuid = 'd38507d014fa456b9800c7ef583b8d9f';
+        
         $wechat_id = with(new Ecjia\App\Platform\Frameworks\Platform\Account($uuid))->getAccountID();
         $wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
         $unionid = $wechat_user->getUnionid();
@@ -411,7 +414,6 @@ class mobile_userbind extends EcjiaWechatUserController
     	$row = RC_DB::table('users')->where('mobile_phone', $mobile)->first();
     	if (!empty($row)) {
     		$getUserId = $row['user_id'];
-    		
     	} else {
     		$username = $wechat_user->getNickname();
     		$unionid = $wechat_user->getUnionid();
@@ -434,11 +436,11 @@ class mobile_userbind extends EcjiaWechatUserController
     			RC_DB::table('users')->where('user_id', $getUserId)->update(array('mobile_phone' => $mobile));
     		}
     	}
+    	$wechat_user->setEcjiaUserId($getUserId);
     	
-    	RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('openid', $openid)->update(array('ect_uid' => $getUserId));
     	// 积分/红包赠送
-    	$info = RC_DB::table('platform_config')->where('account_id', $wechat_id)->where('ext_code', 'mp_userbind')->first();
-    	$this->give_point($openid, $info, $getUserId);
+//     	$info = RC_DB::table('platform_config')->where('account_id', $wechat_id)->where('ext_code', 'mp_userbind')->first();
+//     	$this->give_point($openid, $info, $getUserId);
     	
     	return ecjia_front::$controller->showmessage('恭喜您，关联成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid))));
     }

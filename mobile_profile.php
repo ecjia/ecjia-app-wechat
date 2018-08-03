@@ -70,6 +70,7 @@ class mobile_profile extends EcjiaWechatUserController
         $wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
         $user_id = $wechat_user->getEcjiaUserId();
 
+//         _dump($user_id,1);
 //         $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
 //         $user_id = $connect_user->getUserId();
 
