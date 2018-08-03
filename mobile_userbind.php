@@ -71,9 +71,10 @@ class mobile_userbind extends EcjiaWechatUserController
         
         $wechat_id = with(new Ecjia\App\Platform\Frameworks\Platform\Account($uuid))->getAccountID();
         $wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
-        $unionid = $wechat_user->getUnionid();
-        $data['wechat_image'] = $wechat_user->getImage();
-        $data['wechat_nickname'] = $wechat_user->getNickname();
+//         $unionid = $wechat_user->getUnionid();
+
+//         $data['wechat_image'] = $wechat_user->getImage();
+//         $data['wechat_nickname'] = $wechat_user->getNickname();
 
 //         $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
 //         if ($connect_user->checkUser()) {
@@ -81,15 +82,17 @@ class mobile_userbind extends EcjiaWechatUserController
 //         }
         
         
-        $ect_uid = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('openid', $openid)->pluck('ect_uid');
+//         $ect_uid = RC_DB::table('wechat_user')->where('wechat_id', $wechat_id)->where('openid', $openid)->pluck('ect_uid');
+
+        $ect_uid = $wechat_user->getEcjiaUserId();
         if (!empty($ect_uid)) {
         	return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid)));
         }
 
 //         $data['register_url'] = RC_Uri::url('wechat/mobile_userbind/register', array('uuid' => $uuid, 'openid' => $openid));
-        $data['register_url'] = RC_Uri::url('wechat/mobile_userbind/mobile', array('uuid' => $uuid, 'openid' => $openid));
-        $data['bind_url'] = RC_Uri::url('wechat/mobile_userbind/bind_login', array('uuid' => $uuid, 'openid' => $openid));
-        $this->assign('data', $data);
+//         $data['register_url'] = RC_Uri::url('wechat/mobile_userbind/mobile', array('uuid' => $uuid, 'openid' => $openid));
+//         $data['bind_url'] = RC_Uri::url('wechat/mobile_userbind/bind_login', array('uuid' => $uuid, 'openid' => $openid));
+//         $this->assign('data', $data);
 
 //         $this->display(
 //             RC_Package::package('app::wechat')->loadTemplate('front/bind.dwt', true)
