@@ -3,6 +3,7 @@
 namespace Ecjia\App\Wechat;
 
 use Ecjia\App\Wechat\Models\WechatUserModel;
+use Ecjia\App\Wechat\Exceptions\WechatUserNotFoundException;
 
 /**
  * 微信用户类
@@ -33,6 +34,10 @@ class WechatUser
     protected function findOpenidUser()
     {
         $user = WechatUserModel::wechat($this->wechat_id)->openid($this->open_id)->first();
+        if (empty($user)) {
+            throw  new WechatUserNotFoundException('Wechat user openid不存在或用户未关注。');
+        }
+
         return $user;
     }
     
