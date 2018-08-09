@@ -83,6 +83,7 @@ class WechatUUID {
             $config = array(
                 'app_id'     => $this->account->getAppId(),
                 'app_secret' => $this->account->getAppSecret(),
+                'aes_key'    => $this->account->getAESKey(),
             );
             royalcms('wechat')->init($config);
             
