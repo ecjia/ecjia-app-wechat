@@ -130,7 +130,7 @@ class WechatSubscribeHandler
                     $userModel->qr_scene_str    = $userinfo->get('qr_scene_str');
                 }
 
-                if (! $usrModel->popularize_uid && $uid) {
+                if (! $userModel->popularize_uid && $uid) {
                     $userModel->popularize_uid = $uid;
                 }
 
