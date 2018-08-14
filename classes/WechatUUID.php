@@ -55,7 +55,7 @@ class WechatUUID {
     
     protected $account;
     
-    public function __construct($uuid = null) 
+    public function __construct($uuid = null, $account = null)
     {
         if (is_null($uuid)) {
             
@@ -68,8 +68,12 @@ class WechatUUID {
         } else {
             $this->uuid = trim($uuid);   
         }
-        
-        $this->account = new Account($this->uuid);
+
+        if (is_null($account)) {
+            $this->account = new Account($this->uuid);
+        } else {
+            $this->account = $account;
+        }
     }
     
     

@@ -51,16 +51,14 @@ use Ecjia\App\Platform\Frameworks\Platform\AccountID;
 
 class WechatID extends WechatUUID
 {
-    
-    protected $uuid;
-    
-    protected $account;
-    
+
     public function __construct($id)
     {
-        $this->account = new AccountID($id);
+        $account = new AccountID($id);
 
-        $this->uuid = $this->account->getUUID();
+        $uuid = $this->account->getUUID();
+
+        parent::__construct($uuid, $account);
     }
     
 }
