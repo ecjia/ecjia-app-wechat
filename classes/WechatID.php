@@ -56,7 +56,7 @@ class WechatID extends WechatUUID
     {
         $account = new AccountID($id);
 
-        $uuid = $this->account->getUUID();
+        $uuid = $account->getUUID();
 
         parent::__construct($uuid, $account);
     }
