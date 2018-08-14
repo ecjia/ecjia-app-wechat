@@ -57,16 +57,10 @@ if (defined('RC_SITE') && RC_SITE == 'platform')
     //add Macroable 检测公众平台粉丝是否绑定用户
     Ecjia\App\Platform\Plugin\PlatformAbstract::macro('hasBindUser', function ()
     {
-        try {
-            $wechatUUID = new \Ecjia\App\Wechat\WechatUUID();
-            $wechat_id = $wechatUUID->getWechatID();
-            $openid = $this->getMessage()->get('FromUserName');
-            $wechat_user = new \Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
-        }
-        catch (\Ecjia\App\Wechat\Exceptions\WechatUserNotFoundException $e) {
-            RC_WeChat::log()->error($e->getMessage());
-            return false;
-        }
+        $wechatUUID = new \Ecjia\App\Wechat\WechatUUID();
+        $wechat_id = $wechatUUID->getWechatID();
+        $openid = $this->getMessage()->get('FromUserName');
+        $wechat_user = new \Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
 
         //获取绑定ecjia会员的userid
         $ect_uid = $wechat_user->getEcjiaUserId();
