@@ -9,7 +9,7 @@ class WechatServiceProvider extends  AppParentServiceProvider
     
     public function boot()
     {
-        $this->package('ecjia/app-wechat');
+        $this->package('ecjia/app-wechat', null, dirname(__DIR__));
     }
     
     public function register()
