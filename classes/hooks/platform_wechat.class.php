@@ -186,6 +186,10 @@ class wechat_platform_hooks
 }
 
 RC_Hook::add_action('ecjia_platform_finish_launching', function () {
+    if (is_null(ecjia_platform::$controller->getPlatformAccount())) {
+        return null;
+    }
+
     if (ecjia_platform::$controller->getCurrentPlatform() == 'wechat') {
 
         RC_Hook::add_action('platform_dashboard_header_links', array('wechat_platform_hooks', 'platform_dashboard_header_messages'));
