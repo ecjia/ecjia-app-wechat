@@ -379,7 +379,9 @@ class platform_record extends ecjia_platform
                 $arrsort[$key][$uniqid] = $value;
             }
         }
-        array_multisort($arrsort[$field], constant($sort), $array);
+        if (!empty($array)) {
+        	array_multisort($arrsort[$field], constant($sort), $array);
+        }
         return $array;
     }
 
