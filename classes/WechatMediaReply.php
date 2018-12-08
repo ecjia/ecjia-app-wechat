@@ -72,6 +72,7 @@ class WechatMediaReply
     protected function Video_reply(WechatMediaModel $data, $message)
     {
         $content = WechatRecord::Video_reply($message, $data->media_id, $data->title, $data->digest);
+        return $content;
     }
     
     /**
@@ -80,7 +81,8 @@ class WechatMediaReply
      */
     protected function News_reply(WechatMediaModel $data, $message)
     {
-        
+        $content = WechatRecord::News_reply($message, $data->title, $data->digest, $data->media_url, $data->thumb_url);
+        return $content;
     }
     
     
