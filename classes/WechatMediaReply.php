@@ -85,7 +85,7 @@ class WechatMediaReply
 
         if (! $data->subNews->isEmpty()) {
             $data->subNews->each(function ($item) use (& $news, $message) {
-                $news[] = WechatRecord::News_reply($message, $item->title, $item->digest, $item->media_url, $item->thumb_url);
+                $news[] = WechatRecord::createNewsReply($message, $item->title, $item->digest, $item->media_url, $item->thumb_url);
                 return true;
             });
 

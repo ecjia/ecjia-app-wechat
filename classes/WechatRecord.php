@@ -122,26 +122,45 @@ class WechatRecord
             return self::Default_reply($message);
         }
     }
+
+    /**
+     * 回复图文消息
+     * @param \Royalcms\Component\Support\Collection $message
+     */
+    public static function createNewsReply($message, $title, $description, $url, $image) {
+        $content = [
+            'title' => $title,
+            'description' => $description,
+            'url' => $url,
+            'image' => $image,
+        ];
+
+        return new News($content);
+    }
     
     /**
      * 回复多图文消息
      * @param array | \Royalcms\Component\WeChat\Message\News $news
      */
-    public static function MultiNews_reply(/*...*/$news)
+    public static function MultiNews_reply($message, /*...*/$news)
     {
         $args = func_get_args();
         $nums = func_num_args();
 
-        if ($nums == 1) {
-            if (is_array($args)) {
-                $news = $args[0];
+        if ($nums == 2) {
+            if (is_array($args[1])) {
+                $news = $args[1];
             }
         }
+
+        unset($args[0]);
         
         if (count($args) > 8) {
             $news = array_slice($args, 0, 8);
         }
-        
+
+        self::replyMsg($message->get('FromUserName'), '回复多图文消息');
+
         return $news;
     }
     
