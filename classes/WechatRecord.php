@@ -134,7 +134,7 @@ class WechatRecord
 
         if ($nums == 1) {
             if (is_array($args)) {
-                $news = $args;
+                $news = $args[0];
             }
         }
         
