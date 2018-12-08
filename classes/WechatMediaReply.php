@@ -91,7 +91,7 @@ class WechatMediaReply
 
         }
 
-        $content = WechatRecord::MultiNews_reply($news);
+        $content = WechatRecord::MultiNews_reply($message, $news);
         return $content;
     }
     
