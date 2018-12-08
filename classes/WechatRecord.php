@@ -130,6 +130,12 @@ class WechatRecord
     public static function MultiNews_reply(/*...*/$news)
     {
         $args = func_get_args();
+
+        if (count($args) === 1) {
+            if (is_array($args)) {
+                $news = $args;
+            }
+        }
         
         if (count($args) > 8) {
             $news = array_slice($args, 0, 8);

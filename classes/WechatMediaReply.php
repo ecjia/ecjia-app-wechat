@@ -81,7 +81,17 @@ class WechatMediaReply
      */
     protected function News_reply(WechatMediaModel $data, $message)
     {
-        $content = WechatRecord::News_reply($message, $data->title, $data->digest, $data->media_url, $data->thumb_url);
+        $news[] = WechatRecord::News_reply($message, $data->title, $data->digest, $data->media_url, $data->thumb_url);
+
+        if (! $data->subNews->isEmpty()) {
+            $data->subNews->each(function ($item) use (& $news, $message) {
+                $news[] = WechatRecord::News_reply($message, $item->title, $item->digest, $item->media_url, $item->thumb_url);
+                return true;
+            });
+
+        }
+
+        $content = WechatRecord::MultiNews_reply($news);
         return $content;
     }
     
