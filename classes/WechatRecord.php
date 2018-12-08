@@ -125,7 +125,7 @@ class WechatRecord
     
     /**
      * 回复多图文消息
-     * @param \Royalcms\Component\WeChat\Message\News $news
+     * @param array | \Royalcms\Component\WeChat\Message\News $news
      */
     public static function MultiNews_reply(/*...*/$news)
     {
