@@ -73,6 +73,11 @@ HTML;
      */
     public function handleClean()
     {
+        $count = $this->handleCount();
+        if (empty($count)) {
+            return true;
+        }
+        
         $wechat_user_info = RC_DB::table('wechat_user')->where('ect_uid', $this->user_id)->first();
 
         $result = false;

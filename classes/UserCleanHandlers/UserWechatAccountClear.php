@@ -68,6 +68,11 @@ HTML;
      */
     public function handleClean()
     {
+        $count = $this->handleCount();
+        if (empty($count)) {
+            return true;
+        }
+        
         $result = RC_DB::table('wechat_user')->where('ect_uid', $this->user_id)->delete();
 
         if ($result) {
