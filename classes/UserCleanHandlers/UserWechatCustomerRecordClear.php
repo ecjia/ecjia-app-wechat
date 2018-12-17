@@ -21,7 +21,7 @@ class UserWechatCustomerRecordClear extends UserCleanAbstract
      * 代号标识
      * @var string
      */
-    protected $code = 'user_wechat_customer_record';
+    protected $code = 'user_wechat_customer_record_clear';
 
     /**
      * 名称
