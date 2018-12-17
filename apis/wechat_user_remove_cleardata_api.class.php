@@ -65,6 +65,9 @@ class wechat_user_remove_cleardata_api extends Component_Event_Api
 
         return [
             new \Ecjia\App\Wechat\UserCleanHandlers\UserWechatAccountClear($user_id),
+            new \Ecjia\App\Wechat\UserCleanHandlers\UserWechatCustomMessageClear($user_id),
+            new \Ecjia\App\Wechat\UserCleanHandlers\UserWechatPrizeClear($user_id),
+            new \Ecjia\App\Wechat\UserCleanHandlers\UserWechatCustomerRecordClear($user_id),
         ];
     }
 
