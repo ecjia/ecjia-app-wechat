@@ -56,7 +56,7 @@ class wechat_platform_response_api extends Component_Event_Api
     public function call(&$options)
     {
         if (! ($options instanceof Ecjia\App\Platform\Frameworks\Platform\Account)) {
-            return new ecjia_error('ecjia_platform_account_object_not_match', '参数不是Ecjia\App\Platform\Frameworks\Platform\Account对象');
+            return new ecjia_error('ecjia_platform_account_object_not_match', __('参数不是Ecjia\App\Platform\Frameworks\Platform\Account对象', 'wechat'));
         }
         
         try {
