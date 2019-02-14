@@ -65,14 +65,14 @@ class mobile_qrcode extends EcjiaWechatUserController
     public function init()
     {
         $openid = trim($_GET['openid']);
-        $uuid = trim($_GET['uuid']);
+        $uuid   = trim($_GET['uuid']);
 
         if (empty($openid) || empty($uuid)) {
             return $this->displayContent('openid或uuid参数不能为空');
         }
 
         $qrcode = new \Ecjia\App\Wechat\WechatQrcode($uuid);
-        $url = $qrcode->getUserQrcodeUrl($openid);
+        $url    = $qrcode->getUserQrcodeUrl($openid);
         if (is_ecjia_error($url)) {
             return $this->displayContent($url->get_error_code());
         }
@@ -92,8 +92,8 @@ class mobile_qrcode extends EcjiaWechatUserController
         $db = RC_DB::table('wechat_user as w')
             ->leftJoin('wechat_user as u', RC_DB::raw('w.uid'), '=', RC_DB::raw('u.popularize_uid'))
             ->where(RC_DB::raw('w.popularize_uid'), $user_info['uid']);
-        
-        $count = $db->count();
+
+        $count     = $db->count();
         $user_list = $db
             ->select(RC_DB::raw('w.*'))
             ->orderBy(RC_DB::raw('w.subscribe_time'), 'desc')

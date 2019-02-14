@@ -709,7 +709,7 @@ return array(
     'clear_menu_success'    => '已成功清除微信端所有菜单',
     'remove_menu_success'   => '删除菜单成功',
     'menu_sort_required'    => '菜单排序不能为空',
-    'sort_numeric'          => '请输入数值',
+    'sort_numeric'          => '请输入排序数值',
 
     'wechat_menu_content'      => '欢迎访问ECJia智能后台微信菜单页面，当前公众号的所有微信菜单都会显示在此列表中。',
     'wechat_menu_help'         => '关于微信菜单帮助文档',

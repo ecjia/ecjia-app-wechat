@@ -62,23 +62,23 @@ class mobile_profile extends EcjiaWechatUserController
     public function init()
     {
         $openid = trim($_GET['openid']);
-        $uuid = trim($_GET['uuid']);
+        $uuid   = trim($_GET['uuid']);
 
-        $wechat_id = with(new Ecjia\App\Wechat\WechatUUID())->getWechatID();
+        $wechat_id   = with(new Ecjia\App\Wechat\WechatUUID())->getWechatID();
         $wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
-        $user_id = $wechat_user->getEcjiaUserId();
+        $user_id     = $wechat_user->getEcjiaUserId();
 
         $_SESSION['wechat_user_id'] = $user_id;
         $_SESSION['wechat_open_id'] = $openid;
-        $_SESSION['wechat_uuid'] = $uuid;
-        
+        $_SESSION['wechat_uuid']    = $uuid;
+
         $user_info = RC_DB::table('users')->where('user_id', $user_id)->select('user_name', 'email', 'mobile_phone', 'user_rank')->first();
 
         $row_rank = RC_DB::table('user_rank')->where('rank_id', $user_info['user_rank'])->first();
-        
+
         $user_info['user_rank_name'] = $row_rank['rank_name'];
-        $user_info['user_rank_id'] = $row_rank['rank_id'];
-        $user_info['wechat_image'] = $wechat_user->getImage();
+        $user_info['user_rank_id']   = $row_rank['rank_id'];
+        $user_info['wechat_image']   = $wechat_user->getImage();
         $this->assign('user_info', $user_info);
 
         $this->assign('icon_wechat_user', RC_App::apps_url('statics/front/images/icon_wechat_user.png', __FILE__));
@@ -101,19 +101,19 @@ class mobile_profile extends EcjiaWechatUserController
     //获取验证码请求处理
     public function get_code()
     {
-        $mobile = $_POST['mobile'];
-        $code = rand(100000, 999999);
-        $options = array(
+        $mobile   = $_POST['mobile'];
+        $code     = rand(100000, 999999);
+        $options  = array(
             'mobile' => $mobile,
-            'event' => 'sms_get_validate',
-            'value' => array(
-                'code' => $code,
+            'event'  => 'sms_get_validate',
+            'value'  => array(
+                'code'          => $code,
                 'service_phone' => ecjia::config('service_phone'),
             ),
         );
         $response = RC_Api::api('sms', 'send_event_sms', $options);
 
-        $_SESSION['temp_code'] = $code;
+        $_SESSION['temp_code']      = $code;
         $_SESSION['temp_code_time'] = RC_Time::gmtime();
         if (!is_ecjia_error($response)) {
             return ecjia_front::$controller->showmessage("短信已发送到手机" . $mobile . "，请注意查看", ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -145,7 +145,7 @@ class mobile_profile extends EcjiaWechatUserController
     //处理重置密码逻辑
     public function reset_pwd_update()
     {
-        $password = trim($_POST['password']);
+        $password         = trim($_POST['password']);
         $confirm_password = trim($_POST['confirm_password']);
 
         if ($password == '' || $confirm_password == '') {
@@ -176,8 +176,8 @@ class mobile_profile extends EcjiaWechatUserController
     //绑定手机号逻辑处理
     public function bind_mobile_update()
     {
-        $code = $_POST['code'];
-        $time = RC_Time::gmtime() - 6000 * 3;
+        $code   = $_POST['code'];
+        $time   = RC_Time::gmtime() - 6000 * 3;
         $mobile = $_POST['mobile'];
         if (!empty($code) && $code == $_SESSION['temp_code'] && $time < $_SESSION['temp_code_time']) {
             $mobile_phone = RC_DB::table('users')->where('mobile_phone', $mobile)->where('user_id', '!=', $_SESSION['wechat_user_id'])->pluck('mobile_phone');

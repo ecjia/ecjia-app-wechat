@@ -63,21 +63,21 @@ class mobile_userbind extends EcjiaWechatUserController
     public function init()
     {
         $openid = trim($_GET['openid']);
-        $uuid = trim($_GET['uuid']);
+        $uuid   = trim($_GET['uuid']);
 
-        $wechat_id = with(new Ecjia\App\Platform\Frameworks\Platform\Account($uuid))->getAccountID();
+        $wechat_id   = with(new Ecjia\App\Platform\Frameworks\Platform\Account($uuid))->getAccountID();
         $wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
 
         $ect_uid = $wechat_user->getEcjiaUserId();
         if (!empty($ect_uid)) {
-        	return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid)));
+            return $this->redirect(RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid)));
         }
 
         $this->assign('openid', $openid);
         $this->assign('uuid', $uuid);
-        
+
         $this->display(
-      		RC_Package::package('app::wechat')->loadTemplate('front/bind_mobile_register.dwt', true)
+            RC_Package::package('app::wechat')->loadTemplate('front/bind_mobile_register.dwt', true)
         );
     }
 
@@ -87,7 +87,7 @@ class mobile_userbind extends EcjiaWechatUserController
         $type = trim($_GET['type']);
         if ($type == 'resend') {
             $openid = trim($_GET['openid']);
-            $uuid = trim($_GET['uuid']);
+            $uuid   = trim($_GET['uuid']);
             $mobile = trim($_GET['mobile']);
 
             if (RC_Time::gmtime() - $_SESSION['temp_register_code_time'] < 60) {
@@ -95,7 +95,7 @@ class mobile_userbind extends EcjiaWechatUserController
             }
         } else {
             $openid = trim($_POST['openid']);
-            $uuid = trim($_POST['uuid']);
+            $uuid   = trim($_POST['uuid']);
             $mobile = trim($_POST['mobile']);
         }
 
@@ -108,18 +108,18 @@ class mobile_userbind extends EcjiaWechatUserController
             return ecjia_front::$controller->showmessage($check_mobile->get_error_message(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
-        $code = rand(100000, 999999);
-        $options = array(
+        $code     = rand(100000, 999999);
+        $options  = array(
             'mobile' => $mobile,
-            'event' => 'sms_get_validate',
-            'value' => array(
-                'code' => $code,
+            'event'  => 'sms_get_validate',
+            'value'  => array(
+                'code'          => $code,
                 'service_phone' => ecjia::config('service_phone'),
             ),
         );
         $response = RC_Api::api('sms', 'send_event_sms', $options);
 
-        $_SESSION['temp_register_code'] = $code;
+        $_SESSION['temp_register_code']      = $code;
         $_SESSION['temp_register_code_time'] = RC_Time::gmtime();
         if (!is_ecjia_error($response)) {
             return ecjia_front::$controller->showmessage("短信已发送到手机" . $mobile . "，请注意查看", ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_userbind/enter_code', array('mobile' => $mobile, 'uuid' => $uuid, 'openid' => $openid))));
@@ -132,7 +132,7 @@ class mobile_userbind extends EcjiaWechatUserController
     public function enter_code()
     {
         $openid = trim($_GET['openid']);
-        $uuid = trim($_GET['uuid']);
+        $uuid   = trim($_GET['uuid']);
         $mobile = trim($_GET['mobile']);
 
         $this->assign('mobile', $mobile);
@@ -143,61 +143,61 @@ class mobile_userbind extends EcjiaWechatUserController
             RC_Package::package('app::wechat')->loadTemplate('front/bind_enter_code.dwt', true)
         );
     }
-    
+
     public function bind_user()
     {
-    	$openid = trim($_GET['openid']);
-    	$uuid = trim($_GET['uuid']);
-    	$mobile = trim($_GET['mobile']);
-    	$code = trim($_POST['password']);
-    	
-    	if (empty($code)) {
-    		return ecjia_front::$controller->showmessage('请输入短信验证码', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    	}
-    	if (RC_Time::gmtime() - $_SESSION['temp_register_code_time'] > 300) {
-    		return ecjia_front::$controller->showmessage('验证码已过期，请重新获取', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    	}
-    	if ($code != $_SESSION['temp_register_code']) {
-    		return ecjia_front::$controller->showmessage('验证码输入有误，请重新输入', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, array('type' => 'error'));
-    	}
-    	
-    	$wechat_id = with(new Ecjia\App\Platform\Frameworks\Platform\Account($uuid))->getAccountID();
-    	$wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
-    	
-    	//判断用户是否存在
-    	$row = RC_DB::table('users')->where('mobile_phone', $mobile)->first();
-    	if (!empty($row)) {
-    		$getUserId = $row['user_id'];
-    	} else {
-    		$username = $wechat_user->getNickname();
-    		$unionid = $wechat_user->getUnionid();
-    		$sex = $wechat_user->sex();
-    		$user_profile = $wechat_user->getWechatUser()->toArray();
-    		 
-    		$connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
-    		/*创建用户*/
-    		$username = $connect_user->getGenerateUserName();
-    		$password = $connect_user->getGeneratePassword();
-    		$email = $connect_user->getGenerateEmail();
-    		$reg_time = RC_Time::gmtime();
-    		 
-    		$user_info = RC_Api::api('user', 'add_user', array(
-    		    'username' => $username,
+        $openid = trim($_GET['openid']);
+        $uuid   = trim($_GET['uuid']);
+        $mobile = trim($_GET['mobile']);
+        $code   = trim($_POST['password']);
+
+        if (empty($code)) {
+            return ecjia_front::$controller->showmessage('请输入短信验证码', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        if (RC_Time::gmtime() - $_SESSION['temp_register_code_time'] > 300) {
+            return ecjia_front::$controller->showmessage('验证码已过期，请重新获取', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+        if ($code != $_SESSION['temp_register_code']) {
+            return ecjia_front::$controller->showmessage('验证码输入有误，请重新输入', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR, array('type' => 'error'));
+        }
+
+        $wechat_id   = with(new Ecjia\App\Platform\Frameworks\Platform\Account($uuid))->getAccountID();
+        $wechat_user = new Ecjia\App\Wechat\WechatUser($wechat_id, $openid);
+
+        //判断用户是否存在
+        $row = RC_DB::table('users')->where('mobile_phone', $mobile)->first();
+        if (!empty($row)) {
+            $getUserId = $row['user_id'];
+        } else {
+            $username     = $wechat_user->getNickname();
+            $unionid      = $wechat_user->getUnionid();
+            $sex          = $wechat_user->sex();
+            $user_profile = $wechat_user->getWechatUser()->toArray();
+
+            $connect_user = new \Ecjia\App\Connect\ConnectUser('sns_wechat', $unionid, 'user');
+            /*创建用户*/
+            $username = $connect_user->getGenerateUserName();
+            $password = $connect_user->getGeneratePassword();
+            $email    = $connect_user->getGenerateEmail();
+            $reg_time = RC_Time::gmtime();
+
+            $user_info = RC_Api::api('user', 'add_user', array(
+                'username' => $username,
                 'password' => $password,
-                'email' => $email,
-                'mobile' => $mobile,
-                'gender' => $sex,
+                'email'    => $email,
+                'mobile'   => $mobile,
+                'gender'   => $sex,
                 'reg_date' => RC_Time::gmtime(),
             ));
-    		 
-    		if (is_ecjia_error($user_info)) {
-    			return ecjia_front::$controller->showmessage($user_info->get_error_message(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    		}
+
+            if (is_ecjia_error($user_info)) {
+                return ecjia_front::$controller->showmessage($user_info->get_error_message(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            }
 
             $getUserId = $user_info['user_id'];
-    	}
-    	$wechat_user->setEcjiaUserId($getUserId);
-    	
-    	return ecjia_front::$controller->showmessage('恭喜您，关联成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid))));
+        }
+        $wechat_user->setEcjiaUserId($getUserId);
+
+        return ecjia_front::$controller->showmessage('恭喜您，关联成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid))));
     }
 }
