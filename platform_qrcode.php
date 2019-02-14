@@ -65,9 +65,9 @@ class platform_qrcode extends ecjia_platform
         RC_Script::enqueue_script('wechat_qrcode', RC_App::apps_url('statics/platform-js/wechat_qrcode.js', __FILE__), array(), false, true);
 
         RC_Script::localize_script('wechat_qrcode', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('渠道二维码', RC_Uri::url('wechat/platform_qrcode/init')));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('渠道二维码', 'wechat'), RC_Uri::url('wechat/platform_qrcode/init')));
 
-        ecjia_platform_screen::get_current_screen()->set_subject('渠道二维码');
+        ecjia_platform_screen::get_current_screen()->set_subject(__('渠道二维码', 'wechat'));
     }
 
     /**
@@ -78,21 +78,22 @@ class platform_qrcode extends ecjia_platform
         $this->admin_priv('wechat_qrcode_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('渠道二维码'));
-        $this->assign('action_link', array('text' => '添加二维码', 'href' => RC_Uri::url('wechat/platform_qrcode/add')));
-        $this->assign('ur_here', '渠道二维码列表');
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('渠道二维码', 'wechat')));
+        $this->assign('action_link', array('text' => __('添加二维码', 'wechat'), 'href' => RC_Uri::url('wechat/platform_qrcode/add')));
+        $this->assign('ur_here', __('渠道二维码列表', 'wechat'));
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', '请先添加公众号，再进行后续操作');
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'wechat'));
         } else {
             $this->assign('warn', 'warn');
 
-            $type = $this->platformAccount->getType();
-            $this->assign('type', $type);
+            $type        = $this->platformAccount->getType();
+            $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
 
-            $this->assign('type_error', sprintf('抱歉！您的公众号属于%s类型，该模块目前只支持“认证服务号”类型的公众号。', $wechat_type[$type]));
+            $this->assign('type', $type);
+            $this->assign('type_error', sprintf(__('抱歉！您的公众号属于%s类型，该模块目前只支持“认证服务号”类型的公众号。', 'wechat'), $wechat_type[$type]));
 
             $listdb = $this->get_qrcodelist();
             $this->assign('listdb', $listdb);
@@ -109,24 +110,24 @@ class platform_qrcode extends ecjia_platform
     {
         $this->admin_priv('wechat_qrcode_add');
 
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加二维码'));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加二维码', 'wechat')));
 
-        $this->assign('ur_here', '添加二维码');
-        $this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_qrcode/init'), 'text' => '渠道二维码列表'));
+        $this->assign('ur_here', __('添加二维码', 'wechat'));
+        $this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_qrcode/init'), 'text' => __('渠道二维码列表', 'wechat')));
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', '请先添加公众号，再进行后续操作');
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'wechat'));
         } else {
             $this->assign('warn', 'warn');
 
-            $type = $this->platformAccount->getType();
+            $type        = $this->platformAccount->getType();
             $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
-            
+
             $this->assign('type', $type);
 
-            $this->assign('type_error', sprintf('抱歉！您的公众号属于%s类型，该模块目前只支持“认证服务号”类型的公众号。', $wechat_type[$type]));
+            $this->assign('type_error', sprintf(__('抱歉！您的公众号属于%s类型，该模块目前只支持“认证服务号”类型的公众号。', 'wechat'), $wechat_type[$type]));
             $this->assign('form_action', RC_Uri::url('wechat/platform_qrcode/insert'));
         }
 
@@ -140,8 +141,8 @@ class platform_qrcode extends ecjia_platform
             ->lists(RC_DB::raw('wrk.rule_keywords'));
 
         $key_list = array(
-            '插件关键词' => $cmd_word_list,
-            '回复关键词' => $rule_keywords_list,
+            __('插件关键词', 'wechat') => $cmd_word_list,
+            __('回复关键词', 'wechat') => $rule_keywords_list,
         );
         $this->assign('key_list', $key_list);
 
@@ -173,30 +174,30 @@ class platform_qrcode extends ecjia_platform
         if ($type == 0) {
             if (is_numeric($scene_id)) {
                 if ($scene_id < 100001) {
-                    return $this->showmessage('临时二维码为整型类型时场景值不能小于100001', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                    return $this->showmessage(__('临时二维码为整型类型时场景值不能小于100001', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
                 if ($scene_id > 4294967295) {
-                    return $this->showmessage('临时二维码为整型类型时场景值不能大于4294967295', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                    return $this->showmessage(__('临时二维码为整型类型时场景值不能大于4294967295', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
             }
         }
         if ($type == 1) {
             if (is_numeric($scene_id)) {
                 if ($scene_id < 1) {
-                    return $this->showmessage('永久二维码为整型类型时场景值不能小于1', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                    return $this->showmessage(__('永久二维码为整型类型时场景值不能小于1', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
                 if ($scene_id > 100000) {
-                    return $this->showmessage('永久二维码为整型类型时场景值不能大于100000', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                    return $this->showmessage(__('永久二维码为整型类型时场景值不能大于100000', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
             }
         }
 
         if (is_string($scene_id)) {
             if (mb_strlen($scene_id) < 1) {
-                return $this->showmessage('临时二维码为字符串类型时长度不能小于1', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('临时二维码为字符串类型时长度不能小于1', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
             if (mb_strlen($scene_id) > 64) {
-                return $this->showmessage('临时二维码为字符串类型时长度不能大于64', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('临时二维码为字符串类型时长度不能大于64', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
         }
 
@@ -211,8 +212,8 @@ class platform_qrcode extends ecjia_platform
         );
         RC_DB::table('wechat_qrcode')->insert($data);
 
-        $this->admin_log(sprintf('功能是%s', $functions), 'add', 'qrcode');
-        return $this->showmessage('添加二维码成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init', array('type' => $default_type))));
+        $this->admin_log(sprintf(__('功能是%s', 'wechat'), $functions), 'add', 'qrcode');
+        return $this->showmessage(__('添加二维码成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init', array('type' => $default_type))));
     }
 
     /**
@@ -228,8 +229,8 @@ class platform_qrcode extends ecjia_platform
         $function = RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('function');
         RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
 
-        $this->admin_log(sprintf('功能是%s', $function), 'remove', 'qrcode');
-        return $this->showmessage('删除二维码成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
+        $this->admin_log(sprintf(__('功能是%s', 'wechat'), $function), 'remove', 'qrcode');
+        return $this->showmessage(__('删除二维码成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
     }
 
     /**
@@ -248,9 +249,9 @@ class platform_qrcode extends ecjia_platform
         $default_type = isset($_GET['type']) ? intval($_GET['type']) : 1;
 
         foreach ($info as $v) {
-            $this->admin_log(sprintf('功能是%s', $v['function']), 'batch_remove', 'qrcode');
+            $this->admin_log(sprintf(__('功能是%s', 'wechat'), $v['function']), 'batch_remove', 'qrcode');
         }
-        return $this->showmessage('批量操作成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init', array('type' => $default_type))));
+        return $this->showmessage(__('批量操作成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init', array('type' => $default_type))));
     }
 
     /**
@@ -272,7 +273,7 @@ class platform_qrcode extends ecjia_platform
             ->first();
 
         if ($qrcode['status'] == 0) {
-            return $this->showmessage('二维码已禁用，请重新启用', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('二维码已禁用，请重新启用', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         if (empty($qrcode['qrcode_url'])) {
@@ -301,7 +302,7 @@ class platform_qrcode extends ecjia_platform
         } else {
             $qrcode_url = $qrcode['qrcode_url'];
         }
-        $this->admin_log(sprintf('功能是%s', $qrcode['function']), 'setup', 'qrcode');
+        $this->admin_log(sprintf(__('功能是%s', 'wechat'), $qrcode['function']), 'setup', 'qrcode');
         return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => $qrcode_url));
     }
 
@@ -320,11 +321,11 @@ class platform_qrcode extends ecjia_platform
         RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('status' => $val));
 
         if ($val == 1) {
-            $this->admin_log(sprintf('开启状态，功能是%s', $function), 'setup', 'qrcode');
+            $this->admin_log(sprintf(__('开启状态，功能是%s', 'wechat'), $function), 'setup', 'qrcode');
         } else {
-            $this->admin_log(sprintf('关闭状态，功能是%s', $function), 'setup', 'qrcode');
+            $this->admin_log(sprintf(__('关闭状态，功能是%s', 'wechat'), $function), 'setup', 'qrcode');
         }
-        return $this->showmessage('编辑状态成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
+        return $this->showmessage(__('编辑状态成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_qrcode/init')));
     }
 
     /**
@@ -341,14 +342,14 @@ class platform_qrcode extends ecjia_platform
 
         if (!empty($sort)) {
             if (!is_numeric($sort)) {
-                return $this->showmessage('请输入排序数值', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('请输入排序数值', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             } else {
                 RC_DB::table('wechat_qrcode')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('sort' => $sort));
-                $this->admin_log(sprintf('功能是%s', $function), 'edit', 'qrcode');
-                return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_qrcode/init')));
+                $this->admin_log(sprintf(__('功能是%s', 'wechat'), $function), 'edit', 'qrcode');
+                return $this->showmessage(__('编辑排序成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_qrcode/init')));
             }
         } else {
-            return $this->showmessage('二维码排序不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('二维码排序不能为空', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 

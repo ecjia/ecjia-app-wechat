@@ -168,10 +168,10 @@ class platform_subscribe extends ecjia_platform
             $this->assign('num', $num);
 
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
-            $types = $this->platformAccount->getType();
-            $this->assign('type', $types);
+            $types       = $this->platformAccount->getType();
             $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
 
+            $this->assign('type', $types);
             $this->assign('type_error', sprintf(__('抱歉！您的公众号属于%s类型，该模块目前只支持“认证”和“测试”类型的公众号。', 'wechat'), $wechat_type[$types]));
             $this->assign('custom_type_error', sprintf(__('抱歉！您的公众号属于%s类型，该模块目前只支持“认证服务号”类型的公众号。', 'wechat'), $wechat_type[$types]));
 
@@ -575,9 +575,9 @@ class platform_subscribe extends ecjia_platform
             $this->assign('warn', 'warn');
 
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
-            $type = $this->platformAccount->getType();
+            $type        = $this->platformAccount->getType();
             $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
-            
+
             $this->assign('type', $type);
             $this->assign('type_error', sprintf(__('抱歉！您的公众号属于%s类型，该模块目前只支持“认证”和“测试”类型的公众号。', 'wechat'), $wechat_type[$type]));
 

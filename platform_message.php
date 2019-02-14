@@ -67,9 +67,9 @@ class platform_message extends ecjia_platform
         RC_Style::enqueue_style('admin_subscribe', RC_App::apps_url('statics/css/admin_subscribe.css', __FILE__));
 
         RC_Script::localize_script('platform_subscribe', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('消息管理', RC_Uri::url('wechat/admin_subscribe/init')));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('消息管理', 'wechat'), RC_Uri::url('wechat/admin_subscribe/init')));
 
-        ecjia_platform_screen::get_current_screen()->set_subject('消息管理');
+        ecjia_platform_screen::get_current_screen()->set_subject(__('消息管理', 'wechat'));
     }
 
     public function init()
@@ -77,13 +77,13 @@ class platform_message extends ecjia_platform
         $this->admin_priv('wechat_subscribe_message_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('消息管理'));
-        $this->assign('ur_here', '消息管理');
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('消息管理', 'wechat')));
+        $this->assign('ur_here', __('消息管理', 'wechat'));
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', '请先添加公众号，再进行后续操作');
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'wechat'));
         } else {
             $this->assign('warn', 'warn');
             $list = $this->get_message_list();
@@ -94,7 +94,7 @@ class platform_message extends ecjia_platform
             $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
 
             $this->assign('type', $types);
-            $this->assign('type_error', sprintf('抱歉！您的公众号属于%s类型，该模块目前只支持“认证”和“测试”类型的公众号。', $wechat_type[$types]));
+            $this->assign('type_error', sprintf(__('抱歉！您的公众号属于%s类型，该模块目前只支持“认证”和“测试”类型的公众号。', 'wechat'), $wechat_type[$types]));
         }
 
         $this->display('wechat_message_list.dwt');
@@ -242,7 +242,7 @@ class platform_message extends ecjia_platform
             if (!empty($name_list)) {
                 $info['tag_name'] = implode('，', $name_list);
             } else {
-                $info['tag_name'] = '无标签';
+                $info['tag_name'] = __('无标签', 'wechat');
             }
         }
 

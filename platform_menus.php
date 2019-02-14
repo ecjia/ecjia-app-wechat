@@ -66,9 +66,9 @@ class platform_menus extends ecjia_platform
         RC_Style::enqueue_style('menu', RC_App::apps_url('statics/platform-css/wechat_menu.css', __FILE__));
 
         RC_Script::localize_script('wechat_menus', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('微信菜单', RC_Uri::url('wechat/platform_menus/init')));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('微信菜单', 'wechat'), RC_Uri::url('wechat/platform_menus/init')));
 
-        ecjia_platform_screen::get_current_screen()->set_subject('微信菜单');
+        ecjia_platform_screen::get_current_screen()->set_subject(__('微信菜单', 'wechat'));
     }
 
     public function init()
@@ -76,22 +76,22 @@ class platform_menus extends ecjia_platform
         $this->admin_priv('wechat_menus_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('微信菜单'));
-        $this->assign('ur_here', '微信菜单列表');
-        $this->assign('action_link', array('text' => '添加微信菜单', 'href' => RC_Uri::url('wechat/platform_menus/add')));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('微信菜单', 'wechat')));
+        $this->assign('ur_here', __('微信菜单列表', 'wechat'));
+        $this->assign('action_link', array('text' => __('添加微信菜单', 'wechat'), 'href' => RC_Uri::url('wechat/platform_menus/add')));
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', '请先添加公众号，再进行后续操作');
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'wechat'));
         } else {
             $this->assign('warn', 'warn');
 
-            $type = $this->platformAccount->getType();
+            $type        = $this->platformAccount->getType();
             $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
-            
+
             $this->assign('type', $type);
-            $this->assign('type_error', sprintf('抱歉！您当前公众号属于“未认证的公众号”，该模块目前还不支持“未认证的订阅号”。', $wechat_type[$type]));
+            $this->assign('type_error', sprintf(__('抱歉！您当前公众号属于“未认证的公众号”，该模块目前还不支持“未认证的订阅号”。', 'wechat'), $wechat_type[$type]));
 
             $listdb = $this->get_menuslist();
             $this->assign('menu_list', $listdb['menu_list']);
@@ -114,19 +114,22 @@ class platform_menus extends ecjia_platform
     {
         $this->admin_priv('wechat_menus_add');
 
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加微信菜单'));
-        $this->assign('ur_here', '添加微信菜单');
-        $this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_menus/init'), 'text' => '微信菜单列表'));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加微信菜单', 'wechat')));
+        $this->assign('ur_here', __('添加微信菜单', 'wechat'));
+        $this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_menus/init'), 'text' => __('微信菜单列表', 'wechat')));
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', '请先添加公众号，再进行后续操作');
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'wechat'));
         } else {
             $this->assign('warn', 'warn');
-            $type = $this->platformAccount->getType();
+
+            $type        = $this->platformAccount->getType();
+            $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
+
             $this->assign('type', $type);
-            $this->assign('type_error', sprintf('抱歉！您当前公众号属于“未认证的公众号”，该模块目前还不支持“未认证的订阅号”。', $wechat_type[$type]));
+            $this->assign('type_error', sprintf(__('抱歉！您当前公众号属于“未认证的公众号”，该模块目前还不支持“未认证的订阅号”。', 'wechat'), $wechat_type[$type]));
 
             $pmenu = RC_DB::table('wechat_menu')->where('pid', 0)->where('wechat_id', $wechat_id)->get();
             $this->assign('pmenu', $pmenu);
@@ -154,7 +157,7 @@ class platform_menus extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         $pid  = !empty($_POST['pid']) ? intval($_POST['pid']) : 0;
-        $name = !empty($_POST['name']) ? trim($_POST['name']) : !empty($pid) ? '子菜单名称' : '菜单名称';
+        $name = !empty($_POST['name']) ? trim($_POST['name']) : !empty($pid) ? __('子菜单名称', 'wechat') : __('菜单名称', 'wechat');
 
         $type    = !empty($_POST['type']) ? $_POST['type'] : 'click';
         $key     = !empty($_POST['key']) ? $_POST['key'] : '';
@@ -225,8 +228,8 @@ class platform_menus extends ecjia_platform
             ->lists(RC_DB::raw('wrk.rule_keywords'));
 
         $key_list = array(
-            '插件关键词' => $cmd_word_list,
-            '回复关键词' => $rule_keywords_list,
+            __('插件关键词', 'wechat') => $cmd_word_list,
+            __('回复关键词', 'wechat') => $rule_keywords_list,
         );
         $this->assign('key_list', $key_list);
 
@@ -241,15 +244,16 @@ class platform_menus extends ecjia_platform
     {
         $this->admin_priv('wechat_menus_update');
 
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑微信菜单'));
-        $this->assign('ur_here', '编辑微信菜单');
-        $this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_menus/init'), 'text' => '微信菜单列表'));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑微信菜单', 'wechat')));
+        $this->assign('ur_here', __('编辑微信菜单', 'wechat'));
+        $this->assign('action_link', array('href' => RC_Uri::url('wechat/platform_menus/init'), 'text' => __('微信菜单列表', 'wechat')));
 
-        $wechat_id = $this->platformAccount->getAccountID();
+        $wechat_id   = $this->platformAccount->getAccountID();
+        $type        = $this->platformAccount->getType();
+        $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
 
-        $type = $this->platformAccount->getType();
         $this->assign('type', $type);
-        $this->assign('type_error', sprintf('抱歉！您当前公众号属于“未认证的公众号”，该模块目前还不支持“未认证的订阅号”。', $wechat_type[$type]));
+        $this->assign('type_error', sprintf(__('抱歉！您当前公众号属于“未认证的公众号”，该模块目前还不支持“未认证的订阅号”。', 'wechat'), $wechat_type[$type]));
 
         $id          = intval($_GET['id']);
         $wechatmenus = RC_DB::table('wechat_menu')->where('id', $id)->where('wechat_id', $wechat_id)->first();
@@ -292,7 +296,7 @@ class platform_menus extends ecjia_platform
         $sort    = !empty($_POST['sort']) ? intval($_POST['sort']) : 0;
 
         if (empty($name)) {
-            return $this->showmessage('菜单名称不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('菜单名称不能为空', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 //         if (strlen($name) > 16) {
 //             return $this->showmessage('字数不超过8个汉字或16个字母', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -300,10 +304,10 @@ class platform_menus extends ecjia_platform
 
         if ($type == 'view') {
             if (empty($web_url)) {
-                return $this->showmessage('外链url不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('外链url不能为空', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             } else {
                 if (strpos($web_url, 'http://') === false && strpos($web_url, 'https://') === false) {
-                    return $this->showmessage('外链url格式错误', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                    return $this->showmessage(__('外链url格式错误', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
                 }
                 $url = $web_url;
             }
@@ -312,7 +316,7 @@ class platform_menus extends ecjia_platform
             $h5_url      = RC_Uri::home_url() . '/sites/m/';
             $weapp_appid = $_POST['weapp_appid'];
             if (empty($weapp_appid)) {
-                return $this->showmessage('请选择小程序', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('请选择小程序', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             } else {
                 $miniprogram_config = array(
                     'url'      => $h5_url,
@@ -372,8 +376,8 @@ class platform_menus extends ecjia_platform
                 ->lists(RC_DB::raw('wrk.rule_keywords'));
 
             $key_list = array(
-                '插件关键词' => $cmd_word_list,
-                '回复关键词' => $rule_keywords_list,
+                __('插件关键词', 'wechat') => $cmd_word_list,
+                __('回复关键词', 'wechat') => $rule_keywords_list,
             );
             $this->assign('key_list', $key_list);
 
@@ -392,11 +396,11 @@ class platform_menus extends ecjia_platform
 
         $wechat_id = $this->platformAccount->getAccountID();
         if (is_ecjia_error($wechat_id)) {
-            return $this->showmessage('请先添加公众号，再进行后续操作', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请先添加公众号，再进行后续操作', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         } else {
             $list = RC_DB::table('wechat_menu')->where('status', 1)->where('wechat_id', $wechat_id)->orderBy('sort', 'asc')->get();
             if (empty($list)) {
-                return $this->showmessage('请添加自定义菜单或者检查菜单是否是开启状态', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('请添加自定义菜单或者检查菜单是否是开启状态', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
 
             $data = array();
@@ -454,8 +458,8 @@ class platform_menus extends ecjia_platform
                 $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
                 $rs     = $wechat->menu->add($menu);
 
-                $this->admin_log('生成菜单', 'setup', 'menu');
-                return $this->showmessage('生成菜单成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+                $this->admin_log(__('生成菜单', 'wechat'), 'setup', 'menu');
+                return $this->showmessage(__('生成菜单成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
                 return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -474,7 +478,7 @@ class platform_menus extends ecjia_platform
 
         $wechat_id = $this->platformAccount->getAccountID();
         if (is_ecjia_error($wechat_id)) {
-            return $this->showmessage('请先添加公众号，再进行后续操作', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请先添加公众号，再进行后续操作', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         } else {
 
             try {
@@ -538,8 +542,8 @@ class platform_menus extends ecjia_platform
                     }
                 }
 
-                $this->admin_log('获取菜单', 'setup', 'menu');
-                return $this->showmessage('已成功获取微信端原有菜单！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_menus/init')));
+                $this->admin_log(__('获取菜单', 'wechat'), 'setup', 'menu');
+                return $this->showmessage(__('已成功获取微信端原有菜单！', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_menus/init')));
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
                 return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
@@ -557,17 +561,17 @@ class platform_menus extends ecjia_platform
 
         $wechat_id = $this->platformAccount->getAccountID();
         if (is_ecjia_error($wechat_id)) {
-            return $this->showmessage('请先添加公众号，再进行后续操作', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请先添加公众号，再进行后续操作', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         } else {
 
             try {
                 $wechat = with(new Ecjia\App\Wechat\WechatUUID($uuid))->getWechatInstance();
                 $rs     = $wechat->menu->destroy();
 
-                $this->admin_log('清除菜单', 'setup', 'menu');
+                $this->admin_log(__('清除菜单', 'wechat'), 'setup', 'menu');
                 RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', '>', 0)->update(array('status' => 0));
 
-                return $this->showmessage('已成功清除微信端所有菜单', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_menus/init')));
+                return $this->showmessage(__('已成功清除微信端所有菜单', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_menus/init')));
             } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
                 return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             }
@@ -594,7 +598,7 @@ class platform_menus extends ecjia_platform
         RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
 
         $this->admin_log($info['name'], 'remove', 'menu');
-        return $this->showmessage('删除菜单成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_menus/init')));
+        return $this->showmessage(__('删除菜单成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_menus/init')));
     }
 
     /**
@@ -611,14 +615,14 @@ class platform_menus extends ecjia_platform
         $name = RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->pluck('name');
         if (!empty($sort)) {
             if (!is_numeric($sort)) {
-                return $this->showmessage('请输入排序数值', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+                return $this->showmessage(__('请输入排序数值', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
             } else {
                 RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('sort' => $sort));
                 $this->admin_log($name, 'edit', 'menu');
-                return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_menus/init')));
+                return $this->showmessage(__('编辑排序成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_menus/init')));
             }
         } else {
-            return $this->showmessage('菜单排序不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('菜单排序不能为空', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
     }
 
@@ -635,7 +639,7 @@ class platform_menus extends ecjia_platform
         $val = intval($_POST['val']);
         RC_DB::table('wechat_menu')->where('wechat_id', $wechat_id)->where('id', $id)->update(array('status' => $val));
 
-        return $this->showmessage('切换成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_menus/init')));
+        return $this->showmessage(__('切换成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_uri::url('wechat/platform_menus/init')));
     }
 
     public function get_menu_info()
@@ -670,8 +674,8 @@ class platform_menus extends ecjia_platform
                 ->lists(RC_DB::raw('wrk.rule_keywords'));
 
             $key_list = array(
-                '插件关键词' => $cmd_word_list,
-                '回复关键词' => $rule_keywords_list,
+                __('插件关键词', 'wechat') => $cmd_word_list,
+                __('回复关键词', 'wechat') => $rule_keywords_list,
             );
             $this->assign('key_list', $key_list);
             $data = $this->fetch('library/wechat_menu_sub.lbi');
@@ -759,8 +763,8 @@ class platform_menus extends ecjia_platform
                 ->lists(RC_DB::raw('wrk.rule_keywords'));
 
             $key_list = array(
-                '插件关键词' => $cmd_word_list,
-                '回复关键词' => $rule_keywords_list,
+                __('插件关键词', 'wechat') => $cmd_word_list,
+                __('回复关键词', 'wechat') => $rule_keywords_list,
             );
             $this->assign('key_list', $key_list);
 

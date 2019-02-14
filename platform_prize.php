@@ -66,7 +66,7 @@ class platform_prize extends ecjia_platform
         RC_Script::enqueue_script('wechat_prize', RC_App::apps_url('statics/platform-js/wechat_prize.js', __FILE__), array(), false, true);
         RC_Script::localize_script('wechat_prize', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 
-        ecjia_platform_screen::get_current_screen()->set_subject('抽奖记录');
+        ecjia_platform_screen::get_current_screen()->set_subject(__('抽奖记录', 'wechat'));
     }
 
     /**
@@ -76,13 +76,13 @@ class platform_prize extends ecjia_platform
     {
         $this->admin_priv('wechat_prize_manage');
 
-        $this->assign('ur_here', '抽奖记录列表');
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('抽奖记录'));
+        $this->assign('ur_here', __('抽奖记录列表', 'wechat'));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('抽奖记录', 'wechat')));
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', '请先添加公众号，再进行后续操作');
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'wechat'));
         } else {
             $this->assign('warn', 'warn');
             $this->assign('form_action', RC_Uri::url('wechat/platform_prize/init'));
@@ -96,7 +96,7 @@ class platform_prize extends ecjia_platform
         }
         $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
 
-        $this->assign('type_error', sprintf('抱歉！您当前公众号属于%s类型，该模块目前只支持“认证订阅号”和“认证服务号”类型的公众号。', $wechat_type[$types]));
+        $this->assign('type_error', sprintf(__('抱歉！您当前公众号属于%s类型，该模块目前只支持“认证订阅号”和“认证服务号”类型的公众号。', 'wechat'), $wechat_type[$types]));
         $this->display('wechat_prize_list.dwt');
     }
 
@@ -118,10 +118,10 @@ class platform_prize extends ecjia_platform
         }
         if (!empty($cancel)) {
             $data['issue_status'] = 0;
-            $message              = '取消成功';
+            $message              = __('取消成功', 'wechat');
         } else {
             $data['issue_status'] = 1;
-            $message              = '发放成功';
+            $message              = __('发放成功', 'wechat');
         }
 
         RC_DB::table('wechat_prize')->where('wechat_id', $wechat_id)->where('id', $id)->update($data);
@@ -139,7 +139,7 @@ class platform_prize extends ecjia_platform
         $id        = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 
         RC_DB::table('wechat_prize')->where('wechat_id', $wechat_id)->where('id', $id)->delete();
-        return $this->showmessage('删除成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+        return $this->showmessage(__('删除成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
 
     /**
@@ -152,7 +152,7 @@ class platform_prize extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            return $this->showmessage('发送失败，请先添加公众号,再进行后续操作', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('发送失败，请先添加公众号,再进行后续操作', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $openid      = !empty($_POST['openid']) ? $_POST['openid'] : '';
@@ -160,11 +160,11 @@ class platform_prize extends ecjia_platform
         $data['uid'] = !empty($_POST['uid']) ? intval($_POST['uid']) : 0;
 
         if (empty($openid)) {
-            return $this->showmessage('请选择微信用户', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请选择微信用户', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         if (empty($data['msg'])) {
-            return $this->showmessage('消息内容不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('消息内容不能为空', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
         $data['send_time'] = RC_Time::gmtime();
         $data['iswechat']  = 1;
@@ -192,9 +192,9 @@ class platform_prize extends ecjia_platform
 
         $this->admin_log($data['msg'], 'send', 'subscribe_message');
         if ($message_id) {
-            return $this->showmessage('发送成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_prize/init')));
+            return $this->showmessage(__('发送成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_prize/init')));
         } else {
-            return $this->showmessage('发送失败', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('发送失败', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
     }

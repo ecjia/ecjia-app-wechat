@@ -69,8 +69,8 @@ class platform_record extends ecjia_platform
         RC_Style::enqueue_style('admin_subscribe', RC_App::apps_url('statics/css/admin_subscribe.css', __FILE__));
         RC_Script::localize_script('admin_record', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('客服聊天记录', RC_Uri::url('wechat/platform_record/init')));
-        ecjia_platform_screen::get_current_screen()->set_subject('客服聊天记录');
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('客服聊天记录', 'wechat'), RC_Uri::url('wechat/platform_record/init')));
+        ecjia_platform_screen::get_current_screen()->set_subject(__('客服聊天记录', 'wechat'));
     }
 
     //客服消息记录列表
@@ -79,13 +79,13 @@ class platform_record extends ecjia_platform
         $this->admin_priv('wechat_record_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('客服聊天记录'));
-        $this->assign('ur_here', '客服聊天记录');
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('客服聊天记录', 'wechat')));
+        $this->assign('ur_here', __('客服聊天记录', 'wechat'));
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', '请先添加公众号，再进行后续操作');
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'wechat'));
         } else {
             $this->assign('warn', 'warn');
             $this->assign('action', RC_Uri::url('wechat/platform_record/init'));
@@ -99,7 +99,7 @@ class platform_record extends ecjia_platform
             $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
 
             $this->assign('type', $types);
-            $this->assign('type_error', sprintf('抱歉！您的公众号属于%s类型，该模块目前只支持“认证服务号”类型的公众号。', $wechat_type[$types]));
+            $this->assign('type_error', sprintf(__('抱歉！您的公众号属于%s类型，该模块目前只支持“认证服务号”类型的公众号。', 'wechat'), $wechat_type[$types]));
         }
 
         $recordStorage = new Ecjia\App\Wechat\Synchronizes\CustomerRecordStorage($wechat_id);
@@ -121,30 +121,30 @@ class platform_record extends ecjia_platform
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', '请先添加公众号，再进行后续操作');
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'wechat'));
         } else {
             $this->assign('warn', 'warn');
             //获取公众号类型 0未认证 1订阅号 2服务号 3认证服务号 4企业号
-            $type = $this->platformAccount->getType();
+            $type        = $this->platformAccount->getType();
             $wechat_type = array(__('未认证的公众号', 'wechat'), __('订阅号', 'wechat'), __('服务号', 'wechat'), __('测试账号', 'wechat'), __('企业号', 'wechat'));
-            
+
             $this->assign('type', $type);
-            $this->assign('type_error', sprintf('抱歉！您的公众号属于%s类型，该模块目前只支持“认证订阅号”和“认证服务号”类型的公众号。', $wechat_type[$type]));
+            $this->assign('type_error', sprintf(__('抱歉！您的公众号属于%s类型，该模块目前只支持“认证订阅号”和“认证服务号”类型的公众号。', 'wechat'), $wechat_type[$type]));
         }
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('客服消息记录'));
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('客服消息记录', 'wechat')));
 
         $uid        = !empty($_GET['uid']) ? $_GET['uid'] : '';
         $page       = !empty($_GET['page']) ? intval($_GET['page']) : 1;
         $status     = !empty($_GET['status']) ? intval($_GET['status']) : 1;
         $kf_account = !empty($_GET['kf_account']) ? $_GET['kf_account'] : '';
 
-        $this->assign('ur_here', '客服消息记录');
-        $this->assign('action_link', array('text' => '客服聊天记录', 'href' => RC_Uri::url('wechat/platform_record/init', array('status' => $status, 'kf_account' => $kf_account, 'page' => $page))));
+        $this->assign('ur_here', __('客服消息记录', 'wechat'));
+        $this->assign('action_link', array('text' => __('客服聊天记录', 'wechat'), 'href' => RC_Uri::url('wechat/platform_record/init', array('status' => $status, 'kf_account' => $kf_account, 'page' => $page))));
         $this->assign('chat_action', RC_Uri::url('wechat/platform_record/send_message'));
         $this->assign('last_action', RC_Uri::url('wechat/platform_record/read_message'));
 
         if (empty($uid)) {
-            return $this->showmessage('请选择微信用户', ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+            return $this->showmessage(__('请选择微信用户', 'wechat'), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
         }
 
         $info = RC_DB::table('wechat_user as u')
@@ -320,7 +320,7 @@ class platform_record extends ecjia_platform
         $this->admin_priv('wechat_record_manage', ecjia::MSGTYPE_JSON);
 
         $list    = $this->get_message_list();
-        $message = count($list['item']) < 10 ? '没有更多消息了' : '搜索到了';
+        $message = count($list['item']) < 10 ? __('没有更多消息了', 'wechat') : __('搜索到了', 'wechat');
         if (!empty($list['item'])) {
             return $this->showmessage($message, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('msg_list' => $list['item'], 'last_id' => $list['last_id']));
         } else {
@@ -412,7 +412,7 @@ class platform_record extends ecjia_platform
             if (!empty($name_list)) {
                 $info['tag_name'] = implode('，', $name_list);
             } else {
-                $info['tag_name'] = '无标签';
+                $info['tag_name'] = __('无标签', 'wechat');
             }
         }
         return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $info));
@@ -441,7 +441,7 @@ class platform_record extends ecjia_platform
                 $recordStorage->save();
             } else {
                 if ($start_time < SYS_TIME && SYS_TIME < $end_time) {
-                    return $this->showmessage('当前没有更多数据', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
+                    return $this->showmessage(__('当前没有更多数据', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
                 }
 
                 if ($end_time > SYS_TIME) {
@@ -451,7 +451,7 @@ class platform_record extends ecjia_platform
                 $recordStorage->setNextStartTime($end_time);
             }
 
-            return $this->showmessage('获取完成', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
+            return $this->showmessage(__('获取完成', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('wechat/platform_record/init')));
 
         } catch (\Royalcms\Component\WeChat\Core\Exceptions\HttpException $e) {
             return $this->showmessage(\Ecjia\App\Wechat\WechatErrorCodes::getError($e->getCode(), $e->getMessage()), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);

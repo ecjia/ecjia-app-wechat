@@ -67,8 +67,8 @@ class platform_request extends ecjia_platform
         RC_Script::enqueue_script('admin_request', RC_App::apps_url('statics/platform-js/admin_request.js', __FILE__), array(), false, true);
         RC_Script::localize_script('admin_request', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
 
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('Api请求统计列表', RC_Uri::url('wechat/admin_request/init')));
-        ecjia_platform_screen::get_current_screen()->set_subject('Api请求统计');
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('Api请求统计列表', 'wechat'), RC_Uri::url('wechat/admin_request/init')));
+        ecjia_platform_screen::get_current_screen()->set_subject(__('Api请求统计', 'wechat'));
     }
 
     /**
@@ -79,13 +79,13 @@ class platform_request extends ecjia_platform
         $this->admin_priv('wechat_request_manage');
 
         ecjia_platform_screen::get_current_screen()->remove_last_nav_here();
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here('Api请求统计'));
-        $this->assign('ur_list', 'Api请求统计列表');
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('Api请求统计', 'wechat')));
+        $this->assign('ur_list', __('Api请求统计列表', 'wechat'));
 
         $wechat_id = $this->platformAccount->getAccountID();
 
         if (is_ecjia_error($wechat_id)) {
-            $this->assign('errormsg', '请先添加公众号，再进行后续操作');
+            $this->assign('errormsg', __('请先添加公众号，再进行后续操作', 'wechat'));
         } else {
             $limits['item'] = RC_Loader::load_app_config('api_limit', 'wechat');
             $type           = !empty($_GET['type']) ? intval($_GET['type']) : 1; //1今天 2昨天
