@@ -64,9 +64,9 @@ class platform_qrcode extends ecjia_platform
         RC_Script::enqueue_script('jquery-form');
         RC_Script::enqueue_script('wechat_qrcode', RC_App::apps_url('statics/platform-js/wechat_qrcode.js', __FILE__), array(), false, true);
 
-        RC_Script::localize_script('wechat_qrcode', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('渠道二维码', 'wechat'), RC_Uri::url('wechat/platform_qrcode/init')));
+        RC_Script::localize_script('wechat_qrcode', 'js_lang', config('app-wechat::jslang.platform_qrcode_page'));
 
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('渠道二维码', 'wechat'), RC_Uri::url('wechat/platform_qrcode/init')));
         ecjia_platform_screen::get_current_screen()->set_subject(__('渠道二维码', 'wechat'));
     }
 

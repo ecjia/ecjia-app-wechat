@@ -66,9 +66,9 @@ class platform_response extends ecjia_platform
 
         RC_Script::enqueue_script('admin_response', RC_App::apps_url('statics/platform-js/admin_response.js', __FILE__), array(), false, true);
         RC_Script::enqueue_script('choose_material', RC_App::apps_url('statics/platform-js/choose_material.js', __FILE__), array(), false, true);
-
         RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
-        RC_Script::localize_script('admin_response', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+
+        RC_Script::localize_script('admin_response', 'js_lang', config('app-wechat::jslang.platform_response_page'));
 
         ecjia_platform_screen::get_current_screen()->set_subject(__('自动回复', 'wechat'));
     }

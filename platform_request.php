@@ -65,7 +65,7 @@ class platform_request extends ecjia_platform
         RC_Script::enqueue_script('jquery-form');
 
         RC_Script::enqueue_script('admin_request', RC_App::apps_url('statics/platform-js/admin_request.js', __FILE__), array(), false, true);
-        RC_Script::localize_script('admin_request', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+        RC_Script::localize_script('admin_request', 'js_lang', config('app-wechat::jslang.platform_request_page'));
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('Api请求统计列表', 'wechat'), RC_Uri::url('wechat/admin_request/init')));
         ecjia_platform_screen::get_current_screen()->set_subject(__('Api请求统计', 'wechat'));

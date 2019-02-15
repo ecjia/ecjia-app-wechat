@@ -68,7 +68,9 @@ class platform_subscribe extends ecjia_platform
 
         RC_Style::enqueue_style('platform_subscribe', RC_App::apps_url('statics/platform-css/admin_subscribe.css', __FILE__));
         RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
-        RC_Script::localize_script('platform_subscribe', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+
+        RC_Script::localize_script('platform_subscribe', 'js_lang', config('app-wechat::jslang.platform_subscribe_page'));
+        RC_Script::localize_script('choose_material', 'jslang', config('app-wechat::jslang.choose_material_page'));
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('粉丝管理', 'wechat'), RC_Uri::url('wechat/platform_subscribe/init')));
         ecjia_platform_screen::get_current_screen()->set_subject(__('粉丝管理', 'wechat'));

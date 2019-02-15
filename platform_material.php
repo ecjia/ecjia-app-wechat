@@ -71,7 +71,8 @@ class platform_material extends ecjia_platform
 
         RC_Script::enqueue_script('admin_material', RC_App::apps_url('statics/platform-js/admin_material.js', __FILE__), array(), false, true);
         RC_Style::enqueue_style('admin_material', RC_App::apps_url('statics/platform-css/admin_material.css', __FILE__));
-        RC_Script::localize_script('admin_material', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+
+        RC_Script::localize_script('admin_material', 'js_lang', config('app-wechat::jslang.platform_material_page'));
 
         ecjia_platform_screen::get_current_screen()->set_subject(__('素材管理', 'wechat'));
     }

@@ -70,9 +70,9 @@ class platform_customer extends ecjia_platform
         RC_Script::enqueue_script('ecjia-platform-bootstrap-fileupload-js');
         RC_Style::enqueue_style('ecjia-platform-bootstrap-fileupload-css');
 
-        RC_Script::localize_script('wechat_customer', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('客服管理', 'wechat'), RC_Uri::url('wechat/platform_customer/init')));
+        RC_Script::localize_script('wechat_customer', 'js_lang', config('app-wechat::jslang.platform_customer_page'));
 
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('客服管理', 'wechat'), RC_Uri::url('wechat/platform_customer/init')));
         ecjia_platform_screen::get_current_screen()->set_subject(__('客服管理', 'wechat'));
     }
 

@@ -58,7 +58,6 @@ class platform_message extends ecjia_platform
         RC_Loader::load_app_func('global');
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
-
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
         RC_Style::enqueue_style('bootstrap-responsive');
@@ -66,9 +65,9 @@ class platform_message extends ecjia_platform
         RC_Script::enqueue_script('platform_subscribe', RC_App::apps_url('statics/platform-js/platform_subscribe.js', __FILE__));
         RC_Style::enqueue_style('admin_subscribe', RC_App::apps_url('statics/css/admin_subscribe.css', __FILE__));
 
-        RC_Script::localize_script('platform_subscribe', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('消息管理', 'wechat'), RC_Uri::url('wechat/admin_subscribe/init')));
+        RC_Script::localize_script('platform_subscribe', 'js_lang', config('app-wechat::jslang.platform_message_page'));
 
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('消息管理', 'wechat'), RC_Uri::url('wechat/admin_subscribe/init')));
         ecjia_platform_screen::get_current_screen()->set_subject(__('消息管理', 'wechat'));
     }
 

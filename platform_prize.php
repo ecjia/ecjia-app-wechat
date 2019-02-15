@@ -58,13 +58,13 @@ class platform_prize extends ecjia_platform
         RC_Loader::load_app_func('global');
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
-
         /* 加载全局 js/css */
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
 
         RC_Script::enqueue_script('wechat_prize', RC_App::apps_url('statics/platform-js/wechat_prize.js', __FILE__), array(), false, true);
-        RC_Script::localize_script('wechat_prize', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+
+        RC_Script::localize_script('wechat_prize', 'js_lang', config('app-wechat::jslang.platform_prize_page'));
 
         ecjia_platform_screen::get_current_screen()->set_subject(__('抽奖记录', 'wechat'));
     }

@@ -58,16 +58,15 @@ class platform_menus extends ecjia_platform
         RC_Loader::load_app_func('global');
         Ecjia\App\Wechat\Helper::assign_adminlog_content();
 
-
         /* 加载全局 js/css */
         RC_Script::enqueue_script('jquery-validate');
         RC_Script::enqueue_script('jquery-form');
         RC_Script::enqueue_script('wechat_menus', RC_App::apps_url('statics/platform-js/wechat_menus.js', __FILE__), array(), false, true);
         RC_Style::enqueue_style('menu', RC_App::apps_url('statics/platform-css/wechat_menu.css', __FILE__));
 
-        RC_Script::localize_script('wechat_menus', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
-        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('微信菜单', 'wechat'), RC_Uri::url('wechat/platform_menus/init')));
+        RC_Script::localize_script('wechat_menus', 'js_lang', config('app-wechat::jslang.platform_menus_page'));
 
+        ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('微信菜单', 'wechat'), RC_Uri::url('wechat/platform_menus/init')));
         ecjia_platform_screen::get_current_screen()->set_subject(__('微信菜单', 'wechat'));
     }
 

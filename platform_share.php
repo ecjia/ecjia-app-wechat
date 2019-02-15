@@ -64,7 +64,7 @@ class platform_share extends ecjia_platform
         RC_Script::enqueue_script('jquery-form');
 
         RC_Script::enqueue_script('wechat_qrcodeshare', RC_App::apps_url('statics/platform-js/wechat_qrcodeshare.js', __FILE__), array(), false, true);
-        RC_Script::localize_script('wechat_qrcodeshare', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+        RC_Script::localize_script('wechat_qrcodeshare', 'js_lang', config('app-wechat::jslang.platform_share_page'));
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('推荐二维码', 'wechat'), RC_Uri::url('wechat/platform_share/init')));
         ecjia_platform_screen::get_current_screen()->set_subject(__('推荐二维码', 'wechat'));

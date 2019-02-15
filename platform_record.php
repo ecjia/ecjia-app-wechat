@@ -67,7 +67,8 @@ class platform_record extends ecjia_platform
 
         RC_Script::enqueue_script('admin_record', RC_App::apps_url('statics/platform-js/admin_record.js', __FILE__));
         RC_Style::enqueue_style('admin_subscribe', RC_App::apps_url('statics/css/admin_subscribe.css', __FILE__));
-        RC_Script::localize_script('admin_record', 'js_lang', RC_Lang::get('wechat::wechat.js_lang'));
+
+        RC_Script::localize_script('admin_record', 'js_lang', config('app-wechat::jslang.platform_record_page'));
 
         ecjia_platform_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('客服聊天记录', 'wechat'), RC_Uri::url('wechat/platform_record/init')));
         ecjia_platform_screen::get_current_screen()->set_subject(__('客服聊天记录', 'wechat'));
