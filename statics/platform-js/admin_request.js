@@ -38,7 +38,7 @@
                 success: function (counts) {
                     $("#general_loading").css('display', 'none');
                     if (counts === null) {
-                        var nodata = "<div style='width:100%;height:100%;line-height:500px;text-align:center;overflow: hidden;'>" + js_lang.unfind_any_recode + "<\/div>";
+                        var nodata = "<div style='width:100%;height:100%;line-height:500px;text-align:center;overflow: hidden;'>" + js_lang.unfind_any_record + "<\/div>";
                         $("#general_datas").append(nodata);
                     } else {
                         if (type == 4) {

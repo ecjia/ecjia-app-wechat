@@ -763,7 +763,7 @@ return array(
     'remove_images_material'          => '您确定要删除该图片素材吗？',
     'remove_voice_material'           => '您确定要删除该语音素材吗？',
     'remove_video_material'           => '您确定要删除该视频素材吗？',
-    'unfind_any_recode'               => '没有找到任何记录',
+    'unfind_any_record'               => '没有找到任何记录',
     'cover_images'                    => '封面图片',
     'title'                           => '标题',
     'graphic'                         => '图文',
