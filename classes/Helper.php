@@ -56,33 +56,33 @@ class Helper
      */
     public static function assign_adminlog_content()
     {
-        ecjia_admin_log::instance()->add_object('wechat', '公众号');
-        ecjia_admin_log::instance()->add_object('menu', '微信菜单');
-        ecjia_admin_log::instance()->add_object('template', '消息模板');
-        ecjia_admin_log::instance()->add_object('qrcode', '渠道二维码');
-        ecjia_admin_log::instance()->add_object('share', '推荐二维码');
-        ecjia_admin_log::instance()->add_object('customer', '客服');
+        ecjia_admin_log::instance()->add_object('wechat', __('公众号', 'wechat'));
+        ecjia_admin_log::instance()->add_object('menu', __('微信菜单', 'wechat'));
+        ecjia_admin_log::instance()->add_object('template', __('消息模板', 'wechat'));
+        ecjia_admin_log::instance()->add_object('qrcode', __('渠道二维码', 'wechat'));
+        ecjia_admin_log::instance()->add_object('share', __('推荐二维码', 'wechat'));
+        ecjia_admin_log::instance()->add_object('customer', __('客服', 'wechat'));
 
-        ecjia_admin_log::instance()->add_object('article_material', '图文素材');
-        ecjia_admin_log::instance()->add_object('articles_material', '多图文素材');
+        ecjia_admin_log::instance()->add_object('article_material', __('图文素材', 'wechat'));
+        ecjia_admin_log::instance()->add_object('articles_material', __('多图文素材', 'wechat'));
 
-        ecjia_admin_log::instance()->add_object('picture_material', '图片素材');
-        ecjia_admin_log::instance()->add_object('voice_material', '语音素材');
-        ecjia_admin_log::instance()->add_object('video_material', '视频素材');
-        ecjia_admin_log::instance()->add_object('thumb_material', '缩略图素材');
+        ecjia_admin_log::instance()->add_object('picture_material', __('图片素材', 'wechat'));
+        ecjia_admin_log::instance()->add_object('voice_material', __('语音素材', 'wechat'));
+        ecjia_admin_log::instance()->add_object('video_material', __('视频素材', 'wechat'));
+        ecjia_admin_log::instance()->add_object('thumb_material', __('缩略图素材', 'wechat'));
 
-        ecjia_admin_log::instance()->add_object('reply_subscribe', '关注自动回复');
-        ecjia_admin_log::instance()->add_object('reply_msg', '消息自动回复');
-        ecjia_admin_log::instance()->add_object('reply_keywords_rule', '关键词自动回复规则');
+        ecjia_admin_log::instance()->add_object('reply_subscribe', __('关注自动回复', 'wechat'));
+        ecjia_admin_log::instance()->add_object('reply_msg', __('消息自动回复', 'wechat'));
+        ecjia_admin_log::instance()->add_object('reply_keywords_rule', __('关键词自动回复规则', 'wechat'));
 
-        ecjia_admin_log::instance()->add_action('batch_move', '批量转移');
-        ecjia_admin_log::instance()->add_action('send', '发送');
+        ecjia_admin_log::instance()->add_action('batch_move', __('批量转移', 'wechat'));
+        ecjia_admin_log::instance()->add_action('send', __('发送', 'wechat'));
 
-        ecjia_admin_log::instance()->add_object('users_tag', '用户标签');
-        ecjia_admin_log::instance()->add_object('users_info', '用户信息');
-        ecjia_admin_log::instance()->add_object('subscribe_message', '用户消息');
+        ecjia_admin_log::instance()->add_object('users_tag', __('用户标签', 'wechat'));
+        ecjia_admin_log::instance()->add_object('users_info', __('用户信息', 'wechat'));
+        ecjia_admin_log::instance()->add_object('subscribe_message', __('用户消息', 'wechat'));
 
-        ecjia_admin_log::instance()->add_object('config', '配置');
+        ecjia_admin_log::instance()->add_object('config', __('配置', 'wechat'));
     }
 
     /**
