@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10,IE=11"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<head lang="zh-CN">
-		<title>绑定手机号</title>
+		<title>{t domain="wechat"}绑定手机号{/t}</title>
 		<link rel="stylesheet" type="text/css" href="{$front_url}/css/touch.css" />
 		<link rel="stylesheet" type="text/css" href="{$front_url}/css/style.css" />
 	</head>
@@ -13,14 +13,14 @@
 	<header class="ecjia-header">
 		<div class="ecjia-header-left">
 		</div>
-		<div class="ecjia-header-title">绑定手机号</div>
+		<div class="ecjia-header-title">{t domain="wechat"}绑定手机号{/t}</div>
 	</header>
 	<body>
 		<div class="ecjia-form  ecjia-login">
 			<div class="form-group margin-right-left">
 				<label class="input">
 					<span class="roaming">+86</span>
-					<input placeholder="手机号" name="mobile_phone" class="mobile_phone">
+					<input placeholder='{t domain="wechat"}手机号{/t}' name="mobile_phone" class="mobile_phone">
 				</label>
 			</div>
 			
@@ -28,7 +28,7 @@
 			    <div class="around">
 			        <input type="hidden" name="openid" value="{$openid}">
 			        <input type="hidden" name="uuid" value="{$uuid}">
-			        <a class="ecjia-mobile_confirm btn" href="{url path='wechat/mobile_userbind/get_code'}">确定</a>
+			        <a class="ecjia-mobile_confirm btn" href="{url path='wechat/mobile_userbind/get_code'}">{t domain="wechat"}确定{/t}</a>
 			    </div>	
 			</div>
 		</div>

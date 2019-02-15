@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10,IE=11"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<head lang="zh-CN">
-		<title>输入验证码</title>
+		<title>{t domain="wechat"}输入验证码{/t}</title>
 		<link rel="stylesheet" type="text/css" href="{$front_url}/css/touch.css" />
 		<link rel="stylesheet" type="text/css" href="{$front_url}/css/style.css" />
 	</head>
@@ -13,11 +13,11 @@
 	<header class="ecjia-header">
 		<div class="ecjia-header-left">
 		</div>
-		<div class="ecjia-header-title">输入验证码</div>
+		<div class="ecjia-header-title">{t domain="wechat"}输入验证码{/t}</div>
 	</header>
 	<body>
 		<div class="ecjia-form ecjia-login">
-			<p class="ecjiaf-tac ecjia-margin-b">验证码已发送至+86 {$mobile}</p>
+			<p class="ecjiaf-tac ecjia-margin-b">{t domain="wechat"}验证码已发送至{/t}+86 {$mobile}</p>
 			
 			<div id="payPassword_container">
 				<div class="pass_container">
@@ -30,7 +30,7 @@
 				</div>
 			</div>
 			<input type="hidden" name="url" value="{$url}" />
-		    <p class="ecjiaf-tac blue resend_sms" data-url="{$resend_url}">重新发送验证码</p>
+		    <p class="ecjiaf-tac blue resend_sms" data-url="{$resend_url}">{t domain="wechat"}重新发送验证码{/t}</p>
 		</div>
 		
 		<script src="{$system_statics_url}/js/jquery.min.js" type="text/javascript"></script>
