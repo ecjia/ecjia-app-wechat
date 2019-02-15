@@ -124,7 +124,7 @@
 								<td>{date('Y-m-d H:i:s', ($val['subscribe_time']))}</td>
 							</tr>
 							<!--  {foreachelse} -->
-							<tr><td class="no-records" colspan="6">{lang key='system::system.no_records'}</td></tr>
+							<tr><td class="no-records" colspan="6">没有找到任何记录</td></tr>
 							<!-- {/foreach} -->
 						</tbody>
 					</table>						

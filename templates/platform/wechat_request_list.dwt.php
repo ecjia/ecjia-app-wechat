@@ -52,7 +52,7 @@
 							<td>{if $val.info.last_time}{$val.info.last_time}{/if}</td>
 						</tr>
 						<!--  {foreachelse} -->
-						<tr><td class="no-records" colspan="4">{lang key='system::system.no_records'}</td></tr>
+						<tr><td class="no-records" colspan="4">没有找到任何记录</td></tr>
 						<!-- {/foreach} -->
 					</tbody>
 				</table>

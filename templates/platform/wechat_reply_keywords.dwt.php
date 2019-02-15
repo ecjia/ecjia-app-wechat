@@ -133,7 +133,7 @@
 							</td>
 						</tr>
 						<!-- {foreachelse} -->
-						<tr><td class="dataTables_empty" colspan="4">{lang key='system::system.no_records'}</td></tr>
+						<tr><td class="dataTables_empty" colspan="4">没有找到任何记录</td></tr>
 					  	<!-- {/foreach} -->
 					</tbody>
 				</table>						

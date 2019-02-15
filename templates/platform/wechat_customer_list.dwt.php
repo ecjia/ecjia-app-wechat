@@ -10,18 +10,18 @@
 
 <!-- {if $warn && $type neq 2} -->
 <div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+	<strong>温馨提示：</strong>{$type_error}
 </div>
 <!-- {/if} -->		
 		
 <!-- {if $errormsg} -->
 	<div class="alert alert-danger">
-    	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+    	<strong>温馨提示：</strong>{$errormsg}
     </div>
 <!-- {/if} -->
 
 <div class="alert alert-info">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{lang key='wechat::wechat.online_customer_info'}
+	<strong>温馨提示：</strong>绑定后的客服帐号，可以登录<a style="text-decoration:none;" target="_blank" href="https://mpkf.weixin.qq.com/">【在线客服功能】</a>，进行客服沟通。
 </div>
 
 <div class="row">
@@ -29,12 +29,12 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">
-                	{lang key='wechat::wechat.customer_synchro'}
+                    多客服同步操作
                 </h4>
             </div>
             <div class="card-body">
-				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_customer/get_customer")}'>{lang key='wechat::wechat.get_customer'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_customer_notice'}</span></div><br/>
-				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_customer/get_online_customer")}'>{lang key='wechat::wechat.get_online_customer'}</button><span style="margin-left: 20px;">{lang key='wechat::wechat.get_online_customer_notice'}</span></div>
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_customer/get_customer")}'>获取全部客服</button><span style="margin-left: 20px;">通过点击该按钮可以获取微信端原有的客服到本地。</span></div><br/>
+				<div><button type="button" class="ajaxmenu btn btn-outline-primary" data-url='{RC_Uri::url("wechat/platform_customer/get_online_customer")}'>获取在线客服</button><span style="margin-left: 20px;">通过点击该按钮可以获取微信端在线的客服到本地。</span></div>
 			</div>
 		</div>
 	</div>
@@ -55,11 +55,11 @@
 			<div class="card-body">
 				<ul class="nav nav-pills float-left">
 					<li class="nav-item">
-						<a class="nav-link {if $smarty.get.type neq 'online'}active{/if} data-pjax" href='{url path="wechat/platform_customer/init"}'>{lang key='wechat::wechat.all_customer'}
+						<a class="nav-link {if $smarty.get.type neq 'online'}active{/if} data-pjax" href='{url path="wechat/platform_customer/init"}'>全部客服
 						<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$list.filter.all}</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link {if $smarty.get.type eq 'online'}active{/if} data-pjax" href='{url path="wechat/platform_customer/init" args="type=online"}'>{lang key='wechat::wechat.online_customer'}
+						<a class="nav-link {if $smarty.get.type eq 'online'}active{/if} data-pjax" href='{url path="wechat/platform_customer/init" args="type=online"}'>在线客服
 						<span class="badge badge-pill badge-glow badge-default badge-primary ml-1">{$list.filter.online}</span></a>
 					</li>
 				</ul>
@@ -68,12 +68,12 @@
 				<table class="table table-hide-edit">
 					<thead>
 						<tr>
-							<th class="w130">{lang key='wechat::wechat.kf_headimgurl'}</th>
-							<th class="w250">{lang key='wechat::wechat.kf_account'}</th>
-							<th class="w200">{lang key='wechat::wechat.bind_wx'}</th>
-							<th class="w200">{lang key='wechat::wechat.kf_nick'}</th>
-							<th class="w150">{lang key='wechat::wechat.online_status'}</th>
-							<th class="w100">{lang key='wechat::wechat.is_used'}</th>
+							<th class="w130">客服头像</th>
+							<th class="w250">客服账号</th>
+							<th class="w200">绑定微信号</th>
+							<th class="w200">客服昵称</th>
+							<th class="w150">在线状态</th>
+							<th class="w100">是否启用</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -87,9 +87,9 @@
 									<a class="get_session" href='{RC_Uri::url("wechat/platform_customer/get_session", "kf_account={$val.kf_account}")}' title="获取客服会话">获取客服会话</a>&nbsp;|&nbsp;
 									{/if}
 									{if $val.invite_status neq 'waiting'}
-									<a class="data-pjax" href='{RC_Uri::url("wechat/platform_customer/edit", "id={$val.id}")}' title="{lang key='system::system.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
+									<a class="data-pjax" href='{RC_Uri::url("wechat/platform_customer/edit", "id={$val.id}")}' title='编辑'>编辑</a>&nbsp;|&nbsp;
 									{/if}
-									<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='wechat::wechat.remove_kf_confirm'}" href='{RC_Uri::url("wechat/platform_customer/remove", "id={$val.id}")}' title="{lang key='system::system.drop'}">{lang key='system::system.drop'}</a>
+									<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg='您确定要删除该客服吗？' href='{RC_Uri::url("wechat/platform_customer/remove", "id={$val.id}")}' title='删除'>删除</a>
 								</div>
 							</td>
 		
@@ -101,44 +101,44 @@
 										{if $val.invite_status eq 'waiting'}
 											{$val.invite_wx}<br />
 											<span class="ecjiafc-999">
-											{lang key='wechat::wechat.invite_waiting'}<a class="hint--bottom hint--rounded" data-hint="绑定邀请已发送至 {$val.invite_wx} 的微信，请去微信客户端确认后即可绑定"><i class="fontello-icon-help-circled"></i></a>
+											邀请绑定待确认<a class="hint--bottom hint--rounded" data-hint="绑定邀请已发送至 {$val.invite_wx} 的微信，请去微信客户端确认后即可绑定"><i class="fontello-icon-help-circled"></i></a>
 											</span>
 										{elseif $val.invite_status eq 'rejected'}
 											<span class="ecjiafc-999">
-											{lang key='wechat::wechat.invite_rejected'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.rejected_rebind_notice'}"><i class="fontello-icon-help-circled"></i></a>
+											邀请绑定被拒绝<a class="hint--bottom  hint--rounded" data-hint='由于对方已拒绝绑定，可重新进行绑定。'><i class="fontello-icon-help-circled"></i></a>
 											</span><br />
-											<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
+											<a class="bind_wx" data-toggle="modal" href="#bind_wx" title='绑定微信号' data-val="{$val.kf_account}">重新绑定</a>
 										{elseif $val.invite_status eq 'expired'}
 											<span class="ecjiafc-999">
-												{lang key='wechat::wechat.invite_expired'}<a class="hint--bottom  hint--rounded" data-hint="{lang key='wechat::wechat.expired_rebind_notice'}"><i class="fontello-icon-help-circled"></i></a>
+												邀请绑定过期<a class="hint--bottom  hint--rounded" data-hint='由于邀请绑定已过期，可重新进行绑定。'><i class="fontello-icon-help-circled"></i></a>
 											</span><br />
-											<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
+											<a class="bind_wx" data-toggle="modal" href="#bind_wx" title='绑定微信号' data-val="{$val.kf_account}">重新绑定</a>
 										{/if}
 									{else}
-										<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">绑定微信号</a>
+										<a class="bind_wx" data-toggle="modal" href="#bind_wx" title='绑定微信号' data-val="{$val.kf_account}">绑定微信号</a>
 									{/if}
 								{else}
-									<span class="ecjiafc-999">{lang key='wechat::wechat.kf_account_disabled'}</span>
+									<span class="ecjiafc-999">该客服账号已停用</span>
 									<br />
-									<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="{lang key='wechat::wechat.bind_wx'}" data-val="{$val.kf_account}">{lang key='wechat::wechat.rebind'}</a>
+									<a class="bind_wx" data-toggle="modal" href="#bind_wx" title="绑定微信号" data-val="{$val.kf_account}">重新绑定</a>
 								{/if}
 							</td>
 							<td>
-								<span class="cursor_pointer" data-text="text" data-trigger="editable" data-url='{RC_Uri::url("wechat/platform_customer/edit_nick")}' data-name="{$val.kf_nick}" data-pk="{$val.id}" data-title="{lang key='wechat::wechat.edit_kf_nick'}" >{$val.kf_nick}</span>
+								<span class="cursor_pointer" data-text="text" data-trigger="editable" data-url='{RC_Uri::url("wechat/platform_customer/edit_nick")}' data-name="{$val.kf_nick}" data-pk="{$val.id}" data-title='编辑客服昵称' >{$val.kf_nick}</span>
 							</td>
 							<td class="{if $val.online_status}ecjiafc-red{/if}">
 								{if $val.online_status eq 1}
-									{lang key='wechat::wechat.web_online'}
+                                web在线
 								{elseif $val.online_status eq 0}
-									{lang key='wechat::wechat.not_online'}
+                                不在线
 								{/if}
 							</td>
 							<td>
 	                        	<i class="{if $val.status eq 1}fa fa-check cursor_pointer{else}fa fa-times cursor_pointer{/if}" data-trigger="toggle_CustomerState" data-url="{RC_Uri::url('wechat/platform_customer/toggle_show')}" data-id="{$val.id}" data-msg="{if $val.status}关闭客服[{$val.kf_account}]将在微信端删除该客服，{else}开启客服[{$val.kf_account}]将在微信端添加该客服，{/if}您确定要这么做吗？"></i>
 							</td>
-							</tr>
-							<!--  {foreachelse} -->
-						<tr><td class="no-records" colspan="6">{lang key='system::system.no_records'}</td></tr>
+					    </tr>
+					    <!--  {foreachelse} -->
+						<tr><td class="no-records" colspan="6">没有找到任何记录</td></tr>
 						<!-- {/foreach} -->
 					</tbody>
 				</table>
@@ -151,7 +151,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title">{lang key='wechat::wechat.bind_wx'}</h3>
+				<h3 class="modal-title">绑定微信号</h3>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>
@@ -161,12 +161,12 @@
 				<div class="card-body">
 					<!-- {if $errormsg} -->
 				    <div class="alert alert-danger m_b0">
-			            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+			            <strong>温馨提示：</strong>{$errormsg}
 			        </div>
 			        <!-- {/if} -->
 					<!-- {if $type neq 2} -->
 					<div class="alert alert-danger m_b0">
-						<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+						<strong>温馨提示：</strong>{$type_error}
 					</div>
 					<!-- {/if} -->
 				</div>
@@ -178,7 +178,7 @@
 						<div class="form-group row">
 							<label class="col-md-3 label-control text-right">微信号：</label>
 							<div class="col-md-8 controls">
-								<input class="form-control" type="text" name="kf_wx" value="{$smarty.get.kf_wx}" autocomplete="off" placeholder="请输入需要绑定的客服人员微信号"/>
+								<input class="form-control" type="text" name="kf_wx" value="{$smarty.get.kf_wx}" autocomplete="off" placeholder='请输入需要绑定的客服人员微信号'/>
 							</div>
 							<div class="col-md-1"><span class="input-must">*</span></div>
 						</div>
@@ -187,7 +187,7 @@
 
 				<div class="modal-footer justify-content-center">
 			   		<input type="hidden" name="kf_account" />
-					<input type="submit" value="{lang key='wechat::wechat.invite_bind'}" class="btn btn-outline-primary" {if $errormsg || $warn && $type neq 2}disabled{/if}/>
+					<input type="submit" value='邀请绑定' class="btn btn-outline-primary" {if $errormsg || $warn && $type neq 2}disabled{/if}/>
 				</div>
 			</form>
 		</div>

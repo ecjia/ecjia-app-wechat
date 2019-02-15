@@ -66,7 +66,7 @@
 							<td>{$val.dateline}</td>
 						</tr>
 						<!--  {foreachelse} -->
-						<tr><td class="no-records" colspan="5">{lang key='system::system.no_records'}</td></tr>
+						<tr><td class="no-records" colspan="5">没有找到任何记录</td></tr>
 						<!-- {/foreach} -->
 					</tbody>
 				</table>

@@ -115,7 +115,7 @@
 							<td><span class="cursor_pointer" data-trigger="editable" data-url="{RC_Uri::url('wechat/platform_qrcode/edit_sort')}" data-name="sort" data-pk="{$val.id}"  data-title="{lang key='wechat::wechat.edit_qrcode_sort'}">{$val.sort}</span></td>
 						</tr>
 						<!--  {foreachelse} -->
-						<tr><td class="no-records" colspan="7">{lang key='system::system.no_records'}</td></tr>
+						<tr><td class="no-records" colspan="7">没有找到任何记录</td></tr>
 						<!-- {/foreach} -->
 					</tbody>
 				</table>						
