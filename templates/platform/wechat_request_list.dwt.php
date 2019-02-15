@@ -11,7 +11,7 @@
 
 <!-- {if $errormsg} -->
 <div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+	<strong>温馨提示：</strong>{$errormsg}
 </div>
 <!-- {/if} -->
 

@@ -12,13 +12,13 @@
 
 <!-- {if $errormsg} -->
 <div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+	<strong>温馨提示：</strong>{$errormsg}
 </div>
 <!-- {/if} -->
 
 <!-- {if $warn && $type eq 0} -->
 <div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+	<strong>温馨提示：</strong>{$type_error}
 </div>
 <!-- {/if} -->
 
@@ -267,14 +267,14 @@
 			</div>
 			<!-- {if $errormsg} -->
 		    <div class="alert alert-danger">
-	            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+	            <strong>温馨提示：</strong>{$errormsg}
 	        </div>
 			<!-- {/if} -->
 			
 			<!-- {if $warn} -->
 				<!-- {if $type eq 0} -->
 				<div class="alert alert-danger">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+					<strong>温馨提示：</strong>{$type_error}
 				</div>
 				<!-- {/if} -->
 			<!-- {/if} -->

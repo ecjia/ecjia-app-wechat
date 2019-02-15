@@ -66,7 +66,7 @@
 								</span>
 								<div class="edit-list">
 									<!-- {if $val.group_id eq 1} -->
-									<a class="ajaxremove cursor_pointer" href='{RC_Uri::url("wechat/platform_subscribe/unblack_user","openid={$val.openid}")}' title='{t domain="wechat"}移出黑名单{/t}' data-toggle="ajaxremove" data-msg='{t domain="wechat"}您确定要将该用户移出黑名单吗？{/t}'>{t domain="wechat"}取消黑名单{/t}</a>
+									<a class="ajaxremove cursor_pointer" href='{RC_Uri::url("wechat/platform_subscribe/unblack_user", "openid={$val.openid}")}' title='{t domain="wechat"}移出黑名单{/t}' data-toggle="ajaxremove" data-msg='{t domain="wechat"}您确定要将该用户移出黑名单吗？{/t}'>{t domain="wechat"}取消黑名单{/t}</a>
 									<!-- {/if} -->
 								</div>
 							</td>

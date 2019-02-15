@@ -12,19 +12,19 @@
 <!-- {if $unionid eq 1} -->
 <div class="alert alert-warning">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><span aria-hidden="true">×</span></button>
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{lang key='wechat::wechat.unionid_error_info'}
+	<strong>温馨提示：</strong>{lang key='wechat::wechat.unionid_error_info'}
 </div>
 <!-- {/if} -->
 
 <!-- {if $errormsg} -->
 <div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+	<strong>温馨提示：</strong>{$errormsg}
 </div>
 <!-- {/if} -->
 	
 <!-- {if $warn && $type eq 0} -->
 <div class="alert alert-danger">
-	<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+	<strong>温馨提示：</strong>{$type_error}
 </div>
 <!-- {/if} -->
 
@@ -81,11 +81,11 @@
 									<input type="checkbox" data-toggle="selectall" data-children=".checkbox" id="customCheck"/>
 									<label for="customCheck"></label>
 								</th>
-								<th class="w100">{lang key='wechat::wechat.headimg_url'}</th>
-								<th class="w150">{lang key='wechat::wechat.nickname'}</th>
-								<th class="w100">{lang key='wechat::wechat.province'}</th>
-								<th class="w100">{lang key='wechat::wechat.bind_user'}</th>
-								<th class="w180">{lang key='wechat::wechat.subscribe_time'}</th>
+								<th class="w100">{t domain="wechat"}头像{/t}</th>
+								<th class="w150">{t domain="wechat"}昵称{/t}</th>
+								<th class="w100">{t domain="wechat"}省（直辖市）{/t}</th>
+								<th class="w100">{t domain="wechat"}绑定用户{/t}</th>
+								<th class="w180">{t domain="wechat"}关注时间{/t}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -146,14 +146,14 @@
 			</div>
 			<!-- {if $errormsg} -->
 		    <div class="alert alert-danger">
-	            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+	            <strong>温馨提示：</strong>{$errormsg}
 	        </div>
 			<!-- {/if} -->
 			
 			<!-- {if $warn} -->
 				<!-- {if $type eq 0} -->
 				<div class="alert alert-danger">
-					<strong>{lang key='wechat::wechat.label_notice'}</strong>{$type_error}
+					<strong>温馨提示：</strong>{$type_error}
 				</div>
 				<!-- {/if} -->
 			<!-- {/if} -->
@@ -188,13 +188,13 @@
 			</div>
 			<!-- {if $errormsg} -->
 		    <div class="alert alert-danger">
-	            <strong>{lang key='wechat::wechat.label_notice'}</strong>{$errormsg}
+	            <strong>温馨提示：</strong>{$errormsg}
 	        </div>
 			<!-- {/if} -->
 			
 			<!-- {if $type neq 2} -->
 			<div class="alert alert-danger">
-				<strong>{lang key='wechat::wechat.label_notice'}</strong>{$custom_type_error}
+				<strong>温馨提示：</strong>{$custom_type_error}
 			</div>
 			<!-- {/if} -->
 			

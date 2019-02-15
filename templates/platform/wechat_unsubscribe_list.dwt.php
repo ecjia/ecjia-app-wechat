@@ -28,11 +28,11 @@
 				<table class="table table-hide-edit">
 					<thead>
 						<tr>
-							<th class="w100">{lang key='wechat::wechat.headimg_url'}</th>
-							<th class="w150">{lang key='wechat::wechat.nickname'}</th>
-							<th class="w100">{lang key='wechat::wechat.province'}</th>
-							<th class="w100">{lang key='wechat::wechat.bind_user'}</th>
-							<th class="w180">{lang key='wechat::wechat.subscribe_time'}</th>
+							<th class="w100">{t domain="wechat"}头像{/t}</th>
+							<th class="w150">{t domain="wechat"}昵称{/t}</th>
+							<th class="w100">{t domain="wechat"}省（直辖市）{/t}</th>
+							<th class="w100">{t domain="wechat"}绑定用户{/t}</th>
+							<th class="w180">{t domain="wechat"}关注时间{/t}</th>
 						</tr>
 					</thead>
 					<tbody>
