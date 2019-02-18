@@ -81,7 +81,6 @@ class Helper
         ecjia_admin_log::instance()->add_object('users_tag', __('用户标签', 'wechat'));
         ecjia_admin_log::instance()->add_object('users_info', __('用户信息', 'wechat'));
         ecjia_admin_log::instance()->add_object('subscribe_message', __('用户消息', 'wechat'));
-
         ecjia_admin_log::instance()->add_object('config', __('配置', 'wechat'));
     }
 
