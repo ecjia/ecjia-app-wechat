@@ -68,7 +68,7 @@ class mobile_qrcode extends EcjiaWechatUserController
         $uuid   = trim($_GET['uuid']);
 
         if (empty($openid) || empty($uuid)) {
-            return $this->displayContent('openid或uuid参数不能为空');
+            return $this->displayContent(__('openid或uuid参数不能为空', 'wechat'));
         }
 
         $qrcode = new \Ecjia\App\Wechat\WechatQrcode($uuid);
@@ -80,7 +80,7 @@ class mobile_qrcode extends EcjiaWechatUserController
 
         $type = $qrcode->getWechatUUID()->getAccount()->getTypeCode();
         if ($type != 'service') {
-            return $this->displayContent('推广二维码仅支持服务号类型的公众号');
+            return $this->displayContent(__('推广二维码仅支持服务号类型的公众号', 'wechat'));
         }
 
         $name = $qrcode->getWechatUUID()->getAccount()->getAccountName();

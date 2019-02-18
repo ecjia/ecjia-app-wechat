@@ -6,8 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<head lang="zh-CN">
 		<title>{t domain="wechat"}输入验证码{/t}</title>
-		<link rel="stylesheet" type="text/css" href="{$front_url}/css/touch.css" />
-		<link rel="stylesheet" type="text/css" href="{$front_url}/css/style.css" />
+        {ecjia:hook id=front_head}
 	</head>
 	
 	<header class="ecjia-header">
@@ -32,17 +31,8 @@
 			<input type="hidden" name="url" value="{$url}" />
 		    <p class="ecjiaf-tac blue resend_sms" data-url="{$resend_url}">{t domain="wechat"}重新发送验证码{/t}</p>
 		</div>
-		
-		<script src="{$system_statics_url}/js/jquery.min.js" type="text/javascript"></script>
-        <script src="{$system_statics_url}/lib/ecjia-js/ecjia.js" type="text/javascript"></script>
-        
-        <script src="{$front_url}/js/bind.js" type="text/javascript"></script>
-        
-        <script src="{$system_statics_url}/lib/chosen/chosen.jquery.min.js" type="text/javascript"></script>
-        <script src="{$system_statics_url}/js/jquery-migrate.min.js" type="text/javascript"></script>
-        <script src="{$system_statics_url}/lib/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-        <script src="{$system_statics_url}/lib/smoke/smoke.min.js" type="text/javascript"></script>
-        <script src="{$system_statics_url}/js/jquery-cookie.min.js" type="text/javascript"></script>
+
+        {ecjia:hook id=front_print_footer_scripts}
         <script type="text/javascript">
        		 ecjia.bind.init();
         </script>

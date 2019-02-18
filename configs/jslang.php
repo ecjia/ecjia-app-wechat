@@ -139,6 +139,11 @@ return array(
         'tag_name_required'  => '请输入标签名称',
         'tag_name_maxlength' => '不得超过6个汉字或6个字符',
         'pls_select_user'    => '请先选择用户',
+    ),
+    'mobile_profile_page'        => array(
+        'bind_mobile_first ' => '请先绑定手机号',
+        'resend'             => '重新发送',
+        'resend_s'           => '重新发送 %s (s)',
     )
 );
 
