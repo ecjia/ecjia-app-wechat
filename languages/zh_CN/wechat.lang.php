@@ -365,7 +365,7 @@ return array(
     'scan_code'                => '推荐二维码',
     'scan_code_list'           => '推荐二维码列表',
     'add_qr_code'              => '添加二维码',
-    'recommended_person'       => '推荐人是%s',
+    // 'recommended_person'       => '推荐人是%s',
     'add_scan_code_success'    => '添加推荐二维码成功',
     'remove_scan_code_success' => '删除推荐二维码成功',
     'qrcode_sort_numeric'      => '请输入排序数值',
