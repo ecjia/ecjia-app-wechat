@@ -24,7 +24,6 @@
 							<div class="weui-desktop-mass-media__data-list"><span class="weui-desktop-mass-appmsg__title">{$v.send_time_detail}</span></div>
 						</div>
 					</a>
-					</span>
 				</div>
 				<!-- {/foreach} -->
 			</li>
