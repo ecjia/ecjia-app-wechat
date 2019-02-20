@@ -262,7 +262,7 @@ return array(
     'date_ymd'                => 'Y年m月d日',
     'date_nj'                 => 'n月j日',
     'send_record'             => '发送记录',
-    'select_material'         => '选择素材',
+    'select_material'         => '请选择素材',
     'mass_notice_info'        => '为保障用户体验，微信公众平台严禁恶意营销以及诱导分享朋友圈，严禁发布色情低俗、暴力血腥、政治谣言等各类违反法律法规及相关政策规定的信息。一旦发现，我们将严厉打击和处理。',
     'label_mass_type'         => '群发对象：',
     'all_user'                => '全部用户',
@@ -681,7 +681,7 @@ return array(
     'welcome_add_video'     => '欢迎访问ECJia智能后台添加视频素材页面，在此页面可以进行添加视频素材操作。',
     'add_video_help'        => '关于添加视频素材帮助文档',
     'enter_title'           => '请输入标题！',
-    'upload_viedo'          => '请上传视频！',
+    'upload_video'          => '请上传视频！',
     'video_intro'           => '请输入视频简介！',
     'continue_add_video'    => '继续添加视频',
     'welcome_edit_video'    => '欢迎访问ECJia智能后台编辑视频素材页面，在此页面可以进行编辑视频素材操作。',
@@ -690,7 +690,7 @@ return array(
     'video_used'            => '该视频正在被使用，不能删除',
     'thumb_used'            => '该缩略图正在被使用，不能删除',
     'enter_filename'        => '请输入文件名称！',
-    'nosearch_record'       => '没有找到相应记录,请重新搜索',
+    'nosearch_record'       => '没有找到相应记录，请重新搜索',
     'reply'                 => '回复',
 
     //自定义菜单
