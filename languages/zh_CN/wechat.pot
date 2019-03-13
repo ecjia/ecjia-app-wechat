@@ -4,225 +4,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ecjia App wechat 1.27.4\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
-"POT-Creation-Date: 2019-02-21 03:59:54+00:00\n"
+"POT-Creation-Date: 2019-03-13 05:24:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
-
-#: apis/wechat_admin_purview_api.class.php:59
-#: apis/wechat_platform_purview_api.class.php:59
-msgid "授权登录"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:60
-#: apis/wechat_platform_purview_api.class.php:60
-msgid "编辑授权登录"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:62
-#: apis/wechat_platform_purview_api.class.php:62
-msgid "自动回复管理"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:63
-#: apis/wechat_platform_purview_api.class.php:63
-msgid "自动回复添加"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:64
-#: apis/wechat_platform_purview_api.class.php:64
-msgid "自动回复编辑"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:65
-#: apis/wechat_platform_purview_api.class.php:65
-msgid "自动回复添删除"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:67
-#: apis/wechat_platform_menu_api.class.php:67
-#: apis/wechat_platform_purview_api.class.php:67
-msgid "自定义菜单"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:68
-#: apis/wechat_platform_purview_api.class.php:68
-msgid "添加菜单"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:69
-#: apis/wechat_platform_purview_api.class.php:69
-msgid "编辑菜单"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:70
-#: apis/wechat_platform_purview_api.class.php:70
-msgid "删除菜单"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:72
-#: apis/wechat_platform_purview_api.class.php:72 classes/Helper.php:61
-msgid "消息模板"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:73
-#: apis/wechat_platform_purview_api.class.php:73
-msgid "添加消息模板"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:74
-#: apis/wechat_platform_purview_api.class.php:74
-msgid "编辑消息模板"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:75
-#: apis/wechat_platform_purview_api.class.php:75
-msgid "删除消息模板"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:77
-#: apis/wechat_platform_menu_api.class.php:110
-#: apis/wechat_platform_purview_api.class.php:77 classes/Helper.php:62
-#: platform_qrcode.php:69 platform_qrcode.php:70 platform_qrcode.php:81
-msgid "渠道二维码"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:78
-#: apis/wechat_platform_purview_api.class.php:78
-msgid "添加渠道二维码"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:79
-#: apis/wechat_platform_purview_api.class.php:79
-msgid "编辑渠道二维码"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:80
-#: apis/wechat_platform_purview_api.class.php:80
-msgid "删除渠道二维码"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:82
-#: apis/wechat_platform_menu_api.class.php:111
-#: apis/wechat_platform_purview_api.class.php:82 classes/Helper.php:63
-#: platform_share.php:69 platform_share.php:70 platform_share.php:81
-msgid "推荐二维码"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:83
-#: apis/wechat_platform_purview_api.class.php:83
-msgid "添加推荐二维码"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:84
-#: apis/wechat_platform_purview_api.class.php:84
-msgid "编辑推荐二维码"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:85
-#: apis/wechat_platform_purview_api.class.php:85
-msgid "删除推荐二维码"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:87
-#: apis/wechat_platform_menu_api.class.php:93
-#: apis/wechat_platform_purview_api.class.php:87 platform_material.php:77
-#: platform_material.php:190 platform_material.php:327
-#: platform_material.php:333 platform_material.php:1148
-msgid "素材管理"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:88
-#: apis/wechat_platform_purview_api.class.php:88
-msgid "素材添加"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:89
-#: apis/wechat_platform_purview_api.class.php:89
-msgid "素材编辑"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:90
-#: apis/wechat_platform_purview_api.class.php:90
-msgid "素材删除"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:92
-#: apis/wechat_platform_menu_api.class.php:72
-#: apis/wechat_platform_purview_api.class.php:92 platform_mass_message.php:72
-#: platform_mass_message.php:73
-msgid "群发消息"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:94
-#: apis/wechat_platform_menu_api.class.php:76
-#: apis/wechat_platform_menu_api.class.php:78
-#: apis/wechat_platform_purview_api.class.php:94 platform_subscribe.php:75
-#: platform_subscribe.php:76 platform_subscribe.php:84
-#: platform_subscribe.php:88 platform_subscribe.php:572
-msgid "粉丝管理"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:95
-#: apis/wechat_platform_purview_api.class.php:95
-msgid "粉丝添加"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:96
-#: apis/wechat_platform_purview_api.class.php:96
-msgid "粉丝编辑"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:97
-#: apis/wechat_platform_purview_api.class.php:97
-msgid "粉丝删除"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:99
-#: apis/wechat_platform_purview_api.class.php:99
-msgid "用户消息管理"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:100
-#: apis/wechat_platform_purview_api.class.php:100
-msgid "用户消息发送"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:102
-#: apis/wechat_platform_menu_api.class.php:100
-#: apis/wechat_platform_purview_api.class.php:102 platform_customer.php:75
-#: platform_customer.php:76
-msgid "客服管理"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:103
-#: apis/wechat_platform_purview_api.class.php:103
-msgid "客服添加"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:104
-#: apis/wechat_platform_purview_api.class.php:104
-msgid "客服编辑"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:105
-#: apis/wechat_platform_purview_api.class.php:105
-msgid "客服删除"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:106
-#: apis/wechat_platform_purview_api.class.php:106
-msgid "客服聊天记录管理"
-msgstr ""
-
-#: apis/wechat_admin_purview_api.class.php:108
-#: apis/wechat_platform_purview_api.class.php:108 platform_prize.php:69
-#: platform_prize.php:80
-msgid "抽奖记录"
-msgstr ""
 
 #: apis/wechat_platform_menu_api.class.php:61
 msgid "插件管理"
@@ -237,10 +25,29 @@ msgstr ""
 msgid "微信公众平台"
 msgstr ""
 
+#: apis/wechat_platform_menu_api.class.php:67
+#: apis/wechat_platform_purview_api.class.php:64
+msgid "自定义菜单"
+msgstr ""
+
 #: apis/wechat_platform_menu_api.class.php:69
 #: apis/wechat_platform_menu_api.class.php:71 platform_message.php:70
 #: platform_message.php:71 platform_message.php:79 platform_message.php:80
 msgid "消息管理"
+msgstr ""
+
+#: apis/wechat_platform_menu_api.class.php:72
+#: apis/wechat_platform_purview_api.class.php:84 platform_mass_message.php:72
+#: platform_mass_message.php:73
+msgid "群发消息"
+msgstr ""
+
+#: apis/wechat_platform_menu_api.class.php:76
+#: apis/wechat_platform_menu_api.class.php:78
+#: apis/wechat_platform_purview_api.class.php:86 platform_subscribe.php:75
+#: platform_subscribe.php:76 platform_subscribe.php:84
+#: platform_subscribe.php:88 platform_subscribe.php:572
+msgid "粉丝管理"
 msgstr ""
 
 #: apis/wechat_platform_menu_api.class.php:79 platform_subscribe.php:1010
@@ -277,6 +84,13 @@ msgstr ""
 msgid "被关注回复"
 msgstr ""
 
+#: apis/wechat_platform_menu_api.class.php:93
+#: apis/wechat_platform_purview_api.class.php:79 platform_material.php:77
+#: platform_material.php:190 platform_material.php:327
+#: platform_material.php:333 platform_material.php:1148
+msgid "素材管理"
+msgstr ""
+
 #: apis/wechat_platform_menu_api.class.php:95 platform_material.php:88
 #: platform_material.php:185 platform_material.php:1134
 msgid "永久素材"
@@ -285,6 +99,12 @@ msgstr ""
 #: apis/wechat_platform_menu_api.class.php:96 platform_material.php:92
 #: platform_material.php:1136
 msgid "临时素材"
+msgstr ""
+
+#: apis/wechat_platform_menu_api.class.php:100
+#: apis/wechat_platform_purview_api.class.php:94 platform_customer.php:75
+#: platform_customer.php:76
+msgid "客服管理"
 msgstr ""
 
 #: apis/wechat_platform_menu_api.class.php:102 platform_customer.php:87
@@ -306,15 +126,132 @@ msgstr ""
 msgid "二维码管理"
 msgstr ""
 
-#: apis/wechat_platform_purview_api.class.php:110
+#: apis/wechat_platform_menu_api.class.php:110
+#: apis/wechat_platform_purview_api.class.php:69 classes/Helper.php:62
+#: platform_qrcode.php:69 platform_qrcode.php:70 platform_qrcode.php:81
+msgid "渠道二维码"
+msgstr ""
+
+#: apis/wechat_platform_menu_api.class.php:111
+#: apis/wechat_platform_purview_api.class.php:74 classes/Helper.php:63
+#: platform_share.php:69 platform_share.php:70 platform_share.php:81
+msgid "推荐二维码"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:59
+msgid "自动回复管理"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:60
+msgid "自动回复添加"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:61
+msgid "自动回复编辑"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:62
+msgid "自动回复添删除"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:65
+msgid "添加菜单"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:66
+msgid "编辑菜单"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:67
+msgid "删除菜单"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:70
+msgid "添加渠道二维码"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:71
+msgid "编辑渠道二维码"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:72
+msgid "删除渠道二维码"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:75
+msgid "添加推荐二维码"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:76
+msgid "编辑推荐二维码"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:77
+msgid "删除推荐二维码"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:80
+msgid "素材添加"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:81
+msgid "素材编辑"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:82
+msgid "素材删除"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:87
+msgid "粉丝添加"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:88
+msgid "粉丝编辑"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:89
+msgid "粉丝删除"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:91
+msgid "用户消息管理"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:92
+msgid "用户消息发送"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:95
+msgid "客服添加"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:96
+msgid "客服编辑"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:97
+msgid "客服删除"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:98
+msgid "客服聊天记录管理"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:100 platform_prize.php:69
+#: platform_prize.php:80
+msgid "抽奖记录"
+msgstr ""
+
+#: apis/wechat_platform_purview_api.class.php:102
 msgid "客服会话管理"
 msgstr ""
 
-#: apis/wechat_platform_purview_api.class.php:111
+#: apis/wechat_platform_purview_api.class.php:103
 msgid "客服会话更新"
 msgstr ""
 
-#: apis/wechat_platform_purview_api.class.php:112
+#: apis/wechat_platform_purview_api.class.php:104
 msgid "客服会话删除"
 msgstr ""
 
@@ -353,6 +290,10 @@ msgstr ""
 #: classes/Helper.php:60 platform_menus.php:69 platform_menus.php:70
 #: platform_menus.php:78
 msgid "微信菜单"
+msgstr ""
+
+#: classes/Helper.php:61
+msgid "消息模板"
 msgstr ""
 
 #: classes/Helper.php:64
