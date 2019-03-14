@@ -59,7 +59,6 @@ class mobile_userbind extends EcjiaWechatUserController
         $this->assign('front_url', RC_App::apps_url('statics/front', __FILE__));
         $this->assign('system_statics_url', RC_Uri::admin_url('statics'));
 
-        $this->load_default_script_style();
     }
 
     public function init()
