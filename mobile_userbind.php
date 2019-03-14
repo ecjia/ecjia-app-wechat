@@ -203,26 +203,6 @@ class mobile_userbind extends EcjiaWechatUserController
         return ecjia_front::$controller->showmessage(__('恭喜您，关联成功', 'wechat'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('url' => RC_Uri::url('wechat/mobile_profile/init', array('openid' => $openid, 'uuid' => $uuid))));
     }
 
-    public function front_print_head_styles()
-    {
-        ecjia_loader::print_head_styles();
-    }
-
-    public function front_print_head_scripts()
-    {
-        ecjia_loader::print_head_scripts();
-    }
-
-    public function front_print_footer_scripts()
-    {
-        ecjia_loader::print_footer_scripts();
-    }
-
-    public function front_print_late_styles()
-    {
-        ecjia_loader::print_late_styles();
-    }
-
     protected function load_default_script_style()
     {
         //自定义加载

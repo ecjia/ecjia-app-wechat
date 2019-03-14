@@ -194,26 +194,6 @@ class mobile_profile extends EcjiaWechatUserController
         }
     }
 
-    public function front_print_head_styles()
-    {
-        ecjia_loader::print_head_styles();
-    }
-
-    public function front_print_head_scripts()
-    {
-        ecjia_loader::print_head_scripts();
-    }
-
-    public function front_print_footer_scripts()
-    {
-        ecjia_loader::print_footer_scripts();
-    }
-
-    public function front_print_late_styles()
-    {
-        ecjia_loader::print_late_styles();
-    }
-
     protected function load_default_script_style()
     {
         //自定义加载
