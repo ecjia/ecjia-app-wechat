@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ecjia App wechat 1.27.4\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
-"POT-Creation-Date: 2019-03-15 01:49:12+00:00\n"
+"POT-Creation-Date: 2019-03-20 07:33:58+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -360,18 +360,50 @@ msgstr ""
 msgid "配置"
 msgstr ""
 
-#: classes/UserCleanHandlers/UserWechatAccountClear.php:96
-#: classes/UserCleanHandlers/UserWechatCustomMessageClear.php:106
-#: classes/UserCleanHandlers/UserWechatCustomerRecordClear.php:109
-#: classes/UserCleanHandlers/UserWechatPrizeClear.php:111
+#: classes/UserCleanHandlers/UserWechatAccountClear.php:34
+msgid "账户微信粉丝账号"
+msgstr ""
+
+#: classes/UserCleanHandlers/UserWechatAccountClear.php:44
+msgid "账户关注微信公众号对应的粉丝账号"
+msgstr ""
+
+#: classes/UserCleanHandlers/UserWechatAccountClear.php:99
+#: classes/UserCleanHandlers/UserWechatCustomMessageClear.php:109
+#: classes/UserCleanHandlers/UserWechatCustomerRecordClear.php:112
+#: classes/UserCleanHandlers/UserWechatPrizeClear.php:114
 msgid "用户名是%s"
 msgstr ""
 
-#: classes/UserCleanHandlers/UserWechatAccountClear.php:96
-#: classes/UserCleanHandlers/UserWechatCustomMessageClear.php:106
-#: classes/UserCleanHandlers/UserWechatCustomerRecordClear.php:109
-#: classes/UserCleanHandlers/UserWechatPrizeClear.php:111
+#: classes/UserCleanHandlers/UserWechatAccountClear.php:99
+#: classes/UserCleanHandlers/UserWechatCustomMessageClear.php:109
+#: classes/UserCleanHandlers/UserWechatCustomerRecordClear.php:112
+#: classes/UserCleanHandlers/UserWechatPrizeClear.php:114
 msgid "用户ID是%s"
+msgstr ""
+
+#: classes/UserCleanHandlers/UserWechatCustomMessageClear.php:34
+msgid "账户发送消息记录"
+msgstr ""
+
+#: classes/UserCleanHandlers/UserWechatCustomMessageClear.php:44
+msgid "账户微信公众号上发送的所有消息记录"
+msgstr ""
+
+#: classes/UserCleanHandlers/UserWechatCustomerRecordClear.php:34
+msgid "微信客服消息记录"
+msgstr ""
+
+#: classes/UserCleanHandlers/UserWechatCustomerRecordClear.php:44
+msgid "账户微信公众号上给客服发送的所有消息记录"
+msgstr ""
+
+#: classes/UserCleanHandlers/UserWechatPrizeClear.php:34
+msgid "账户抽奖记录"
+msgstr ""
+
+#: classes/UserCleanHandlers/UserWechatPrizeClear.php:44
+msgid "账户参与抽奖活动有关的所有记录"
 msgstr ""
 
 #: classes/WechatRecord.php:25
