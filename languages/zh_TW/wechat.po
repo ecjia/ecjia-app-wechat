@@ -5,14 +5,14 @@ msgstr ""
 "Project-Id-Version: Ecjia App wechat 1.27.4\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
 "POT-Creation-Date: 2019-04-04 15:18+0800\n"
-"PO-Revision-Date: 2019-04-04 15:19+0800\n"
+"PO-Revision-Date: 2019-04-09 10:41+0800\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: apis/wechat_platform_menu_api.class.php:61
@@ -2126,7 +2126,8 @@ msgstr "用戶每月只能接收4條群發消息，多於4條的群發將對該�
 #: content/apps/wechat/templates/platform/wechat_mass_message.dwt.php:31
 msgid ""
 "群发图文消息的标题上限为64个字节,群发内容字数上限为1200个字符、或600个汉字。"
-msgstr "用戶每月只能接收4條群發消息，多於4條的群發將對該用戶發送失敗。"
+msgstr ""
+"群發圖文消息的標題上限為64個字節,群發內容字數上限為1200個字符、或600個漢字。"
 
 #: content/apps/wechat/templates/platform/wechat_mass_message.dwt.php:32
 msgid ""
