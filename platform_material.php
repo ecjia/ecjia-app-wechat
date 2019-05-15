@@ -758,14 +758,12 @@ class platform_material extends ecjia_platform
 
         $material = $this->request->input('material') ? 1 : 0;
 
-        $upload = RC_Upload::uploader(null, array('save_path' => 'data/material/image', 'auto_sub_dirs' => false));
+        $upload = RC_Upload::uploader('image', array('save_path' => 'data/material/image', 'auto_sub_dirs' => false));
         $upload->allowed_type(['png', 'jpeg', 'jpg', 'gif']);
         $upload->allowed_mime(['image/png', 'image/jpeg', 'image/gif']);
         $upload->allowed_size('2097152'); //单位是字节[byte],2x1024x1024
+        $upload->setStorageDisk(RC_Storage::disk('local'));
 
-        if (!$upload->check_upload_file($_FILES['img_url'])) {
-            return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-        }
         $image_info = $upload->upload($_FILES['img_url']);
         if (empty($image_info)) {
             return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -780,10 +778,10 @@ class platform_material extends ecjia_platform
 
             //永久素材
             if ($material === 1) {
-                $rs = $wechat->material->uploadImage(RC_Upload::upload_path($file_path));
+                $rs = $wechat->material->uploadImage(RC_Upload::local_upload_path($file_path));
             } //临时素材
             else {
-                $rs = $wechat->material_temporary->uploadImage(RC_Upload::upload_path($file_path));
+                $rs = $wechat->material_temporary->uploadImage(RC_Upload::local_upload_path($file_path));
             }
 
             $data = array(
