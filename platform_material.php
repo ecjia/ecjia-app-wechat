@@ -1554,7 +1554,7 @@ class platform_material extends ecjia_platform
 
         $count = $sumdata->$type;
         $page  = new ecjia_platform_page($count, $pageSize, 5);
-        $data  = $wechat_media_model->orderBy('sort', 'asc')->orderBy('edit_time', 'desc')->orderBy('add_time', 'desc')->orderBy('id', 'desc')->take($pageSize)->skip($page->start_id - 1)->get();
+        $data  = $wechat_media_model->orderBy('sort', 'asc')->orderBy('add_time', 'desc')->orderBy('id', 'desc')->take($pageSize)->skip($page->start_id - 1)->get();
 
         $newData = $data->map(function ($item) {
             $item->add_time = RC_Time::local_date(__('n月j日', 'wechat'), $item->add_time);
