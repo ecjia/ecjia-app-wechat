@@ -218,7 +218,7 @@ class platform_customer extends ecjia_platform
             if (!$arr[count($arr) - 1] == "") {
                 $list['kf_headimgurl'] = $list['kf_headimgurl'];
             } else {
-                $list['kf_headimgurl'] = RC_Upload::local_upload_url() . '/' . $list['kf_headimgurl'];
+                $list['kf_headimgurl'] = RC_Upload::local_upload_url($list['kf_headimgurl']);
             }
         }
         $this->assign('list', $list);
@@ -692,7 +692,7 @@ class platform_customer extends ecjia_platform
             foreach ($list as $k => $v) {
                 if (!empty($v['kf_headimgurl'])) {
                     if ((strpos($v['kf_headimgurl'], 'http://') === false) && (strpos($v['kf_headimgurl'], 'https://') === false)) {
-                        $list[$k]['kf_headimgurl'] = RC_Upload::local_upload_url() . '/' . $v['kf_headimgurl'];
+                        $list[$k]['kf_headimgurl'] = RC_Upload::local_upload_url($v['kf_headimgurl']);
                     } else {
                         $list[$k]['kf_headimgurl'] = is_ssl() ? str_replace('http://', 'https://', $v['kf_headimgurl']) : $v['kf_headimgurl'];
                     }
